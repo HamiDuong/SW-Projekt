@@ -23,7 +23,7 @@ class BookingBO (bo.BusinessObject):
         super().__init__()
         self._work_time_account_id = None  # Fremdschlüsselbeziehung
         self._user_id = None  # Fremdschlüsselbeziehung
-        self._type = ""  # Typ der Buhcung
+        self._type = ""  # Typ der Buchung
 
     'Getter und Setter Methoden zu den Attributen der Klasse'
 
