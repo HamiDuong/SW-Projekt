@@ -24,7 +24,7 @@ class GoingMapper(Mapper):
             going.get_id(),
             going.get_time(),
             going.get_event_booking_id()
-            )
+        )
 
         cursor.execute(command, data)
 

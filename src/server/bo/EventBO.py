@@ -12,11 +12,11 @@ class EventBO(bo.BusinessObject):
         self._event_booking_id = None
 
     def get_time(self):
-        """Auslesen der ID."""
+        """Auslesen der Zeit."""
         return self._time
 
     def set_time(self, datetime):
-        """Setzen der ID."""
+        """Setzen der Zeit."""
         self._time = datetime
 
     def get_event_booking_id(self):

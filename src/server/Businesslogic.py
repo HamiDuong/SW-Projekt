@@ -5,6 +5,7 @@ from db.ComingMapper import ComingMapper
 from db.GoingMapper import GoingMapper
 from datetime import datetime
 
+
 class Businesslogic (object):
 
     def __init__(self):
@@ -55,3 +56,5 @@ class Businesslogic (object):
     def delete_coming(self, going):
         with GoingMapper() as mapper:
             mapper.delete(going)
+
+    '''date of last change!'''

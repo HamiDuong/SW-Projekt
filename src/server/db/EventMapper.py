@@ -1,6 +1,7 @@
 from server.db.Mapper import Mapper
 from server.bo.EventBO import EventBO
 
+
 class EventMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -21,9 +22,9 @@ class EventMapper(Mapper):
         command = "INSERT INTO app.event (id, eventname, time) VALUES (%s, %s,%s)"
         data = (
             event.get_id(),
-            event.get_eventname(),
+            event.get_event_boooking_id(),
             event.get_time()
-            )
+        )
 
         cursor.execute(command, data)
 
@@ -77,11 +78,11 @@ class EventMapper(Mapper):
 
         return result
 
-    def find_by_admin(self, key):
+    def find_by_time(self, key):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, eventname, time FROM app.event WHERE admin={}".format(
+        command = "SELECT id, eventname, time FROM app.event WHERE time={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
