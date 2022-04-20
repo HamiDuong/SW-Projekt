@@ -1,4 +1,4 @@
-from server.db import Mapper
+from server.db import TimeIntervalMapper
 from server.bo import VacationBO
 
 """
@@ -12,7 +12,7 @@ start                       Startzeitpunkt der Pause
 end                         Endzeitpunkt der Pause
 timeintervalBookingId (FK)  Zuordnung zu TimeIntervalBooking   
 """
-class VacationMapper(Mapper):
+class VacationMapper(TimeIntervalMapper):
 
     def __init__(self):
         super().__init__()
@@ -116,3 +116,80 @@ class VacationMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()   
+    
+    """
+    Gibt das VacationBO mit dem gegebenen Startdatum zurück
+    param: date (datetime) - Id vom gesuchtem VacationBO
+    return: VacationBO mit start = date
+    """
+    def find_by_date(self, date):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM vacations WHERE start={}".format(date)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples[0] is not None:
+            (id, dateOfLastChange, start, end, timeIntervalBookingId) = tuples[0]
+            breakobj = VacationBO()
+            breakobj.set_id(id)
+            breakobj.set_date_of_last_change(dateOfLastChange)
+            breakobj.set_start(start)
+            breakobj.set_end(end)
+            breakobj.set_timeinterval_booking_id(timeIntervalBookingId)
+            result = breakobj
+
+        self._cnx.commit()
+        cursor.close()
+        return result
+
+    """
+    Gibt alle VacationBO aus einen angegebenen Zeitraum zurück
+    param: start_date (date) - Start des Zeitintervalls
+           end_date (date) - Ende des Zeitintervalls
+    return: result - alle VacationBO im angegebenen Zeitraum
+    """
+    def find_by_time_period(self, start_date, end_date):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM vacations WHERE start={} AND end={}".format(start_date, end_date)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, dateOfLastChange, start, end, timeIntervalBookingId) in tuples:
+            breakobj = VacationBO()
+            breakobj.set_id(id)
+            breakobj.set_date_of_last_change(dateOfLastChange)
+            breakobj.set_start(start)
+            breakobj.set_end(end)
+            breakobj.set_time_interval_booking_id(timeIntervalBookingId)
+            result.append(breakobj)
+
+        self._cnx.commit()
+        return result
+
+    """
+    Gibt das VacationBO mit gegebener booking_id zurück
+    param: bookingId - Fremdschlüssel von BookingBO
+    return: result - VacationBO
+    """
+    def find_by_time_interval_booking_id(self, bookingId):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM vacations WHERE timeIntervallBookingId={}".format(bookingId)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples[0] is not None:
+            (id, dateOfLastChange, start, end, timeIntervalBookingId) = tuples[0]
+            breakobj = VacationBO()
+            breakobj.set_id(id)
+            breakobj.set_date_of_last_change(dateOfLastChange)
+            breakobj.set_start(start)
+            breakobj.set_end(end)
+            breakobj.set_timeinterval_booking_id(timeIntervalBookingId)
+            result = breakobj
+
+        self._cnx.commit()
+        cursor.close()        
+        return result
