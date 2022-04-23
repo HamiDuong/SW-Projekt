@@ -45,15 +45,15 @@ class Businesslogic (object):
         with GoingMapper() as mapper:
             return mapper.find_by_key(number)
 
-    def get_all_comings(self):
+    def get_all_goings(self):
         with GoingMapper() as mapper:
             return mapper.find_all()
 
-    def save_coming(self, going):
+    def save_going(self, going):
         with GoingMapper() as mapper:
             mapper.update(going)
 
-    def delete_coming(self, going):
+    def delete_going(self, going):
         with GoingMapper() as mapper:
             mapper.delete(going)
 

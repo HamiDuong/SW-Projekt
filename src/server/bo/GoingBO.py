@@ -1,11 +1,11 @@
-from multiprocessing import Event
 from server.bo import EventBO
+from datetime import datetime
 
 
 class GoingBO(EventBO.EventBO):
     """
     Klasse Going.
-    Ein ComingBO stellt das Ereignis "Kommen" dar bzw. wenn ein Mitarbeiter sich ausstempelt und enthält einen Zeitpunkt.
+    Ein GoingBO stellt das Ereignis "Gehen" dar bzw. wenn ein Mitarbeiter sich ausstempelt und enthält einen Zeitpunkt.
     """
 
     def __init__(self):
@@ -16,6 +16,12 @@ class GoingBO(EventBO.EventBO):
         """Umwandeln eines Python dict() in ein GoingBO()."""
         obj = GoingBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
-        obj.set_first_name(dictionary["time"])
-        obj.set_last_name(dictionary["event_booking_id"])
+        obj.set_time(dictionary["time"])
+        obj.set_event_booking_id(dictionary["event_booking_id"])
         return obj
+
+
+hello = GoingBO()
+today = datetime.today()
+hello.set_date_of_last_change(today)
+print(hello.get_date_of_last_change())
