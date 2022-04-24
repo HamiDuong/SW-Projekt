@@ -1,4 +1,4 @@
-from server.bo import TimeIntervalBO as ti
+from server.bo.timeinterval import TimeIntervalBO as ti
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
