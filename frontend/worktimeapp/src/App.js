@@ -1,13 +1,13 @@
 import React from 'react';
 import Navigation from './Components/Navigator';
-//import Calendar from './Components/Calendar';
+import Calendar from './Components/Calendar';
  
 class App extends React.Component {
  render(){
    return(
      <div>
-             <Navigation/>
-             {/* <Calendar/> */}
+             {/* <Navigation/> */}
+             <Calendar/>
      </div>       
    )
  }
