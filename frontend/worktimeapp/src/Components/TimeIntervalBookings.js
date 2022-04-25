@@ -20,6 +20,8 @@ class TimeIntervalBookings extends Component {
             start: "",
             end: "",
             timeIntervalType: "",
+            activity: "", 
+            project: ""
          }
     }
 
@@ -33,7 +35,7 @@ class TimeIntervalBookings extends Component {
                 <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
                         <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
                             <Grid item >
-                                <AccessTimeIcon></AccessTimeIcon>
+                                <AccessTimeIcon ></AccessTimeIcon>
                             </Grid>
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{pb:1}}>
@@ -67,8 +69,11 @@ class TimeIntervalBookings extends Component {
                     <Grid item xs={4} sm={2}>
                         <TextField name="startdate" label="Start date" variant="outlined" />
                     </Grid>
+                   
                     <Grid xs={4} sm={2} item>
+                        {(this.state.timeIntervalType == "work" || this.state.timeIntervalType=="project"|| this.state.timeIntervalType=="flexday") && 
                         <TextField name="starttime" label="Start time" variant="outlined" />
+                        }
                     </Grid>
                     <Grid xs={4} sm={8} item>
                         <Button variant="contained">Select Event</Button>
@@ -77,13 +82,40 @@ class TimeIntervalBookings extends Component {
                         <TextField name="enddate" label="End date" variant="outlined" />
                     </Grid>
                     <Grid xs={4}  sm={2} item>
+                        {(this.state.timeIntervalType == "work" || this.state.timeIntervalType=="project" || this.state.timeIntervalType=="flexday") && 
                         <TextField name="endtime" label="End time" variant="outlined" />
+                        }
                     </Grid>
                     <Grid xs={4}  sm={8} item>
                         <Button variant="contained">Select Event</Button>
                     </Grid>
-                    <Grid xs={12} item>
-                        <Button variant="contained">Select Activity</Button>
+                    <Grid xs={12}sm={2} item>
+                    {this.state.timeIntervalType == "project" && 
+                    <FormControl sx={{ minWidth: 220}}>
+                            <InputLabel>Project</InputLabel>
+                            <Select
+                                name="project"
+                                value={this.state.project}
+                                label="project"
+                                onChange={this.handleChange}
+                            >
+                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                            </Select>
+                        </FormControl>}
+                    </Grid>
+                    <Grid xs={12} sm={10} item>
+                    {this.state.timeIntervalType == "project" &&
+                    <FormControl sx={{ minWidth: 220}}>
+                            <InputLabel>Activity</InputLabel>
+                            <Select
+                                name="activity"
+                                value={this.state.activity}
+                                label="activity"
+                                onChange={this.handleChange}
+                            >
+                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                            </Select>
+                        </FormControl>}
                     </Grid>
                     <Grid xs={12} item>
                     <Button variant="contained">Book Timeinterval</Button>
