@@ -66,7 +66,7 @@ export default function Calendar() {
       
       <TextField
         id="datetime-local"
-        label="Calendar"
+        label="Calendar Version 1.0"
         type="datetime-local"
         defaultValue="2022-01-01T00:00"
         sx={{ width: 250 }}
