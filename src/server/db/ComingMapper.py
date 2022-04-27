@@ -1,5 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.ComingBO import ComingBO
+from datetime import datetime
 
 
 class ComingMapper(Mapper):
@@ -7,9 +8,11 @@ class ComingMapper(Mapper):
         super().__init__()
 
     def insert(self, coming):
+        timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM app.coming ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.coming ")
         tuples = cursor.fetchall()
+        coming.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
@@ -19,12 +22,12 @@ class ComingMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 coming.set_id(1)
 
-        command = "INSERT INTO app.coming (id, time, event_booking_id) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.coming (id, time, event_booking_id) VALUES (%s, %s,%s)"
         data = (
             coming.get_id(),
             coming.get_time(),
             coming.get_event_booking_id()
-            )
+        )
 
         cursor.execute(command, data)
 
@@ -36,7 +39,7 @@ class ComingMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM app.coming"
+        command = "SELECT id, time, event_booking_id FROM worktimeapp.coming"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -56,7 +59,7 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM app.coming WHERE id={}".format(
+        command = "SELECT id, time, event_booking_id FROM worktimeapp.coming WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -82,7 +85,7 @@ class ComingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM app.coming WHERE time={}".format(
+        command = "SELECT id, time, event_booking_id FROM worktimeapp.coming WHERE time={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -103,7 +106,7 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM app.coming WHERE chatid={}".format(
+        command = "SELECT id, time, event_booking_id FROM worktimeapp.coming WHERE chatid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -126,9 +129,11 @@ class ComingMapper(Mapper):
         return result
 
     def update(self, coming):
+        timestamp = datetime.today()
         cursor = self._cnx.cursor()
+        coming.set_date_of_last_change(timestamp)
 
-        command = "UPDATE app.coming " + \
+        command = "UPDATE worktimeapp.coming " + \
             "SET time=%s, event_booking_id=%s WHERE id=%s"
         data = (coming.get_time(), coming.get_event_booking_id(),
                 coming.get_id())
@@ -142,7 +147,7 @@ class ComingMapper(Mapper):
     def delete(self, coming):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM app.coming WHERE id={}".format(
+        command = "DELETE FROM worktimeapp.coming WHERE id={}".format(
             coming.get_id())
         cursor.execute(command)
 

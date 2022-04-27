@@ -1,11 +1,6 @@
-from time import time
 from server.db.Mapper import Mapper
 from server.bo.GoingBO import GoingBO
 from datetime import datetime
-
-'''timestamp="NOW()"
-insert_data = "INSERT into test (test_date,test1,test2) values (%s,%s,%s)"
-cur.execute(insert_data,(test_date,test1,test2,timestamp))'''
 
 
 class GoingMapper(Mapper):
@@ -17,16 +12,15 @@ class GoingMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.going ")
         tuples = cursor.fetchall()
+        going.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
                 going.set_id(maxid[0] + 1)
-                going.set_date_of_last_change(timestamp)
             else:
                 """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 going.set_id(1)
-                going.set_date_of_last_change(timestamp)
 
         command = "INSERT INTO worktimeapp.going (id, dateoflastchange, time, event_booking_id) VALUES ( %s,%s,%s,%s)"
         data = (
@@ -142,8 +136,11 @@ class GoingMapper(Mapper):
     def update(self, going):
         cursor = self._cnx.cursor()
 
+        timestamp = datetime.today()
+        going.set_date_of_last_change(timestamp)
+
         command = "UPDATE worktimeapp.going " + \
-            "SET date_of_last_change =Current_Time(), time=%s, event_booking_id=%s WHERE id=%s"
+            "SET time=%s, event_booking_id=%s WHERE id=%s"
         data = (going.get_date_of_last_change(), going.get_time(), going.get_event_booking_id(),
                 going.get_id())
         cursor.execute(command, data)

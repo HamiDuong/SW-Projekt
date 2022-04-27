@@ -19,9 +19,3 @@ class GoingBO(EventBO.EventBO):
         obj.set_time(dictionary["time"])
         obj.set_event_booking_id(dictionary["event_booking_id"])
         return obj
-
-
-hello = GoingBO()
-today = datetime.today()
-hello.set_date_of_last_change(today)
-print(hello.get_date_of_last_change())

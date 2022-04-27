@@ -57,4 +57,10 @@ class Businesslogic (object):
         with GoingMapper() as mapper:
             mapper.delete(going)
 
-    '''date of last change!'''
+
+'''
+b = Businesslogic()
+today = datetime.today()
+timestamp = datetime.timestamp
+b.create_going(today, 1)
+'''
