@@ -5,6 +5,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventIcon from '@mui/icons-material/Event';
 
+
 class Bookings extends Component {
     constructor(props) {
         super(props);
@@ -24,13 +25,17 @@ class Bookings extends Component {
     
     render() { 
         return (  
-        <Box sx={{ width: 500 }}>
+         
+        <Box sx={{ width: "100%"}}>
             <BottomNavigation 
+           
             showLabels 
             value={this.state.value}
             onChange={(event, newValue) => this.handleChange(newValue)} >
+              
               <BottomNavigationAction label="Events" icon={<EventIcon />}/>
-              <BottomNavigationAction label="Timeintervals" icon={<AccessTimeIcon/>} />
+              <BottomNavigationAction label="Timeintervals" icon={<AccessTimeIcon/>}
+              />
             </BottomNavigation>
           </Box> );
     }
