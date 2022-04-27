@@ -6,10 +6,10 @@ from bo.VacationBeginBO import VacationBeginBO
 from db.VacationBeginMapper import VacationBeginMapper
 from bo.VacationEndBO import VacationEndBO
 from db.VacationEndMapper import VacationEndMapper
-from bo.BreakBO import BreakBO
-from bo.ProjectDurationBO import ProjectDurationBO
+'''from bo.BreakBO import BreakBO
+from bo.ProjectDurationBO import ProjectDurationBO'''
 #from bo.ProjectWorkBO import ProjectWorkBO
-from bo.VacationBO import VacationBO
+#from bo.VacationBO import VacationBO
 from datetime import datetime
 
 
@@ -120,8 +120,7 @@ class Businesslogic (object):
 Break Methoden
 """
 
-
-def get_all_breaks(self):
+'''def get_all_breaks(self):
     with BreakMapper() as mapper:
         return mapper.find_all()
 
@@ -223,7 +222,7 @@ def get_project_duration_by_project_id(self, id):
     with ProjectDurationMapper() as mapper:
         return mapper.find_by_project_id(id)
 
-
+'''
 """
 ProjectWork Methoden
 """
@@ -233,7 +232,7 @@ Vacation Methoden
 """
 
 
-def get_all_vacations(self):
+'''def get_all_vacations(self):
     with VacationMapper() as mapper:
         return mapper.find_all()
 
@@ -277,3 +276,4 @@ def get_vacation_by_time_period(self, startdate, enddate):
 def get_vacation_by_timeinterval_booking_id(self, id):
     with VacationMapper() as mapper:
         return mapper.find_by_time_interval_booking(id)
+'''
