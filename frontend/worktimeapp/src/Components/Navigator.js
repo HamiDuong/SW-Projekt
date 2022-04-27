@@ -11,8 +11,18 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
- 
+import { Routes, Route, Link } from 'react-router-dom';
+import MyBookings from './Pages/MyBookings';
+import MyProfile from './MyProfile';
+import MyProjects from './MyProjects';
+import MyWorkTime from './MyWorkTime';
+import ProjectWorkTime from './ProjectWorkTime';
+import CreateProject from './CreateProject';
+import Booking from './Bookings';
+import TimeIntervalBooking from './TimeIntervalBookings';
+import EventBooking from './EventBookings';
 
+ 
  //Suchleiste für das Navigator 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -90,8 +100,23 @@ export default function Navigator() {
          open={Boolean(anchorEl)}
          onClose={handleClose}
          >
-           <MenuItem onClick={handleClose}>Profil</MenuItem>
-           <MenuItem onClick={handleClose}>Zeitkonto</MenuItem>
+           {/* <MenuItem onClick={handleClose}>Profil</MenuItem>   
+           <MenuItem onClick={handleClose}>Zeitkonto</MenuItem> */}
+           {/* Die Router Links in den MenuItem einfügen*/}
+           <MenuItem onClick={handleClose}>
+             <Routes>
+              <Route index element={<MyProfile/>} />
+              <Route path="myprojects" element={<MyProjects/>}/>
+              <Route path="createprojects" element={<CreateProject/>}/>
+              <Route path="myworktime" element={<MyWorkTime/>}/>
+              <Route path="mybookings" element={<MyBookings/>}/>
+              <Route path="projectworktime" element={<ProjectWorkTime/>}/>
+              <Route path="bookings" element={<Booking/>}>
+                <Route path="timeintervalbooking" element={<TimeIntervalBooking/>}/>
+                <Route path="eventbooking" element={<EventBooking/>}/>
+              </Route>
+             </Routes>
+           </MenuItem>
          </Menu>
          </IconButton>
          <Typography
@@ -100,7 +125,7 @@ export default function Navigator() {
            component="div"
            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
          >
-           WorkTimeApp (Platzhalter)
+           WorkTimeApp 
          </Typography>
          <Search>
            <SearchIconWrapper>
