@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import MyBookingsEntry from '../MyBookingsEntry';
 
-class MyBookings extends Component{
+class MyBookings extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -11,11 +11,7 @@ class MyBookings extends Component{
             error: null,
         }
     }
-
-    getBookings = () => {
-        let data = this.props.googleId;
-    }
-
+    state = {  }
     render(){
         return(
             <div>
@@ -49,3 +45,5 @@ class MyBookings extends Component{
         );
     }
 }
+ 
+export default MyBookings;
