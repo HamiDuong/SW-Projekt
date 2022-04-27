@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import MyBookingsEntry from '../MyBookingsEntry';
-import 
 
 class MyBookings extends Component{
     constructor(props){
@@ -26,8 +25,6 @@ class MyBookings extends Component{
                         <RadioGroup
                             row
                             name="booking-selection"
-                            value={value}
-                            onChange={handleChange}
                         >
                             <FormControlLabel value="all" control={<Radio />} label="Alle anzeigen" />
                             <FormControlLabel value="interval" control={<Radio />} label="Nur Intervallbuchungen" />
