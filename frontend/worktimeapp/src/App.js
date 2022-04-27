@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+import Navigation from './Components/Navigator';
+//import Calendar from './Components/Calendar';
+import { ThemeProvider} from  '@mui/material/styles';
+import Theme from './Theme';
+import { CssBaseline } from '@mui/material';
+ 
+class App extends React.Component {
+ render(){
+   return(
+    <ThemeProvider theme={Theme}>
+      <CssBaseline/>
+      <div>
+             <Navigation/>
+             {/* <Calendar/> */}
+     </div>         
+     </ThemeProvider>    
+   )
+ }
 }
-
+ 
 export default App;
+

@@ -1,5 +1,5 @@
-from server.db import TimeIntervalMapper
-from server.bo import VacationBO
+from server.db import TimeIntervalMapper as ti
+from server.bo.timeinterval import VacationBO
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -12,7 +12,7 @@ start                       Startzeitpunkt der Pause
 end                         Endzeitpunkt der Pause
 timeintervalBookingId (FK)  Zuordnung zu TimeIntervalBooking   
 """
-class VacationMapper(TimeIntervalMapper):
+class VacationMapper(ti.TimeIntervalMapper):
 
     def __init__(self):
         super().__init__()
