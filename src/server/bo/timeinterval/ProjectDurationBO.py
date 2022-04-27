@@ -1,19 +1,19 @@
-from server.bo import TimeIntervallBO as ti
+from server.bo.timeinterval import TimeIntervalBO as ti
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
 ProjectDurationBO ist eine Subklasse von TimeIntervallBO und stellt die Laufzeit eines Projekts da
-Weil TimeIntervallBO bereits von BusinessObject erbt, muss diese Klasse nicht nochmal importiert werden
+Weil TimeIntervalBO bereits von BusinessObject erbt, muss diese Klasse nicht nochmal importiert werden
 """
-class ProjectDurationBO (ti.TimeIntervallBO):
+class ProjectDurationBO (ti.TimeIntervalBO):
     """
     Konstruktor der Klasse TimeIntervallBO
     geerbte Attribute
         _id (BusinessObject -> TimeIntervallBO)
         _start: Startpunkt des Zeitintervalls (TimeIntervallBO)
         _end: Enpunkt des Zeitintervalls (TimeIntervallBO)
-        _time_intervall_booking_id: Fremdschlüssel zum Objekt TimeIntervallBookingBO für die eindeutige
-                                    Zuordnung zwischen Intervallbuchung und Zeitintervall (TimeIntervallBO)
+        _time_interval_booking_id: Fremdschlüssel zum Objekt TimeIntervalBO für die eindeutige
+                                    Zuordnung zwischen Intervallbuchung und Zeitintervall (TimeIntervalBO)
     Attribute
         _project_id: Fremdschlüssel zum Object ProjectBO für die eindeutige Zuordnung zwischen Projektdauer und Projekt
     """
@@ -38,6 +38,6 @@ class ProjectDurationBO (ti.TimeIntervallBO):
         obj.set_id(dictionary["id"])
         obj.set_start(dictionary["start"])
         obj.set_end(dictionary["end"])
-        obj.set_time_intervall_booking_id(dictionary["time_intervall_booking_id"])
+        obj.set_time_interval_booking_id(dictionary["time_intervall_booking_id"])
         obj.set_project_id(dictionary["project_id"])
         return obj
