@@ -11,7 +11,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Routes, Route, Link } from 'react-router-dom';
+import MenuList from '@mui/material/MenuList';
+import { Routes, Route, Link,Router } from 'react-router-dom';
+import Switch from 'react-router'
 import MyBookings from './Pages/MyBookings';
 import MyProfile from './MyProfile';
 import MyProjects from './MyProjects';
@@ -104,6 +106,16 @@ export default function Navigator() {
            <MenuItem onClick={handleClose}>Zeitkonto</MenuItem> */}
            {/* Die Router Links in den MenuItem einfügen*/}
            <MenuItem onClick={handleClose}>
+             <Router>
+             <Routes>
+             <Route path='/myprofile'>
+               <MyProfile/>
+             </Route>
+             </Routes>
+             </Router>
+             {/* <Router> */}
+
+             {/* </Router>
              <Routes>
               <Route index element={<MyProfile/>} />
               <Route path="myprojects" element={<MyProjects/>}/>
@@ -115,7 +127,8 @@ export default function Navigator() {
                 <Route path="timeintervalbooking" element={<TimeIntervalBooking/>}/>
                 <Route path="eventbooking" element={<EventBooking/>}/>
               </Route>
-             </Routes>
+             </Routes> */}
+
            </MenuItem>
          </Menu>
          </IconButton>
