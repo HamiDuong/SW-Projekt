@@ -12,6 +12,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import SelectEventDialog from './SelectEventDialog';
 
 
 {/* 
@@ -30,6 +31,7 @@ class TimeIntervalBookings extends Component {
             timeIntervalType: "",
             activity: "", 
             project: "",
+            showSelectEventDialog: false
             
          }
     }
@@ -50,9 +52,23 @@ class TimeIntervalBookings extends Component {
         console.log(this.state.end)
     }
 
+    handleClickOpen = () => {
+        this.setState({
+            showSelectEventDialog: true
+        })
+      }
+    
+    handleClose = () =>{
+        this.setState({
+            showSelectEventDialog: false
+        })
+      }
+    
+
     
     render() { 
         return ( 
+            <div>
             <Card sx={{ m:5, p:2, minwidth: 500}}>
                 <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
                         <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
@@ -119,7 +135,7 @@ class TimeIntervalBookings extends Component {
                         }
                     </Grid>
                     <Grid xs={12} sm={10} item>
-                        <Button variant="contained">Select Event</Button>
+                        <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
                     </Grid> 
                      {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     <Grid xs={12} sm={2} item >
@@ -152,7 +168,7 @@ class TimeIntervalBookings extends Component {
                         </LocalizationProvider>}
                     </Grid>
                     <Grid xs={12}  sm={8} item>
-                        <Button variant="contained">Select Event</Button>
+                        <Button variant="contained" onClick={this.handleClickOpen}>Select Event</Button>
                     </Grid>
                     <Grid xs={12}sm={4} item>
                      {/*
@@ -191,6 +207,9 @@ class TimeIntervalBookings extends Component {
 
                 </Grid>
                 </Card>
+
+                <SelectEventDialog show={this.state.showSelectEventDialog} onClose={this.handleClose}></SelectEventDialog>
+            </div>
           
          );
     }
