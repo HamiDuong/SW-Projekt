@@ -5,11 +5,19 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { withStyles} from '@mui/styles';
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
+
+{/* 
+@author Mihriban Dogan 
+TimeIntervalBooking stellt die Form für Zeitintervall Buchungen dar
+"""*/}
 
 
 class TimeIntervalBookings extends Component {
@@ -17,16 +25,30 @@ class TimeIntervalBookings extends Component {
         super(props);
        
         this.state = { 
-            start: "",
-            end: "",
+            start: Date,
+            end: Date,
             timeIntervalType: "",
             activity: "", 
-            project: ""
+            project: "",
+            
          }
     }
 
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
+    
+    handleStartDateChange(newValue){
+        this.setState({
+            start: new Date(newValue)
+        })
+        console.log(this.state.start)
+    }
+    handleEndDateChange(newValue){
+        this.setState({
+            end: new Date(newValue)
+        })
+        console.log(this.state.end)
+    }
 
     
     render() { 
@@ -65,34 +87,80 @@ class TimeIntervalBookings extends Component {
                             </Select>
                         </FormControl>
                     </Grid>
-                   
-                    <Grid item xs={4} sm={2}>
-                        <TextField name="startdate" label="Start date" variant="outlined" />
-                    </Grid>
-                   
-                    <Grid xs={4} sm={2} item>
-                        {(this.state.timeIntervalType == "work" || this.state.timeIntervalType=="project"|| this.state.timeIntervalType=="flexday") && 
-                        <TextField name="starttime" label="Start time" variant="outlined" />
+                   {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                    <Grid item xs={12} sm={2}>
+                        {(this.state.timeIntervalType === "work" || this.state.timeIntervalType === "project"|| this.state.timeIntervalType === "flexday")?
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    renderInput={(props) => <TextField {...props} />}
+                                    label="Start"
+                                    value={this.state.start}
+                                    onChange={(newValue) => {
+                                    this.handleStartDateChange(newValue);
+                                    }}
+                                    minDate={new Date('2022-01-01')}
+                                />
+                            </LocalizationProvider> :
+
+                             <LocalizationProvider dateAdapter={AdapterDateFns}>
+                             <DateTimePicker
+                                 renderInput={(props) => <TextField {...props} />}
+                                 label="Start"
+                                 value={this.state.start}
+                                 onChange={(newValue) => {
+                                 this.handleStartDateChange(newValue);
+                                 }}
+                                 minDate={new Date('2022-01-01')}
+                                 minTime={new Date(0, 0, 0, 12)}
+                                 maxTime={new Date(0, 0, 0, 12, 1)
+                                }
+                             />
+                         </LocalizationProvider>
                         }
                     </Grid>
-                    <Grid xs={4} sm={8} item>
+                    <Grid xs={12} sm={10} item>
+                        <Button variant="contained">Select Event</Button>
+                    </Grid> 
+                     {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                    <Grid xs={12} sm={2} item >
+                    {(this.state.timeIntervalType === "work" || this.state.timeIntervalType === "project"|| this.state.timeIntervalType === "flexday")?
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    renderInput={(props) => <TextField {...props} />}
+                                    label="End"
+                                    value={this.state.end}
+                                    onChange={(newValue) => {
+                                    this.handleEndDateChange(newValue);
+                                    }}
+                                    minDate={new Date('2022-01-01')}
+                                />
+                        </LocalizationProvider>:
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DateTimePicker
+                                renderInput={(props) => <TextField {...props} />}
+                                label="End"
+                                value={this.state.end}
+                                onChange={(newValue) => {
+                                this.handleEndDateChange(newValue);
+                                }}
+                                minDate={new Date('2022-01-01')}
+                                minTime={new Date(0, 0, 0, 12, 0)}
+                                maxTime={new Date(0, 0, 0, 12, 1)
+                                }
+                                
+                            />
+                        </LocalizationProvider>}
+                    </Grid>
+                    <Grid xs={12}  sm={8} item>
                         <Button variant="contained">Select Event</Button>
                     </Grid>
-                    <Grid xs={4} sm={2} item >
-                        <TextField name="enddate" label="End date" variant="outlined" />
-                    </Grid>
-                    <Grid xs={4}  sm={2} item>
-                        {(this.state.timeIntervalType == "work" || this.state.timeIntervalType=="project" || this.state.timeIntervalType=="flexday") && 
-                        <TextField name="endtime" label="End time" variant="outlined" />
-                        }
-                    </Grid>
-                    <Grid xs={4}  sm={8} item>
-                        <Button variant="contained">Select Event</Button>
-                    </Grid>
-                    <Grid xs={12}sm={2} item>
-                    {this.state.timeIntervalType == "project" && 
+                    <Grid xs={12}sm={4} item>
+                     {/*
+                    Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
+                    */}
+                    {this.state.timeIntervalType === "project" && 
                     <FormControl sx={{ minWidth: 220}}>
-                            <InputLabel>Project</InputLabel>
+                            <InputLabel>Select Project</InputLabel>
                             <Select
                                 name="project"
                                 value={this.state.project}
@@ -104,9 +172,9 @@ class TimeIntervalBookings extends Component {
                         </FormControl>}
                     </Grid>
                     <Grid xs={12} sm={10} item>
-                    {this.state.timeIntervalType == "project" &&
+                    {this.state.timeIntervalType === "project" &&
                     <FormControl sx={{ minWidth: 220}}>
-                            <InputLabel>Activity</InputLabel>
+                            <InputLabel>Select Activity</InputLabel>
                             <Select
                                 name="activity"
                                 value={this.state.activity}
@@ -129,7 +197,5 @@ class TimeIntervalBookings extends Component {
   
 }
 
-const styles = theme => ({
-  });
  
-export default withStyles(styles)(TimeIntervalBookings);
+export default TimeIntervalBookings;

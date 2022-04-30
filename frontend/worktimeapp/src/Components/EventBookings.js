@@ -9,6 +9,10 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 
 
 
@@ -18,12 +22,18 @@ class EventBookings extends Component {
         
         this.state = {
             eventType: "",
-            selectedDate: Date()
+            time: Date
         }
     }
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
 
+    handleDateChange(newValue){
+        this.setState({
+            time: new Date(newValue)
+        })
+        
+    }
 
     render() { 
         return ( 
@@ -45,7 +55,7 @@ class EventBookings extends Component {
                 </Grid>
                 <Grid container spacing={2}  alignItems="center">
                   <Grid item xs={12}>
-                       <FormControl sx={{ minWidth: 220}}>
+                       <FormControl sx={{ minWidth: 258}}>
                           <InputLabel>Type</InputLabel>
                           <Select
                             name="eventType"
@@ -58,13 +68,20 @@ class EventBookings extends Component {
                           </Select>
                         </FormControl>
                       </Grid>
-                      <Grid item xs={4} sm={2}>
-                      <TextField name="date" label="Date" variant="outlined" />
+                      <Grid item xs={12} sm={12}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DateTimePicker
+                                        renderInput={(props) => <TextField {...props} />}
+                                        label="End"
+                                        value={this.state.time}
+                                        onChange={(newValue) => {
+                                        this.handleDateChange(newValue);
+                                        }}
+                                        minDate={new Date('2022-01-01')}
+                                    />
+                            </LocalizationProvider>
                       </Grid>
-                      <Grid item xs={4} sm={10}>
-                      <TextField name="time" label="Time" variant="outlined" />
-                      </Grid>
-                      <Grid item xs={4} sm={2}>
+                      <Grid item xs={12} sm={2}>
                       <Button variant="contained">Book Event</Button>
                       </Grid>
               </Grid>
