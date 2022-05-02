@@ -4,16 +4,18 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    list-style: none;
 
 }
 .menu-bars{
     margin-left: 2rem;
     font-size: 2rem;
     background: none;
+    list-style: none;
 }
 .nav-menu{
     background-color: #060b26;
-    width: 250px;
+    width: 400px;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -38,7 +40,7 @@
    
 }
 .nav-text a {
-    text-decoration: none;;
+    text-decoration: none;
     color: #f5f5f5;
     font-size: 18px;
     width: 95%;
@@ -63,8 +65,23 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    list-style: none;
 }
 
 span{
     margin-left: 16px;
+    
+}
+
+.navbar-headline{
+    font-style: normal;
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    font-size: 70px;
+    margin: auto;
+    padding: auto;
+    
+    
 }

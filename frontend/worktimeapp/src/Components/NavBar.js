@@ -4,6 +4,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import {SideBarData} from './SideBarData';
 import './NavBarCSS.css';
+import { Typography } from '@mui/material';
+import Search from '@mui/icons-material/Search';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 function NavBar () {
     //setSidebar aktualisert den currentValue
@@ -17,7 +21,14 @@ function NavBar () {
                 <Link to='#' className='menu-bars'>
                    <MenuIcon onClick={showSidebar}/> 
                 </Link>
+                <Typography
+                    className='navbar-headline'
+                >
+                    WorkTimeApp 
+                </Typography>
+                
             </div>
+            
             <nav className={sidebar ? 'nav-menu active' : 'nav-menu' }>
                 <ul className='nav-menu-items' onClick={showSidebar}  >
                     <li className='navbar-toggle'>

@@ -72,7 +72,7 @@ class EventBookings extends Component {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DateTimePicker
                                         renderInput={(props) => <TextField {...props} />}
-                                        label="End"
+                                        label="Time"
                                         value={this.state.time}
                                         onChange={(newValue) => {
                                         this.handleDateChange(newValue);
