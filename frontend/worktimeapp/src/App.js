@@ -19,10 +19,9 @@ class App extends React.Component {
     <ThemeProvider theme={Theme}>
       <CssBaseline/>
       <div>
-        {/* <MyBookings></MyBookings> */}
-        {/* <Navigation/> */}
       <Router>
-        {/* Der Router wird in diesem Abschnitt ausgeführt. */}
+        {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.
+         */}
         <NavBar/>
         <Routes>
           <Route path='/myprofile' exact element={<MyProfile/>}/>

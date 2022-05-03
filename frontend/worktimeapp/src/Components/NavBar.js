@@ -11,7 +11,6 @@ import SearchIcon from '@mui/icons-material/Search';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
-
 //Die Funktion NavBar zeigt eine Navigationleiste da, diese zeigt die einzelnen Pages und
 //die den Namen unserer Applikation. 
 function NavBar () {
