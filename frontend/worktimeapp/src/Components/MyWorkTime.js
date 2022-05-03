@@ -7,7 +7,7 @@ class MyWorkTime extends Component {
     render() {
         return (
             <div>
-                Hello World
+                Hello, my name is Khadidja
             </div>
         );
     }
