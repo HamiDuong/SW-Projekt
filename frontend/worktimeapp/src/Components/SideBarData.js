@@ -9,6 +9,15 @@ import WorkIcon from '@mui/icons-material/Work';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
+//Hier werden die Inhalte der Menüleiste erstellt.
+//Title: Wie der Button heißen soll
+//path: Damit wird der Pfand initialisieren
+//icon: Hier werden Icons aus Material-UI angewendet
+//className: Diese werden für die CSS-Datei benötigt für die Gestaltung
+
 export const SideBarData = [
     {
         title: 'MyProfile',

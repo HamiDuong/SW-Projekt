@@ -1,3 +1,8 @@
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
+/* Hier wird alle für das Style definiert */
+
 .navbar{
     background-color: #060b26;
     height: 80px;
@@ -56,6 +61,7 @@
 
 .nav-menu-items {
     width: 100%;
+    list-style: none;
 }
 
 .nav-toggle {

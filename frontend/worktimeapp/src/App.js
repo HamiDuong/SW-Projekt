@@ -1,6 +1,4 @@
 import React from 'react';
-import Navigation from './Components/Navigator';
-//import Calendar from './Components/Calendar';
 import MyBookings from './Components/Pages/MyBookings';
 import { ThemeProvider} from  '@mui/material/styles';
 import Theme from './Theme';
@@ -24,6 +22,7 @@ class App extends React.Component {
         {/* <MyBookings></MyBookings> */}
         {/* <Navigation/> */}
       <Router>
+        {/* Der Router wird in diesem Abschnitt ausgeführt. */}
         <NavBar/>
         <Routes>
           <Route path='/myprofile' exact element={<MyProfile/>}/>
