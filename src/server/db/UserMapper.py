@@ -7,7 +7,7 @@ class UserMapper(Mapper):
 
     def insert(self, event):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM app.event ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM users ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
@@ -18,7 +18,7 @@ class UserMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 event.set_id(1)
 
-        command = "INSERT INTO app.event (id, first_name, last_name, mail_adresse, user_name) VALUES (%s, %s, %s, %s, %s)"
+        command = "INSERT INTO users (id, first_name, last_name, mail_adresse, user_name) VALUES (%s, %s, %s, %s, %s)"
         data = (
             event.get_id(),
             event.get_first_name(),
@@ -37,7 +37,7 @@ class UserMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event"
+        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -59,7 +59,7 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE id={}".format(
+        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -87,7 +87,7 @@ class UserMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE name={}".format(
+        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE name={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -110,7 +110,7 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE googleuserid={}".format(
+        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE googleuserid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -138,7 +138,7 @@ class UserMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE email={}".format(
+        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE email={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -160,9 +160,9 @@ class UserMapper(Mapper):
     def update(self, event):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE app.event " + \
+        command = "UPDATE users " + \
             "SET first_name=%s, last_name=%s, mail_adresse=%s, user_name=%s WHERE id=%s"
-        data = (event.get_first_name(), event.get_last_name, event.get_mail_adresse
+        data = (event.get_first_name(), event.get_last_name(), event.get_mail_adresse(), event.get_user_name(),
                 event.get_id())
         cursor.execute(command, data)
 
@@ -174,7 +174,7 @@ class UserMapper(Mapper):
     def delete(self, event):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM app.event WHERE id={}".format(
+        command = "DELETE FROM users WHERE id={}".format(
             event.get_id())
         cursor.execute(command)
 

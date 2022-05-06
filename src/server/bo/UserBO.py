@@ -7,7 +7,7 @@ class UserBO (bo.BusinessObject):
         super().__init__()
         self._first_name = ""  # Der Vorname des Benutzers.
         self._last_name = ""  # Der Nachname des Benutzers.
-        self._mail_adresse = ""  # Die E-Mail-Adresse des Benutzers.
+        self._mail_address = ""  # Die E-Mail-Adresse des Benutzers.
         self._user_name = ""  # Der Username des Benutzers. 
 
     def get_first_name(self):
