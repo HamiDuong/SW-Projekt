@@ -1,14 +1,25 @@
-import React, { Component } from 'react';
+
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 
-class MyProjects extends Component {
+class MyProjects   {
     constructor(props) {
-        super(props);
+        
     }
     state = {  }
     render() { 
-        return ( <h1>Hallo</h1> );
-    }
+        return (
+            <Stack spacing={2} direction="row">
+              <Button variant="text">Text</Button>
+              <Button variant="contained">Contained</Button>
+              <Button variant="outlined">Outlined</Button>
+            </Stack>
+          );
+        }
+        //return ( <h1>Hallo</h1> );//
+    
 }
  
 export default MyProjects;
