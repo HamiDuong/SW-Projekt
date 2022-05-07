@@ -12,22 +12,6 @@ class MyBookings extends Component {
         }
     }
 
-    getBookings = () => {
-        console.log("getBookings")
-    }
-
-    /*
-    componentDidMount(){
-        this.getChats();
-    }
-    */
-
-    getTypeOfBooking(){
-        var e = document.getElementById("filter");
-        var type = e.value;
-        return type
-    }
-
     state = {  }
     render(){
         const {bookings, loadingInProgress} = this.state;
@@ -49,10 +33,6 @@ class MyBookings extends Component {
                 </div>
                 <button onClick={console.log(this.getTypeOfBooking)}>Knopf</button>
                 <div>
-                    {/*
-                        bookings.map( bookings => <BookingsEntry key={bookings.getID()} bookings={bookings} googleId={this.props.googleId}/>)
-                    */}
-                    <MyBookings></MyBookings>
                 </div>
             </div>
         );
