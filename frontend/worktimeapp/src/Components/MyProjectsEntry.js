@@ -1,21 +1,25 @@
 import React from 'react'
-import CloseIcon from '@mui/icons-material/Close';
+import './MyProjectsEntry.css';
 
-function MyProjectsEntry() {
+function MyProjectsEntry({closePopup}) {
   return (
-    <div className="projectBackground">
-        <div className="projectContainer">
-            <CloseIcon/>
+    <div className="popupBackground">
+        <div className="popupContainer">
+            <div className='titleCloseBtn'>
+                <button onClick={() => closePopup(false)}>X</button>
+            </div>
             <div className='title'>
                 <h1>
                     Aktivität: 
                 </h1>
             </div>
-            <div className='body'></div>
+            <div className='body'>
+             {/* Hier kommt der Timer! */}   
+
+            </div>
             <div className='footer'>
                 <button>Start</button>
-                <button>Pause</button>
-                <buttin>Ende</buttin>
+                <button onClick={() => closePopup(false)} id='cancelBtn'>Beenden</button>
             </div>
         </div>
     </div>

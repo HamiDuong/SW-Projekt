@@ -1,6 +1,4 @@
 import React from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import TaskIcon from '@mui/icons-material/Task';
@@ -60,6 +58,12 @@ export const SideBarData = [
         title: 'EventBookings',
         path: '/eventbookings',
         icon: <AccessTimeFilledIcon/>,
+        className : 'nav-text'
+    },
+    {
+        title: 'MyProjectsTest',
+        path: '/myprojectstest',
+        icon: <PeopleIcon/>,
         className : 'nav-text'
     },
 

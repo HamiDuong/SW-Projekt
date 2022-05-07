@@ -2,39 +2,20 @@ import React, { Component,useState } from 'react';
 import MyProjectsEntry from './MyProjectsEntry';
 
 
-const {openActivity, setOpenActivity} = this.useState(false);
+function MyProjectsTest() {
 
-class MyProjectsTest extends Component {
-    
-    constructor(props) {
-        super(props);
-        
-    }
-    state = {  }
-    render() { 
-        
-        return ( 
-        <div>
-            <main>
-                <h1>
-                 Hallo!
-                </h1>
-                <br/>
-                <button
-                    className='openActivity'
-                    onClick={() => {
-                        setOpenActivity(true);
-                    }
-                    }
-                >
-                    Aktivität
+    const [openPopup, setOpenPopup ] =  useState(false)
+    return(
+        <div className="MyProjectsTest">
+            <h2>Hier klicken!</h2>
+            <button className='openPopup' onClick={() => {
+                setOpenPopup(true);
+            } }>
+                Öffnen
                 </button>
-                {openActivity && <MyProjectsEntry/>}
-            </main>
+            {openPopup && <MyProjectsEntry closePopup={setOpenPopup}/>}
         </div>
-
-        );
-    }
+    );
 }
- 
+
 export default MyProjectsTest;
