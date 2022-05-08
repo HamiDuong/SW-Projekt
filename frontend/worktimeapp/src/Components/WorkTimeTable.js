@@ -22,6 +22,7 @@ function createData(name, projects) {
                 projectName: 'Project A',
                 activity: 'Use Case erstellen',
                 date: '2020-01-02',
+                employee: 'Max Mustermann',
                 plannedTime: 3,
                 bookedTime: 1,
             },
@@ -29,6 +30,7 @@ function createData(name, projects) {
                 projectName: 'Project A',
                 activity: 'Use Case erstellen',
                 date: '2020-01-02',
+                employee: 'Max Musterfrau',
                 plannedTime: 14,
                 bookedTime: 5,
             },
@@ -73,6 +75,7 @@ function Row(props) {
                                     <TableRow>
                                         <TableCell>Activity</TableCell>
                                         <TableCell>Date</TableCell>
+                                        <TableCell>Employee</TableCell>
                                         <TableCell align="right">Planned time (h)</TableCell>
                                         <TableCell align="right">Booked Time (h)</TableCell>
                                     </TableRow>

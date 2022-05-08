@@ -108,9 +108,7 @@ class ProjectWorkTime extends React.Component {
 
 export default ProjectWorkTime; */
 
-
-
-import * as React from 'react';
+/*import * as React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -133,68 +131,73 @@ function createData(projectname, sollzeiten, istzeiten, delta, date, activity, e
         istzeiten,
         activity,
         delta,
-        detailedView: [
-            {
-                date,
-                activity,
-                employee,
-            },
-            {
-                date,
-                activity,
-                employee,
-            },
-        ],
     };
 }
+
+
 
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-
-    return (
-        <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.projectname}
-                </TableCell>
-                <TableCell align="right">{row.sollzeiten}</TableCell>
-                <TableCell align="right">{row.istzeiten}</TableCell>
-                <TableCell align="right">{row.delta}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Detailed View
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Activity</TableCell>
-                                        <TableCell>Employee</TableCell>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell >Booked Time</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
 }
+
+function Cell(props) {
+    const { cell } = props;
+    const [open, setOpen] = React.useState(false);
+
+}
+
+const cells = [
+    createData('Activity A', 7, 9),
+    createData('Activity B', 8, 9),
+    createData('Activity C', 10, 9)
+];
+
+return (
+    <React.Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableCell>
+                <IconButton
+                    aria-label="expand row"
+                    size="small"
+                    onClick={() => setOpen(!open)}
+                >
+                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+            </TableCell>
+            <TableCell component="th" scope="row">
+                {row.projectname}
+            </TableCell>
+            <TableCell align="right">{row.sollzeiten}</TableCell>
+            <TableCell align="right">{row.istzeiten}</TableCell>
+            <TableCell align="right">{row.delta}</TableCell>
+        </TableRow>
+        <TableRow>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Box sx={{ margin: 1 }}>
+                        <Typography variant="h6" gutterBottom component="div">
+                            Detailed View
+                        </Typography>
+                        <Table size="small" aria-label="purchases">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>{cells.map((cell) => (
+                                        <Cell key={cell.projectname} cell={cell} />))}
+                                    </TableCell>
+                                    <TableCell>Employee</TableCell>
+                                    <TableCell>Date</TableCell>
+                                    <TableCell >Booked Time</TableCell>
+                                </TableRow>
+                            </TableHead>
+                        </Table>
+                    </Box>
+                </Collapse>
+            </TableCell>
+        </TableRow>
+    </React.Fragment>
+);
+
 
 
 
@@ -228,4 +231,4 @@ export default function CollapsibleTable() {
             </Table>
         </TableContainer>
     );
-}
+}*/
