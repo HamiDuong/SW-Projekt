@@ -24,6 +24,7 @@ class BookingBO (bo.BusinessObject):
         self._work_time_account_id = None  # Fremdschlüsselbeziehung
         self._user_id = None  # Fremdschlüsselbeziehung
         self._type = ""  # Typ der Buchung
+        self._booking_id = None  # Fremdschlüsselbeziehung
 
     'Getter und Setter Methoden zu den Attributen der Klasse'
 
@@ -50,6 +51,14 @@ class BookingBO (bo.BusinessObject):
     def set_type(self, value):
         """Setzen des Buchungstyp."""
         self._type = value
+
+    def get_booking_id(self):
+        """Auslesen des Buchungstyp."""
+        return self._type
+
+    def set_booking_id(self, value):
+        """Setzen des Buchungstyp."""
+        self._booking_id = value
 
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 
