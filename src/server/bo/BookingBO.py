@@ -54,7 +54,7 @@ class BookingBO (bo.BusinessObject):
 
     def get_booking_id(self):
         """Auslesen des Buchungstyp."""
-        return self._type
+        return self._booking_id
 
     def set_booking_id(self, value):
         """Setzen des Buchungstyp."""
