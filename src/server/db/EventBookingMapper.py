@@ -86,7 +86,10 @@ class EventBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            eventbooking.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                eventbooking.set_id(1)
+            else:
+                eventbooking.set_id(maxid[0]+1)
 
         command = "INSERT INTO eventbookings (id, dateOfLastChange, bookingId, eventId) VALUES (%s,%s,%s,%s)"
         data = (eventbooking.get_id(), eventbooking.get_date_of_last_change(
@@ -120,6 +123,32 @@ class EventBookingMapper (Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+    def find_by_key(self, key):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "id, dateOfLastChange, bookingId, eventId from eventbookings WHERE id={}".format(
+            key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, bookingId, eventId) = tuples[0]
+            eventbooking = EventBookingBO()
+            eventbooking.set_id(id)
+            eventbooking.set_date_of_last_change(dateOfLastChange)
+            eventbooking.set_booking_id(bookingId)
+            eventbooking.set_event_id(eventId)
+            result = eventbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
 
 if (__name__ == "__main__"):

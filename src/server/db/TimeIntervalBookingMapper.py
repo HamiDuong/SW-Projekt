@@ -1,5 +1,6 @@
 from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
 from server.db.Mapper import Mapper
+from datetime import datetime
 
 
 class TimeIntervalBookingMapper (Mapper):
@@ -84,9 +85,14 @@ class TimeIntervalBookingMapper (Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM timeintervalbookings")
         tuples = cursor.fetchall()
+        timestamp = datetime.today()
+        timeintervalbooking.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            timeintervalbooking.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                timeintervalbooking.set_id(1)
+            else:
+                timeintervalbooking.set_id(maxid[0]+1)
 
         command = "INSERT INTO timeintervalbookings (id, dateOfLastChange, bookingId, timeintervalId) VALUES (%s,%s,%s,%s)"
         data = (timeintervalbooking.get_id(), timeintervalbooking.get_date_of_last_change(
@@ -121,6 +127,32 @@ class TimeIntervalBookingMapper (Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+    def find_by_key(self, key):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "id, dateOfLastChange, bookingId, timeintervalId from timeintervalbookings WHERE id={}".format(
+            key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, bookingId, timeintervalId) = tuples[0]
+            timeintervalbooking = TimeIntervalBookingBO()
+            timeintervalbooking.set_id(id)
+            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
+            timeintervalbooking.set_booking_id(bookingId)
+            timeintervalbooking.set_timeinterval_id(timeintervalId)
+            result = timeintervalbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
 
 if (__name__ == "__main__"):
