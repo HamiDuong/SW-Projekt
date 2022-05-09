@@ -4,6 +4,8 @@ import './MyProjectsEntry.css';
 function MyProjectsEntry({closePopup}) {
     const [time, setTime] = React.useState(0);
     const [timerOn, setTimerOn] = React.useState(false);
+    // const [break, setBreak] = React.useState(0);
+    // const [breakOn, setBreakOn] = React.useState(false);
 
     React.useEffect(() => {
         let interval = null;
@@ -15,7 +17,15 @@ function MyProjectsEntry({closePopup}) {
         } else if (!timerOn) {
           clearInterval(interval);
         }
-    
+        
+        // if (breakOn) {
+        //   interval = setInterval(() => {
+        //     setBreak((prevBreak) => prevBreak + 10);
+        //   }, 10);
+        // } else if (!breakOn) {
+        //   clearInterval(interval);
+        // }
+       
         return () => clearInterval(interval);
       }, [timerOn]);
 
@@ -42,17 +52,36 @@ function MyProjectsEntry({closePopup}) {
 
             </div>
             <div className='footer'>
-                {!timerOn && time === 0 && (
+                {/* Start Button: */}
+                {/* {!timerOn && time === 0 && ( */}
                 <button onClick={() => setTimerOn(true)}>Start</button>
-                )}
-                {timerOn && <button onClick={() => setTimerOn(false)}>Ende</button>}
+                
+
+                {/* Pause Button:
+                  Dazu gehört Start Pause und Ende Pause */}
+                {/* {timerOn && 
+                  <button onClick={() => setTimerOn(false)}>Start Pause</button>}
+                 
                 {!timerOn && time > 0 && (
+                <button onClick={() => setTimerOn(true)}>Ende Pause</button>
+                )} */}
+
+                
+                  <button onClick={() => setTimerOn(false)}>Start Pause</button>
+                 
+                
+                <button onClick={() => setTimerOn(true)}>Ende Pause</button>
+                
+
+                {/* Reset Button : */}
+                {/* {!timerOn && time > 0 && (
                 <button onClick={() => setTime(0)}>Reset</button>
-                )}
-                {!timerOn && time > 0 && (
-                <button onClick={() => setTimerOn(true)}>Resume</button>
-                )}
-                <button onClick={() => closePopup(false)} id='cancelBtn'>Beenden</button>
+                )} */}
+                
+                <button onClick={() => setTimerOn(false)}>Ende</button>
+
+                <button onClick={() => closePopup(false)} id='saveBtn'>Speichern</button>
+                {/* <button onClick={() => closePopup(false)} id='cancelBtn'>Beenden</button> */}
             </div>
         </div>
     </div>
