@@ -1,5 +1,6 @@
 from server.bo.EventBookingBO import EventBookingBO
 from server.db.Mapper import Mapper
+from datetime import datetime
 
 
 class EventBookingMapper (Mapper):
@@ -84,6 +85,8 @@ class EventBookingMapper (Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM eventbookings")
         tuples = cursor.fetchall()
+        timestamp = datetime.today()
+        eventbooking.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] == None:
@@ -103,10 +106,13 @@ class EventBookingMapper (Mapper):
     def update(self, eventbooking):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
         """
+        timestamp = datetime.today()
+        eventbooking.set_date_of_last_change(timestamp)
         cursor = self._cnx.cursor()
 
-        command = "UPDATE eventbookings " + "SET dateOfLastChange=%s WHERE id=%s"
-        data = (eventbooking.get_date_of_last_change(), eventbooking.get_id())
+        command = "UPDATE eventbookings " + "SET dateOfLastChange=%s WHERE bookingId=%s"
+        data = (eventbooking.get_date_of_last_change(),
+                eventbooking.get_booking_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -117,8 +123,8 @@ class EventBookingMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM eventbookings WHERE id={}".format(
-            eventbooking.get_id())
+        command = "DELETE FROM eventbookings WHERE bookingId={}".format(
+            eventbooking.get_booking_id())
         cursor.execute(command)
 
         self._cnx.commit()

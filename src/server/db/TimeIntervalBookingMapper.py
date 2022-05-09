@@ -106,11 +106,14 @@ class TimeIntervalBookingMapper (Mapper):
     def update(self, timeintervalbooking):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
         """
+        timestamp = datetime.today()
+        timeintervalbooking.set_date_of_last_change(timestamp)
         cursor = self._cnx.cursor()
 
-        command = "UPDATE timeintervalbookings " + "SET dateOfLastChange=%s WHERE id=%s"
+        command = "UPDATE timeintervalbookings " + \
+            "SET dateOfLastChange=%s WHERE bookingId=%s"
         data = (timeintervalbooking.get_date_of_last_change(),
-                timeintervalbooking.get_id())
+                timeintervalbooking.get_booking_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -119,10 +122,11 @@ class TimeIntervalBookingMapper (Mapper):
     def delete(self, timeintervalbooking):
         """Löschen der Daten eines Booking-Objekts aus der Datenbank.
         """
+
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM timeintervalbookings WHERE id={}".format(
-            timeintervalbooking.get_id())
+        command = "DELETE FROM timeintervalbookings WHERE bookingId={}".format(
+            timeintervalbooking.get_booking_id())
         cursor.execute(command)
 
         self._cnx.commit()

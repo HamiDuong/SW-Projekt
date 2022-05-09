@@ -55,6 +55,54 @@ class BookingMapper (Mapper):
 
         return result
 
+    def find_timeinterval_bookings_by_work_time_account_id(self, workTimeAccountId):
+        """Auslesen aller Bookings eines bestimmten Zeitkontos.
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type FROM bookings WHERE workTimeAccountId={} AND type='T' ORDER BY id".format(
+            workTimeAccountId)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+            booking = BookingBO()
+            booking.set_id(id)
+            booking.set_date_of_last_change(dateOfLastChange)
+            booking.set_work_time_account_id(workTimeAccountId)
+            booking.set_user_id(userId)
+            booking.set_type(type)
+            result.append(booking)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_event_bookings_by_work_time_account_id(self, workTimeAccountId):
+        """Auslesen aller Bookings eines bestimmten Zeitkontos.
+        """
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type FROM bookings WHERE workTimeAccountId={} AND type='E' ORDER BY id".format(
+            workTimeAccountId)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+            booking = BookingBO()
+            booking.set_id(id)
+            booking.set_date_of_last_change(dateOfLastChange)
+            booking.set_work_time_account_id(workTimeAccountId)
+            booking.set_user_id(userId)
+            booking.set_type(type)
+            result.append(booking)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_type(self, type):
         """ Auslesen aller Bookings mit einem spezifischen Typ. 
         """
