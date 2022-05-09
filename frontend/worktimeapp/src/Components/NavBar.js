@@ -38,7 +38,7 @@ function NavBar () {
             </div>
             {/* Hier wird nachgefragt, ob der Sidebar aktiv ist oder nicht. 
             Wenn es stimmt (TRUE) somit ändert sich das Stil und wenn nicht (FALSE) ist es wieder ein ganz anderer Stil*/}
-            <nav className={sidebar ? 'nav-menu active' : 'nav-menu' }>
+            <nav style={{zIndex: 50}} className={sidebar ? 'nav-menu active' : 'nav-menu' }>
                 <ul className='nav-menu-items' onClick={showSidebar}  >
                     <li className='navbar-toggle'>
                         <Link to='#' className='menu-bars'>

@@ -20,8 +20,16 @@ class EventBookingBO (book.BookingBO):
 
     def __init__(self):
         super().__init__()
-
+        self._event_id = None  # Fremdschlüsselbeziehung
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
+
+    def get_event_id(self):
+        """Auslesen des Buchungstyp."""
+        return self._event_id
+
+    def set_event_id(self, value):
+        """Setzen des Buchungstyp."""
+        self._event_id = value
 
     def __str__(self):
         return "EventBooking {}: Hat die Id {}, den Typ{}, gehört zum User mit der ID {} und dem Zeitkonto mit der ID {}".format(self.get_id(), self.get_type(), self.get_user_id(), self.get_work_time_account_id())
@@ -32,5 +40,7 @@ class EventBookingBO (book.BookingBO):
         obj.set_id(dictionary["id"])
         obj.set_work_time_account_id(dictionary["work_time_account_id"])
         obj.set_user_id(dictionary["user_id"])
+        obj.set_event_id(dictionary["event_id"])
         obj.set_type(dictionary["type"])
+        obj.set_booking_id(dictionary["booking_id"])
         return obj
