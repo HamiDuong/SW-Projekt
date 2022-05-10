@@ -53,24 +53,25 @@ function MyProjectsEntry({closePopup}) {
             </div>
             <div className='footer'>
                 {/* Start Button: */}
-                {/* {!timerOn && time === 0 && ( */}
-                <button onClick={() => setTimerOn(true)}>Start</button>
-                
+                 {!timerOn && time === 0 && ( 
+                <button onClick={() => setTimerOn(true)}>Arbeit starten</button>
+                )}
 
                 {/* Pause Button:
                   Dazu gehört Start Pause und Ende Pause */}
-                {/* {timerOn && 
+                {timerOn && 
                   <button onClick={() => setTimerOn(false)}>Start Pause</button>}
                  
                 {!timerOn && time > 0 && (
                 <button onClick={() => setTimerOn(true)}>Ende Pause</button>
-                )} */}
+                )}
 
                 
-                  <button onClick={() => setTimerOn(false)}>Start Pause</button>
+                  
+                {/* <button onClick={() => setTimerOn(false)}>Pause einlegen</button>
                  
                 
-                <button onClick={() => setTimerOn(true)}>Ende Pause</button>
+                <button onClick={() => setTimerOn(true)}>Ende Pause</button> */}
                 
 
                 {/* Reset Button : */}
@@ -80,8 +81,8 @@ function MyProjectsEntry({closePopup}) {
                 
                 <button onClick={() => setTimerOn(false)}>Ende</button>
 
-                <button onClick={() => closePopup(false)} id='saveBtn'>Speichern</button>
-                {/* <button onClick={() => closePopup(false)} id='cancelBtn'>Beenden</button> */}
+                {/* <button onClick={() => closePopup(false)} id='saveBtn'>Speichern</button> */}
+                <button onClick={() => closePopup(false)} id='cancelBtn'>Abbrechen</button>
             </div>
         </div>
     </div>
