@@ -18,12 +18,12 @@ class UserMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 event.set_id(1)
 
-        command = "INSERT INTO users (id, first_name, last_name, mail_adresse, user_name) VALUES (%s, %s, %s, %s, %s)"
+        command = "INSERT INTO users (id, first_name, last_name, mail_adress, user_name) VALUES (%s, %s, %s, %s, %s)"
         data = (
             event.get_id(),
             event.get_first_name(),
             event.get_last_name(),
-            event.get_mail_adresse(),
+            event.get_mail_adress(),
             event.get_user_name
             )
 
@@ -37,16 +37,16 @@ class UserMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users"
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
+        for (id, first_name, last_name, mail_adress, user_name) in tuples:
             event = UserBO()
             event.set_id(id)
             event.set_first_name(first_name)
             event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
+            event.set_mail_adress(mail_adress)
             event.set_user_name(user_name)
             result.append(event)
 
@@ -59,18 +59,18 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE id={}".format(
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, last_name, mail_adresse, user_name) = tuples[0]
+            (id, first_name, last_name, mail_adress, user_name) = tuples[0]
             event = UserBO()
             event.set_id(id)
             event.set_first_name(first_name)
             event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
+            event.set_mail_adress(mail_adress)
             event.set_user_name(user_name)
             result = event
         except IndexError:
@@ -87,17 +87,17 @@ class UserMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE name={}".format(
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE name={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
+        for (id, first_name, last_name, mail_adress, user_name) in tuples:
             event = UserBO()
             event.set_id(id)
             event.set_first_name(first_name)
             event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
+            event.set_mail_adress(mail_adress)
             event.set_user_name(user_name)
             result.append(event)
 
@@ -110,18 +110,18 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE googleuserid={}".format(
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE googleuserid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, last_name, mail_adresse, user_name) = tuples[0]
+            (id, first_name, last_name, mail_adress, user_name) = tuples[0]
             event = UserBO()
             event.set_id(id)
             event.set_first_name(first_name)
             event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
+            event.set_mail_adress(mail_adress)
             event.set_user_name(user_name)
             result = event
         except IndexError:
@@ -138,17 +138,17 @@ class UserMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM users WHERE email={}".format(
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE email={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
+        for (id, first_name, last_name, mail_adress, user_name) in tuples:
             event = UserBO()
             event.set_id(id)
             event.set_first_name(first_name)
             event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
+            event.set_mail_adress(mail_adress)
             event.set_user_name(user_name)
             result.append(event)
 
@@ -161,8 +161,8 @@ class UserMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE users " + \
-            "SET first_name=%s, last_name=%s, mail_adresse=%s, user_name=%s WHERE id=%s"
-        data = (event.get_first_name(), event.get_last_name(), event.get_mail_adresse(), event.get_user_name(),
+            "SET first_name=%s, last_name=%s, mail_adress=%s, user_name=%s WHERE id=%s"
+        data = (event.get_first_name(), event.get_last_name(), event.get_mail_adress(), event.get_user_name(),
                 event.get_id())
         cursor.execute(command, data)
 
