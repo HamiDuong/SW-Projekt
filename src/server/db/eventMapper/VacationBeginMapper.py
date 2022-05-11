@@ -1,5 +1,5 @@
 from server.db.Mapper import Mapper
-from server.bo.VacationBeginBO import VacationBeginBO
+from server.bo.eventBOs.ComingBO import ComingBO
 from datetime import datetime
 
 
@@ -23,11 +23,12 @@ class VacationBeginMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 vacationbegin.set_id(1)
 
-        command = "INSERT INTO worktimeapp.vacationbegin (id, time, event_booking_id) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.vacationbegin (id, date_of_last_change, date, eventid) VALUES (%s, %s,%s,%s)"
         data = (
             vacationbegin.get_id(),
+            vacationbegin.get_date_of_last_change(),
             vacationbegin.get_time(),
-            vacationbegin.get_event_booking_id()
+            vacationbegin.get_event_id(),
         )
 
         cursor.execute(command, data)
@@ -40,15 +41,15 @@ class VacationBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM worktimeapp.vacationbegin"
+        command = "SELECT id, date, eventid FROM worktimeapp.vacationbegin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, time, event_booking_id) in tuples:
-            vacationbegin = VacationBeginBO()
+        for (id, date, eventid) in tuples:
+            vacationbegin = ComingBO()
             vacationbegin.set_id(id)
-            vacationbegin.set_time(time)
-            vacationbegin.set_event_booking_id(event_booking_id)
+            vacationbegin.set_time(date)
+            vacationbegin.set_event_id(eventid)
             result.append(vacationbegin)
 
         self._cnx.commit()
@@ -60,17 +61,17 @@ class VacationBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM worktimeapp.vacationbegin WHERE id={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.vacationbegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, time, event_booking_id) = tuples[0]
-            vacationbegin = VacationBeginBO()
+            (id, date, eventid) = tuples[0]
+            vacationbegin = ComingBO()
             vacationbegin.set_id(id)
-            vacationbegin.set_time(time)
-            vacationbegin.set_event_booking_id(event_booking_id)
+            vacationbegin.set_time(date)
+            vacationbegin.set_event_id(eventid)
             result = vacationbegin
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -82,20 +83,20 @@ class VacationBeginMapper(Mapper):
 
         return result
 
-    def find_by_time(self, key):
+    def find_by_date(self, key):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM worktimeapp.vacationbegin WHERE time={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.vacationbegin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, time, event_booking_id) in tuples:
-            vacationbegin = VacationBeginBO()
+        for (id, date, eventid) in tuples:
+            vacationbegin = ComingBO()
             vacationbegin.set_id(id)
-            vacationbegin.set_time(time)
-            vacationbegin.set_event_booking_id(event_booking_id)
+            vacationbegin.set_time(date)
+            vacationbegin.set_event_id(eventid)
             result.append(vacationbegin)
 
         self._cnx.commit()
@@ -107,17 +108,17 @@ class VacationBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, time, event_booking_id FROM worktimeapp.vacationbegin WHERE chatid={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.vacationbegin WHERE chatid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, time, event_booking_id) = tuples[0]
-            vacationbegin = VacationBeginBO()
+            (id, date, eventid) = tuples[0]
+            vacationbegin = ComingBO()
             vacationbegin.set_id(id)
-            vacationbegin.set_time(time)
-            vacationbegin.set_event_booking_id(event_booking_id)
+            vacationbegin.set_time(date)
+            vacationbegin.set_event_id(eventid)
             result = vacationbegin
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -130,13 +131,13 @@ class VacationBeginMapper(Mapper):
         return result
 
     def update(self, vacationbegin):
-        timestamp = datetime.today()
+        datestamp = datedate.today()
         cursor = self._cnx.cursor()
-        vacationbegin.set_date_of_last_change(timestamp)
+        vacationbegin.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.vacationbegin " + \
-            "SET time=%s, event_booking_id=%s WHERE id=%s"
-        data = (vacationbegin.get_time(), vacationbegin.get_event_booking_id(),
+            "SET date=%s, eventid=%s WHERE id=%s"
+        data = (vacationbegin.get_time(), vacationbegin.get_event_id(),
                 vacationbegin.get_id())
         cursor.execute(command, data)
 

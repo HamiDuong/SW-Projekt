@@ -1,11 +1,12 @@
-from bo.ComingBO import ComingBO
-from db.ComingMapper import ComingMapper
-from bo.GoingBO import GoingBO
-from db.GoingMapper import GoingMapper
-from bo.VacationBeginBO import VacationBeginBO
-from db.VacationBeginMapper import VacationBeginMapper
-from bo.VacationEndBO import VacationEndBO
-from db.VacationEndMapper import VacationEndMapper
+from xmlrpc.client import DateTime
+from bo.eventBOs.ComingBO import ComingBO
+from db.eventMapper.ComingMapper import ComingMapper
+from bo.eventBOs.GoingBO import GoingBO
+from db.eventMapper.GoingMapper import GoingMapper
+from bo.eventBOs.VacationBeginBO import VacationBeginBO
+from db.eventMapper.VacationBeginMapper import VacationBeginMapper
+from bo.eventBOs.VacationEndBO import VacationEndBO
+from db.eventMapper.VacationEndMapper import VacationEndMapper
 from bo.BookingBO import BookingBO
 from db.BookingMapper import BookingMapper
 from bo.EventBookingBO import EventBookingBO
@@ -19,15 +20,15 @@ from bo.ProjectDurationBO import ProjectDurationBO'''
 from datetime import datetime
 
 
-class Businesslogic (object):
+class Businesslogic():
 
     def __init__(self):
         pass
 
-    def create_coming(self, time, event_booking_id):
+    def create_coming(self, time, event_id):
         coming = ComingBO()
         coming.set_time(time)
-        coming.set_event_booking_id(event_booking_id)
+        coming.set_event_id(event_id)
         with ComingMapper() as mapper:
             return mapper.insert(coming)
 
@@ -267,11 +268,6 @@ class Businesslogic (object):
     # Dateoflastchange wird in der Tabelle Bookings geändert
         with BookingMapper() as mapper:
             return mapper.update(booking)
-
-
-class Businesslogic (object):
-    def __init__(self):
-        pass
 
 
 """
