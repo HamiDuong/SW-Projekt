@@ -11,6 +11,11 @@ from bo.ProjectDurationBO import ProjectDurationBO
 #from bo.ProjectWorkBO import ProjectWorkBO
 from bo.VacationBO import VacationBO
 from datetime import datetime
+from bo.UserBO import UserBO
+from db.UserMapper import UserMapper
+from bo.WorkTimeAccountBO import WorkTimeAccountBO
+from db.WorkTimeAccountMapper import WorkTimeAccountMapper
+
 
 
 class Businesslogic (object):
@@ -119,6 +124,7 @@ class Businesslogic (object):
 """
 Break Methoden
 """
+
 
 
 def get_all_breaks(self):
@@ -277,3 +283,90 @@ def get_vacation_by_time_period(self, startdate, enddate):
 def get_vacation_by_timeinterval_booking_id(self, id):
     with VacationMapper() as mapper:
         return mapper.find_by_time_interval_booking(id)
+
+
+
+"""
+User Methoden
+"""
+
+def create_user(self, first_name, last_name, mail_adress, user_name):
+    user_obj = UserBO()
+    user_obj.set_first_name(first_name)
+    user_obj.set_last_name(last_name)
+    user_obj.set_mail_adress(mail_adress)
+    user_obj.set_user_name(user_name)
+
+
+    with UserMapper() as mapper:
+        return mapper.insert(user_obj)
+
+
+'''def get_user_by_first_name(self, first_name):
+    with UserMapper() as mapper:
+        return mapper.find_by_first_name(first_name)
+
+def get_user_by_last_name(self, last_name):
+    with UserMapper() as mapper:
+        return mapper.find_by_last_name(last_name)'''
+
+def get_user_by_mail_adress(self, mail_adress):
+    with UserMapper() as mapper:
+        return mapper.find_by_mail_adress(mail_adress)
+
+def get_user_by_user_name(self, user_name):
+    with UserMapper() as mapper:
+        return mapper.find_by_user_name(user_name)                        
+
+def get_user_by_id(self, number):
+    with UserMapper() as mapper:
+        return mapper.find_by_key(number)
+
+
+def get_all_users(self):
+    with UserMapper() as mapper:
+        return mapper.find_all()        
+
+
+def save_user(self, user_obj):
+    with UserMapper() as mapper:
+        mapper.update(user_obj)
+
+
+def delete_user(self, user_obj):
+    with UserMapper() as mapper:
+        mapper.delete(user_obj)
+
+
+
+"""
+WorkTimeAccount Methoden
+"""
+
+def create_worktimeaccount(self, user_id):
+    worktimeaccount_obj = WorkTimeAccountBO()
+    worktimeaccount_obj.set_user_id(user_id)
+    worktimeaccount_obj.set_id(1)
+
+    with WorkTimeAccountMapper() as mapper:
+        return mapper.insert(worktimeaccount_obj)
+
+
+def get_worktimeaccount_by_user_id(self, user_id):
+    with WorkTimeAccountMapper() as mapper:
+        return mapper.find_by_user_id(user_id)
+
+
+def get_all_worktimeaccounts(self):
+    with WorkTimeAccountMapper() as mapper:
+        return mapper.find_all()        
+
+
+def save_user(self, worktimeaccount_obj):
+    with WorkTimeAccountMapper() as mapper:
+        mapper.update(worktimeaccount_obj)
+
+
+def delete_user(self, worktimeaccount_obj):
+    with WorkTimeAccountMapper() as mapper:
+        mapper.delete(worktimeaccount_obj)                
