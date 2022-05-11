@@ -1,4 +1,3 @@
-from xmlrpc.client import DateTime
 from bo.eventBOs.ComingBO import ComingBO
 from db.eventMapper.ComingMapper import ComingMapper
 from bo.eventBOs.GoingBO import GoingBO
@@ -7,6 +6,10 @@ from bo.eventBOs.VacationBeginBO import VacationBeginBO
 from db.eventMapper.VacationBeginMapper import VacationBeginMapper
 from bo.eventBOs.VacationEndBO import VacationEndBO
 from db.eventMapper.VacationEndMapper import VacationEndMapper
+from bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
+from bo.eventBOs.IllnessEndBO import IllnessEndBO
+from db.eventMapper.IllnessEndMapper import IllnessEndMapper
 from bo.BookingBO import BookingBO
 from db.BookingMapper import BookingMapper
 from bo.EventBookingBO import EventBookingBO
@@ -28,6 +31,9 @@ class Businesslogic():
     def __init__(self):
         pass
 
+    '''Beginn der Event-& und Evensubklassenmethoden'''
+
+    # Erstellung eines ComingBOs, also wenn ein Mitarbeiter sich einstempelt.
     def create_coming(self, time, event_id):
         coming = ComingBO()
         coming.set_time(time)
@@ -35,22 +41,27 @@ class Businesslogic():
         with ComingMapper() as mapper:
             return mapper.insert(coming)
 
+    # Methode um ein ComingBO mit bestimmter ID aus der Datenbank zu laden
     def get_coming_by_id(self, number):
         with ComingMapper() as mapper:
             return mapper.find_by_key(number)
 
+    # Methode um alle ComingBOs aus der Datenbank zu laden
     def get_all_comings(self):
         with ComingMapper() as mapper:
             return mapper.find_all()
 
+    # Methode um ein ComingBOs zu updaten
     def save_coming(self, coming):
         with ComingMapper() as mapper:
             mapper.update(coming)
 
+    # Methode um ein ComingBO aus der Datenbank zu entfernen
     def delete_coming(self, coming):
         with ComingMapper() as mapper:
             mapper.delete(coming)
 
+    # Erstellung eines GoingBOs, also wenn ein Mitarbeiter sich ausstempelt.
     def create_going(self, time, event_booking_id):
         going = GoingBO()
         going.set_time(time)
@@ -58,22 +69,27 @@ class Businesslogic():
         with GoingMapper() as mapper:
             return mapper.insert(going)
 
+    # Methode um ein GoingBO mit bestimmter ID aus der Datenbank zu laden
     def get_going_by_id(self, number):
         with GoingMapper() as mapper:
             return mapper.find_by_key(number)
 
+    # Methode um alle GoingBOs aus der Datenbank zu laden
     def get_all_goings(self):
         with GoingMapper() as mapper:
             return mapper.find_all()
 
+    # Methode um ein GoingBO zu updaten
     def save_going(self, going):
         with GoingMapper() as mapper:
             mapper.update(going)
 
+    # Methode um ein GoingBO aus der Datenbank zu entfernen
     def delete_going(self, going):
         with GoingMapper() as mapper:
             mapper.delete(going)
 
+    # Erstellung eines VacationBeginBOs, also wenn ein Mitarbeiter seinen Urlaub antritt
     def create_vacation_begin(self, time, event_booking_id):
         vacation_begin = VacationBeginBO()
         vacation_begin.set_time(time)
@@ -81,22 +97,27 @@ class Businesslogic():
         with VacationBeginMapper() as mapper:
             return mapper.insert(vacation_begin)
 
+    # Methode um ein VacationBeginBO mit bestimmter ID aus der Datenbank zu laden
     def get_vacation_begin_by_id(self, number):
         with VacationBeginMapper() as mapper:
             return mapper.find_by_key(number)
 
+    # Methode um alle VacationBeginBOs aus der Datenbank zu laden
     def get_all_vacation_begins(self):
         with VacationBeginMapper() as mapper:
             return mapper.find_all()
 
+    # Methode um ein VacationBeginBO zu updaten
     def save_vacation_begin(self, vacation_begin):
         with VacationBeginMapper() as mapper:
             mapper.update(vacation_begin)
 
+    # Methode um ein VacationBeginBO aus der Datenbank zu entfernen
     def delete_vacation_begin(self, vacation_begin):
         with VacationBeginMapper() as mapper:
             mapper.delete(vacation_begin)
 
+    # Erstellung eines VacationEndBOs, also wenn ein Mitarbeiter aus dem Urlaub kommt
     def create_vacation_end(self, time, event_booking_id):
         vacation_end = VacationEndBO()
         vacation_end.set_time(time)
@@ -104,21 +125,81 @@ class Businesslogic():
         with VacationEndMapper() as mapper:
             return mapper.insert(vacation_end)
 
+    # Methode um ein VacationEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_vacation_end_by_id(self, number):
         with VacationEndMapper() as mapper:
             return mapper.find_by_key(number)
 
+    # Methode um alle VacationEndBOs aus der Datenbank zu laden
     def get_all_vacation_ends(self):
         with VacationEndMapper() as mapper:
             return mapper.find_all()
 
+    # Methode um ein VacationEndBO zu updaten
     def save_vacation_end(self, vacation_end):
         with VacationEndMapper() as mapper:
             mapper.update(vacation_end)
 
+    # Methode um ein VacationEndBO aus der Datenbank zu entfernen
     def delete_vacation_end(self, vacation_end):
         with VacationEndMapper() as mapper:
             mapper.delete(vacation_end)
+
+        # Erstellung eines IllnessBeginBOs, also der Beginn der Krankheit eines Mitarbeiters
+    def create_illnessBegin(self, time, event_id):
+        illnessBegin = IllnessBeginBO()
+        illnessBegin.set_time(time)
+        illnessBegin.set_event_id(event_id)
+        with IllnessBeginMapper() as mapper:
+            return mapper.insert(illnessBegin)
+
+    # Methode um ein IllnessBeginBO mit bestimmter ID aus der Datenbank zu laden
+    def get_illnessBegin_by_id(self, number):
+        with IllnessBeginMapper() as mapper:
+            return mapper.find_by_key(number)
+
+    # Methode um alle IllnessBeginBOs aus der Datenbank zu laden
+    def get_all_illnessBegins(self):
+        with IllnessBeginMapper() as mapper:
+            return mapper.find_all()
+
+    # Methode um ein IllnessBeginBO zu updaten
+    def save_illnessBegin(self, illnessBegin):
+        with IllnessBeginMapper() as mapper:
+            mapper.update(illnessBegin)
+
+    # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
+    def delete_illnessBegin(self, illnessBegin):
+        with IllnessBeginMapper() as mapper:
+            mapper.delete(illnessBegin)
+
+    # Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
+    def create_illnessEnd(self, time, event_id):
+        illnessEnd = IllnessEndBO()
+        illnessEnd.set_time(time)
+        illnessEnd.set_event_id(event_id)
+        with IllnessEndMapper() as mapper:
+            return mapper.insert(illnessEnd)
+
+    # Methode um ein IllnessEndBO mit bestimmter ID aus der Datenbank zu laden
+    def get_illnessEnd_by_id(self, number):
+        with IllnessEndMapper() as mapper:
+            return mapper.find_by_key(number)
+
+    # Methode um alle IllnessEndBOs aus der Datenbank zu laden
+    def get_all_illnessEnds(self):
+        with IllnessEndMapper() as mapper:
+            return mapper.find_all()
+
+    # Methode um ein IllnessEndBO zu updaten
+    def save_illnessEnd(self, illnessEnd):
+        with IllnessEndMapper() as mapper:
+            mapper.update(illnessEnd)
+
+    # Methode um ein IllnessEndBO aus der Datenbank zu entfernen
+    def delete_illnessEnd(self, illnessEnd):
+        with IllnessEndMapper() as mapper:
+            mapper.delete(illnessEnd)
 
     """
     Booking Methoden
