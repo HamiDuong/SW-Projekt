@@ -56,30 +56,21 @@ function MyProjectsEntry({closePopup}) {
                  {!timerOn && time === 0 && ( 
                 <button onClick={() => setTimerOn(true)}>Arbeit starten</button>
                 )}
+                
 
+                {/* Ende Button */}
+                {timerOn > 0 &&
+                <button onClick={() => closePopup(false)}>Arbeit beenden</button>
+                }
+                
                 {/* Pause Button:
                   Dazu gehört Start Pause und Ende Pause */}
                 {timerOn && 
-                  <button onClick={() => setTimerOn(false)}>Start Pause</button>}
+                  <button onClick={() => setTimerOn(false)}>Pause starten</button>}
                  
                 {!timerOn && time > 0 && (
-                <button onClick={() => setTimerOn(true)}>Ende Pause</button>
+                <button onClick={() => setTimerOn(true)}>Pause beenden</button>
                 )}
-
-                
-                  
-                {/* <button onClick={() => setTimerOn(false)}>Pause einlegen</button>
-                 
-                
-                <button onClick={() => setTimerOn(true)}>Ende Pause</button> */}
-                
-
-                {/* Reset Button : */}
-                {/* {!timerOn && time > 0 && (
-                <button onClick={() => setTime(0)}>Reset</button>
-                )} */}
-                
-                <button onClick={() => setTimerOn(false)}>Ende</button>
 
                 {/* <button onClick={() => closePopup(false)} id='saveBtn'>Speichern</button> */}
                 <button onClick={() => closePopup(false)} id='cancelBtn'>Abbrechen</button>
