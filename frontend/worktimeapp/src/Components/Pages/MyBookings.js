@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from '@mui/material';
-import MyBookingsEntry from '../MyBookingsEntry';
+import MyBookingsEntry from '../MyBookingsEntry'
 
-class MyBookings extends Component{
+class MyBookings extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -12,26 +12,12 @@ class MyBookings extends Component{
         }
     }
 
-    getBookings = () => {
-        let data = this.props.googleId;
-    }
-
+    state = {  }
     render(){
+        const {bookings, loadingInProgress} = this.state;
         return(
             <div>
-                <div>
-                    <FormControl>
-                        <FormControlLabel>Welche Buchungen anzeigen</FormControlLabel>
-                        <RadioGroup
-                            row
-                            name="booking-selection"
-                        >
-                            <FormControlLabel value="all" control={<Radio />} label="Alle anzeigen" />
-                            <FormControlLabel value="interval" control={<Radio />} label="Nur Intervallbuchungen" />
-                            <FormControlLabel value="event" control={<Radio />} label="Nur Eventbuchungen" />
-                        </RadioGroup>  
-                    </FormControl>
-                </div>
+                <p>Hier steht etwas</p>
                 <div>
                     <input></input>
                     <input type="text" id="startdatum"/>
@@ -45,7 +31,12 @@ class MyBookings extends Component{
                         <option value="project work">Projektarbeit</option>
                     </select>
                 </div>
+                <button onClick={console.log(this.getTypeOfBooking)}>Knopf</button>
+                <div>
+                </div>
             </div>
         );
     }
 }
+ 
+export default MyBookings;

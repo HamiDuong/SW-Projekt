@@ -1,3 +1,4 @@
+
 """
 A. Allgemeine Hinweise zu diesem Module:
 
@@ -330,6 +331,221 @@ class WorktimeaccountRelatedAccountOperations(Resource):
         adm = Businesslogic()
         cust = adm.get_user_by_user_name(user_id)
         return cust                
+
+
+
+@worktimeapp.route('/projects')
+@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class UserListOperations(Resource):
+    @worktimeapping.marshal_list_with(user)
+    #@secured
+    def get(self):
+        """Auslesen aller User-Objekte.
+
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        users = adm.get_all_users()
+        return users
+
+    @worktimeapping.marshal_with(user, code=200)
+    @worktimeapping.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
+    #@secured
+    def post(self):
+        """Anlegen eines neuen User-Objekts.
+
+        **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
+        So ist zum Beispiel die Vergabe der ID nicht Aufgabe des Clients.
+        Selbst wenn der Client eine ID in dem Proposal vergeben sollte, so
+        liegt es an der Businesslogic (Businesslogik), eine korrekte ID
+        zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
+        """
+        adm = businesslogic()
+
+        proposal = User.from_dict(api.payload)
+
+        """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
+        if proposal is not None:
+            """ Wir verwenden lediglich Vor- und Nachnamen des Proposals für die Erzeugung
+            eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
+            wird auch dem Client zurückgegeben. 
+            """
+            c = adm.create_user(proposal.get_first_name(), proposal.get_last_name())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+
+@worktimeapping.route('/users/<int:id>')
+@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapping.param('id', 'Die ID des User-Objekts')
+class UserOperations(Resource):
+    @worktimeapping.marshal_with(user)
+    #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten User-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_user_by_id(id)
+        return cust
+
+    #@secured
+    def delete(self, id):
+        """Löschen eines bestimmten User-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_user_by_id(id)
+        adm.delete_user(cust)
+        return '', 200
+
+    @worktimeapping.marshal_with(user)
+    @worktimeapping.expect(user, validate=True)
+    #@secured
+    def put(self, id):
+        """Update eines bestimmten User-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        User-Objekts.
+        """
+        adm = Businesslogic()
+        c = User.from_dict(api.payload)
+
+        if c is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            c.set_id(id)
+            adm.save_user(c)
+            return '', 200
+        else:
+            return '', 500
+
+@worktimeapping.route('/users-by-name/<string:lastname>')
+@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapping.param('lastname', 'Der Nachname des Kunden')
+class UsersByNameOperations(Resource):
+    @worktimeapping.marshal_with(user)
+    #@secured
+    def get(self, lastname):
+        """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
+
+        Die auszulesenden Objekte werden durch ```lastname``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_user_by_name(lastname)
+        return cust
+
+
+
+
+
+@worktimeapping.route('/users/<int:id>/accounts')
+@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapping.param('id', 'Die ID des User-Objekts')
+class UserRelatedAccountOperations(Resource):
+    @worktimeapping.marshal_with(account)
+    #@secured
+    def get(self, id):
+        """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
+
+        Das User-Objekt dessen Accounts wir lesen möchten, wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        # Zunächst benötigen wir den durch id gegebenen User.
+        cust = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein User-Objekt bekommen?
+        if cust is not None:
+            # Jetzt erst lesen wir die Konten des User aus.
+            account_list = adm.get_accounts_of_user(cust)
+            return account_list
+        else:
+            return "User not found", 500
+
+    @worktimeapping.marshal_with(account, code=201)
+    #@secured
+    def post(self, id):
+        """Anlegen eines Kontos für einen gegebenen User.
+
+        Das neu angelegte Konto wird als Ergebnis zurückgegeben.
+
+        **Hinweis:** Unter der id muss ein User existieren, andernfalls wird Status Code 500 ausgegeben."""
+        adm = Businesslogic()
+        """Stelle fest, ob es unter der id einen User gibt. 
+        Dies ist aus Gründen der referentiellen Integrität sinnvoll!
+        """
+        cust = adm.get_user_by_id(id)
+
+        if cust is not None:
+            # Jetzt erst macht es Sinn, für den User ein neues Konto anzulegen und dieses zurückzugeben.
+            result = adm.create_account_for_user(cust)
+            return result
+        else:
+            return "User unknown", 500
+
+#BeispielFunktion für Bedingungen
+
+@worktimeapping.route('/transactions/<int:id>')
+@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapping.param('id', 'Die ID des Transaction-Objekts.')
+class TransactionOperations(Resource):
+    @worktimeapping.marshal_with(transaction)
+    #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Transaction-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        trans = adm.get_transaction_by_id(id)
+
+        if trans is not None:
+            return trans
+        else:
+            return '', 500  # Wenn es keine Transaktion unter id gibt.
+
+    #@secured
+    def delete(self, id):
+        """Löschen eines bestimmten Transaction-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        trans = adm.get_transaction_by_id(id)
+
+        if trans is not None:
+            adm.delete_transaction(trans)
+            return '', 200
+        else:
+            return '', 500  # Wenn unter id keine Transaction existiert.
+
+    @worktimeapping.marshal_with(transaction)
+    #@secured
+    def put(self, id):
+        """Update eines bestimmten Transaction-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        User-Objekts.
+        """
+        adm = Businesslogic()
+        t = Transaction.from_dict(api.payload)
+
+        if t is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Transaction-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            t.set_id(id)
+            adm.save_transaction(t)
+            return '', 200
+        else:
+            return '', 500
+
 
 
 

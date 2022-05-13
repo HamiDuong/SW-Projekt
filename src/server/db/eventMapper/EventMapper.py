@@ -1,6 +1,6 @@
 from server.db.Mapper import Mapper
-from server.bo.EventBO import EventBO
-from datetime import datetime
+from server.bo.eventBOs.EventBO import EventBO
+from datedate import datedate
 
 
 class EventMapper(Mapper):
@@ -11,10 +11,10 @@ class EventMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.event ")
         tuples = cursor.fetchall()
-        timestamp = datetime.today()
+        datestamp = datedate.today()
         '''Wann immer ein neues Objekt in die Datenbank überführt wird, wird ein Zeitstempel erstellt
             und in die Spalte date_of_last_change eingefügt.'''
-        event.set_date_of_last_change(timestamp)
+        event.set_date_of_last_change(datestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
@@ -25,11 +25,11 @@ class EventMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 event.set_id(1)
 
-        command = "INSERT INTO worktimeapp.event (id, dateoflastchange, time) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.event (id, dateoflastchange, date) VALUES (%s, %s,%s)"
         data = (
             event.get_id(),
             event.get_date_of_last_change(),
-            event.get_time()
+            event.get_date()
         )
 
         cursor.execute(command, data)
@@ -42,15 +42,15 @@ class EventMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, time FROM worktimeapp.event"
+        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastange, time) in tuples:
+        for (id, dateoflastange, date) in tuples:
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastange)
-            event.set_time(time)
+            event.set_date(date)
             result.append(event)
 
         self._cnx.commit()
@@ -62,17 +62,17 @@ class EventMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, time FROM worktimeapp.event WHERE id={}".format(
+        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, time) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastchange)
-            event.set_time(time)
+            event.set_date(date)
             result = event
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -84,20 +84,20 @@ class EventMapper(Mapper):
 
         return result
 
-    def find_by_time(self, key):
+    def find_by_date(self, key):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, time FROM worktimeapp.event WHERE time={}".format(
+        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, time) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastchange)
-            event.set_time(time)
+            event.set_date(date)
             result.append(event)
 
         self._cnx.commit()
@@ -107,14 +107,14 @@ class EventMapper(Mapper):
 
     def update(self, event):
         cursor = self._cnx.cursor()
-        timestamp = datetime.today()
+        datestamp = datedate.today()
         '''Wann immer ein vorhandenes Objekt in der Datenbank geändert wird, wird ein Zeitstempel erstellt
            und in die Spalte date_of_last_change eingefügt.'''
-        event.set_date_of_last_change(timestamp)
+        event.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.event " + \
-            "SET time=%s WHERE id=%s"
-        data = (event.get_date_of_last_change, event.get_time,
+            "SET date=%s WHERE id=%s"
+        data = (event.get_date_of_last_change, event.get_date,
                 event.get_id())
         cursor.execute(command, data)
 
