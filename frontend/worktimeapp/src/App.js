@@ -11,6 +11,7 @@ import MyWorkTime from './Components/MyWorkTime';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
 import Bookings from './Components/Bookings';
+import MyProjects from './Components/MyProjects';
 
 
 class App extends React.Component {
@@ -30,7 +31,7 @@ class App extends React.Component {
           <Route path='/eventbookings' exact element={<EventBookings/>}/>
           <Route path='/createproject' exact element={<CreateProject/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime/>}/>
-          
+          <Route path='/myprojects' exact element={<MyProjects/>}/>
         </Routes>
       </Router>
      </div>         

@@ -110,7 +110,7 @@ class ProjectMapper(Mapper):
     param: id (int) - UserId vom gesuchtem ProjectBO
     return: ProjectBO mit user_id = id
     """
-    def find_admin_by_user_id(self, id):
+    def find_projects_by_user_id(self, id):
         result = None
         cursor = self._cnx.cursor()
         command = "SELECT * FROM projects WHERE user_id={}".format(id)

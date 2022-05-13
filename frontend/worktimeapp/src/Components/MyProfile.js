@@ -5,7 +5,7 @@ class MyProfile extends Component {
     }
     state = {  }
     render() { 
-        return (<h1>Hallo</h1>  );
+        return ( <h1>Hallo</h1> );
     }
 }
  

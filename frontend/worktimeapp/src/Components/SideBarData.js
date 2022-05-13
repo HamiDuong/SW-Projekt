@@ -8,6 +8,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import WorkIcon from '@mui/icons-material/Work';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
@@ -55,6 +56,11 @@ export const SideBarData = [
         icon: <AccessTimeFilledIcon/>,
         className : 'nav-text'
     },
-
+    {
+        title: 'MyProjects',
+        path: '/myprojects',
+        icon: <AssignmentIcon/>,
+        className: 'nav-text'
+    }
     
 ]
