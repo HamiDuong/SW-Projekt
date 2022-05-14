@@ -32,7 +32,7 @@ export const SideBarData = [
     {
         title: 'MyProjects',
         path: '/myprojects',
-        icon: <PeopleIcon/>,
+        icon: <AssignmentIcon/>,
         className : 'nav-text'
     },
     {
@@ -61,8 +61,8 @@ export const SideBarData = [
         className : 'nav-text'
     },
     {
-        title: 'MyProjects',
-        path: '/myprojects',
+        title: 'MyProjectsTEST',
+        path: '/myprojectstest',
         icon: <AssignmentIcon/>,
         className: 'nav-text'
     }

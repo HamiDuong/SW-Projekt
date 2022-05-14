@@ -1,30 +1,30 @@
 import React from 'react'
 import './MyProjectsEntry.css';
 
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
+
 function MyProjectsEntry({closePopup}) {
+    
+  //Hier werden die Konstanten gesetzt, setTime fängt immer mit Null an. 
+  //Es wird false eingesetzt, da false ein default Value ist
     const [time, setTime] = React.useState(0);
     const [timerOn, setTimerOn] = React.useState(false);
-    // const [break, setBreak] = React.useState(0);
-    // const [breakOn, setBreakOn] = React.useState(false);
 
     React.useEffect(() => {
+        //Der Grund für Null ist, da es der geleiche Hook ist
         let interval = null;
-    
+        //setInterval ist JavaSkript Methode (Arrow Funktion)
         if (timerOn) {
           interval = setInterval(() => {
+            // Hier wird initalisiert in 10 Millisekunden, 
+            // Zunahme von Zeit wird hier bestimmt
             setTime((prevTime) => prevTime + 10);
           }, 10);
         } else if (!timerOn) {
           clearInterval(interval);
         }
-        
-        // if (breakOn) {
-        //   interval = setInterval(() => {
-        //     setBreak((prevBreak) => prevBreak + 10);
-        //   }, 10);
-        // } else if (!breakOn) {
-        //   clearInterval(interval);
-        // }
        
         return () => clearInterval(interval);
       }, [timerOn]);
@@ -46,8 +46,11 @@ function MyProjectsEntry({closePopup}) {
             </div>
             <div className='body'>
              {/* Hier kommt der Timer! */}   
+             {/** Minuten */}
                 <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+              {/** Sekunden */}
                 <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+              {/** Millisekunden */}
                 <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
 
             </div>
