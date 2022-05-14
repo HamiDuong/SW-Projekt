@@ -5,7 +5,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import WorkIcon from '@mui/icons-material/Work';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
@@ -61,11 +61,10 @@ export const SideBarData = [
         className : 'nav-text'
     },
     {
-        title: 'MyProjectsTest',
-        path: '/myprojectstest',
-        icon: <PeopleIcon/>,
-        className : 'nav-text'
-    },
-
+        title: 'MyProjects',
+        path: '/myprojects',
+        icon: <AssignmentIcon/>,
+        className: 'nav-text'
+    }
     
 ]

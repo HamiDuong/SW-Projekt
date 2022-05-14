@@ -1,5 +1,5 @@
-from server.db import TimeIntervalMapper
-from server.bo import ProjectDurationBO
+from server.db.timeinterval import TimeIntervalMapper
+from server.bo.timeinterval import ProjectDurationBO
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -29,13 +29,16 @@ class ProjectDurationMapper(TimeIntervalMapper):
         cursor.execute("SELECT * from projectDurations")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalBookingId, projectId) in tuples:
+        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) in tuples:
             projectduration_obj = ProjectDurationBO()
             projectduration_obj.set_id(id)
             projectduration_obj.set_date_of_last_change(dateOfLastChange)
             projectduration_obj.set_start(start)
             projectduration_obj.set_end(end)
-            projectduration_obj.set_time_interval_booking_id(timeIntervalBookingId)
+            projectduration_obj.set_time_interval_id(timeIntervalId)
+            projectduration_obj.set_start_event(startEvent)
+            projectduration_obj.set_end_event(endEvent)
+            projectduration_obj.set_type(type)
             projectduration_obj.set_project_id(projectId)
             result.append(projectduration_obj)
 
@@ -50,18 +53,21 @@ class ProjectDurationMapper(TimeIntervalMapper):
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId, projectId FROM projectDurations WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, projectId FROM projectDurations WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalBookingId, projectId) = tuples[0]
+            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) = tuples[0]
             projectduration_obj = ProjectDurationBO()
             projectduration_obj.set_id(id)
             projectduration_obj.set_date_of_last_change(dateOfLastChange)
             projectduration_obj.set_start(start)
             projectduration_obj.set_end(end)
-            projectduration_obj.set_timeinterval_booking_id(timeIntervalBookingId)
+            projectduration_obj.set_time_interval_id(timeIntervalId)
+            projectduration_obj.set_start_event(startEvent)
+            projectduration_obj.set_end_event(endEvent)
+            projectduration_obj.set_type(type)
             projectduration_obj.set_project_id(projectId)
             result = projectduration_obj
 
@@ -83,8 +89,8 @@ class ProjectDurationMapper(TimeIntervalMapper):
         for (maxid) in tuples:
             projectduration_obj.set_id(maxid[0]+1)
 
-        command = "INSET INTO projectDurations (id, dateOfLastChange, start, end, timeIntervalBookingId, projectId) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (projectduration_obj.get_id(), projectduration_obj.get_date_of_last_change(), projectduration_obj.get_start(), projectduration_obj. get_end(), projectduration_obj.get_timeinterval_booking_id(), projectduration_obj.get_project_id())
+        command = "INSET INTO projectDurations (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        data = (projectduration_obj.get_id(), projectduration_obj.get_date_of_last_change(), projectduration_obj.get_start(), projectduration_obj.get_end(), projectduration_obj.get_timeinterval_id(), projectduration_obj.get_start_event() ,projectduration_obj.get_project_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -179,10 +185,10 @@ class ProjectDurationMapper(TimeIntervalMapper):
     param: bookingId - Fremdschlüssel von BookingBO
     return: result - ProjectDurationBO
     """
-    def find_by_time_intervall_booking_id(self, bookingId):
+    def find_by_time_intervall_id(self, timeintervalId):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId, projectId FROM projectDurations WHERE timeIntervalBookingId={}".format(bookingId)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, projectId FROM projectDurations WHERE timeIntervalId={}".format(timeintervalId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 

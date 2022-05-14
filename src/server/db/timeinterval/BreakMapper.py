@@ -1,5 +1,6 @@
-from server.db import TimeIntervalMapper
-from server.bo import BreakBO
+from server.db.timeinterval import TimeIntervalMapper
+from server.bo.timeinterval.BreakBO import BreakBO
+from datetime import datetime
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -10,7 +11,10 @@ id (PK)                     eindeutige Identifikationsnummer
 dateOfLastChange            Zeitpunkt der letzten Änderung
 start                       Startzeitpunkt der Pause
 end                         Endzeitpunkt der Pause
-timeintervalBookingId (FK)  Zuordnung zu TimeIntervalBooking   
+timeIntervalId (FK)         Zuordnung zu TimeInterval     
+startEvent (FK)             Zuordnung zu BreakBegin
+endEvent (FK)               Zuordnung zu BreakEnd
+type                        Art des Intervalls
 """
 class BreakMapper(TimeIntervalMapper):
 
@@ -24,16 +28,19 @@ class BreakMapper(TimeIntervalMapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from breaks")
+        cursor.execute("SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.breaks")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalBookingId) in tuples:
+        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
             breakobj = BreakBO()
             breakobj.set_id(id)
             breakobj.set_date_of_last_change(dateOfLastChange)
             breakobj.set_start(start)
             breakobj.set_end(end)
-            breakobj.set_time_interval_booking_id(timeIntervalBookingId)
+            breakobj.set_time_interval_id(timeIntervalId)
+            breakobj.set_start_event(startEvent)
+            breakobj.set_end_event(endEvent)
+            breakobj.set_type(type)
             result.append(breakobj)
 
         self._cnx.commit()
@@ -47,18 +54,21 @@ class BreakMapper(TimeIntervalMapper):
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM breaks WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.breaks WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalBookingId) = tuples[0]
+            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
             breakobj = BreakBO()
             breakobj.set_id(id)
             breakobj.set_date_of_last_change(dateOfLastChange)
             breakobj.set_start(start)
             breakobj.set_end(end)
-            breakobj.set_timeinterval_booking_id(timeIntervalBookingId)
+            breakobj.set_time_interval_id(timeIntervalId)
+            breakobj.set_start_event(startEvent)
+            breakobj.set_end_event(endEvent)
+            breakobj.set_type(type)
             result = breakobj
 
         self._cnx.commit()
@@ -68,36 +78,42 @@ class BreakMapper(TimeIntervalMapper):
 
     """
     Fügt ein BreakBO in die Datenbank ein
-    param: break_obj (BreakBO) - BreakBO welches eingefügt werden soll
-    return: break_obj
+    param: breakobj (BreakBO) - BreakBO welches eingefügt werden soll
+    return: breakobj
     """
-    def insert (self, break_obj):
+    def insert (self, breakobj):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM breaks")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.breaks")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            break_obj.set_id(maxid[0]+1)
+        timestamp = datetime.today()
+        breakobj.set_date_of_last_change(timestamp)
 
-        command = "INSET INTO breaks (id, dateOfLastChange, start, end, timeIntervalBookingId) VALUES (%s, %s, %s, %s, %s)"
-        data = (break_obj.get_id(), break_obj.get_date_of_last_change(), break_obj.get_start(), break_obj. get_end(), break_obj.get_timeinterval_booking_id())
+        for (maxid) in tuples:
+            breakobj.set_id(maxid[0]+1)
+
+        command = "INSERT INTO worktimeapp.breaks (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        data = (breakobj.get_id(), breakobj.get_date_of_last_change(), breakobj.get_start(), breakobj. get_end(), breakobj.get_timeinterval_id(), breakobj.get_start_event(), breakobj.get_end_event(), "Break")
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return break_obj
+        return breakobj
 
     """
     Ändert die Attribute eines BreakBO welches bereits in der Datenbank ist
-    param: break_obj (BreakBO) - BreakBO mit aktualisierten Daten
+    param: breakobj (BreakBO) - BreakBO mit aktualisierten Daten
     return: None 
     """
-    def update (self, break_obj):
+    def update (self, breakobj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE breaks " + "SET start=%s, end=%s WHERE id=%s"
-        data = (break_obj.get_start(), break_obj.get_end(), break_obj.get_id())
+        timestamp = datetime.today()
+        breakobj.set_date_of_last_change(timestamp)
+
+        command = "UPDATE worktimeapp.breaks " + "SET start=%s, end=%s WHERE id=%s"
+        data = (breakobj.get_start(), breakobj.get_end(), breakobj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -105,42 +121,43 @@ class BreakMapper(TimeIntervalMapper):
 
     """
     Löscht ein BreakBO aus der Datenbank
-    param: break_obj (BreakBO) - BreakBO welches aus der Datenbank gelöscht werden soll
+    param: breakobj (BreakBO) - BreakBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-    def delete(self, break_obj):
+    def delete(self, breakobj):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM breaks WHERE id={}".format(break_obj.get_id())
+        command = "DELETE FROM worktimeapp.breaks WHERE id={}".format(breakobj.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
         cursor.close()   
 
     """
-    Gibt das BreakBO mit dem gegebenen Startdatum zurück
+    Gibt alle BreakBO mit dem gegebenen Startdatum zurück
     param: date (datetime) - Id vom gesuchtem BreakBO
-    return: BreakBO mit start = date
+    return: Liste von BreakBO mit start = date
     """
     def find_by_date(self, date):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM breaks WHERE start={}".format(date)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.breaks WHERE start={}".format(date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalBookingId) = tuples[0]
+        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
             breakobj = BreakBO()
             breakobj.set_id(id)
             breakobj.set_date_of_last_change(dateOfLastChange)
             breakobj.set_start(start)
             breakobj.set_end(end)
-            breakobj.set_timeinterval_booking_id(timeIntervalBookingId)
-            result = breakobj
+            breakobj.set_time_interval_id(timeIntervalId)
+            breakobj.set_start_event(startEvent)
+            breakobj.set_end_event(endEvent)
+            breakobj.set_type(type)
+            result.append(breakobj)
 
         self._cnx.commit()
-        cursor.close()
         return result
 
     """
@@ -152,17 +169,20 @@ class BreakMapper(TimeIntervalMapper):
     def find_by_time_period(self, start_date, end_date):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM breaks WHERE start={} AND end={}".format(start_date, end_date)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.breaks WHERE start>={} AND end<={}".format(start_date, end_date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalBookingId) in tuples:
+        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
             breakobj = BreakBO()
             breakobj.set_id(id)
             breakobj.set_date_of_last_change(dateOfLastChange)
             breakobj.set_start(start)
             breakobj.set_end(end)
-            breakobj.set_time_interval_booking_id(timeIntervalBookingId)
+            breakobj.set_time_interval_booking_id(timeIntervalId)
+            breakobj.set_start_event(startEvent)
+            breakobj.set_end_event(endEvent)
+            breakobj.set_type(type)
             result.append(breakobj)
 
         self._cnx.commit()
@@ -173,21 +193,24 @@ class BreakMapper(TimeIntervalMapper):
     param: bookingId - Fremdschlüssel von BookingBO
     return: result - BreakBO
     """
-    def find_by_time_interval_booking_id(self, bookingId):
+    def find_by_time_interval_id(self, bookingId):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalBookingId FROM breaks WHERE timeIntervallBookingId={}".format(bookingId)
+        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId startEvent, endEvent, type FROM worktimeapp.breaks WHERE timeIntervalId={}".format(bookingId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalBookingId) = tuples[0]
+            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
             breakobj = BreakBO()
             breakobj.set_id(id)
             breakobj.set_date_of_last_change(dateOfLastChange)
             breakobj.set_start(start)
             breakobj.set_end(end)
-            breakobj.set_timeinterval_booking_id(timeIntervalBookingId)
+            breakobj.set_time_interval_id(timeIntervalId)
+            breakobj.set_start_event(startEvent)
+            breakobj.set_end_event(endEvent)
+            breakobj.set_type(type)
             result = breakobj
 
         self._cnx.commit()
