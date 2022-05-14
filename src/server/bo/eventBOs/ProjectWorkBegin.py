@@ -1,10 +1,10 @@
 from server.bo.eventBOs import EventBO
 
 
-class IllnessBeginBO(EventBO.EventBO):
+class ProjectWorkBeginBO(EventBO.EventBO):
     """
-    Klasse IllnessBegin.
-    Ein IllnessBeginBO stellt das Ereignis "Krankheitsbeginn" dar bzw. wenn sich ein Mitarbeiter nicht wohl fühlt und der Krankheitsverlauf beginnt.
+    Klasse ProjectWorkEnd.
+    Ein ProjectWorkEndBO stellt das Ereignis "Beginn der Projektarbeit" dar, also wenn ein Mitarbeiter mit der Projektarbeit beginnt.
     """
 
     def __init__(self):
@@ -19,8 +19,8 @@ class IllnessBeginBO(EventBO.EventBO):
 
     @staticmethod
     def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in ein IllnessBeginBO()."""
-        obj = IllnessBeginBO()
+        """Umwandeln eines Python dict() in ein ProjectWorkBeginBO()."""
+        obj = ProjectWorkBeginBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_time(dictionary["time"])
         obj.set_event_id(dictionary["eventid"])

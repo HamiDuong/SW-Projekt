@@ -1,56 +1,56 @@
 from server.db.Mapper import Mapper
-from server.bo.eventBOs.ComingBO import ComingBO
+from server.bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
 from datetime import datetime
 
 
-class IllnessBeginMapper(Mapper):
+class ProjectWorkBeginMapper(Mapper):
     def __init__(self):
         super().__init__()
 
-    def insert(self, illnessbegin):
+    def insert(self, project_work_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(
-            "SELECT MAX(id) AS maxid FROM worktimeapp.illnessbegin ")
+            "SELECT MAX(id) AS maxid FROM worktimeapp.project_work_begin ")
         tuples = cursor.fetchall()
-        illnessbegin.set_date_of_last_change(timestamp)
+        project_work_begin.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
-                illnessbegin.set_id(maxid[0] + 1)
+                project_work_begin.set_id(maxid[0] + 1)
             else:
                 """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
-                illnessbegin.set_id(1)
+                project_work_begin.set_id(1)
 
-        command = "INSERT INTO worktimeapp.illnessbegin (id, date_of_last_change, date, eventid) VALUES (%s, %s,%s,%s)"
+        command = "INSERT INTO worktimeapp.project_work_begin (id, date_of_last_change, date, eventid) VALUES (%s, %s,%s,%s)"
         data = (
-            illnessbegin.get_id(),
-            illnessbegin.get_date_of_last_change(),
-            illnessbegin.get_time(),
-            illnessbegin.get_event_id(),
+            project_work_begin.get_id(),
+            project_work_begin.get_date_of_last_change(),
+            project_work_begin.get_time(),
+            project_work_begin.get_event_id(),
         )
 
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
-        return illnessbegin
+        return project_work_begin
 
     def find_all(self):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.illnessbegin"
+        command = "SELECT id, date, eventid FROM worktimeapp.project_work_begin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, date, eventid) in tuples:
-            illnessbegin = ComingBO()
-            illnessbegin.set_id(id)
-            illnessbegin.set_time(date)
-            illnessbegin.set_event_id(eventid)
-            result.append(illnessbegin)
+            project_work_begin = ProjectWorkBeginBO()
+            project_work_begin.set_id(id)
+            project_work_begin.set_time(date)
+            project_work_begin.set_event_id(eventid)
+            result.append(project_work_begin)
 
         self._cnx.commit()
         cursor.close()
@@ -61,18 +61,18 @@ class IllnessBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.illnessbegin WHERE id={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.project_work_begin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
             (id, date, eventid) = tuples[0]
-            illnessbegin = ComingBO()
-            illnessbegin.set_id(id)
-            illnessbegin.set_time(date)
-            illnessbegin.set_event_id(eventid)
-            result = illnessbegin
+            project_work_begin = ProjectWorkBeginBO()
+            project_work_begin.set_id(id)
+            project_work_begin.set_time(date)
+            project_work_begin.set_event_id(eventid)
+            result = project_work_begin
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -87,17 +87,17 @@ class IllnessBeginMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.illnessbegin WHERE date={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.project_work_begin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, date, eventid) in tuples:
-            illnessbegin = ComingBO()
-            illnessbegin.set_id(id)
-            illnessbegin.set_time(date)
-            illnessbegin.set_event_id(eventid)
-            result.append(illnessbegin)
+            project_work_begin = ProjectWorkBeginBO()
+            project_work_begin.set_id(id)
+            project_work_begin.set_time(date)
+            project_work_begin.set_event_id(eventid)
+            result.append(project_work_begin)
 
         self._cnx.commit()
         cursor.close()
@@ -108,18 +108,18 @@ class IllnessBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.illnessbegin WHERE chatid={}".format(
+        command = "SELECT id, date, eventid FROM worktimeapp.project_work_begin WHERE chatid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
             (id, date, eventid) = tuples[0]
-            illnessbegin = ComingBO()
-            illnessbegin.set_id(id)
-            illnessbegin.set_time(date)
-            illnessbegin.set_event_id(eventid)
-            result = illnessbegin
+            project_work_begin = ProjectWorkBeginBO()
+            project_work_begin.set_id(id)
+            project_work_begin.set_time(date)
+            project_work_begin.set_event_id(eventid)
+            result = project_work_begin
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -130,27 +130,27 @@ class IllnessBeginMapper(Mapper):
 
         return result
 
-    def update(self, illnessbegin):
+    def update(self, project_work_begin):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
-        illnessbegin.set_date_of_last_change(datestamp)
+        project_work_begin.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.illnessbegin " + \
+        command = "UPDATE worktimeapp.project_work_begin " + \
             "SET date=%s, eventid=%s WHERE id=%s"
-        data = (illnessbegin.get_time(), illnessbegin.get_event_id(),
-                illnessbegin.get_id())
+        data = (project_work_begin.get_time(), project_work_begin.get_event_id(),
+                project_work_begin.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return illnessbegin
+        return project_work_begin
 
-    def delete(self, illnessbegin):
+    def delete(self, project_work_begin):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.illnessbegin WHERE id={}".format(
-            illnessbegin.get_id())
+        command = "DELETE FROM worktimeapp.project_work_begin WHERE id={}".format(
+            project_work_begin.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
