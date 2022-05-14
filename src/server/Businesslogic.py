@@ -32,7 +32,6 @@ from bo.UserBO import UserBO
 from db.UserMapper import UserMapper
 from bo.WorkTimeAccountBO import WorkTimeAccountBO
 from db.WorkTimeAccountMapper import WorkTimeAccountMapper
-
 from bo.ProjectBO import ProjectBO
 from db.ProjectMapper import ProjectMapper
 from bo.ProjectUserBO import ProjectUserBO
@@ -232,74 +231,65 @@ class Businesslogic():
         with IllnessBeginMapper() as mapper:
             return mapper.find_by_key(number)
 
+    """
+    Break Methoden
+    """
 
-"""
-Break Methoden
-"""
+    def get_all_breaks(self):
+        with BreakMapper() as mapper:
+            return mapper.find_all()
 
+    def get_break_by_id(self, id):
+        with BreakMapper() as mapper:
+            return mapper.find_by_key(id)
 
-def get_all_breaks(self):
-    with BreakMapper() as mapper:
-        return mapper.find_all()
+    def create_break(self, start, end, time_interval_booking_id):
+        break_obj = BreakBO()
+        break_obj.set_start(start)
+        break_obj.set_end(end)
+        break_obj.set_time_interval_booking_id(time_interval_booking_id)
+        break_obj.set_id(1)
 
+        with BreakMapper() as mapper:
+            return mapper.insert(break_obj)
 
-def get_break_by_id(self, id):
-    with BreakMapper() as mapper:
-        return mapper.find_by_key(id)
+    def save_break(self, break_obj):
+        with BreakMapper as mapper:
+            mapper.update(break_obj)
 
+    def delete_break(self, break_obj):
+        with BreakMapper as mapper:
+            mapper.delete(break_obj)
 
-def create_break(self, start, end, time_interval_booking_id):
-    break_obj = BreakBO()
-    break_obj.set_start(start)
-    break_obj.set_end(end)
-    break_obj.set_time_interval_booking_id(time_interval_booking_id)
-    break_obj.set_id(1)
+    def get_break_by_date(self, date):
+        with BreakMapper() as mapper:
+            return mapper.find_by_date(date)
 
-    with BreakMapper() as mapper:
-        return mapper.insert(break_obj)
+    def get_break_by_time_period(self, startdate, enddate):
+        with BreakMapper() as mapper:
+            return mapper.find_by_time_period(startdate, enddate)
 
+    def get_break_by_timeinterval_booking_id(self, id):
+        with BreakMapper() as mapper:
+            return mapper.find_by_time_interval_booking(id)
 
-def save_break(self, break_obj):
-    with BreakMapper as mapper:
-        mapper.update(break_obj)
-
-
-def delete_break(self, break_obj):
-    with BreakMapper as mapper:
-        mapper.delete(break_obj)
-
-
-def get_break_by_date(self, date):
-    with BreakMapper() as mapper:
-        return mapper.find_by_date(date)
-
-
-def get_break_by_time_period(self, startdate, enddate):
-    with BreakMapper() as mapper:
-        return mapper.find_by_time_period(startdate, enddate)
-
-
-def get_break_by_timeinterval_booking_id(self, id):
-    with BreakMapper() as mapper:
-        return mapper.find_by_time_interval_booking(id)
-
-    # Methode um alle IllnessBeginBOs aus der Datenbank zu laden
+        # Methode um alle IllnessBeginBOs aus der Datenbank zu laden
 
     def get_all_illnessBegins(self):
         with IllnessBeginMapper() as mapper:
             return mapper.find_all()
 
-    # Methode um ein IllnessBeginBO zu updaten
+        # Methode um ein IllnessBeginBO zu updaten
     def save_illnessBegin(self, illnessBegin):
         with IllnessBeginMapper() as mapper:
             mapper.update(illnessBegin)
 
-    # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
+        # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
     def delete_illnessBegin(self, illnessBegin):
         with IllnessBeginMapper() as mapper:
             mapper.delete(illnessBegin)
 
-    # Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
+        # Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
     def create_illnessEnd(self, time, event_id):
         illnessEnd = IllnessEndBO()
         illnessEnd.set_time(time)
@@ -565,219 +555,183 @@ def get_break_by_timeinterval_booking_id(self, id):
         with VacationMapper() as mapper:
             return mapper.find_by_time_period(startdate, enddate)
 
-
-def get_vacation_by_timeinterval_booking_id(self, id):
-    with VacationMapper() as mapper:
-        return mapper.find_by_time_interval_booking(id)
-
-
-"""
-User Methoden
-"""
-
-
-def create_user(self, first_name, last_name, mail_adress, user_name):
-    user_obj = UserBO()
-    user_obj.set_first_name(first_name)
-    user_obj.set_last_name(last_name)
-    user_obj.set_mail_adress(mail_adress)
-    user_obj.set_user_name(user_name)
-
-    with UserMapper() as mapper:
-        return mapper.insert(user_obj)
-
-
-'''def get_user_by_first_name(self, first_name):
-    with UserMapper() as mapper:
-        return mapper.find_by_first_name(first_name)
-
-def get_user_by_last_name(self, last_name):
-    with UserMapper() as mapper:
-        return mapper.find_by_last_name(last_name)'''
-
-
-def get_user_by_mail_adress(self, mail_adress):
-    with UserMapper() as mapper:
-        return mapper.find_by_mail_adress(mail_adress)
-
-
-def get_user_by_user_name(self, user_name):
-    with UserMapper() as mapper:
-        return mapper.find_by_user_name(user_name)
-
-
-def get_user_by_id(self, number):
-    with UserMapper() as mapper:
-        return mapper.find_by_key(number)
-
-
-def get_all_users(self):
-    with UserMapper() as mapper:
-        return mapper.find_all()
-
-
-def save_user(self, user_obj):
-    with UserMapper() as mapper:
-        mapper.update(user_obj)
-
-
-def delete_user(self, user_obj):
-    with UserMapper() as mapper:
-        mapper.delete(user_obj)
-
-
-"""
-WorkTimeAccount Methoden
-"""
-
-
-def create_worktimeaccount(self, user_id):
-    worktimeaccount_obj = WorkTimeAccountBO()
-    worktimeaccount_obj.set_user_id(user_id)
-    worktimeaccount_obj.set_id(1)
-
-    with WorkTimeAccountMapper() as mapper:
-        return mapper.insert(worktimeaccount_obj)
-
-
-def get_worktimeaccount_by_user_id(self, user_id):
-    with WorkTimeAccountMapper() as mapper:
-        return mapper.find_by_user_id(user_id)
-
-
-def get_all_worktimeaccounts(self):
-    with WorkTimeAccountMapper() as mapper:
-        return mapper.find_all()
-
-
-def save_user(self, worktimeaccount_obj):
-    with WorkTimeAccountMapper() as mapper:
-        mapper.update(worktimeaccount_obj)
-
-
-def delete_user(self, worktimeaccount_obj):
-    with WorkTimeAccountMapper() as mapper:
-        mapper.delete(worktimeaccount_obj)
-
-
-def get_vacation_by_timeinterval_booking_id(self, id):
-    with VacationMapper() as mapper:
-        return mapper.find_by_time_interval_booking(id)
-
-
-# Project
-def create_project(self, name, commissioner, user_id):
-    project = ProjectBO()
-    project.set_name(name)
-    project.set_commissioner(commissioner)
-    project.set_user_id(user_id)
-    with ProjectMapper() as mapper:
-        return mapper.insert(project)
-
-
-def get_project_by_id(self, id):
-    with ProjectMapper() as mapper:
-        return mapper.find_by_key(id)
-
-
-def get_all_projects(self):
-    with ProjectMapper() as mapper:
-        return mapper.find_all()
-
-
-def save_project(self, project):
-    with ProjectMapper() as mapper:
-        mapper.update(project)
-
-
-def delete_project(self, project):
-    with ProjectMapper() as mapper:
-        mapper.delete(project)
-
-
-def get_projects_by_user_id(self, id):
-    with ProjectMapper() as mapper:
-        mapper.find_projects_by_user_id(id)
-
-
-def get_by_project_name(self, name):
-    with ProjectMapper() as mapper:
-        mapper.find_by_project_name(name)
-
-# Projectuser
-
-
-def create_projectuser(self, project_id, user_id, capacity):
-    projectuser = ProjectUserBO()
-    projectuser.set_project_id(project_id)
-    projectuser.set_user_id(user_id)
-    projectuser.set_capacity(capacity)
-    with ProjectUserMapper() as mapper:
-        return mapper.insert(projectuser)
-
-
-def get_projectuser_by_id(self, id):
-    with ProjectUserMapper() as mapper:
-        return mapper.find_by_key(id)
-
-
-def get_all_projectusers(self):
-    with ProjectUserMapper() as mapper:
-        return mapper.find_all()
-
-
-def save_projectuser(self, projectuser):
-    with ProjectUserMapper() as mapper:
-        mapper.update(projectuser)
-
-
-def delete_projectuser(self, projectuser):
-    with ProjectUserMapper() as mapper:
-        mapper.delete(projectuser)
-
-
-def get_all_project_members(self, project_id):
-    with ProjectUserMapper() as mapper:
-        mapper.find_all_project_members(project_id)
-
-# Activity
-
-
-def create_activity(self, name, capacity, project_id, duration):
-    activity = ActivityBO()
-    activity.set_name(name)
-    activity.set_capacity(capacity)
-    activity.set_project_id(project_id)
-    activity.set_duration(duration)
-    with ActivityMapper() as mapper:
-        return mapper.insert(activity)
-
-
-def get_activity_by_id(self, id):
-    with ActivityMapper() as mapper:
-        return mapper.find_by_key(id)
-
-
-def get_all_activities(self):
-    with ActivityMapper() as mapper:
-        return mapper.find_all()
-
-
-def save_activity(self, activity):
-    with ActivityMapper() as mapper:
-        mapper.update(activity)
-
-
-def delete_activity(self, activity):
-    with ActivityMapper() as mapper:
-        mapper.delete(activity)
-
-
-def get_by_name(self, name):
-    with ActivityMapper() as mapper:
-        return mapper.find_by_name(name)
-
-
-def get_all_by_project_id(self, project_id):
-    with ActivityMapper() as mapper:
-        return mapper.find_all_by_project_id(project_id)
+    def get_vacation_by_timeinterval_booking_id(self, id):
+        with VacationMapper() as mapper:
+            return mapper.find_by_time_interval_booking(id)
+
+    """
+    User Methoden
+    """
+
+    def create_user(self, first_name, last_name, mail_adress, user_name):
+        user_obj = UserBO()
+        user_obj.set_first_name(first_name)
+        user_obj.set_last_name(last_name)
+        user_obj.set_mail_adress(mail_adress)
+        user_obj.set_user_name(user_name)
+
+        with UserMapper() as mapper:
+            return mapper.insert(user_obj)
+
+    '''def get_user_by_first_name(self, first_name):
+        with UserMapper() as mapper:
+            return mapper.find_by_first_name(first_name)
+
+    def get_user_by_last_name(self, last_name):
+        with UserMapper() as mapper:
+            return mapper.find_by_last_name(last_name)'''
+
+    def get_user_by_mail_adress(self, mail_adress):
+        with UserMapper() as mapper:
+            return mapper.find_by_mail_adress(mail_adress)
+
+    def get_user_by_user_name(self, user_name):
+        with UserMapper() as mapper:
+            return mapper.find_by_user_name(user_name)
+
+    def get_user_by_id(self, number):
+        with UserMapper() as mapper:
+            return mapper.find_by_key(number)
+
+    def get_all_users(self):
+        with UserMapper() as mapper:
+            return mapper.find_all()
+
+    def save_user(self, user_obj):
+        with UserMapper() as mapper:
+            mapper.update(user_obj)
+
+    def delete_user(self, user_obj):
+        with UserMapper() as mapper:
+            mapper.delete(user_obj)
+
+    """
+    WorkTimeAccount Methoden
+    """
+
+    def create_worktimeaccount(self, user_id):
+        worktimeaccount_obj = WorkTimeAccountBO()
+        worktimeaccount_obj.set_user_id(user_id)
+        worktimeaccount_obj.set_id(1)
+
+        with WorkTimeAccountMapper() as mapper:
+            return mapper.insert(worktimeaccount_obj)
+
+    def get_worktimeaccount_by_user_id(self, user_id):
+        with WorkTimeAccountMapper() as mapper:
+            return mapper.find_by_user_id(user_id)
+
+    def get_all_worktimeaccounts(self):
+        with WorkTimeAccountMapper() as mapper:
+            return mapper.find_all()
+
+    def save_user(self, worktimeaccount_obj):
+        with WorkTimeAccountMapper() as mapper:
+            mapper.update(worktimeaccount_obj)
+
+    def delete_user(self, worktimeaccount_obj):
+        with WorkTimeAccountMapper() as mapper:
+            mapper.delete(worktimeaccount_obj)
+
+    def get_vacation_by_timeinterval_booking_id(self, id):
+        with VacationMapper() as mapper:
+            return mapper.find_by_time_interval_booking(id)
+
+    # Project
+
+    def create_project(self, name, commissioner, user_id):
+        project = ProjectBO()
+        project.set_name(name)
+        project.set_commissioner(commissioner)
+        project.set_user_id(user_id)
+        with ProjectMapper() as mapper:
+            return mapper.insert(project)
+
+    def get_project_by_id(self, id):
+        with ProjectMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def get_all_projects(self):
+        with ProjectMapper() as mapper:
+            return mapper.find_all()
+
+    def save_project(self, project):
+        with ProjectMapper() as mapper:
+            mapper.update(project)
+
+    def delete_project(self, project):
+        with ProjectMapper() as mapper:
+            mapper.delete(project)
+
+    def get_projects_by_user_id(self, id):
+        with ProjectMapper() as mapper:
+            mapper.find_projects_by_user_id(id)
+
+    def get_by_project_name(self, name):
+        with ProjectMapper() as mapper:
+            mapper.find_by_project_name(name)
+
+    # Projectuser
+
+    def create_projectuser(self, project_id, user_id, capacity):
+        projectuser = ProjectUserBO()
+        projectuser.set_project_id(project_id)
+        projectuser.set_user_id(user_id)
+        projectuser.set_capacity(capacity)
+        with ProjectUserMapper() as mapper:
+            return mapper.insert(projectuser)
+
+    def get_projectuser_by_id(self, id):
+        with ProjectUserMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def get_all_projectusers(self):
+        with ProjectUserMapper() as mapper:
+            return mapper.find_all()
+
+    def save_projectuser(self, projectuser):
+        with ProjectUserMapper() as mapper:
+            mapper.update(projectuser)
+
+    def delete_projectuser(self, projectuser):
+        with ProjectUserMapper() as mapper:
+            mapper.delete(projectuser)
+
+    def get_all_project_members(self, project_id):
+        with ProjectUserMapper() as mapper:
+            mapper.find_all_project_members(project_id)
+
+    # Activity
+
+    def create_activity(self, name, capacity, project_id, duration):
+        activity = ActivityBO()
+        activity.set_name(name)
+        activity.set_capacity(capacity)
+        activity.set_project_id(project_id)
+        activity.set_duration(duration)
+        with ActivityMapper() as mapper:
+            return mapper.insert(activity)
+
+    def get_activity_by_id(self, id):
+        with ActivityMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def get_all_activities(self):
+        with ActivityMapper() as mapper:
+            return mapper.find_all()
+
+    def save_activity(self, activity):
+        with ActivityMapper() as mapper:
+            mapper.update(activity)
+
+    def delete_activity(self, activity):
+        with ActivityMapper() as mapper:
+            mapper.delete(activity)
+
+    def get_by_name(self, name):
+        with ActivityMapper() as mapper:
+            return mapper.find_by_name(name)
+
+    def get_all_by_project_id(self, project_id):
+        with ActivityMapper() as mapper:
+            return mapper.find_all_by_project_id(project_id)

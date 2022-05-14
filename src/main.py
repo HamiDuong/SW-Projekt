@@ -58,7 +58,7 @@ from server.Businesslogic import Businesslogic
 from server.bo import ProjectBO
 from server.bo import ProjectUserBO
 from server.bo import ActivityBO
-from SecurityDecorator import secured
+#from SecurityDecorator import secured
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
@@ -286,8 +286,8 @@ class UserRelatedAccountOperations(Resource):
         Die auszulesenden Objekte werden durch ```mail_adress``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_mail_adress(mail_adress)
-        return cust
+        usr = adm.get_user_by_mail_adress(mail_adress)
+        return usr
 
 
 @worktimeapp.route('/users/<string:user_name>')
@@ -390,9 +390,9 @@ class UserListOperations(Resource):
         liegt es an der Businesslogic (Businesslogik), eine korrekte ID
         zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
         """
-        adm = businesslogic()
+        adm = Businesslogic()
 
-        proposal = User.from_dict(api.payload)
+        proposal = user.from_dict(api.payload)
 
         """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
         if proposal is not None:
@@ -445,7 +445,7 @@ class UserOperations(Resource):
         User-Objekts.
         """
         adm = Businesslogic()
-        c = User.from_dict(api.payload)
+        c = user.from_dict(api.payload)
 
         if c is not None:
             """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
@@ -478,7 +478,7 @@ class UsersByNameOperations(Resource):
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des User-Objekts')
 class UserRelatedAccountOperations(Resource):
-    @worktimeapp.marshal_with(account)
+    @worktimeapp.marshal_with(user)
     # #@secured
     def get(self, id):
         """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
@@ -496,28 +496,6 @@ class UserRelatedAccountOperations(Resource):
             return account_list
         else:
             return "User not found", 500
-
-    @worktimeapp.marshal_with(account, code=201)
-    # #@secured
-    def post(self, id):
-        """Anlegen eines Kontos für einen gegebenen User.
-
-        Das neu angelegte Konto wird als Ergebnis zurückgegeben.
-
-        **Hinweis:** Unter der id muss ein User existieren, andernfalls wird Status Code 500 ausgegeben."""
-        adm = Businesslogic()
-        """Stelle fest, ob es unter der id einen User gibt. 
-        Dies ist aus Gründen der referentiellen Integrität sinnvoll!
-        """
-        cust = adm.get_user_by_id(id)
-
-        if cust is not None:
-            # Jetzt erst macht es Sinn, für den User ein neues Konto anzulegen und dieses zurückzugeben.
-            result = adm.create_account_for_user(cust)
-            return result
-        else:
-            return "User unknown", 500
-
 
 # Project
 @worktimeapp.route('/projects')
@@ -584,7 +562,7 @@ class ProjectWithIDOperations(Resource):
             return '', 50
 
 
-@worktimeapp.route('/project/<str:name>')
+'''@worktimeapp.route('/project/<str:name>')
 @worktimeapp.param('name', 'Der Name des Projekts')
 class ProjectWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(project)
@@ -592,7 +570,7 @@ class ProjectWithSTRINGOperations(Resource):
     def get(self, name):
         adm = Businesslogic()
         activity = adm.get_by_project_name(name)
-        return activity
+        return activity'''
 
 
 # ProjectUser
@@ -723,7 +701,7 @@ class ActivityWithIDOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/activity/<str:name>')
+'''@worktimeapp.route('/activity/<str:name>')
 @worktimeapp.param('name', 'Der Name der Aktivitaet')
 class ActivityWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(activity)
@@ -732,7 +710,7 @@ class ActivityWithSTRINGOperations(Resource):
         adm = Businesslogic()
         activity = adm.get_by_name(name)
         return activity
-
+'''
 
 @worktimeapp.route('/events')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
