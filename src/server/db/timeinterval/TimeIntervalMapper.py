@@ -1,7 +1,7 @@
-from abc import abstractmethod
-from server.db import Mapper
+from server.db.Mapper import Mapper
 from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from datetime import datetime
+from abc import abstractmethod
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)

@@ -1,5 +1,5 @@
-from server.db.timeinterval import TimeIntervalMapper
-from server.bo.timeinterval import ProjectDurationBO
+from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
+from server.bo.timeinterval.ProjectDurationBO import ProjectDurationBO
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
