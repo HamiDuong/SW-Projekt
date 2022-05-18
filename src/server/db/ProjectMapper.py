@@ -15,13 +15,14 @@ class ProjectMapper(Mapper):
         cursor.execute("SELECT * from projects")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, name, commissioner, user_id) in tuples:
+        for (id, dateOfLastChange, name, commissioner, user_id, duration) in tuples:
             projectobj = ProjectBO()
             projectobj.set_id(id)
             projectobj.set_date_of_last_change(dateOfLastChange)
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(user_id)
+            projectobj.set_duration(duration)
             result.append(projectobj)
 
         self._cnx.commit()
@@ -40,13 +41,14 @@ class ProjectMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, name, commissioner, user_id) = tuples[0]
+            (id, dateOfLastChange, name, commissioner, user_id, duration) = tuples[0]
             projectobj = ProjectBO()
             projectobj.set_id(id)
             projectobj.set_date_of_last_change(dateOfLastChange)
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(user_id)
+            projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()
@@ -67,8 +69,8 @@ class ProjectMapper(Mapper):
         for (maxid) in tuples:
             project_obj.set_id(maxid[0]+1)
 
-        command = "INSERT INTO projects (id, dateOfLastChange, name, commissioner, user_id) VALUES (%s, %s, %s, %s, %s)"
-        data = (project_obj.get_id(), project_obj.get_date_of_last_change(), project_obj.get_name(), project_obj.get_commissioner(), project_obj.get_user_id())
+        command = "INSERT INTO projects (id, dateOfLastChange, name, commissioner, user_id, duration) VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (project_obj.get_id(), project_obj.get_date_of_last_change(), project_obj.get_name(), project_obj.get_commissioner(), project_obj.get_user_id(), project_obj.get_duration())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -84,8 +86,8 @@ class ProjectMapper(Mapper):
     def update (self, project_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE projects " + "SET name=%s, commissioner=%s WHERE user_id=%s"
-        data = (project_obj.get_name(), project_obj.get_commissioner(), project_obj.get_user_id())
+        command = "UPDATE projects " + "SET name=%s, commissioner=%s, duration=%s WHERE user_id=%s"
+        data = (project_obj.get_name(), project_obj.get_commissioner(), project_obj.get_user_id(), project_obj.get_duration())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -118,13 +120,14 @@ class ProjectMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, name, commissioner, user_id) = tuples[0]
+            (id, dateOfLastChange, name, commissioner, user_id, duration) = tuples[0]
             projectobj = ProjectBO()
             projectobj.set_id(id)
             projectobj.set_date_of_last_change(dateOfLastChange)
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(user_id)
+            projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()
@@ -145,13 +148,14 @@ class ProjectMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, name, commissioner, user_id) = tuples[0]
+            (id, dateOfLastChange, name, commissioner, user_id, duration) = tuples[0]
             projectobj = ProjectBO()
             projectobj.set_id(id)
             projectobj.set_date_of_last_change(dateOfLastChange)
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(user_id)
+            projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()

@@ -721,11 +721,12 @@ class Businesslogic():
 
     # Project
 
-    def create_project(self, name, commissioner, user_id):
+    def create_project(self, name, commissioner, user_id, duration):
         project = ProjectBO()
         project.set_name(name)
         project.set_commissioner(commissioner)
         project.set_user_id(user_id)
+        project.set_duration(duration)
         with ProjectMapper() as mapper:
             return mapper.insert(project)
 
@@ -752,6 +753,10 @@ class Businesslogic():
     def get_by_project_name(self, name):
         with ProjectMapper() as mapper:
             mapper.find_by_project_name(name)
+
+    def get_project_duration_by_project_id(self, id):
+        with ProjectMapper() as mapper:
+            return mapper.find_by_project_id(id)
 
     # Projectuser
 
@@ -785,12 +790,11 @@ class Businesslogic():
 
     # Activity
 
-    def create_activity(self, name, capacity, project_id, duration):
+    def create_activity(self, name, capacity, project_id):
         activity = ActivityBO()
         activity.set_name(name)
         activity.set_capacity(capacity)
         activity.set_project_id(project_id)
-        activity.set_duration(duration)
         with ActivityMapper() as mapper:
             return mapper.insert(activity)
 
@@ -809,10 +813,7 @@ class Businesslogic():
     def delete_activity(self, activity):
         with ActivityMapper() as mapper:
             mapper.delete(activity)
-    def get_project_duration_by_project_id(self, id):
-        with ProjectDurationMapper() as mapper:
-            return mapper.find_by_project_id(id)
-
+            
     def get_by_name(self, name):
         with ActivityMapper() as mapper:
             return mapper.find_by_name(name)
