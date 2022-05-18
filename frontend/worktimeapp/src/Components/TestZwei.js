@@ -15,87 +15,49 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button } from '@mui/material';
 
-function createData(name, projects) {
+
+function createData(name, activities, employee, planedTime, bookedTime, searchedFor) {
     return {
         name,
-        projects: [
-            {
-                projectName: 'Project A',
-                activity: 'Use Case erstellen',
-                date: '2020-01-02',
-                employee: 'Max Mustermann',
-                plannedTime: 3,
-                bookedTime: 1,
-            },
-            {
-                projectName: 'Project A',
-                activity: 'Projektkosten aufbereiten',
-                date: '2020-01-02',
-                employee: 'Max Musterfrau',
-                plannedTime: 14,
-                bookedTime: 5,
-            },
-            {
-                projectName: 'Project B',
-                activity: 'Projektkosten aufbereiten',
-                date: '2020-01-02',
-                employee: 'Max Musterfrau',
-                plannedTime: 14,
-                bookedTime: 5,
-            },
-        ],
+        activities,
+        employee,
+        planedTime,
+        bookedTime,
+        searchedFor,
+
     };
-}
-function UserGreeting(props) {
-    return <h1>Welcome back!</h1>;
-}
-
-function GuestGreeting(props) {
-    return <h1>Please sign up.</h1>;
-}
-
-function myfuncyy() {
-    return
-    <UserGreeting />;
 }
 
 function Row(props) {
-    const { row } = props;
+    const { row } = props.name;
     const [open, setOpen] = React.useState(false);
 
-    let arr = row.projects
+    let arr = row
+    console.log(arr.length)
+    let projects = []
+    let projectNames = []
 
-    //console.log(arr.length)
+    const Gesucht = 'Project A'
 
-    const search_for = 'Project A'
-    let result = []
 
-    arr.forEach(elem => {
-        if (elem.projectName == search_for) {
-            result.push(elem)
-            console.log(result)
+    arr.forEach(element => {
+        if (projects.includes(element.projectName)) {
+            console.log('schon drin')
+        } else {
+            projects.push(element.projectName)
         }
     });
 
-    const issearchedfor = (row.name == 'Project A')
-    console.log('Länge von', arr.length)
+    projects.forEach(element => {
+        if (element == Gesucht) {
+            console.log('hier')
 
 
-    function myfuncy(projectname) {
-        let activitiesForProject = []
-        for (let i = 0; i <= arr.length; i++) {
-            if (arr[i].projectName == projectname) {
-                activitiesForProject.push(arr[i].activity)
-
-            } else {
-                break
-            }
-        } return
-        (<Button>Hallo</Button>)
-    }
-
-
-
+        } else {
+            console.log('nicht hier')
+            console.log(element)
+        }
+    })
 
     return (
         <React.Fragment>
@@ -110,16 +72,12 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row" >
-                    {row.name}
                 </TableCell>
                 <TableCell align="right"></TableCell>
                 <TableCell align="right"></TableCell>
                 <TableCell align="right"></TableCell>
                 <TableCell align="right"></TableCell>
             </TableRow>
-            <div>
-                {this.myfuncyy()}
-            </div>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -137,7 +95,6 @@ function Row(props) {
                                         <TableCell align="right">Booked Time (h)</TableCell>
                                     </TableRow>
                                 </TableHead>
-
                             </Table>
                         </Box>
                     </Collapse>
@@ -150,12 +107,27 @@ function Row(props) {
 
 
 const rows = [
-    createData('Project A', ['Use Case erstellen A', 'XXX'], '2020-01-02', 'Max Musterfrau', 14, 5),
+    createData('Project A', 'Use Case erstellen A', '2020-01-02', 'Max Musterfrau', 14, 5),
+    createData('Project A', 'Use Case erstellen A1', '2020-01-02', 'Max Musterfrau', 14, 5),
     createData('Project B', 'Use Case erstellen B', '2020-01-02', 'Max Musterfrau', 14, 5),
     createData('Project C', 'Use Case erstellen C', '2020-01-02', 'Max Musterfrau', 14, 5),
     createData('Project D', 'Use Case erstellen D', '2020-01-02', 'Max Musterfrau', 14, 5),
     createData('Project E', 'Use Case erstellen E', '2020-01-02', 'Max Musterfrau', 14, 5),
 ];
+
+const rowNames = []
+const rowActivities = []
+
+
+rows.forEach(element => {
+    rowNames.push(element.name)
+})
+
+rows.forEach(element => {
+    rowActivities.push(element.activities)
+})
+
+console.log(rowNames)
 
 export default function CollapsibleTable() {
     return (
@@ -167,12 +139,34 @@ export default function CollapsibleTable() {
                         <TableCell>Project Overview</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.name} row={row} />
+                <div>
+
+
+                    {rows.map(element => (
+                        <TableBody>
+                            <TableRow key={element} row={element}>{element.name}</TableRow>
+                            <TableCell >{element.activities}</TableCell>
+                            <TableCell >{element.employee}</TableCell>
+                            <TableCell >{element.planedTime}</TableCell>
+                            <TableCell >{element.bookedTime}</TableCell>
+                        </TableBody>
                     ))}
-                </TableBody>
+                </div>
+
             </Table>
-        </TableContainer>
+        </TableContainer >
     );
 }
+/*row.projects.map((projectsRow) => (
+    <TableRow key={projectsRow}>
+        <TableCell>{projectsRow.activity}</TableCell>
+        <TableCell component="th" scope="row">
+            {projectsRow.date}
+        </TableCell>
+        <TableCell>{projectsRow.employee}</TableCell>
+        <TableCell align="right">{projectsRow.plannedTime}</TableCell>
+        <TableCell align="right">
+            {projectsRow.bookedTime}
+        </TableCell>
+    </TableRow>
+)*/
