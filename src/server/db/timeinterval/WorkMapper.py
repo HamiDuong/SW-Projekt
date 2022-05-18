@@ -10,11 +10,13 @@ Attribute
 id (PK)                     eindeutige Identifikationsnummer                      
 dateOfLastChange            Zeitpunkt der letzten Änderung
 start                       Startzeitpunkt der Pause
-end                         Endzeitpunkt der Pause
-timeIntervalId (FK)         Zuordnung zu TimeInterval     
+end                         Endzeitpunkt der Pause   
 startEvent (FK)             Zuordnung zu workBegin
 endEvent (FK)               Zuordnung zu workEnd
 type                        Art des Intervalls
+
+verworfen
+timeIntervalId (FK)         Zuordnung zu TimeInterval  
 """
 class WorkMapper(TimeIntervalMapper):
 
@@ -28,16 +30,16 @@ class WorkMapper(TimeIntervalMapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.works")
+        cursor.execute("SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.works")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             work = WorkBO()
             work.set_id(id)
             work.set_date_of_last_change(dateOfLastChange)
             work.set_start(start)
             work.set_end(end)
-            work.set_time_interval_id(timeIntervalId)
+            #work.set_time_interval_id(timeIntervalId)
             work.set_start_event(startEvent)
             work.set_end_event(endEvent)
             work.set_type(type)
@@ -54,18 +56,18 @@ class WorkMapper(TimeIntervalMapper):
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.works WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.works WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
+            (id, dateOfLastChange, start, end, startEvent, endEvent, type) = tuples[0]
             work = WorkBO()
             work.set_id(id)
             work.set_date_of_last_change(dateOfLastChange)
             work.set_start(start)
             work.set_end(end)
-            work.set_time_interval_id(timeIntervalId)
+            #work.set_time_interval_id(timeIntervalId)
             work.set_start_event(startEvent)
             work.set_end_event(endEvent)
             work.set_type(type)
@@ -92,8 +94,8 @@ class WorkMapper(TimeIntervalMapper):
         for (maxid) in tuples:
             work.set_id(maxid[0]+1)
 
-        command = "INSERT INTO worktimeapp.works (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        data = (work.get_id(), work.get_date_of_last_change(), work.get_start(), work. get_end(), work.get_timeinterval_id(), work.get_start_event(), work.get_end_event(), "Work")
+        command = "INSERT INTO worktimeapp.works (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        data = (work.get_id(), work.get_date_of_last_change(), work.get_start(), work. get_end(), work.get_start_event(), work.get_end_event(), "Work")
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -141,17 +143,17 @@ class WorkMapper(TimeIntervalMapper):
     def find_by_date(self, date):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.works WHERE start={}".format(date)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.works WHERE start={}".format(date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             work = WorkBO()
             work.set_id(id)
             work.set_date_of_last_change(dateOfLastChange)
             work.set_start(start)
             work.set_end(end)
-            work.set_time_interval_id(timeIntervalId)
+            #work.set_time_interval_id(timeIntervalId)
             work.set_start_event(startEvent)
             work.set_end_event(endEvent)
             work.set_type(type)
@@ -169,17 +171,17 @@ class WorkMapper(TimeIntervalMapper):
     def find_by_time_period(self, start_date, end_date):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.works WHERE start>={} AND end<={}".format(start_date, end_date)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.works WHERE start>={} AND end<={}".format(start_date, end_date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             work = WorkBO()
             work.set_id(id)
             work.set_date_of_last_change(dateOfLastChange)
             work.set_start(start)
             work.set_end(end)
-            work.set_time_interval_booking_id(timeIntervalId)
+            #work.set_time_interval_booking_id(timeIntervalId)
             work.set_start_event(startEvent)
             work.set_end_event(endEvent)
             work.set_type(type)
@@ -196,18 +198,18 @@ class WorkMapper(TimeIntervalMapper):
     def find_by_time_interval_id(self, bookingId):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId startEvent, endEvent, type FROM worktimeapp.works WHERE timeIntervalId={}".format(bookingId)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.works WHERE timeIntervalId={}".format(bookingId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
+            (id, dateOfLastChange, start, end, startEvent, endEvent, type) = tuples[0]
             work = WorkBO()
             work.set_id(id)
             work.set_date_of_last_change(dateOfLastChange)
             work.set_start(start)
             work.set_end(end)
-            work.set_time_interval_id(timeIntervalId)
+            #work.set_time_interval_id(timeIntervalId)
             work.set_start_event(startEvent)
             work.set_end_event(endEvent)
             work.set_type(type)

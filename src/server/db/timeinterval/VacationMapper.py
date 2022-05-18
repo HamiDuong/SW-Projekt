@@ -10,11 +10,13 @@ Attribute
 id (PK)                     eindeutige Identifikationsnummer                      
 dateOfLastChange            Zeitpunkt der letzten Änderung
 start                       Startzeitpunkt der Pause
-end                         Endzeitpunkt der Pause
-timeIntervalId (FK)         Zuordnung zu TimeInterval     
+end                         Endzeitpunkt der Pause  
 startEvent (FK)             Zuordnung zu VacationBegin
 endEvent (FK)               Zuordnung zu VacationEnd
 type                        Art des Intervalls
+
+verworfen
+timeIntervalId (FK)         Zuordnung zu TimeInterval   
 """
 class VacationMapper(TimeIntervalMapper):
 
@@ -28,16 +30,16 @@ class VacationMapper(TimeIntervalMapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.vacations")
+        cursor.execute("SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.vacations")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             vacation = VacationBO()
             vacation.set_id(id)
             vacation.set_date_of_last_change(dateOfLastChange)
             vacation.set_start(start)
             vacation.set_end(end)
-            vacation.set_time_interval_id(timeIntervalId)
+            #vacation.set_time_interval_id(timeIntervalId)
             vacation.set_start_event(startEvent)
             vacation.set_end_event(endEvent)
             vacation.set_type(type)
@@ -54,18 +56,18 @@ class VacationMapper(TimeIntervalMapper):
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type from worktimeapp.vacations WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.vacations WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
+            (id, dateOfLastChange, start, end, startEvent, endEvent, type) = tuples[0]
             illness = VacationBO()
             illness.set_id(id)
             illness.set_date_of_last_change(dateOfLastChange)
             illness.set_start(start)
             illness.set_end(end)
-            illness.set_time_interval_id(timeIntervalId)
+            #illness.set_time_interval_id(timeIntervalId)
             illness.set_start_event(startEvent)
             illness.set_end_event(endEvent)
             illness.set_type(type)
@@ -92,8 +94,8 @@ class VacationMapper(TimeIntervalMapper):
         for (maxid) in tuples:
             vacation.set_id(maxid[0]+1)
 
-        command = "INSERT INTO worktimeapp.vacations (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        data = (vacation.get_id(), vacation.get_date_of_last_change(), vacation.get_start(), vacation. get_end(), vacation.get_timeinterval_id(), vacation.get_start_event(), vacation.get_end_event(), "Vacation")
+        command = "INSERT INTO worktimeapp.vacations (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        data = (vacation.get_id(), vacation.get_date_of_last_change(), vacation.get_start(), vacation. get_end(), vacation.get_start_event(), vacation.get_end_event(), "Vacation")
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -139,19 +141,19 @@ class VacationMapper(TimeIntervalMapper):
     return: Liste von VacationBO mit start = date
     """
     def find_by_date(self, date):
-        result = None
+        result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.vacations WHERE start={}".format(date)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.vacations WHERE start={}".format(date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             vacation = VacationBO()
             vacation.set_id(id)
             vacation.set_date_of_last_change(dateOfLastChange)
             vacation.set_start(start)
             vacation.set_end(end)
-            vacation.set_time_interval_id(timeIntervalId)
+            #vacation.set_time_interval_id(timeIntervalId)
             vacation.set_start_event(startEvent)
             vacation.set_end_event(endEvent)
             vacation.set_type(type)
@@ -169,17 +171,17 @@ class VacationMapper(TimeIntervalMapper):
     def find_by_time_period(self, start_date, end_date):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type FROM worktimeapp.vacations WHERE start>={} AND end<={}".format(start_date, end_date)
+        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.vacations WHERE start>={} AND end<={}".format(start_date, end_date)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) in tuples:
+        for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
             vacation = VacationBO()
             vacation.set_id(id)
             vacation.set_date_of_last_change(dateOfLastChange)
             vacation.set_start(start)
             vacation.set_end(end)
-            vacation.set_time_interval_booking_id(timeIntervalId)
+            #vacation.set_time_interval_booking_id(timeIntervalId)
             vacation.set_start_event(startEvent)
             vacation.set_end_event(endEvent)
             vacation.set_type(type)
@@ -193,26 +195,26 @@ class VacationMapper(TimeIntervalMapper):
     param: bookingId - Fremdschlüssel von BookingBO
     return: result - VacationBO
     """
-    def find_by_time_interval_id(self, bookingId):
-        result = None
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, timeIntervalId startEvent, endEvent, type FROM worktimeapp.vacations WHERE timeIntervalId={}".format(bookingId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
+    # def find_by_time_interval_id(self, bookingId):
+    #     result = None
+    #     cursor = self._cnx.cursor()
+    #     command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.vacations WHERE timeIntervalId={}".format(bookingId)
+    #     cursor.execute(command)
+    #     tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
-            (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
-            vacation = VacationBO()
-            vacation.set_id(id)
-            vacation.set_date_of_last_change(dateOfLastChange)
-            vacation.set_start(start)
-            vacation.set_end(end)
-            vacation.set_time_interval_id(timeIntervalId)
-            vacation.set_start_event(startEvent)
-            vacation.set_end_event(endEvent)
-            vacation.set_type(type)
-            result = vacation
+    #     if tuples[0] is not None:
+    #         (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) = tuples[0]
+    #         vacation = VacationBO()
+    #         vacation.set_id(id)
+    #         vacation.set_date_of_last_change(dateOfLastChange)
+    #         vacation.set_start(start)
+    #         vacation.set_end(end)
+    #         vacation.set_time_interval_id(timeIntervalId)
+    #         vacation.set_start_event(startEvent)
+    #         vacation.set_end_event(endEvent)
+    #         vacation.set_type(type)
+    #         result = vacation
 
-        self._cnx.commit()
-        cursor.close()        
-        return result
+    #     self._cnx.commit()
+    #     cursor.close()        
+    #     return result
