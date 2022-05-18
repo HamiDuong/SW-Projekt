@@ -5,7 +5,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import EventIcon from '@mui/icons-material/Event';
-import Grid from '@mui/material/Grid'
+import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';

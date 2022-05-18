@@ -1,4 +1,3 @@
-
 """
 A. Allgemeine Hinweise zu diesem Module:
 
@@ -43,21 +42,33 @@ B. Konventionen für dieses Module:
 """
 
 # Unser Service basiert auf Flask
+from attr import attributes
 from flask import Flask
 # Auf Flask aufbauend nutzen wir RestX
 from flask_restx import Api, Resource, fields
 # Wir benutzen noch eine Flask-Erweiterung für Cross-Origin Resource Sharing
 from flask_cors import CORS
+from pandas import describe_option
+from sys import set_coroutine_origin_tracking_depth
 
 # Wir greifen natürlich auf unsere Applikationslogik inkl. BusinessObject-Klassen zurück
 from server.Businesslogic import Businesslogic
 from server.bo.UserBO import UserBO
 from server.bo.WorkTimeAccountBO import WorkTimeAccountBO
+from server.bo.eventBOs.EventBO import EventBO
 from server.Businesslogic import Businesslogic
 from server.bo import ProjectBO
 from server.bo import ProjectUserBO
 from server.bo import ActivityBO
 from SecurityDecorator import secured
+
+from server.bo.timeinterval.BreakBO import BreakBO
+from server.bo.timeinterval.IllnessBO import IllnessBO
+from server.bo.timeinterval.ProjectDurationBO import ProjectDurationBO
+from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
+from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
+from server.bo.timeinterval.VacationBO import VacationBO
+from server.bo.timeinterval.WorkBO import WorkBO
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
@@ -84,23 +95,23 @@ CORS(app, resources=r'/worktimeapp/*')
 In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt, 
 auf deren Basis Clients und Server Daten austauschen. Grundlage hierfür ist das Package flask-restx.
 """
-api = Api(app, version='1.0', title='BankBeispiel API',
-    description='Eine rudimentäre Demo-API für doppelte Buchführung in Banken.')
+api = Api(app, version='1.0', title='WorkTimeApp API',
+          description='Eine rudimentäre Zeitwirtschaftsapp realisiert durch Flask')
 
-"""Anlegen eines Namespace
+"""Worktimeapp - Namespace
 
-Namespaces erlauben uns die Strukturierung von APIs. In diesem Fall fasst dieser Namespace alle
-Bank-relevanten Operationen unter dem Präfix /worktimeapp zusammen. Eine alternative bzw. ergänzende Nutzung
-von Namespace könnte etwa sein, unterschiedliche API-Version voneinander zu trennen, um etwa 
-Abwärtskompatibilität (vgl. Lehrveranstaltungen zu Software Engineering) zu gewährleisten. Dies ließe
-sich z.B. umsetzen durch /worktimeapp/v1, /worktimeapp/v2 usw."""
-worktimeapping = api.namespace('worktimeapp', description='Funktionen des BankBeispiels')
+Namespaces erlauben die Strukturierung von APIs. In diesem Fall fasst dieser Namespace alle
+Zeitwirtschaftsrelevanten Operationen unter dem Präfix /worktimeapp zusammen."""
+
+worktimeapp = api.namespace(
+    'worktimeapp', description='Funktionen des BankBeispiels')
 
 """Nachfolgend werden analog zu unseren BusinessObject-Klassen transferierbare Strukturen angelegt.
 
-BusinessObject dient als Basisklasse, auf der die weiteren Strukturen User, Account und Transaction aufsetzen."""
+BusinessObject dient als Basisklasse, auf der die weiteren Strukturen User, Events, Projects, etc. aufsetzen."""
 bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines Business Object'),
+    'date_of_last_change': fields.datetime(attribute='_date_of_last_change', description='Zeitpunkt der letzten Änderung')
 })
 
 """Users"""
@@ -139,14 +150,84 @@ activity = api.inherit('Activity', bo, {
 
 })
 
-##Tatsächliche Funktionen beginnen ab hier.
+'''Event'''
+event = api.inherit('Event', bo, {
+    'event_id': fields.Integer(attribute='_event_id', description='Die ID des Events'),
+    'time': fields.Float(attribute='_time', description='Der Event-Zeitpunkt'),
+    'event_booking_id': fields.Integer(attribute='_event_booking_id', description='Die ID der Buchung')
+})
 
+"""
+Timeinterval und zugehörige Subklassen
+"""
+timeinterval = api.inherit('TimeInterval', bo, {
+    '_time_interval_booking_id': fields.Integer(attribute='_time_interval_booking_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+breaks = api.inherit('Break', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+illness = api.inherit('Illness', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+vacation = api.inherit('Vacation', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+work = api.inherit('Work', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+projectduration = api.inherit('ProjectDuration', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals'),
+    '_project_id': fields.Integer(attribute='_project_id', description='Fremschlüssel zum Projekt')
+})
+
+projectwork = api.inherit('ProjectWork', bo, {
+    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals'),
+    '_activity_id': fields.Integer(attribute='_activity_id', description='Fremschlüssel zur Aktivity')
+})
+
+# Tatsächliche Funktionen beginnen ab hier.
 
 @worktimeapp.route('/user')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class UserListOperations(Resource):
-    @worktimeapping.marshal_list_with(user)
-    #@secured
+    @worktimeapp.marshal_list_with(user)
+    # #@secured
     def get(self):
         """Auslesen aller User-Objekte.
 
@@ -155,9 +236,9 @@ class UserListOperations(Resource):
         user = adm.get_all_users()
         return user
 
-    @worktimeapping.marshal_with(user, code=200)
-    @worktimeapping.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-    #@secured
+    @worktimeapp.marshal_with(user, code=200)
+    @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
+    # #@secured
     def post(self):
         """Anlegen eines neuen User-Objekts.
 
@@ -177,19 +258,20 @@ class UserListOperations(Resource):
             eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
             wird auch dem Client zurückgegeben. 
             """
-            c = adm.create_user(proposal.get_first_name(), proposal.get_last_name(), proposal.get_mail_adress(), proposal.get_user_name() )
+            c = adm.create_user(proposal.get_first_name(), proposal.get_last_name(
+            ), proposal.get_mail_adress(), proposal.get_user_name())
             return c, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
 
 
-@worktimeapping.route('/users/<string:mail_adress>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('mail_adress', 'Die E-Mail-Adresse eines Benutzers')
+@worktimeapp.route('/users/<string:mail_adress>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('mail_adress', 'Die E-Mail-Adresse eines Benutzers')
 class UserOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, id):
         """Auslesen eines bestimmten User-Objekts.
 
@@ -199,7 +281,7 @@ class UserOperations(Resource):
         cust = adm.get_user_by_mail_adress(id)
         return cust
 
-    #@secured
+    # #@secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
@@ -210,9 +292,9 @@ class UserOperations(Resource):
         adm.delete_user(cust)
         return '', 200
 
-    @worktimeapping.marshal_with(user)
-    @worktimeapping.expect(user, validate=True)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    @worktimeapp.expect(user, validate=True)
+    # #@secured
     def put(self, id):
         """Update eines bestimmten User-Objekts.
 
@@ -234,12 +316,12 @@ class UserOperations(Resource):
             return '', 500
 
 
-@worktimeapping.route('/users-by-name/<string:user_name>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('user_name', 'Der User Name des Benutzers')
+@worktimeapp.route('/users-by-name/<string:user_name>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('user_name', 'Der User Name des Benutzers')
 class UsersByNameOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, user_name):
         """ Auslesen von User-Objekten, die durch den User Name bestimmt werden.
 
@@ -250,12 +332,12 @@ class UsersByNameOperations(Resource):
         return cust
 
 
-@worktimeapping.route('/users-by-name/<string:last_name>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('last_name', 'Der Nachname des Benutzers')
+@worktimeapp.route('/users-by-name/<string:last_name>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('last_name', 'Der Nachname des Benutzers')
 class UsersByNameOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, last_name):
         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -266,31 +348,28 @@ class UsersByNameOperations(Resource):
         return cust
 
 
-
-
-@worktimeapping.route('/users/<string:mail_adress>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('id', 'Die E-Mail-Adresse eines Benutzers')
+@worktimeapp.route('/users/<string:mail_adress>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
 class UserRelatedAccountOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, mail_adress):
         """Auslesen von User-Objekten, die durch die E-Mail_Adresse bestimmt werden.
 
         Die auszulesenden Objekte werden durch ```mail_adress``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_mail_adress(mail_adress)
-        return cust       
+        usr = adm.get_user_by_mail_adress(mail_adress)
+        return usr
 
 
-
-@worktimeapping.route('/users/<string:user_name>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('id', 'Die E-Mail-Adresse eines Benutzers')
+@worktimeapp.route('/users/<string:user_name>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
 class UserRelatedAccountOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, user_name):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -298,16 +377,14 @@ class UserRelatedAccountOperations(Resource):
         """
         adm = Businesslogic()
         cust = adm.get_user_by_user_name(user_name)
-        return cust    
-
-
+        return cust
 
 
 @worktimeapp.route('/WorkTimeAccount')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class WorkTimeAccountListOperations(Resource):
-    @worktimeapping.marshal_list_with(Worktimeaccount)
-    #@secured
+    @worktimeapp.marshal_list_with(Worktimeaccount)
+    # #@secured
     def get(self):
         """Auslesen aller WorkTimeAccount-Objekte.
 
@@ -316,9 +393,10 @@ class WorkTimeAccountListOperations(Resource):
         worktimeaccounts = adm.get_all_worktimeaccounts()
         return worktimeaccounts
 
-    @worktimeapping.marshal_with(Worktimeaccount, code=200)
-    @worktimeapping.expect(Worktimeaccount)  # Wir erwarten ein Worktimeaccount-Objekt von Client-Seite.
-    #@secured
+    @worktimeapp.marshal_with(Worktimeaccount, code=200)
+    # Wir erwarten ein Worktimeaccount-Objekt von Client-Seite.
+    @worktimeapp.expect(Worktimeaccount)
+    # #@secured
     def post(self):
         """Anlegen eines neuen Worktimeaccount-Objekts.
 
@@ -345,12 +423,12 @@ class WorkTimeAccountListOperations(Resource):
             return '', 500
 
 
-@worktimeapping.route('/worktimeaccounts/<int:user_id>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('user_id', 'Die User-ID eines Benutzers')
+@worktimeapp.route('/worktimeaccounts/<int:user_id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('user_id', 'Die User-ID eines Benutzers')
 class WorktimeaccountRelatedAccountOperations(Resource):
-    @worktimeapping.marshal_with(Worktimeaccount)
-    #@secured
+    @worktimeapp.marshal_with(Worktimeaccount)
+    # #@secured
     def get(self, user_id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -358,15 +436,14 @@ class WorktimeaccountRelatedAccountOperations(Resource):
         """
         adm = Businesslogic()
         cust = adm.get_user_by_user_name(user_id)
-        return cust                
-
+        return cust
 
 
 @worktimeapp.route('/projects')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class UserListOperations(Resource):
-    @worktimeapping.marshal_list_with(user)
-    #@secured
+    @worktimeapp.marshal_list_with(user)
+    # #@secured
     def get(self):
         """Auslesen aller User-Objekte.
 
@@ -375,9 +452,9 @@ class UserListOperations(Resource):
         users = adm.get_all_users()
         return users
 
-    @worktimeapping.marshal_with(user, code=200)
-    @worktimeapping.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-    #@secured
+    @worktimeapp.marshal_with(user, code=200)
+    @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
+    # #@secured
     def post(self):
         """Anlegen eines neuen User-Objekts.
 
@@ -387,9 +464,9 @@ class UserListOperations(Resource):
         liegt es an der Businesslogic (Businesslogik), eine korrekte ID
         zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
         """
-        adm = businesslogic()
+        adm = Businesslogic()
 
-        proposal = User.from_dict(api.payload)
+        proposal = user.from_dict(api.payload)
 
         """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
         if proposal is not None:
@@ -397,19 +474,20 @@ class UserListOperations(Resource):
             eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
             wird auch dem Client zurückgegeben. 
             """
-            c = adm.create_user(proposal.get_first_name(), proposal.get_last_name())
+            c = adm.create_user(proposal.get_first_name(),
+                                proposal.get_last_name())
             return c, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
 
 
-@worktimeapping.route('/users/<int:id>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('id', 'Die ID des User-Objekts')
+@worktimeapp.route('/users/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des User-Objekts')
 class UserOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, id):
         """Auslesen eines bestimmten User-Objekts.
 
@@ -419,7 +497,7 @@ class UserOperations(Resource):
         cust = adm.get_user_by_id(id)
         return cust
 
-    #@secured
+    # #@secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
@@ -430,9 +508,9 @@ class UserOperations(Resource):
         adm.delete_user(cust)
         return '', 200
 
-    @worktimeapping.marshal_with(user)
-    @worktimeapping.expect(user, validate=True)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    @worktimeapp.expect(user, validate=True)
+    # #@secured
     def put(self, id):
         """Update eines bestimmten User-Objekts.
 
@@ -441,7 +519,7 @@ class UserOperations(Resource):
         User-Objekts.
         """
         adm = Businesslogic()
-        c = User.from_dict(api.payload)
+        c = user.from_dict(api.payload)
 
         if c is not None:
             """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
@@ -453,12 +531,13 @@ class UserOperations(Resource):
         else:
             return '', 500
 
-@worktimeapping.route('/users-by-name/<string:lastname>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('lastname', 'Der Nachname des Kunden')
+
+@worktimeapp.route('/users-by-name/<string:lastname>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('lastname', 'Der Nachname des Kunden')
 class UsersByNameOperations(Resource):
-    @worktimeapping.marshal_with(user)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, lastname):
         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -469,15 +548,12 @@ class UsersByNameOperations(Resource):
         return cust
 
 
-
-
-
-@worktimeapping.route('/users/<int:id>/accounts')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('id', 'Die ID des User-Objekts')
+@worktimeapp.route('/users/<int:id>/accounts')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des User-Objekts')
 class UserRelatedAccountOperations(Resource):
-    @worktimeapping.marshal_with(account)
-    #@secured
+    @worktimeapp.marshal_with(user)
+    # #@secured
     def get(self, id):
         """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
 
@@ -495,91 +571,12 @@ class UserRelatedAccountOperations(Resource):
         else:
             return "User not found", 500
 
-    @worktimeapping.marshal_with(account, code=201)
-    #@secured
-    def post(self, id):
-        """Anlegen eines Kontos für einen gegebenen User.
-
-        Das neu angelegte Konto wird als Ergebnis zurückgegeben.
-
-        **Hinweis:** Unter der id muss ein User existieren, andernfalls wird Status Code 500 ausgegeben."""
-        adm = Businesslogic()
-        """Stelle fest, ob es unter der id einen User gibt. 
-        Dies ist aus Gründen der referentiellen Integrität sinnvoll!
-        """
-        cust = adm.get_user_by_id(id)
-
-        if cust is not None:
-            # Jetzt erst macht es Sinn, für den User ein neues Konto anzulegen und dieses zurückzugeben.
-            result = adm.create_account_for_user(cust)
-            return result
-        else:
-            return "User unknown", 500
-
-#BeispielFunktion für Bedingungen
-
-@worktimeapping.route('/transactions/<int:id>')
-@worktimeapping.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapping.param('id', 'Die ID des Transaction-Objekts.')
-class TransactionOperations(Resource):
-    @worktimeapping.marshal_with(transaction)
-    #@secured
-    def get(self, id):
-        """Auslesen eines bestimmten Transaction-Objekts.
-
-        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        trans = adm.get_transaction_by_id(id)
-
-        if trans is not None:
-            return trans
-        else:
-            return '', 500  # Wenn es keine Transaktion unter id gibt.
-
-    #@secured
-    def delete(self, id):
-        """Löschen eines bestimmten Transaction-Objekts.
-
-        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        trans = adm.get_transaction_by_id(id)
-
-        if trans is not None:
-            adm.delete_transaction(trans)
-            return '', 200
-        else:
-            return '', 500  # Wenn unter id keine Transaction existiert.
-
-    @worktimeapping.marshal_with(transaction)
-    #@secured
-    def put(self, id):
-        """Update eines bestimmten Transaction-Objekts.
-
-        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
-        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
-        User-Objekts.
-        """
-        adm = Businesslogic()
-        t = Transaction.from_dict(api.payload)
-
-        if t is not None:
-            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Transaction-Objekts gesetzt.
-            Siehe Hinweise oben.
-            """
-            t.set_id(id)
-            adm.save_transaction(t)
-            return '', 200
-        else:
-            return '', 500
-
-#Project
-@api.route('/projects')
+# Project
+@worktimeapp.route('/projects')
 class ProjectOperations(Resource):
-    @api.marshal_with(project)
-    @api.expect(project)
-    @secured
+    @worktimeapp.marshal_with(project)
+    @worktimeapp.expect(project)
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectBO.from_dict(api.payload)
@@ -591,42 +588,42 @@ class ProjectOperations(Resource):
             )
             return p
 
-    @api.marshal_list_with(project)
-    @secured
+    @worktimeapp.marshal_list_with(project)
+    # @secured
     def get(self):
         adm = Businesslogic()
         project = adm.get_all_projects()
         return project
 
 
-@api.route('/project/<int:id>')
-@api.param('id', 'Die ID des Projekts')
+@worktimeapp.route('/project/<int:id>')
+@worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
-    @api.marshal_with(project)
-    @secured
+    @worktimeapp.marshal_with(project)
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
         return project
 
-    @api.marshal_with(project)
-    @secured
+    @worktimeapp.marshal_with(project)
+    # @secured
     def get_user(self, id):
         adm = Businesslogic()
         project = adm.get_projects_by_user_id(id)
         return project
 
-    @api.marshal_with(project)
-    @secured
+    @worktimeapp.marshal_with(project)
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
         adm.delete_project(project)
         return ''
 
-    @api.marshal_with(project)
-    @api.expect(project, validate=True)
-    @secured
+    @worktimeapp.marshal_with(project)
+    @worktimeapp.expect(project, validate=True)
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectBO.from_dict(api.payload)
@@ -637,24 +634,25 @@ class ProjectWithIDOperations(Resource):
             return p, 200
         else:
             return '', 50
-    
-@api.route('/project/<str:name>')
-@api.param('name', 'Der Name des Projekts')
+
+
+'''@worktimeapp.route('/project/<str:name>')
+@worktimeapp.param('name', 'Der Name des Projekts')
 class ProjectWithSTRINGOperations(Resource):
-    @api.marshal_with(project)
-    @secured
+    @worktimeapp.marshal_with(project)
+    # @secured
     def get(self, name):
         adm = Businesslogic()
         activity = adm.get_by_project_name(name)
-        return activity
+        return activity'''
 
 
-#ProjectUser
-@api.route('/projectusers')
+# ProjectUser
+@worktimeapp.route('/projectusers')
 class ProjectUserOperations(Resource):
-    @api.marshal_with(projectuser)
-    @api.expect(projectuser)
-    @secured
+    @worktimeapp.marshal_with(projectuser)
+    @worktimeapp.expect(projectuser)
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectUserBO.from_dict(api.payload)
@@ -666,19 +664,19 @@ class ProjectUserOperations(Resource):
             )
             return p
 
-    @api.marshal_list_with(projectuser)
-    @secured
+    @worktimeapp.marshal_list_with(projectuser)
+    # @secured
     def get(self):
         adm = Businesslogic()
         projectuser = adm.get_all_projectusers()
         return projectuser
 
 
-@api.route('/projectuser/<int:id>')
-@api.param('id', 'Die ID des Projekts')
+@worktimeapp.route('/projectuser/<int:id>')
+@worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
-    @api.marshal_with(projectuser)
-    @secured
+    @worktimeapp.marshal_with(projectuser)
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_projectuser_by_id(id)
@@ -689,17 +687,17 @@ class ProjectWithIDOperations(Resource):
         projectuser = adm.get_all_project_members(project_id)
         return projectuser
 
-    @api.marshal_with(projectuser)
-    @secured
+    @worktimeapp.marshal_with(projectuser)
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         projectuser = adm.get_projectuser_by_id(id)
         adm.delete_projectuser(projectuser)
         return ''
 
-    @api.marshal_with(projectuser)
-    @api.expect(projectuser, validate=True)
-    @secured
+    @worktimeapp.marshal_with(projectuser)
+    @worktimeapp.expect(projectuser, validate=True)
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectUserBO.from_dict(api.payload)
@@ -711,12 +709,14 @@ class ProjectWithIDOperations(Resource):
         else:
             return '', 500
 
-#Activity
-@api.route('/activities')
+# Activity
+
+
+@worktimeapp.route('/activities')
 class ActivityOperations(Resource):
-    @api.marshal_with(activity)
-    @api.expect(activity)
-    @secured
+    @worktimeapp.marshal_with(activity)
+    @worktimeapp.expect(activity)
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ActivityBO.from_dict(api.payload)
@@ -729,19 +729,19 @@ class ActivityOperations(Resource):
             )
             return p
 
-    @api.marshal_list_with(activity)
-    @secured
+    @worktimeapp.marshal_list_with(activity)
+    # @secured
     def get(self):
         adm = Businesslogic()
         activity = adm.get_all_activities()
         return activity
 
 
-@api.route('/activity/<int:id>')
-@api.param('id', 'Die ID der Aktivitaet')
+@worktimeapp.route('/activity/<int:id>')
+@worktimeapp.param('id', 'Die ID der Aktivitaet')
 class ActivityWithIDOperations(Resource):
-    @api.marshal_with(activity)
-    @secured
+    @worktimeapp.marshal_with(activity)
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
@@ -752,17 +752,17 @@ class ActivityWithIDOperations(Resource):
         activity = adm.get_all_by_project_id(id)
         return activity
 
-    @api.marshal_with(activity)
-    @secured
+    @worktimeapp.marshal_with(activity)
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
         adm.delete_activity(activity)
         return ''
 
-    @api.marshal_with(activity)
-    @api.expect(activity, validate=True)
-    @secured
+    @worktimeapp.marshal_with(activity)
+    @worktimeapp.expect(activity, validate=True)
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ActivityBO.from_dict(api.payload)
@@ -774,15 +774,172 @@ class ActivityWithIDOperations(Resource):
         else:
             return '', 500
 
-@api.route('/activity/<str:name>')
-@api.param('name', 'Der Name der Aktivitaet')
+
+'''@worktimeapp.route('/activity/<str:name>')
+@worktimeapp.param('name', 'Der Name der Aktivitaet')
 class ActivityWithSTRINGOperations(Resource):
-    @api.marshal_with(activity)
-    @secured
+    @worktimeapp.marshal_with(activity)
+    # @secured
     def get(self, name):
         adm = Businesslogic()
         activity = adm.get_by_name(name)
         return activity
+'''
+
+@worktimeapp.route('/events')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class EventListOperations(Resource):
+    @worktimeapp.marshal_list_with(event)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        events = adm.get_all_events()
+        return events
+
+    @worktimeapp.marshal_with(event, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(event)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts.
+
+        **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
+        So ist zum Beispiel die Vergabe der ID nicht Aufgabe des Clients.
+        Selbst wenn der Client eine ID in dem Proposal vergeben sollte, so
+        liegt es an der BankAdministration (Businesslogik), eine korrekte ID
+        zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
+        """
+        adm = Businesslogic()
+
+        proposal = event.from_dict(api.payload)
+
+        """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
+        if proposal is not None:
+            """ Wir verwenden lediglich Vor- und Nachnamen des Proposals für die Erzeugung
+            eines Event-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
+            wird auch dem Client zurückgegeben. 
+            """
+            c = adm.create_event(
+                proposal.get_id(), proposal.get_time(), proposal.get_event_booking_id())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+
+@worktimeapp.route('/events/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class EventOperations(Resource):
+    @worktimeapp.marshal_with(event)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_event_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        event = adm.get_event_by_id(id)
+        adm.delete_event(event)
+        return '', 200
+
+    @worktimeapp.marshal_with(event)
+    @worktimeapp.expect(event, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        ev = event.from_dict(api.payload)
+
+        if ev is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            ev.set_id(id)
+            adm.save_event(ev)
+            return '', 200
+        else:
+            return '', 500
+
+
+@worktimeapp.route('/events-by-event_booking_id/<int:event_booking_id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('event_booking_id', 'Die ID der zugehörigen Ereignsisbuchung')
+class EventsByNameOperations(Resource):
+    @worktimeapp.marshal_with(event)
+    # @secured
+    def get(self, event_booking_id):
+        """ Auslesen von Event-Objekten, die durch den Nachnamen bestimmt werden.
+
+        Die auszulesenden Objekte werden durch ```event_booking_id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        event = adm.get_event_by_name(event_booking_id)
+        return event
+
+"""
+Timeinterval
+"""
+@worktimeapp.route('/timeinterval')
+class TimeIntervalOperations(Resource):
+    @worktimeapp.marshal_with(timeinterval)
+    @worktimeapp.expect(timeinterval)
+    @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = TimeIntervalBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_timeinterval(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_time_interval_booking_id(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+            return p
+    
+    @worktimeapp.marshal_list_with(timeinterval)
+    @secured
+    def get(self):
+        adm = Businesslogic()
+        timeinterval = adm.get_all_timeintervals()
+        return timeinterval
+
+@worktimeapp.route('timeinterval/<int:id>')
+@worktimeapp.param('id', 'ID des Timeintervalls')
+class TimeIntervalWithIDOperations(Resource):
+    @worktimeapp.marshal_with(timeinterval)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        timeinterval = adm.get_timeinterval_by_id(id)
+        return timeinterval
+
+    @worktimeapp.marshal_with(timeinterval)
+    @secured
+    def delete(self, id):
+        adm = Businesslogic()
+        timeinterval = adm.get_timeinterval_by_id(id)
+        adm.delete_timeinterval(timeinterval)
 
 
 """
@@ -797,4 +954,3 @@ folgenden Zeilen.
 """
 if __name__ == '__main__':
     app.run(debug=True)
-
