@@ -908,14 +908,15 @@ class TimeIntervalOperations(Resource):
         proposal = TimeIntervalBO.from_dict(api.payload)
         if proposal is not None:
             p = adm.create_timeinterval(
-                proposal.get_start(),
-                proposal.get_end(),
-                proposal.get_time_interval_booking_id(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
                 proposal.get_type(),
+                proposal.get_break_id(),
+                proposal.get_illness_id(),
+                proposal.get_project_duration_id(),
+                proposal.get_project_work_id(),
+                proposal.get_vacation_id(),
+                proposal.get_work_id()
             )
-            return p
+        return p
     
     @worktimeapp.marshal_list_with(timeinterval)
     @secured
@@ -941,6 +942,323 @@ class TimeIntervalWithIDOperations(Resource):
         timeinterval = adm.get_timeinterval_by_id(id)
         adm.delete_timeinterval(timeinterval)
 
+    @worktimeapp.marshal_with(timeinterval)
+    @worktimeapp.expect(timeinterval, validate=True)
+    @secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = TimeIntervalBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_timeinterval(p)
+            return p, 200
+        else:
+            return '', 500
+        
+
+"""
+Break
+"""
+@worktimeapp.route('/break')
+class BreakOperations(Resource):
+    @worktimeapp.marshal_with(breaks)
+    @worktimeapp.expect(breaks)
+    @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = BreakBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_break(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
+
+    @worktimeapp.marshal_list_with(breaks)
+    @secured
+    def get(self):
+        adm = Businesslogic()
+        breaks = adm.get_all_breaks()
+        return breaks
+
+@worktimeapp.route('break/<int:id>')
+@worktimeapp.param('id', 'ID der Break')
+class BreakWithIDOperations(Resource):
+    @worktimeapp.marshal_with(breaks)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        breaks = adm.get_break_by_id(id)
+        return timeinterval
+
+    @worktimeapp.marshal_with(breaks)
+    @secured
+    def delete(self, id):
+        adm = Businesslogic()
+        breaks = adm.get_break_by_id(id)
+        adm.delete_break(breaks)
+
+    @worktimeapp.marshal_with(breaks)
+    @worktimeapp.expect(breaks, validate=True)
+    @secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = BreakBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_break(p)
+            return p, 200
+        else:
+            return '', 500
+
+@worktimeapp.route('break/<date:start>')
+@worktimeapp.param('start', 'Start von Break')
+class FindBreakByDate(Resource):
+    @worktimeapp.marshal_with(breaks)
+    @secured
+    def get(self, start):
+        adm = Businesslogic()
+        breaks = adm.get_breaks_by_date(start)
+        return breaks
+
+@worktimeapp.route('break/<date:start>/<date:end>')
+@worktimeapp.param('start', 'Start von Break', 'end', 'Ende von Break')
+class FindBreakByTimePeriod(Resource):
+    @worktimeapp.marshal_with(breaks)
+    @secured
+    def get(self, start, end):
+        adm = Businesslogic()
+        breaks = adm.get_breaks_by_time_period(start, end)
+        return breaks
+
+"""
+Illness
+"""
+@worktimeapp.route('/illness')
+class IllnessOperations(Resource):
+    @worktimeapp.marshal_with(illness)
+    @worktimeapp.expect(illness)
+    @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = IllnessBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_illness(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
+
+    @worktimeapp.marshal_list_with(illness)
+    @secured
+    def get(self):
+        adm = Businesslogic()
+        illness = adm.get_all_illnesses()
+        return illness
+
+@worktimeapp.route('illness/<int:id>')
+@worktimeapp.param('id', 'ID der Illness')
+class IllnessWithIDOperations(Resource):
+    @worktimeapp.marshal_with(illness)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        illness = adm.get_illness_by_id(id)
+        return illness
+
+    @worktimeapp.marshal_with(illness)
+    @secured
+    def delete(self, id):
+        adm = Businesslogic()
+        illness = adm.get_illness_by_id(id)
+        adm.delete_illness(illness)
+
+    @worktimeapp.marshal_with(illness)
+    @worktimeapp.expect(illness, validate=True)
+    @secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = BreakBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_illness(p)
+            return p, 200
+        else:
+            return '', 500
+
+@worktimeapp.route('illness/<date:start>')
+@worktimeapp.param('start', 'Start von Illness')
+class FindIllnessByDate(Resource):
+    @worktimeapp.marshal_with(illness)
+    @secured
+    def get(self, start):
+        adm = Businesslogic()
+        illness = adm.get_illnesses_by_date(start)
+        return illness
+
+@worktimeapp.route('illness/<date:start>/<date:end>')
+@worktimeapp.param('start', 'Start von Illness', 'end', 'Ende von Illness')
+class FindIllnessByTimePeriod(Resource):
+    @worktimeapp.marshal_with(illness)
+    @secured
+    def get(self, start, end):
+        adm = Businesslogic()
+        illness = adm.get_illnesses_by_time_period(start, end)
+        return illness
+"""
+ProjectDuration
+"""
+
+"""
+ProjectWork
+"""
+
+"""
+Vacation
+"""
+@worktimeapp.route('/vacation')
+class VacationOperations(Resource):
+    @worktimeapp.marshal_with(vacation)
+    @worktimeapp.expect(vacation)
+    @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = VacationBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_vacation(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
+
+    @worktimeapp.marshal_list_with(vacation)
+    @secured
+    def get(self):
+        adm = Businesslogic()
+        vacation = adm.get_all_vacations()
+        return vacation
+
+@worktimeapp.route('vacation/<int:id>')
+@worktimeapp.param('id', 'ID der Vacation')
+class VacationWithIDOperations(Resource):
+    @worktimeapp.marshal_with(vacation)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        vacation = adm.get_vacation_by_id(id)
+        return vacation
+
+    @worktimeapp.marshal_with(vacation)
+    @secured
+    def delete(self, id):
+        adm = Businesslogic()
+        vacation = adm.get_vacation_by_id(id)
+        adm.delete_vacation(vacation)
+
+    @worktimeapp.marshal_with(vacation)
+    @worktimeapp.expect(vacation, validate=True)
+    @secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = VacationBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_vacation(p)
+            return p, 200
+        else:
+            return '', 500
+
+@worktimeapp.route('vacation/<date:start>')
+@worktimeapp.param('start', 'Start von Vacation')
+class FindIllnessByDate(Resource):
+    @worktimeapp.marshal_with(vacation)
+    @secured
+    def get(self, start):
+        adm = Businesslogic()
+        vacation = adm.get_vacations_by_date(start)
+        return vacation
+
+@worktimeapp.route('vacation/<date:start>/<date:end>')
+@worktimeapp.param('start', 'Start von Vacation', 'end', 'Ende von Vacation')
+class FindIllnessByTimePeriod(Resource):
+    @worktimeapp.marshal_with(illness)
+    @secured
+    def get(self, start, end):
+        adm = Businesslogic()
+        illness = adm.get_illnesses_by_time_period(start, end)
+        return illness
+
+"""
+Work
+"""
+@worktimeapp.route('/work')
+class WorkOperations(Resource):
+    @worktimeapp.marshal_with(work)
+    @worktimeapp.expect(work)
+    @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = WorkBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_work(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
+
+    @worktimeapp.marshal_list_with(work)
+    @secured
+    def get(self):
+        adm = Businesslogic()
+        work = adm.get_all_works()
+        return work
+
+@worktimeapp.route('work/<int:id>')
+@worktimeapp.param('id', 'ID der Work')
+class WorkWithIDOperations(Resource):
+    @worktimeapp.marshal_with(work)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        work = adm.get_work_by_id(id)
+        return work
+
+    @worktimeapp.marshal_with(work)
+    @secured
+    def delete(self, id):
+        adm = Businesslogic()
+        work = adm.get_work_by_id(id)
+        adm.delete_work(work)
+
+    @worktimeapp.marshal_with(work)
+    @worktimeapp.expect(work, validate=True)
+    @secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = WorkBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_work(p)
+            return p, 200
+        else:
+            return '', 500
 
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
