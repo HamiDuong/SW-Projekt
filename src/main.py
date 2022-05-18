@@ -1014,7 +1014,7 @@ class BreakWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('break/<date:start>')
+@worktimeapp.route('breakdate/<date:start>')
 @worktimeapp.param('start', 'Start von Break')
 class FindBreakByDate(Resource):
     @worktimeapp.marshal_with(breaks)
@@ -1024,7 +1024,7 @@ class FindBreakByDate(Resource):
         breaks = adm.get_breaks_by_date(start)
         return breaks
 
-@worktimeapp.route('break/<date:start>/<date:end>')
+@worktimeapp.route('breakperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von Break', 'end', 'Ende von Break')
 class FindBreakByTimePeriod(Resource):
     @worktimeapp.marshal_with(breaks)
@@ -1093,7 +1093,7 @@ class IllnessWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('illness/<date:start>')
+@worktimeapp.route('illnessdate/<date:start>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByDate(Resource):
     @worktimeapp.marshal_with(illness)
@@ -1103,7 +1103,7 @@ class FindIllnessByDate(Resource):
         illness = adm.get_illnesses_by_date(start)
         return illness
 
-@worktimeapp.route('illness/<date:start>/<date:end>')
+@worktimeapp.route('illnessperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von Illness', 'end', 'Ende von Illness')
 class FindIllnessByTimePeriod(Resource):
     @worktimeapp.marshal_with(illness)
@@ -1172,7 +1172,7 @@ class ProjecDurationWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('projectduration/<date:start>')
+@worktimeapp.route('projectdurationdate/<date:start>')
 @worktimeapp.param('start', 'Start von ProjectDuration')
 class FindProjectDurationByDate(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -1182,7 +1182,7 @@ class FindProjectDurationByDate(Resource):
         projectduration = adm.get_project_durations_by_date(start)
         return projectduration
 
-@worktimeapp.route('projectduration/<date:start>/<date:end>')
+@worktimeapp.route('projectdurationperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von ProjectDuration', 'end', 'Ende von ProjectDuration')
 class FindProjectDurationByTimePeriod(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -1192,7 +1192,7 @@ class FindProjectDurationByTimePeriod(Resource):
         projectduration = adm.get_project_durations_by_time_period(start, end)
         return projectduration
 
-@worktimeapp.route('projectduration/<int:projectid>')
+@worktimeapp.route('projectdurationproject/<int:projectid>')
 @worktimeapp.param('id', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -1262,7 +1262,7 @@ class ProjecWorkWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('projectwork/<date:start>')
+@worktimeapp.route('projectworkdate/<date:start>')
 @worktimeapp.param('start', 'Start von ProjectWork')
 class FindProjectWorkByDate(Resource):
     @worktimeapp.marshal_with(projectwork)
@@ -1272,7 +1272,7 @@ class FindProjectWorkByDate(Resource):
         projectwork = adm.get_project_works_by_date(start)
         return projectwork
 
-@worktimeapp.route('projectwork/<date:start>/<date:end>')
+@worktimeapp.route('projectworkperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von ProjectWork', 'end', 'Ende von ProjectWork')
 class FindProjectWorkByTimePeriod(Resource):
     @worktimeapp.marshal_with(projectwork)
@@ -1282,7 +1282,7 @@ class FindProjectWorkByTimePeriod(Resource):
         projectwork = adm.get_project_works_by_time_period(start, end)
         return projectwork
 
-@worktimeapp.route('projectwork/<int:projectid>')
+@worktimeapp.route('projectworkactivity/<int:projectid>')
 @worktimeapp.param('id', 'Id von Project')
 class FindProjectWorkByProjectId(Resource):
     @worktimeapp.marshal_with(projectwork)
@@ -1351,7 +1351,7 @@ class VacationWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('vacation/<date:start>')
+@worktimeapp.route('vacationdate/<date:start>')
 @worktimeapp.param('start', 'Start von Vacation')
 class FindVacationByDate(Resource):
     @worktimeapp.marshal_with(vacation)
@@ -1361,7 +1361,7 @@ class FindVacationByDate(Resource):
         vacation = adm.get_vacations_by_date(start)
         return vacation
 
-@worktimeapp.route('vacation/<date:start>/<date:end>')
+@worktimeapp.route('vacationperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von Vacation', 'end', 'Ende von Vacation')
 class FindVacationByTimePeriod(Resource):
     @worktimeapp.marshal_with(vacation)
@@ -1430,7 +1430,7 @@ class WorkWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('work/<date:start>')
+@worktimeapp.route('workdate/<date:start>')
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByDate(Resource):
     @worktimeapp.marshal_with(work)
@@ -1440,7 +1440,7 @@ class FindWorkByDate(Resource):
         work = adm.get_works_by_date(start)
         return work
 
-@worktimeapp.route('vacation/<date:start>/<date:end>')
+@worktimeapp.route('vacationperiod/<date:start>/<date:end>')
 @worktimeapp.param('start', 'Start von Work', 'end', 'Ende von Work')
 class FindWorkByTimePeriod(Resource):
     @worktimeapp.marshal_with(work)
