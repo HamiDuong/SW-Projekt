@@ -318,6 +318,10 @@ class Businesslogic():
         with TimeIntervalMapper() as mapper:
             mapper.delete(timeinterval)
 
+    def get_timeinterval_by_type(self, type):
+        with TimeIntervalMapper() as mapper:
+            mapper.find_by_type(type)
+
     """
     Break Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
