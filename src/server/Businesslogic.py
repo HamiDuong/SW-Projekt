@@ -296,10 +296,16 @@ class Businesslogic():
         with TimeIntervalMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_timeinterval(self, timeintervalbookingid, type):
+    def create_timeinterval(self, type, break_id, illness_id, project_duration_id, project_work_id, vacation_id, work_id):
         timeinterval = TimeIntervalBO()
-        timeinterval.set_time_interval_booking_id(timeintervalbookingid)
+        #timeinterval.set_time_interval_booking_id(timeintervalbookingid)
         timeinterval.set_type(type)
+        timeinterval.set_break_id(break_id)
+        timeinterval.set_illness_id(illness_id)
+        timeinterval.set_project_duration_id(project_duration_id)
+        timeinterval.set_project_work_id(project_work_id)
+        timeinterval.set_vacation_id(vacation_id)
+        timeinterval.set_work_id(work_id)
 
         with TimeIntervalMapper() as mapper:
             return mapper.insert(timeinterval)
@@ -324,13 +330,13 @@ class Businesslogic():
         with BreakMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_break(self, start, end, time_interval_id, startevent, endevent):
+    def create_break(self, start, end, s_event, e_event):
         break_obj = BreakBO()
         break_obj.set_start(start)
         break_obj.set_end(end)
-        break_obj.set_time_interval_id(time_interval_id)
-        break_obj.set_start_event(startevent)
-        break_obj.set_end_event(endevent)
+        #break_obj.set_time_interval_id(time_interval_id)
+        break_obj.set_start_event(s_event)
+        break_obj.set_end_event(e_event)
         break_obj.set_type("Break")
 
         with BreakMapper() as mapper:
@@ -344,17 +350,61 @@ class Businesslogic():
         with BreakMapper as mapper:
             mapper.delete(break_obj)
 
-    def get_break_by_date(self, date):
+    def get_breaks_by_date(self, date):
         with BreakMapper() as mapper:
             return mapper.find_by_date(date)
 
-    def get_break_by_time_period(self, startdate, enddate):
+    def get_breaks_by_time_period(self, startdate, enddate):
         with BreakMapper() as mapper:
             return mapper.find_by_time_period(startdate, enddate)
 
-    def get_break_by_timeinterval_id(self, id):
-        with BreakMapper() as mapper:
-            return mapper.find_by_time_interval_id(id)
+    # def get_break_by_timeinterval_id(self, id):
+    #     with BreakMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
+
+    """
+    Illness Methoden
+    @author Ha Mi Duong (https://github.com/HamiDuong)
+    """
+    def get_all_illnesses(self):
+        with IllnessMapper() as mapper:
+            return mapper.find_all()
+
+    def get_illness_by_id(self, id):
+        with IllnessMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def create_illness(self, start, end, startevent, endevent):
+        illness = IllnessBO()
+        illness.set_start(start)
+        illness.set_end(end)
+        #illness.set_time_interval_id(time_interval_id)
+        illness.set_start_event(startevent)
+        illness.set_end_event(endevent)
+        illness.set_type("Illness")
+
+        with IllnessMapper() as mapper:
+            return mapper.insert(illness)
+
+    def save_illness(self, illness):
+        with IllnessMapper as mapper:
+            mapper.update(illness)
+
+    def delete_illness(self, illness):
+        with IllnessMapper as mapper:
+            mapper.delete(illness)
+
+    def get_illnesses_by_date(self, date):
+        with IllnessMapper() as mapper:
+            return mapper.find_by_date(date)
+
+    def get_illnesses_by_time_period(self, startdate, enddate):
+        with IllnessMapper() as mapper:
+            return mapper.find_by_time_period(startdate, enddate)
+
+    # def get_vacation_by_timeinterval_id(self, id):
+    #     with IllnessMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
 
     """
     Vacation Methoden
@@ -368,11 +418,11 @@ class Businesslogic():
         with VacationMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_vacation(self, start, end, time_interval_id, startevent, endevent):
+    def create_vacation(self, start, end, startevent, endevent):
         vacation_obj = VacationBO()
         vacation_obj.set_start(start)
         vacation_obj.set_end(end)
-        vacation_obj.set_time_interval_id(time_interval_id)
+        #vacation_obj.set_time_interval_id(time_interval_id)
         vacation_obj.set_start_event(startevent)
         vacation_obj.set_end_event(endevent)
         vacation_obj.set_type("Vacation")
@@ -380,25 +430,25 @@ class Businesslogic():
         with VacationMapper() as mapper:
             return mapper.insert(vacation_obj)
 
-    def save_vacation(self, break_obj):
+    def save_vacation(self, vacation_obj):
         with VacationMapper as mapper:
-            mapper.update(break_obj)
+            mapper.update(vacation_obj)
 
-    def delete_vacation(self, break_obj):
+    def delete_vacation(self, vacation_obj):
         with VacationMapper as mapper:
-            mapper.delete(break_obj)
+            mapper.delete(vacation_obj)
 
-    def get_vacation_by_date(self, date):
+    def get_vacations_by_date(self, date):
         with VacationMapper() as mapper:
             return mapper.find_by_date(date)
 
-    def get_vacation_by_time_period(self, startdate, enddate):
+    def get_vacations_by_time_period(self, startdate, enddate):
         with VacationMapper() as mapper:
             return mapper.find_by_time_period(startdate, enddate)
 
-    def get_vacation_by_timeinterval_id(self, id):
-        with VacationMapper() as mapper:
-            return mapper.find_by_time_interval_id(id)
+    # def get_vacation_by_timeinterval_id(self, id):
+    #     with VacationMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
 
     """
     Work Methoden
@@ -412,11 +462,11 @@ class Businesslogic():
         with WorkMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_work(self, start, end, time_interval_id, startevent, endevent):
+    def create_work(self, start, end, startevent, endevent):
         work_obj = WorkBO()
         work_obj.set_start(start)
         work_obj.set_end(end)
-        work_obj.set_time_interval_id(time_interval_id)
+        #work_obj.set_time_interval_id(time_interval_id)
         work_obj.set_start_event(startevent)
         work_obj.set_end_event(endevent)
         work_obj.set_type("Work")
@@ -432,17 +482,17 @@ class Businesslogic():
         with WorkMapper as mapper:
             mapper.delete(work_obj)
 
-    def get_work_by_date(self, date):
+    def get_works_by_date(self, date):
         with WorkMapper() as mapper:
             return mapper.find_by_date(date)
 
-    def get_work_by_time_period(self, startdate, enddate):
+    def get_works_by_time_period(self, startdate, enddate):
         with WorkMapper() as mapper:
             return mapper.find_by_time_period(startdate, enddate)
 
-    def get_work_by_timeinterval_id(self, id):
-        with WorkMapper() as mapper:
-            return mapper.find_by_time_interval_id(id)
+    # def get_work_by_timeinterval_id(self, id):
+    #     with WorkMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
 
     """
     ProjectDuration Methoden
@@ -456,11 +506,11 @@ class Businesslogic():
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_project_duration(self, start, end, time_interval_id, startevent, endevent, project_id):
+    def create_project_duration(self, start, end, startevent, endevent, project_id):
         project_duration_obj = ProjectDurationBO()
         project_duration_obj.set_start(start)
         project_duration_obj.set_end(end)
-        project_duration_obj.set_time_interval_id(time_interval_id)
+        #project_duration_obj.set_time_interval_id(time_interval_id)
         project_duration_obj.set_start_event(startevent)
         project_duration_obj.set_end_event(endevent)
         project_duration_obj.set_type("ProjectDuration")
@@ -477,17 +527,71 @@ class Businesslogic():
         with ProjectDurationMapper as mapper:
             mapper.delete(project_duration_obj)
 
-    def get_project_duration_by_date(self, date):
+    def get_project_durations_by_date(self, date):
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_date(date)
 
-    def get_project_duration_by_time_period(self, startdate, enddate):
+    def get_project_durations_by_time_period(self, startdate, enddate):
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_time_period(startdate, enddate)
 
-    def get_project_duration_by_time_interval_id(self, id):
+    # def get_project_duration_by_time_interval_id(self, id):
+    #     with ProjectDurationMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
+
+    def get_project_duration_by_project_id(self, id):
         with ProjectDurationMapper() as mapper:
-            return mapper.find_by_time_interval_id(id)
+            return mapper.find_by_project_id(id)
+
+    """
+    ProjectWork Methoden
+    @author Ha Mi Duong (https://github.com/HamiDuong)
+    """
+    def get_all_project_works(self):
+        with ProjectWorkMapper() as mapper:
+            return mapper.find_all()
+
+    def get_project_work_by_id(self, id):
+        with ProjectWorkMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def create_project_work(self, start, end, startevent, endevent, activity_id):
+        project_work_obj = ProjectWorkBO()
+        project_work_obj.set_start(start)
+        project_work_obj.set_end(end)
+        #project_work_obj.set_time_interval_id(time_interval_id)
+        project_work_obj.set_start_event(startevent)
+        project_work_obj.set_end_event(endevent)
+        project_work_obj.set_type("ProjectWork")
+        project_work_obj.set_activity_id(activity_id)
+
+        with ProjectWorkMapper() as mapper:
+            return mapper.insert(project_work_obj)
+
+    def save_project_work(self, project_work_obj):
+        with ProjectWorkMapper as mapper:
+            mapper.update(project_work_obj)
+
+    def delete_project_work(self, project_work_obj):
+        with ProjectWorkMapper as mapper:
+            mapper.delete(project_work_obj)
+
+    def get_project_works_by_date(self, date):
+        with ProjectWorkMapper() as mapper:
+            return mapper.find_by_date(date)
+
+    def get_project_works_by_time_period(self, startdate, enddate):
+        with ProjectWorkMapper() as mapper:
+            return mapper.find_by_time_period(startdate, enddate)
+
+    # def get_project_duration_by_time_interval_id(self, id):
+    #     with ProjectWorkMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
+
+    def get_project_works_by_activity_id(self, id):
+        with ProjectWorkMapper() as mapper:
+            return mapper.find_all_by_activity_id(id)
+
 
     """
     Booking Methoden

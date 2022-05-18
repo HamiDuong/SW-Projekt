@@ -1,4 +1,4 @@
-from server.db.timeinterval import TimeIntervalMapper
+from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
 from server.bo.timeinterval.VacationBO import VacationBO
 from datetime import datetime
 
