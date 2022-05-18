@@ -49,7 +49,7 @@ class TimeIntervalMapper(Mapper):
         cursor.execute("SELECT id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId from worktimeapp.timeintervals")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, timeIntervalBookingId, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId) in tuples:
+        for (id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId) in tuples:
             timeinterval = TimeIntervalBO()
             timeinterval.set_id(id)
             timeinterval.set_date_of_last_change(dateOfLastChange)
@@ -158,3 +158,34 @@ class TimeIntervalMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()  
+
+    """
+    Gibt TimeIntervalBOs mit dem gegebenen type zurück
+    param: elem (String) - type vom gesuchtem TimeIntervalBO
+    return: TimeIntervalBO mit type = elem
+    """    
+    def find_by_type(self, elem):
+        result = []
+        cursor = self._cnx.cursor()
+        #command = "SELECT id, dateOfLastChange, timeIntervalBookingId, type, from worktimeapp.timeintervals WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId from worktimeapp.timeintervals WHERE type={}".format(elem)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples[0] is not None:
+            for (id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId) in tuples:
+                timeinterval = TimeIntervalBO()
+                timeinterval.set_id(id)
+                timeinterval.set_date_of_last_change(dateOfLastChange)
+                #timeinterval.set_time_interval_booking_id(timeIntervalBookingId)
+                timeinterval.set_type(type)
+                timeinterval.set_break_id(breakId)
+                timeinterval.set_illness_id(illnessId)
+                timeinterval.set_project_duration_id(projectDurationId)
+                timeinterval.set_project_work_id(projectWorkId)
+                timeinterval.set_work_id(workId)
+                timeinterval.set_vacation_id(vacationId)
+                result.append(timeinterval)
+
+            self._cnx.commit()
+        return result
