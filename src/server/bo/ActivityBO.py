@@ -9,7 +9,6 @@ class ActivityBO(bo.BusinessObject):
         self._name = None
         self._capacity = None
         self._project_id = None
-        self._duration = None
     
     def get_name(self):
         """Auslesen des Namen"""
@@ -35,19 +34,11 @@ class ActivityBO(bo.BusinessObject):
         """Setzen der Projekt ID"""
         self._project_id = project_id
 
-    def get_duration(self,):
-        """Auslesen der Aktivitaetsdauer"""
-        return self._duration
-
-    def set_duration(self, duration):
-        """Setzen der Aktivitaetsdauer"""
-        self._duration = duration
-
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
         
         Diese besteht aus der ID der Superklasse ergänzt durch die Aktivitaeten eines Projekts."""
-        return "Customer: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_duration())
+        return "Customer: {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id())
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -58,5 +49,4 @@ class ActivityBO(bo.BusinessObject):
         obj.set_name(dictionary["name"])  
         obj.set_capacity(dictionary["capacity"])
         obj.set_project_id(dictionary)["project_id"]
-        obj.set_duration(dictionary["duration"])
         return obj

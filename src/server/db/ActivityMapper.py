@@ -16,14 +16,13 @@ class ActivityMapper(Mapper):
         cursor.execute("SELECT * from activities")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, name, capacity, project_id, duration) in tuples:
+        for (id, dateOfLastChange, name, capacity, project_id) in tuples:
             activityobj = ActivityBO()
             activityobj.set_id(id)
             activityobj.set_date_of_last_change(dateOfLastChange)
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(project_id)
-            activityobj.set_duration(duration)
             result.append(activityobj)
 
         self._cnx.commit()
@@ -42,14 +41,13 @@ class ActivityMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, name, capacity, project_id, duration) = tuples[0]
+            (id, dateOfLastChange, name, capacity, project_id) = tuples[0]
             activityobj = ActivityBO()
             activityobj.set_id(id)
             activityobj.set_date_of_last_change(dateOfLastChange)
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(project_id)
-            activityobj.set_duration(duration)
             result = activityobj
 
         self._cnx.commit()
@@ -70,8 +68,8 @@ class ActivityMapper(Mapper):
         for (maxid) in tuples:
             activity_obj.set_id(maxid[0]+1)
 
-        command = "INSERT INTO activities (id, dateOfLastChange, name, capacity, project_id, duration) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (activity_obj.get_id(), activity_obj.get_date_of_last_change(), activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_project_id(), activity_obj.get_duration())
+        command = "INSERT INTO activities (id, dateOfLastChange, name, capacity, project_id) VALUES (%s, %s, %s, %s, %s)"
+        data = (activity_obj.get_id(), activity_obj.get_date_of_last_change(), activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_project_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -87,8 +85,8 @@ class ActivityMapper(Mapper):
     def update (self, activity_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE activities " + "SET name=%s, capacity=%s, duration=%s WHERE id=%s"
-        data = (activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_duration, activity_obj.get_id())
+        command = "UPDATE activities " + "SET name=%s, capacity=%s WHERE id=%s"
+        data = (activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -128,7 +126,6 @@ class ActivityMapper(Mapper):
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(project_id)
-            activityobj.set_duration(duration)
             result = activityobj
 
         self._cnx.commit()

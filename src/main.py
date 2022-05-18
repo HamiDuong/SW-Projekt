@@ -129,7 +129,8 @@ Worktimeaccount = api.inherit('Object', bo, {
 project = api.inherit('Project', bo, {
     'name': fields.String(attribute='_name', description='Der Name des Projekts'),
     'commissioner': fields.String(attribute='_commissioner', description='Der Name des Projektleiter'),
-    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer')
+    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
+    'duration': fields.Float(attribute='_duration', description='Die Dauer einer Aktivität')
 })
 
 '''ProjectUser'''
@@ -143,8 +144,7 @@ projectuser = api.inherit('ProjectUser', bo, {
 activity = api.inherit('Activity', bo, {
     'name': fields.String(attribute='_name', description='Der Name des Projekts'),
     'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
-    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projekts'),
-    'duration': fields.Float(attribute='_duration', description='Die Dauer einer Aktivität')
+    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projekts')
 
 })
 
@@ -582,7 +582,8 @@ class ProjectOperations(Resource):
             p = adm.create_project(
                 proposal.get_name(),
                 proposal.get_commissioner(),
-                proposal.get_user_id()
+                proposal.get_user_id(),
+                proposal.get_duration()
             )
             return p
 
@@ -722,8 +723,7 @@ class ActivityOperations(Resource):
             p = adm.create_project(
                 proposal.get_name(),
                 proposal.get_capacity(),
-                proposal.get_project_id(),
-                proposal.get_duration()
+                proposal.get_project_id()
             )
             return p
 
