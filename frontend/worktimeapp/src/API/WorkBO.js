@@ -11,57 +11,57 @@ export default class WorkBO extends BusinessObject{
     }
 
     //Getter und Setter
-    SetStart(start){
+    setStart(start){
         this.start = start;
     }
 
-    GetStart(){
+    getStart(){
         return this.start;
     }
 
-    SetEnd(end){
+    setEnd(end){
         this.end = end;
     }
 
-    GetEnd(){
+    getEnd(){
         return this.end;
     }
 
-    SetStartEvent(sEvent){
+    setStartEvent(sEvent){
         this.startEvent = sEvent;
     }
 
-    GetStartEvent(){
+    getStartEvent(){
         return this.startEvent;
     }
 
-    SetEndEvent(eEvent){
+    setEndEvent(eEvent){
         this.endEvent = eEvent;
     }
 
-    GetEndEvent(){
+    getEndEvent(){
         return this.endEvent;
     }
     
-    SetType(type){
+    setType(type){
         this.type = type;
     }
 
-    GetType(){
+    getType(){
         return this.type;
     }
 
     static fromJSON(work){
         let res = [];
         if(Array.isArray(work)){
-            work.forEach((w) => {
-                Object.setPrototypeOf(w, WorkBO.prototype);
-                res.push(w)
+            work.forEach((elem) => {
+                Object.setPrototypeOf(elem, WorkBO.prototype);
+                res.push(elem)
             })
         }else{
-            let w = work;
-            Object.setPrototypeOf(w, WorkBO.prototype);
-            res.push(w)
+            let elem = work;
+            Object.setPrototypeOf(elem, WorkBO.prototype);
+            res.push(elem)
         }
         return res;
     }

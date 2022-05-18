@@ -11,11 +11,11 @@ export default class BreakBO extends BusinessObject{
     }
 
     //Getter und Setter
-    SetStart(start){
+    setStart(start){
         this.start = start;
     }
 
-    GetStart(){
+    getStart(){
         return this.start;
     }
 
@@ -23,45 +23,45 @@ export default class BreakBO extends BusinessObject{
         this.end = end;
     }
 
-    GetEnd(){
+    getEnd(){
         return this.end;
     }
 
-    SetStartEvent(sEvent){
+    setStartEvent(sEvent){
         this.startEvent = sEvent;
     }
 
-    GetStartEvent(){
+    getStartEvent(){
         return this.startEvent;
     }
 
-    SetEndEvent(eEvent){
+    setEndEvent(eEvent){
         this.endEvent = eEvent;
     }
 
-    GetEndEvent(){
+    getEndEvent(){
         return this.endEvent;
     }
     
-    SetType(type){
+    setType(type){
         this.type = type;
     }
 
-    GetType(){
+    getType(){
         return this.type;
     }
 
     static fromJSON(breaks){
         let res = [];
         if(Array.isArray(breaks)){
-            breaks.forEach((br) => {
-                Object.setPrototypeOf(br, BreakBO.prototype);
-                res.push(br)
+            breaks.forEach((elem) => {
+                Object.setPrototypeOf(elem, BreakBO.prototype);
+                res.push(elem)
             })
         }else{
-            let br = breaks;
-            Object.setPrototypeOf(br, BreakBO.prototype);
-            res.push(br)
+            let elem = breaks;
+            Object.setPrototypeOf(elem, BreakBO.prototype);
+            res.push(elem)
         }
         return res;
     }

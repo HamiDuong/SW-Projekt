@@ -12,51 +12,51 @@ export default class ProjectDuration extends BusinessObject{
     }
 
     //Getter und Setter
-    SetStart(start){
+    setStart(start){
         this.start = start;
     }
 
-    GetStart(){
+    getStart(){
         return this.start;
     }
 
-    SetEnd(end){
+    setEnd(end){
         this.end = end;
     }
 
-    GetEnd(){
+    getEnd(){
         return this.end;
     }
 
-    SetStartEvent(sEvent){
+    setStartEvent(sEvent){
         this.startEvent = sEvent;
     }
 
-    GetStartEvent(){
+    getStartEvent(){
         return this.startEvent;
     }
 
-    SetEndEvent(eEvent){
+    setEndEvent(eEvent){
         this.endEvent = eEvent;
     }
 
-    GetEndEvent(){
+    getEndEvent(){
         return this.endEvent;
     }
     
-    SetType(type){
+    setType(type){
         this.type = type;
     }
 
-    GetType(){
+    getType(){
         return this.type;
     }
 
-    SetProjectId(id){
+    setProjectId(id){
         this.projectId = id;
     }
 
-    GetProjectId(){
+    getProjectId(){
         return this.projectId;
     }
 

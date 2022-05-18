@@ -11,57 +11,57 @@ export default class IllnessBO extends BusinessObject{
     }
 
     //Getter und Setter
-    SetStart(start){
+    setStart(start){
         this.start = start;
     }
 
-    GetStart(){
+    getStart(){
         return this.start;
     }
 
-    SetEnd(end){
+    setEnd(end){
         this.end = end;
     }
 
-    GetEnd(){
+    getEnd(){
         return this.end;
     }
 
-    SetStartEvent(sEvent){
+    setStartEvent(sEvent){
         this.startEvent = sEvent;
     }
 
-    GetStartEvent(){
+    getStartEvent(){
         return this.startEvent;
     }
 
-    SetEndEvent(eEvent){
+    setEndEvent(eEvent){
         this.endEvent = eEvent;
     }
 
-    GetEndEvent(){
+    getEndEvent(){
         return this.endEvent;
     }
     
-    SetType(type){
+    setType(type){
         this.type = type;
     }
 
-    GetType(){
+    getType(){
         return this.type;
     }
 
     static fromJSON(illness){
         let res = [];
         if(Array.isArray(illness)){
-            illness.forEach((ill) => {
-                Object.setPrototypeOf(ill, IllnessBO.prototype);
-                res.push(ill)
+            illness.forEach((elem) => {
+                Object.setPrototypeOf(elem, IllnessBO.prototype);
+                res.push(elem)
             })
         }else{
-            let ill = illness;
-            Object.setPrototypeOf(ill, IllnessBO.prototype);
-            res.push(ill)
+            let elem = illness;
+            Object.setPrototypeOf(elem, IllnessBO.prototype);
+            res.push(elem)
         }
         return res;
     }
