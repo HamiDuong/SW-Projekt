@@ -1,4 +1,11 @@
 //Alle BOs importieren
+import TimeIntervalBO from './TimeIntervalBO'
+import BreakBO from './GroupBO';
+import IllnessBO from './IllnessBO';
+import ProjectDurationBO from './ProjectDurationBO';
+import ProjectWorkBO from './ProjectWorkBO';
+import VacationBO from './VacationBO';
+import WorkBO from './WorkBO';
 
 export default class WorkTimeAppAPI{
     static #api = null
@@ -6,6 +13,20 @@ export default class WorkTimeAppAPI{
     #worktimeappServerBaseURL = '/api';
 
     //Hier alle URL Zuweisungen
+
+    //TimeInterval
+
+    //Break
+
+    //Illness
+
+    //ProjectDuration
+
+    //ProjectWork
+
+    //Vacation
+
+    //Work
 
     static getAPI(){
         if(this.#api == null){
