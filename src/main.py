@@ -1282,7 +1282,7 @@ class FindProjectWorkByTimePeriod(Resource):
         projectwork = adm.get_project_works_by_time_period(start, end)
         return projectwork
 
-@worktimeapp.route('projectworkactivity/<int:projectid>')
+@worktimeapp.route('projectworkactivity/<int:activitytid>')
 @worktimeapp.param('id', 'Id von Project')
 class FindProjectWorkByProjectId(Resource):
     @worktimeapp.marshal_with(projectwork)
