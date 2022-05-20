@@ -74,7 +74,7 @@ class BookingBO (bo.BusinessObject):
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 
     def __str__(self):
-        return "Booking {}: Hat die Id {}, den Typ{}, gehört zum User mit der ID {} und dem Zeitkonto mit der ID {}, hat die timeintervalbookingid {} und eventbookingid {}".format(self.get_id(), self.get_type(), self.get_user_id(), self.get_work_time_account_id(), self.get_time_interval_booking_id(), self.get_event_booking_id())
+        return "Booking: Hat die Id {}, den Typ{}, gehört zum User mit der ID {} und dem Zeitkonto mit der ID {}, hat die timeintervalbookingid {} und eventbookingid {}".format(self.get_id(), self.get_type(), self.get_user_id(), self.get_work_time_account_id(), self.get_time_interval_booking_id(), self.get_event_booking_id())
 
     'wandelt ein Python dict() in ein BookingBO'
     def from_dict(dictionary=dict()):

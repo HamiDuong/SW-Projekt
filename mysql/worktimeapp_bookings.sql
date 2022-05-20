@@ -28,12 +28,12 @@ CREATE TABLE `bookings` (
   `userId` int NOT NULL,
   `workTimeAccountId` int NOT NULL,
   `type` varchar(45) NOT NULL,
-  `timeIntervalBookingId` int NOT NULL,
-  `eventlBookingId` int NOT NULL,
+  `timeIntervalBookingId` int DEFAULT NULL,
+  `eventBookingId` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `timeIntervalBookingId_idx` (`timeIntervalBookingId`),
-  KEY `eventBookingId_idx` (`eventlBookingId`),
-  CONSTRAINT `eventBookingId` FOREIGN KEY (`eventlBookingId`) REFERENCES `eventbookings` (`id`),
+  KEY `eventBookingId_idx` (`eventBookingId`),
+  CONSTRAINT `eventBookingId` FOREIGN KEY (`eventBookingId`) REFERENCES `eventbookings` (`id`),
   CONSTRAINT `timeIntervalBookingId` FOREIGN KEY (`timeIntervalBookingId`) REFERENCES `timeintervalbookings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-20 10:39:54
+-- Dump completed on 2022-05-20 13:06:56

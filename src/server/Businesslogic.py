@@ -14,12 +14,13 @@ from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
 from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
 from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
 from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from .bo.BookingBO import BookingBO
-from .db.BookingMapper import BookingMapper
-from .bo.EventBookingBO import EventBookingBO
-from .db.EventBookingMapper import EventBookingMapper
-from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
-from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
+
+from bo.BookingBO import BookingBO
+from db.BookingMapper import BookingMapper
+from bo.EventBookingBO import EventBookingBO
+from db.EventBookingMapper import EventBookingMapper
+from bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+from db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
 
 from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
@@ -282,7 +283,7 @@ class Businesslogic():
     def delete_illnessEnd(self, illnessEnd):
         with IllnessEndMapper() as mapper:
             mapper.delete(illnessEnd)
-    
+
     """
     Timeinterval Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -298,7 +299,7 @@ class Businesslogic():
 
     def create_timeinterval(self, type, break_id, illness_id, project_duration_id, project_work_id, vacation_id, work_id):
         timeinterval = TimeIntervalBO()
-        #timeinterval.set_time_interval_booking_id(timeintervalbookingid)
+        # timeinterval.set_time_interval_booking_id(timeintervalbookingid)
         timeinterval.set_type(type)
         timeinterval.set_break_id(break_id)
         timeinterval.set_illness_id(illness_id)
@@ -326,6 +327,7 @@ class Businesslogic():
     Break Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_breaks(self):
         with BreakMapper() as mapper:
             return mapper.find_all()
@@ -338,7 +340,7 @@ class Businesslogic():
         break_obj = BreakBO()
         break_obj.set_start(start)
         break_obj.set_end(end)
-        #break_obj.set_time_interval_id(time_interval_id)
+        # break_obj.set_time_interval_id(time_interval_id)
         break_obj.set_start_event(s_event)
         break_obj.set_end_event(e_event)
         break_obj.set_type("Break")
@@ -370,6 +372,7 @@ class Businesslogic():
     Illness Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_illnesses(self):
         with IllnessMapper() as mapper:
             return mapper.find_all()
@@ -382,7 +385,7 @@ class Businesslogic():
         illness = IllnessBO()
         illness.set_start(start)
         illness.set_end(end)
-        #illness.set_time_interval_id(time_interval_id)
+        # illness.set_time_interval_id(time_interval_id)
         illness.set_start_event(startevent)
         illness.set_end_event(endevent)
         illness.set_type("Illness")
@@ -414,6 +417,7 @@ class Businesslogic():
     Vacation Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_vacations(self):
         with VacationMapper() as mapper:
             return mapper.find_all()
@@ -426,7 +430,7 @@ class Businesslogic():
         vacation_obj = VacationBO()
         vacation_obj.set_start(start)
         vacation_obj.set_end(end)
-        #vacation_obj.set_time_interval_id(time_interval_id)
+        # vacation_obj.set_time_interval_id(time_interval_id)
         vacation_obj.set_start_event(startevent)
         vacation_obj.set_end_event(endevent)
         vacation_obj.set_type("Vacation")
@@ -458,6 +462,7 @@ class Businesslogic():
     Work Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_works(self):
         with WorkMapper() as mapper:
             return mapper.find_all()
@@ -470,7 +475,7 @@ class Businesslogic():
         work_obj = WorkBO()
         work_obj.set_start(start)
         work_obj.set_end(end)
-        #work_obj.set_time_interval_id(time_interval_id)
+        # work_obj.set_time_interval_id(time_interval_id)
         work_obj.set_start_event(startevent)
         work_obj.set_end_event(endevent)
         work_obj.set_type("Work")
@@ -502,6 +507,7 @@ class Businesslogic():
     ProjectDuration Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_project_durations(self):
         with ProjectDurationMapper() as mapper:
             return mapper.find_all()
@@ -514,7 +520,7 @@ class Businesslogic():
         project_duration_obj = ProjectDurationBO()
         project_duration_obj.set_start(start)
         project_duration_obj.set_end(end)
-        #project_duration_obj.set_time_interval_id(time_interval_id)
+        # project_duration_obj.set_time_interval_id(time_interval_id)
         project_duration_obj.set_start_event(startevent)
         project_duration_obj.set_end_event(endevent)
         project_duration_obj.set_type("ProjectDuration")
@@ -551,6 +557,7 @@ class Businesslogic():
     ProjectWork Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
+
     def get_all_project_works(self):
         with ProjectWorkMapper() as mapper:
             return mapper.find_all()
@@ -563,7 +570,7 @@ class Businesslogic():
         project_work_obj = ProjectWorkBO()
         project_work_obj.set_start(start)
         project_work_obj.set_end(end)
-        #project_work_obj.set_time_interval_id(time_interval_id)
+        # project_work_obj.set_time_interval_id(time_interval_id)
         project_work_obj.set_start_event(startevent)
         project_work_obj.set_end_event(endevent)
         project_work_obj.set_type("ProjectWork")
@@ -596,157 +603,143 @@ class Businesslogic():
         with ProjectWorkMapper() as mapper:
             return mapper.find_all_by_activity_id(id)
 
-
     """
-    Booking Methoden
+    Booking Methoden @author Mihriban Dogan (https://github.com/mihriban-dogan)
     """
 
     def create_timeinterval_booking(self, userId, worktimeAccountId, timeintervalId, type):
         """Ein Timeinterval Booking anlegen"""
-        # Zunächst wird das Booking erstellt
+
+        '''Als erstes wird das TimeintervalBooking Objekt erstellt und dessen Id wird in der variable timeintervalbookingid gespeichert'''
+
+        timeintervalbooking = TimeIntervalBookingBO()
+        timeintervalbooking.set_id(1)
+        timeintervalbooking.set_timeinterval_id(timeintervalId)
+
+        with TimeIntervalBookingMapper() as mapper:
+            mapper.insert(timeintervalbooking)
+            timeintervalbookingid = timeintervalbooking.get_id()
+
+        '''Jetzt wird das Booking Objekt gespeichert und die vorher gespeicherte id wird nun als Fremdschlüssel eingefügt'''
+
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
         booking.set_type(type)
+        booking.set_time_interval_booking_id(timeintervalbookingid)
         booking.set_id(1)
 
-        # Das Booking Objekt wird in die Datenbank eingefügt
-        # Die Id des gerade erstellten Objektes wird als "bookingid" gespeichert, das wird später für
-        # die Fremdschlüsselbeziehung zu Timeintervalbooking benötigt
         with BookingMapper() as mapper:
-            mapper.insert(booking)
-            bookingid = booking.get_id()
-
-        # Jetzt wird das Timeintervalbooking Objekt erstellt
-        # Die zueben gespeicherte bookingid wird hier gesetzt
-        timeintervalbooking = TimeIntervalBookingBO()
-        timeintervalbooking.set_id(1)
-        # Die Timeintervalid als Fremdschlüssel muss noch mit der Erstellung von Timeintervallen verknüpft werden
-        timeintervalbooking.set_timeinterval_id(timeintervalId)
-        timeintervalbooking.set_booking_id(bookingid)
-
-        # Das TimeintervalBookingObjekt wird in die Datenbank eingefügt
-        with TimeIntervalBookingMapper() as mapper:
-            return mapper.insert(timeintervalbooking)
+            return mapper.insert(booking)
 
         # Hinzufügen der der Delta Zeitrechnung des Zeitintervalls, damit man die overtime und worktime berechnen
         # Hinzufügen der TimeintervalId von Hami nach Absprache
+
     def create_event_booking(self, userId, worktimeAccountId, eventId, type):
-        """Ein Timeinterval Booking anlegen"""
-        # Zunächst wird das Booking erstellt
+        """Ein Event Booking anlegen"""
+
+        '''Als erstes wird das EventBooking Objekt erstellt und dessen Id wird in der variable eventbookingid gespeichert'''
+
+        eventbooking = EventBookingBO()
+        eventbooking.set_id(1)
+        eventbooking.set_event_id(eventId)
+
+        with EventBookingMapper() as mapper:
+            mapper.insert(eventbooking)
+            eventbookingid = eventbooking.get_id()
+
+        '''Jetzt wird das Booking Objekt gespeichert und die vorher gespeicherte id wird nun als Fremdschlüssel eingefügt'''
+
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
         booking.set_type(type)
+        booking.set_event_booking_id(eventbookingid)
         booking.set_id(1)
 
-        # Das Booking Objekt wird in die Datenbank eingefügt
-        # Die Id des gerade erstellten Objektes wird als "bookingid" gespeichert, das wird später für
-        # die Fremdschlüsselbeziehung zu Eventbooking benötigt
         with BookingMapper() as mapper:
-            mapper.insert(booking)
-            bookingid = booking.get_id()
+            return mapper.insert(booking)
 
-        # Jetzt wird das Eventbooking Objekt erstellt
-        # Die zueben gespeicherte bookingid wird hier gesetzt
-        eventbooking = EventBookingBO()
-        eventbooking.set_id(1)
-        # Die eventid als Fremdschlüssel muss noch mit der Erstellung von Timeintervallen verknüpft werden
-        eventbooking.set_event_id(eventId)
-        eventbooking.set_booking_id(bookingid)
-
-        # Das EventBookingObjekt wird in die Datenbank eingefügt
-        with EventBookingMapper() as mapper:
-            return mapper.insert(eventbooking)
         # Hinzufügen der EventId von Khadi nach Absprache
 
     def get_all_bookings_for_worktime_account(self, account):
-
-        # Zunächst werden alle Timeintervalbookings aus der Tabelle Bookings geholt
+        '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel TimeintervalbookingId 
+        und dieser wird dann in der Tabelle Timeintervalbooking eingefügt 
+        und dort wird dann nach dem FK Timeintervalid gesucht'''
         with BookingMapper() as mapper:
             timeintervalbookings = mapper.find_timeinterval_bookings_by_work_time_account_id(
                 account)
+            print("TIMEINTERVALBOOKINGS", timeintervalbookings)
 
-        # Jetzt werden die Ids der Timeintervallbookings aus der Tabelle Bookingsgeholt
-            for timeintervalbooking in timeintervalbookings:
-                bookingid = timeintervalbooking.get_id()
-        # Die Bookings aus der Tabelle Timeintervallbookings werden mithilfe der Bookingids aus der Tabelle Bookings ausgelesen (Fremdschlüssel)
-                with TimeIntervalBookingMapper() as mapper:
-                    timeintervalbookingids = mapper.find_by_booking_id(
-                        bookingid)
-        # Der Fremdschlüssel Timeintervalid wird aus der Tabelle Timeintervalbookings ausgelesen, damit wir ihn in die Tabelle Timeinterval einfügen können
-                    for timeintervalid in timeintervalbookingids:
-                        timeintervalids = timeintervalid.get_timeinterval_id()
-                        print("Timeintervalids", timeintervalids)
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+                print(id)
 
-                    # Hinzufügen der Timeintervalle nach Absprache mit Hami
+        '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
+        und dieser wird dann in der Tabelle Eventbooking eingefügt 
+        und dort wird dann nach dem FK Eventid gesucht'''
 
-                    # with TimeintervalMapper() as mapper:
-                    #     mapper.find_by_id()
-
-        # Jetzt werden auch die EventBookings geholt
         with BookingMapper() as mapper:
             eventbookings = mapper.find_event_bookings_by_work_time_account_id(
                 account)
+            print("Eventbookings", eventbookings)
 
-        # Jetzt werden die Ids der eventbookings aus der Tabelle Bookings geholt
-            for eventbooking in eventbookings:
-                bookingid = eventbooking.get_id()
-        # Die Bookings aus der Tabelle Eventbookings werden mithilfe der Bookingids aus der Tabelle Bookings ausgelesen (Fremdschlüssel)
-                with EventBookingMapper() as mapper:
-                    eventbookingids = mapper.find_by_booking_id(bookingid)
-        # Der Fremdschlüssel Eventid wird aus der Tabelle Eventbookings ausgelesen, damit wir ihn in die Tabelle Event einfügen können
-                    for eventids in eventbookingids:
-                        eventids = eventids.get_event_id()
-                        print("EventIds", eventids)
-
-                    # Hinzufügen der Events nach Absprache mit Khadi
+        for elem in eventbookings:
+            eventbookingid = elem.get_event_booking_id()
+            with EventBookingMapper() as mapper:
+                eventbooking = mapper.find_by_key(eventbookingid)
+                id = eventbooking.get_event_id()
+                print(id)
 
     def delete_timeinterval_booking(self, bookingid):
-        # Die Timeintervallbookings werden aus der Tabelle Timeintervalbookings, mithilfe der BookingId als Fremdschlüssel, gelöscht
-        with TimeIntervalBookingMapper() as mapper:
-            booking = mapper.find_by_booking_id(bookingid)
-        # Hier wird der Fremdschlüssel TimeintervalId geholt, damit wir später die Zeitintervalle aus der Tabelle Timeintervals löschen können
-            for timeintervalbooking in booking:
-                timeintervalid = timeintervalbooking.get_timeinterval_id()
-            mapper.delete(bookingid)
-        # Die Bookings werden aus der Tabelle Bookings gelöscht
+
         with BookingMapper() as mapper:
-            mapper.delete(bookingid)
-        # Nach Absprache mit Hami auskommentieren
-        # with TimeintervalMapper() as mapper:
-            # mapper.delete(timeintervalid)
+            booking = mapper.find_by_key(bookingid)
+            timeintervalbookingid = booking.get_time_interval_booking_id()
+            mapper.delete(booking)
+
+        with TimeIntervalBookingMapper() as mapper:
+            timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+            mapper.delete(timeintervalbooking)
+
+        # # Nach Absprache mit Hami fertig machen
+        # # with TimeintervalMapper() as mapper:
+        #     # mapper.delete(timeintervalid)
 
     def delete_event_booking(self, bookingid):
-        # Die Eventbookings werden aus der Tabelle Eventbookings, mithilfe der BookingId als Fremdschlüssel, gelöscht
-        with EventBookingMapper() as mapper:
-            booking = mapper.find_by_booking_id(bookingid)
-        # Hier wird der Fremdschlüssel EventId geholt, damit wir später die Events aus der Tabelle Events löschen können
-            for eventbooking in booking:
-                eventid = eventbooking.get_event_id()
-            mapper.delete(bookingid)
 
-        # Die Bookings werden aus der Tabelle Bookings gelöscht
         with BookingMapper() as mapper:
-            mapper.delete(bookingid)
+            booking = mapper.find_by_key(bookingid)
+            eventbookingid = booking.get_event_booking_id()
+            mapper.delete(booking)
+
+        with EventBookingMapper() as mapper:
+            eventbooking = mapper.find_by_key(eventbookingid)
+            mapper.delete(eventbooking)
+
         # Nach Absprache mit Khadi auskommentieren
         # with EventMapper() as mapper:
             # mapper.delete(eventid)
 
     def update_timeinterval_booking(self, booking):
+       # Dateoflastchange wird in der Tabelle Bookings geändert
+        with BookingMapper() as mapper:
+            mapper.update(booking)
+
         # Dateoflastchange wird in der Tabelle Timeintervalbookings geändert
         with TimeIntervalBookingMapper() as mapper:
-            mapper.update(booking)
-    # Dateoflastchange wird in der Tabelle Bookings geändert
-        with BookingMapper() as mapper:
             return mapper.update(booking)
 
     def update_event_booking(self, booking):
+        # Dateoflastchange wird in der Tabelle Bookings geändert
+        with BookingMapper() as mapper:
+            mapper.update(booking)
+
         # Dateoflastchange wird in der Tabelle Eventbookings geändert
         with EventBookingMapper() as mapper:
-            mapper.update(booking)
-    # Dateoflastchange wird in der Tabelle Bookings geändert
-        with BookingMapper() as mapper:
             return mapper.update(booking)
 
     """
@@ -921,7 +914,7 @@ class Businesslogic():
     def delete_activity(self, activity):
         with ActivityMapper() as mapper:
             mapper.delete(activity)
-            
+
     def get_by_name(self, name):
         with ActivityMapper() as mapper:
             return mapper.find_by_name(name)
@@ -929,4 +922,3 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
-

@@ -31,7 +31,7 @@ class TimeIntervalBookingBO (book.BookingBO):
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 
     def __str__(self):
-        return "TimeIntervalBooking {}: Hat die timeintervalid".format(self._timeinterval_id)
+        return "Das TimeIntervalBooking mit der ID {}: Hat die timeintervalid {}".format(self._id, self._timeinterval_id)
 
     'wandelt ein Python dict() in ein EventBookingBO'
     def from_dict(dictionary=dict()):
