@@ -953,6 +953,16 @@ class TimeIntervalWithIDOperations(Resource):
             return p, 200
         else:
             return '', 500
+
+@worktimeapp.route('timeintervaltype/<string:type>')
+@worktimeapp.param('type', 'Type des Timeintervalls')
+class TimeIntervalWithTypeOperations(Resource):
+    @worktimeapp.marshal_with(timeinterval)
+    #@secured
+    def get(self, type):
+        adm = Businesslogic()
+        timeinterval = adm.get_timeinterval_by_type(type)
+        return timeinterval
         
 
 """
