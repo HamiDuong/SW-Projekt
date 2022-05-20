@@ -2,6 +2,8 @@ from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
 from server.db.Mapper import Mapper
 from datetime import datetime
 
+'''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+
 
 class TimeIntervalBookingMapper (Mapper):
 
@@ -14,39 +16,14 @@ class TimeIntervalBookingMapper (Mapper):
         result = []
         cursor = self._cnx.cursor()
         cursor.execute(
-            "SELECT id, dateOfLastChange, bookingId, timeintervalId from timeintervalbookings")
+            "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, bookingId, timeintervalId) in tuples:
+        for (id, dateOfLastChange, timeintervalId) in tuples:
             timeintervalbooking = TimeIntervalBookingBO()
             timeintervalbooking.set_id(id)
-            timeintervalbooking.set_booking_id(dateOfLastChange)
             timeintervalbooking.set_timeinterval_id(timeintervalId)
-            timeintervalbooking.set_date_of_last_change(bookingId)
-
-            result.append(timeintervalbooking)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_booking_id(self, bookingId):
-        """Auslesen aller Event Bookings eines bestimmten Zeitkontos.
-        """
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, bookingId, timeintervalId from timeintervalbookings WHERE bookingId={} ORDER BY id".format(
-            bookingId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, dateOfLastChange, bookingId, timeintervalId) in tuples:
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_booking_id(dateOfLastChange)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            timeintervalbooking.set_date_of_last_change(bookingId)
+            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
 
             result.append(timeintervalbooking)
 
@@ -60,17 +37,16 @@ class TimeIntervalBookingMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, bookingId, timeintervalId from timeintervalbookings WHERE timeintervalId={} ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings WHERE timeintervalId={} ORDER BY id".format(
             timeintervalId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, bookingId, timeintervalId) in tuples:
+        for (id, dateOfLastChange, timeintervalId) in tuples:
             timeintervalbooking = TimeIntervalBookingBO()
             timeintervalbooking.set_id(id)
-            timeintervalbooking.set_booking_id(dateOfLastChange)
             timeintervalbooking.set_timeinterval_id(timeintervalId)
-            timeintervalbooking.set_date_of_last_change(bookingId)
+            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
 
             result.append(timeintervalbooking)
 
@@ -94,9 +70,9 @@ class TimeIntervalBookingMapper (Mapper):
             else:
                 timeintervalbooking.set_id(maxid[0]+1)
 
-        command = "INSERT INTO timeintervalbookings (id, dateOfLastChange, bookingId, timeintervalId) VALUES (%s,%s,%s,%s)"
+        command = "INSERT INTO timeintervalbookings (id, dateOfLastChange, timeintervalId) VALUES (%s,%s,%s)"
         data = (timeintervalbooking.get_id(), timeintervalbooking.get_date_of_last_change(
-        ), timeintervalbooking.get_booking_id(), timeintervalbooking.get_timeinterval_id())
+        ), timeintervalbooking.get_timeinterval_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -111,9 +87,9 @@ class TimeIntervalBookingMapper (Mapper):
         cursor = self._cnx.cursor()
 
         command = "UPDATE timeintervalbookings " + \
-            "SET dateOfLastChange=%s WHERE bookingId=%s"
+            "SET dateOfLastChange=%s WHERE id=%s"
         data = (timeintervalbooking.get_date_of_last_change(),
-                timeintervalbooking.get_booking_id())
+                timeintervalbooking.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -125,8 +101,8 @@ class TimeIntervalBookingMapper (Mapper):
 
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM timeintervalbookings WHERE bookingId={}".format(
-            timeintervalbooking.get_booking_id())
+        command = "DELETE FROM timeintervalbookings WHERE id={}".format(
+            timeintervalbooking.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -137,17 +113,16 @@ class TimeIntervalBookingMapper (Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "id, dateOfLastChange, bookingId, timeintervalId from timeintervalbookings WHERE id={}".format(
+        command = "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, bookingId, timeintervalId) = tuples[0]
+            (id, dateOfLastChange, timeintervalId) = tuples[0]
             timeintervalbooking = TimeIntervalBookingBO()
             timeintervalbooking.set_id(id)
             timeintervalbooking.set_date_of_last_change(dateOfLastChange)
-            timeintervalbooking.set_booking_id(bookingId)
             timeintervalbooking.set_timeinterval_id(timeintervalId)
             result = timeintervalbooking
         except IndexError:
