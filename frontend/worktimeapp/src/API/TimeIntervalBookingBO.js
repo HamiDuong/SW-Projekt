@@ -25,7 +25,7 @@ export default class TimeIntervalBookingBO extends BookingBO {
     let result = [];
 
     if (Array.isArray(timeintervalbookings)) {
-      customers.forEach((tb) => {
+      timeintervalbookings.forEach((tb) => {
         Object.setPrototypeOf(tb, TimeIntervalBookingBO.prototype);
         result.push(tb);
       })
