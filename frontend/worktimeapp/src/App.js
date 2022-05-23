@@ -6,7 +6,8 @@ import Navigator from './Components/Navigator';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './Theme';
 import { CssBaseline } from '@mui/material';
-import Calculator from './Components/Pages/Example'
+import ProjectTimeOverview from './Components/Pages/Example'
+import BasicSelect from './Components/dropdown';
 
 class App extends React.Component {
   render() {
@@ -15,8 +16,9 @@ class App extends React.Component {
         <CssBaseline />
         <div>
           <Navigator></Navigator>
-          <Calculator />
-          <MyWorkTime />
+          <ProjectTimeOverview />
+
+
         </div>
       </ThemeProvider>
     )
