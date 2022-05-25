@@ -6,11 +6,13 @@ import ProjectDurationBO from './ProjectDurationBO';
 import ProjectWorkBO from './ProjectWorkBO';
 import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
+import BookingBO from './BookingBO';
+import TimeIntervalBookingBO from './TimeIntervalBookingBO';
 
 export default class WorkTimeAppAPI{
     static #api = null
 
-    #worktimeappServerBaseURL = '/api';
+    #worktimeappServerBaseURL = 'http://127.0.0.1:5000/worktimeapp';
 
     //Hier alle URL Zuweisungen
     // # = () => `${this.#worktimeappServerBaseURL}/`;
@@ -78,6 +80,10 @@ export default class WorkTimeAppAPI{
     #updateWorkURL = (id) => `${this.#worktimeappServerBaseURL}/work/${id}`;
     #getWorkByDateURL = (date) => `${this.#worktimeappServerBaseURL}/workdate/${date}`;
     #getWorkByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/workperiod/${start}/${end}`;
+
+
+    //Booking URLS
+    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
 
     static getAPI(){
         if(this.#api == null){
@@ -677,4 +683,28 @@ export default class WorkTimeAppAPI{
             })
         })
     }
+
+    // Booking Methoden author Mihriban Dogan
+
+    addTimeIntervalBooking(vacationBO, timeintervalBO, timeintervalbookingBO, bookingBO){
+        return this.#fetchAdvanced(this.#addTimeIntervalBookingURL(), {
+            mode: 'no-cors',
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationBO, timeintervalBO, timeintervalbookingBO, bookingBO)
+          }).then((responseJSON) => {
+            
+            let responseBookingBO = BookingBO.fromJSON(responseJSON)[0];
+            
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
 }
+
+
+

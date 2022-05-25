@@ -2,6 +2,8 @@ from server.bo.EventBookingBO import EventBookingBO
 from server.db.Mapper import Mapper
 from datetime import datetime
 
+'''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+
 
 class EventBookingMapper (Mapper):
 
@@ -14,39 +16,14 @@ class EventBookingMapper (Mapper):
         result = []
         cursor = self._cnx.cursor()
         cursor.execute(
-            "SELECT id, dateOfLastChange, bookingId, eventId from eventbookings")
+            "SELECT id, dateOfLastChange, eventId from eventbookings")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, bookingId, eventId) in tuples:
+        for (id, dateOfLastChange, eventId) in tuples:
             eventbooking = EventBookingBO()
             eventbooking.set_id(id)
-            eventbooking.set_booking_id(dateOfLastChange)
             eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(bookingId)
-
-            result.append(eventbooking)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_booking_id(self, bookingId):
-        """Auslesen aller Event Bookings eines bestimmten Zeitkontos.
-        """
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, bookingId, eventId from eventbookings WHERE bookingId={} ORDER BY id".format(
-            bookingId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, dateOfLastChange, bookingId, eventId) in tuples:
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_booking_id(dateOfLastChange)
-            eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(bookingId)
+            eventbooking.set_date_of_last_change(dateOfLastChange)
 
             result.append(eventbooking)
 
@@ -60,17 +37,16 @@ class EventBookingMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, bookingId, eventId from eventbookings WHERE eventId={} ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange, eventId from eventbookings WHERE eventId={} ORDER BY id".format(
             eventId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, bookingId, eventId) in tuples:
+        for (id, dateOfLastChange, eventId) in tuples:
             eventbooking = EventBookingBO()
             eventbooking.set_id(id)
-            eventbooking.set_booking_id(dateOfLastChange)
             eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(bookingId)
+            eventbooking.set_date_of_last_change(dateOfLastChange)
 
             result.append(eventbooking)
 
@@ -94,9 +70,9 @@ class EventBookingMapper (Mapper):
             else:
                 eventbooking.set_id(maxid[0]+1)
 
-        command = "INSERT INTO eventbookings (id, dateOfLastChange, bookingId, eventId) VALUES (%s,%s,%s,%s)"
+        command = "INSERT INTO eventbookings (id, dateOfLastChange, eventId) VALUES (%s,%s,%s)"
         data = (eventbooking.get_id(), eventbooking.get_date_of_last_change(
-        ), eventbooking.get_booking_id(), eventbooking.get_event_id())
+        ), eventbooking.get_event_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -110,9 +86,9 @@ class EventBookingMapper (Mapper):
         eventbooking.set_date_of_last_change(timestamp)
         cursor = self._cnx.cursor()
 
-        command = "UPDATE eventbookings " + "SET dateOfLastChange=%s WHERE bookingId=%s"
+        command = "UPDATE eventbookings " + "SET dateOfLastChange=%s WHERE id=%s"
         data = (eventbooking.get_date_of_last_change(),
-                eventbooking.get_booking_id())
+                eventbooking.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -123,8 +99,8 @@ class EventBookingMapper (Mapper):
         """
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM eventbookings WHERE bookingId={}".format(
-            eventbooking.get_booking_id())
+        command = "DELETE FROM eventbookings WHERE id={}".format(
+            eventbooking.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -135,17 +111,16 @@ class EventBookingMapper (Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "id, dateOfLastChange, bookingId, eventId from eventbookings WHERE id={}".format(
+        command = "SELECT id, dateOfLastChange, eventId from eventbookings WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, bookingId, eventId) = tuples[0]
+            (id, dateOfLastChange, eventId) = tuples[0]
             eventbooking = EventBookingBO()
             eventbooking.set_id(id)
             eventbooking.set_date_of_last_change(dateOfLastChange)
-            eventbooking.set_booking_id(bookingId)
             eventbooking.set_event_id(eventId)
             result = eventbooking
         except IndexError:

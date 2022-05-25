@@ -2,6 +2,8 @@ from server.bo.BookingBO import BookingBO
 from server.db.Mapper import Mapper
 from datetime import datetime
 
+'''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+
 
 class BookingMapper (Mapper):
 
@@ -14,16 +16,18 @@ class BookingMapper (Mapper):
         result = []
         cursor = self._cnx.cursor()
         cursor.execute(
-            "SELECT id, dateOfLastChange, workTimeAccountId, userId, type from bookings")
+            "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId from bookings")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+        for (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) in tuples:
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(booking)
 
         self._cnx.commit()
@@ -36,18 +40,20 @@ class BookingMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type FROM bookings WHERE workTimeAccountId={} ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} ORDER BY id".format(
             workTimeAccountId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+        for (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) in tuples:
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(booking)
 
         self._cnx.commit()
@@ -60,18 +66,20 @@ class BookingMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type FROM bookings WHERE workTimeAccountId={} AND type='T' ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} AND type='T' ORDER BY id".format(
             workTimeAccountId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+        for (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) in tuples:
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(booking)
 
         self._cnx.commit()
@@ -84,18 +92,20 @@ class BookingMapper (Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type FROM bookings WHERE workTimeAccountId={} AND type='E' ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} AND type='E' ORDER BY id".format(
             workTimeAccountId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+        for (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) in tuples:
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(booking)
 
         self._cnx.commit()
@@ -106,20 +116,23 @@ class BookingMapper (Mapper):
     def find_by_type(self, type):
         """ Auslesen aller Bookings mit einem spezifischen Typ. 
         """
+
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange,workTimeAccountId, userId, type FROM bookings WHERE type={} ORDER BY id".format(
+        command = "SELECT id, dateOfLastChange,workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE type='{}' ORDER BY id".format(
             type)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, workTimeAccountId, userId, type) in tuples:
+        for (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) in tuples:
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(booking)
 
         self._cnx.commit()
@@ -137,14 +150,15 @@ class BookingMapper (Mapper):
         booking.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
+            # Wenn kein Datensatz vorhanden ist in der Tababelle dann setze die Id = 1 sonst zähle immer eins drauf
             if maxid[0] == None:
                 booking.set_id(1)
             else:
                 booking.set_id(maxid[0]+1)
 
-        command = "INSERT INTO bookings (id, dateOfLastChange, workTimeAccountId, userId, type) VALUES (%s,%s,%s,%s,%s)"
+        command = "INSERT INTO bookings (id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId) VALUES (%s,%s,%s,%s,%s,%s,%s)"
         data = (booking.get_id(), booking.get_date_of_last_change(
-        ), booking.get_work_time_account_id(), booking.get_user_id(), booking.get_type())
+        ), booking.get_work_time_account_id(), booking.get_user_id(), booking.get_type(), booking.get_event_booking_id(), booking.get_time_interval_booking_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -179,19 +193,22 @@ class BookingMapper (Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "id, dateOfLastChange, workTimeAccountId, userId, type from bookings WHERE id={}".format(
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId from bookings WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, workTimeAccountId, userId, type) = tuples[0]
+            (id, dateOfLastChange, workTimeAccountId, userId, type,
+             eventBookingId, timeIntervalBookingId) = tuples[0]
             booking = BookingBO()
             booking.set_id(id)
             booking.set_date_of_last_change(dateOfLastChange)
             booking.set_work_time_account_id(workTimeAccountId)
             booking.set_user_id(userId)
             booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
             result = booking
         except IndexError:
             result = None
