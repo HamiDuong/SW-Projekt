@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `vacations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vacations` (
   `id` int NOT NULL,
-  `dateOfLastChange` date DEFAULT NULL,
-  `start` date DEFAULT NULL,
-  `end` date DEFAULT NULL,
+  `dateOfLastChange` datetime DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
   `startEvent` int DEFAULT NULL,
   `endEvent` int DEFAULT NULL,
   `type` varchar(45) NOT NULL,
@@ -34,6 +34,15 @@ CREATE TABLE `vacations` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vacations`
+--
+
+LOCK TABLES `vacations` WRITE;
+/*!40000 ALTER TABLE `vacations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vacations` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -44,4 +53,4 @@ CREATE TABLE `vacations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-15 17:49:12
+-- Dump completed on 2022-05-25 14:59:30
