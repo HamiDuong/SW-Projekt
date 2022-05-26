@@ -80,11 +80,11 @@ class BookingBO (bo.BusinessObject):
     def from_dict(dictionary=dict()):
         obj = BookingBO()
         obj.set_id(dictionary["id"])
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
-        obj.set_work_time_account_id(dictionary["work_time_account_id"])
-        obj.set_user_id(dictionary["user_id"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
+        obj.set_work_time_account_id(dictionary["workTimeAccountId"])
+        obj.set_user_id(dictionary["userId"])
         obj.set_type(dictionary["type"])
-        obj.set_event_booking_id(dictionary["event_booking_id"])
+        obj.set_event_booking_id(dictionary["eventBookingId"])
         obj.set_time_interval_booking_id(
-            dictionary["time_interval_booking_id"])
+            dictionary["timeIntervalBookingId"])
         return obj

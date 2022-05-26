@@ -13,6 +13,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
+import VacationBO from '../API/VacationBO';
+import TimeIntervalBO from '../API/TimeIntervalBO';
+import BookingBO from '../API/BookingBO';
+import TimeIntervalBookingBO from '../API/TimeIntervalBookingBO';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import { format } from "date-fns";
 
 
 {/* 
@@ -28,26 +34,45 @@ class TimeIntervalBookings extends Component {
         this.state = { 
             start: Date,
             end: Date,
-            timeIntervalType: "",
+            type: "",
             activity: "", 
             project: "",
-            showSelectEventDialog: false
+            startEvent:0,
+            endEvent:0,
+            workTimeAccountId:0,
+            userId:0,
+            showSelectEventDialog: false,
+            eventBookingId: 0,
+            timeintervalBookingId: 0
             
          }
     }
+
+    addTimeIntervalBooking = () => {
+            let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addTimeIntervalBooking(newVacationBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newVacationBO)
+            console.log(newBookingBO)
+       }
+
+
+
+
 
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
     
     handleStartDateChange(newValue){
         this.setState({
-            start: new Date(newValue)
+            start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         console.log(this.state.start)
     }
     handleEndDateChange(newValue){
         this.setState({
-            end: new Date(newValue)
+            end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         console.log(this.state.end)
     }
@@ -90,8 +115,8 @@ class TimeIntervalBookings extends Component {
                         <FormControl sx={{ minWidth: 220}}>
                             <InputLabel>Type</InputLabel>
                             <Select
-                                name="timeIntervalType"
-                                value={this.state.timeIntervalType}
+                                name="type"
+                                value={this.state.type}
                                 label="type"
                                 onChange={this.handleChange}
                             >
@@ -104,8 +129,8 @@ class TimeIntervalBookings extends Component {
                         </FormControl>
                     </Grid>
                    {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    <Grid item xs={12} sm={2}>
-                        {(this.state.timeIntervalType === "work" || this.state.timeIntervalType === "project"|| this.state.timeIntervalType === "flexday")?
+                    <Grid item xs={12} sm={2} >
+                        {(this.state.type === "work" || this.state.type === "project"|| this.state.type === "flexday")?
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -139,7 +164,7 @@ class TimeIntervalBookings extends Component {
                     </Grid> 
                      {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     <Grid xs={12} sm={2} item >
-                    {(this.state.timeIntervalType === "work" || this.state.timeIntervalType === "project"|| this.state.timeIntervalType === "flexday")?
+                    {(this.state.type === "work" || this.state.type === "project"|| this.state.type === "flexday")?
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -174,7 +199,7 @@ class TimeIntervalBookings extends Component {
                      {/*
                     Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
                     */}
-                    {this.state.timeIntervalType === "project" && 
+                    {this.state.type === "project" && 
                     <FormControl sx={{ minWidth: 220}}>
                             <InputLabel>Select Project</InputLabel>
                             <Select
@@ -188,7 +213,7 @@ class TimeIntervalBookings extends Component {
                         </FormControl>}
                     </Grid>
                     <Grid xs={12} sm={10} item>
-                    {this.state.timeIntervalType === "project" &&
+                    {this.state.type === "project" &&
                     <FormControl sx={{ minWidth: 220}}>
                             <InputLabel>Select Activity</InputLabel>
                             <Select
@@ -202,7 +227,7 @@ class TimeIntervalBookings extends Component {
                         </FormControl>}
                     </Grid>
                     <Grid xs={12} item>
-                    <Button variant="contained">Book Timeinterval</Button>
+                    <Button variant="contained" onClick={this.addTimeIntervalBooking}>Book Timeinterval</Button>
                     </Grid>
 
                 </Grid>
