@@ -686,19 +686,36 @@ export default class WorkTimeAppAPI{
 
     // Booking Methoden author Mihriban Dogan
 
-    addTimeIntervalBooking(vacationBO, timeintervalBO, timeintervalbookingBO, bookingBO){
-        return this.#fetchAdvanced(this.#addTimeIntervalBookingURL(), {
-            mode: 'no-cors',
+    addTimeIntervalBooking(vacationBO){
+        return this.#fetchAdvanced(this.#addVacationURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
               'Content-type': 'application/json',
             },
-            body: JSON.stringify(vacationBO, timeintervalBO, timeintervalbookingBO, bookingBO)
+            body: JSON.stringify(vacationBO)
           }).then((responseJSON) => {
-            
+            console.log("TEST")
+            let responseBookingBO = VacationBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+
+    addBooking(bookingBO){
+        return this.#fetchAdvanced(this.#addTimeIntervalBookingURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(bookingBO)
+          }).then((responseJSON) => {
             let responseBookingBO = BookingBO.fromJSON(responseJSON)[0];
-            
+           
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
             })

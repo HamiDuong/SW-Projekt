@@ -32,6 +32,30 @@ class TimeIntervalBookingMapper (Mapper):
 
         return result
 
+    def find_last_entry(self):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM timeintervalbookings ORDER BY id DESC LIMIT 1"
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, timeintervalId) = tuples[0]
+            timeintervalbooking = TimeIntervalBookingBO()
+            timeintervalbooking.set_id(id)
+            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
+            timeintervalbooking.set_timeinterval_id(timeintervalId)
+            result = timeintervalbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_timeinterval_id(self, timeintervalId):
         """ Auslesen aller Bookings nach eventsIds. 
         """

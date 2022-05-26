@@ -64,7 +64,7 @@ export default class BookingBO extends BusinessObject {
     let result = [];
 
     if (Array.isArray(bookings)) {
-      customers.forEach((b) => {
+      bookings.forEach((b) => {
         Object.setPrototypeOf(b, BookingBO.prototype);
         result.push(b);
       })
