@@ -14,6 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
 import VacationBO from '../API/VacationBO';
+import WorkBO from '../API/WorkBO'
 import TimeIntervalBO from '../API/TimeIntervalBO';
 import BookingBO from '../API/BookingBO';
 import TimeIntervalBookingBO from '../API/TimeIntervalBookingBO';
@@ -49,15 +50,23 @@ class TimeIntervalBookings extends Component {
     }
 
     addTimeIntervalBooking = () => {
+        if ((this.state.type) === "vacation"){
             let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addTimeIntervalBooking(newVacationBO)
+            WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(this.state.type)
             console.log(newVacationBO)
+            console.log(newBookingBO)}
+        else if ((this.state.type) === "work"){
+            let newWorkBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newWorkBO)
             console.log(newBookingBO)
+        }
        }
-
-
 
 
 

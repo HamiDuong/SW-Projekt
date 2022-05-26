@@ -171,8 +171,8 @@ breaks = api.inherit('Break', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.String(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.String(attribute='_end', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
@@ -180,8 +180,8 @@ illness = api.inherit('Illness', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.String(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.String(attribute='_end', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
@@ -198,8 +198,8 @@ work = api.inherit('Work', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.String(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.String(attribute='_end', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
@@ -1463,23 +1463,35 @@ class VacationOperations(Resource):
 # """
 
 
-# @worktimeapp.route('/work')
-# class WorkOperations(Resource):
-#     @worktimeapp.marshal_with(work)
-#     @worktimeapp.expect(work)
-#     # @secured
-#     def post(self):
-#         adm = Businesslogic()
-#         proposal = WorkBO.from_dict(api.payload)
-#         if proposal is not None:
-#             p = adm.create_work(
-#                 proposal.get_start(),
-#                 proposal.get_end(),
-#                 proposal.get_start_event(),
-#                 proposal.get_end_event(),
-#                 proposal.get_type(),
-#             )
-#         return p
+@worktimeapp.route('/work')
+class WorkOperations(Resource):
+    @worktimeapp.marshal_with(work)
+    @worktimeapp.expect(work)
+    # @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = WorkBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_work(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event())
+
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                p.get_id()
+            )
+
+            tw = adm.create_timeinterval_booking(
+                t.get_id()
+            )
+        return p, t, tw
 
 #     @worktimeapp.marshal_list_with(work)
 #     # @secured
