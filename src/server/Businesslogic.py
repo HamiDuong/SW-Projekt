@@ -15,12 +15,12 @@ from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
 from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
 from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
 
-from bo.BookingBO import BookingBO
-from db.BookingMapper import BookingMapper
-from bo.EventBookingBO import EventBookingBO
-from db.EventBookingMapper import EventBookingMapper
-from bo.TimeIntervalBookingBO import TimeIntervalBookingBO
-from db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
+from .bo.BookingBO import BookingBO
+from .db.BookingMapper import BookingMapper
+from .bo.EventBookingBO import EventBookingBO
+from .db.EventBookingMapper import EventBookingMapper
+from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
 
 from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
@@ -426,14 +426,14 @@ class Businesslogic():
         with VacationMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def create_vacation(self, start, end, startevent, endevent):
+    def create_vacation(self, start, end, startevent, endevent, type):
         vacation_obj = VacationBO()
         vacation_obj.set_start(start)
         vacation_obj.set_end(end)
         # vacation_obj.set_time_interval_id(time_interval_id)
         vacation_obj.set_start_event(startevent)
         vacation_obj.set_end_event(endevent)
-        vacation_obj.set_type("Vacation")
+        vacation_obj.set_type(type)
 
         with VacationMapper() as mapper:
             return mapper.insert(vacation_obj)
@@ -607,33 +607,69 @@ class Businesslogic():
     Booking Methoden @author Mihriban Dogan (https://github.com/mihriban-dogan)
     """
 
-    def create_timeinterval_booking(self, userId, worktimeAccountId, timeintervalId, type):
+    def get_timeinterval_booking_by_id(self, id):
+        with TimeIntervalBookingMapper as mapper:
+            return mapper.find_by_key(id)
+
+    def get_booking_by_id(self, id):
+        with BookingMapper as mapper:
+            return mapper.find_by_key(id)
+
+    def get_event_booking_by_id(self, id):
+        with EventBookingMapper as mapper:
+            return mapper.find_by_key(id)
+
+    # def create_timeinterval_booking(self, userId, worktimeAccountId, timeintervalId, type):
+    #     """Ein Timeinterval Booking anlegen"""
+
+    #     '''Als erstes wird das TimeintervalBooking Objekt erstellt und dessen Id wird in der variable timeintervalbookingid gespeichert'''
+
+    #     timeintervalbooking = TimeIntervalBookingBO()
+    #     timeintervalbooking.set_id(1)
+    #     timeintervalbooking.set_timeinterval_id(timeintervalId)
+
+    #     with TimeIntervalBookingMapper() as mapper:
+    #         mapper.insert(timeintervalbooking)
+    #         timeintervalbookingid = timeintervalbooking.get_id()
+
+    #     '''Jetzt wird das Booking Objekt gespeichert und die vorher gespeicherte id wird nun als Fremdschlüssel eingefügt'''
+
+    #     booking = BookingBO()
+    #     booking.set_user_id(userId)
+    #     booking.set_work_time_account_id(worktimeAccountId)
+    #     booking.set_type(type)
+    #     booking.set_time_interval_booking_id(timeintervalbookingid)
+    #     booking.set_id(1)
+
+    #     with BookingMapper() as mapper:
+    #         return mapper.insert(booking)
+
+    #     # Hinzufügen der der Delta Zeitrechnung des Zeitintervalls, damit man die overtime und worktime berechnen
+    #     # Hinzufügen der TimeintervalId von Hami nach Absprache
+
+    def create_timeinterval_booking(self, timeintervalId):
         """Ein Timeinterval Booking anlegen"""
 
-        '''Als erstes wird das TimeintervalBooking Objekt erstellt und dessen Id wird in der variable timeintervalbookingid gespeichert'''
-
         timeintervalbooking = TimeIntervalBookingBO()
-        timeintervalbooking.set_id(1)
         timeintervalbooking.set_timeinterval_id(timeintervalId)
 
         with TimeIntervalBookingMapper() as mapper:
-            mapper.insert(timeintervalbooking)
-            timeintervalbookingid = timeintervalbooking.get_id()
+            return mapper.insert(timeintervalbooking)
 
-        '''Jetzt wird das Booking Objekt gespeichert und die vorher gespeicherte id wird nun als Fremdschlüssel eingefügt'''
+    def create_booking_for_timeinterval(self, userId, worktimeAccountId, type, eventbookingId):
+        with TimeIntervalBookingMapper() as mapper:
+            last_entry = mapper.find_last_entry()
+            id = last_entry.get_id()
 
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
         booking.set_type(type)
-        booking.set_time_interval_booking_id(timeintervalbookingid)
-        booking.set_id(1)
+        booking.set_event_booking_id(eventbookingId)
+        booking.set_time_interval_booking_id(id)
 
         with BookingMapper() as mapper:
             return mapper.insert(booking)
-
-        # Hinzufügen der der Delta Zeitrechnung des Zeitintervalls, damit man die overtime und worktime berechnen
-        # Hinzufügen der TimeintervalId von Hami nach Absprache
 
     def create_event_booking(self, userId, worktimeAccountId, eventId, type):
         """Ein Event Booking anlegen"""

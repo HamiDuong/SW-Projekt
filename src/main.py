@@ -68,6 +68,10 @@ from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from server.bo.timeinterval.VacationBO import VacationBO
 from server.bo.timeinterval.WorkBO import WorkBO
 
+from server.bo.BookingBO import BookingBO
+from server.bo.EventBookingBO import EventBookingBO
+from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
 # from SecurityDecorator import secured
@@ -109,7 +113,7 @@ worktimeapp = api.namespace(
 BusinessObject dient als Basisklasse, auf der die weiteren Strukturen User, Events, Projects, etc. aufsetzen."""
 bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines Business Object'),
-    'date_of_last_change': fields.datetime(attribute='_date_of_last_change', description='Zeitpunkt der letzten Änderung')
+    'date_of_last_change': fields.String(attribute='_date_of_last_change', description='Zeitpunkt der letzten Änderung')
 })
 
 """Users"""
@@ -164,8 +168,8 @@ timeinterval = api.inherit('TimeInterval', bo, {
 })
 
 breaks = api.inherit('Break', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
     '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
@@ -173,8 +177,8 @@ breaks = api.inherit('Break', bo, {
 })
 
 illness = api.inherit('Illness', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
     '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
@@ -182,17 +186,17 @@ illness = api.inherit('Illness', bo, {
 })
 
 vacation = api.inherit('Vacation', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.String(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.String(attribute='_end', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
 work = api.inherit('Work', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
     '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
@@ -200,8 +204,8 @@ work = api.inherit('Work', bo, {
 })
 
 projectduration = api.inherit('ProjectDuration', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
     '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
@@ -210,8 +214,8 @@ projectduration = api.inherit('ProjectDuration', bo, {
 })
 
 projectwork = api.inherit('ProjectWork', bo, {
-    '_start': fields.datetime(attribute='_start', description='Startpunkt des Intervalls'),
-    '_end': fields.datetime(attribute='_end', description='Endpunkt des Intervalls'),
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
     '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
@@ -219,7 +223,24 @@ projectwork = api.inherit('ProjectWork', bo, {
     '_activity_id': fields.Integer(attribute='_activity_id', description='Fremschlüssel zur Aktivity')
 })
 
+'''Booking und zugehörige Subklassen @author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+booking = api.inherit("Booking", bo, {
+    '_work_time_account_id': fields.Integer(attribute="_work_time_account_id"),
+    '_user_id': fields.Integer(attribute="_work_time_account_id"),
+    '_type': fields.String(attribute="_type"),
+    '_event_booking_id': fields.Integer(attribute="_event_booking_id"),
+    '_time_interval_booking_id': fields.Integer(attribute="_time_interval_booking_id")
+})
+
+eventbooking = api.inherit("Eventbooking", bo, {
+    '_event_id': fields.Integer(attribute="_event_id")
+})
+timeintervalbooking = api.inherit("Timeintervalbooking", bo, {
+    '_time_interval_id': fields.Integer(attribute="_time_interval_id")
+})
+
 # Tatsächliche Funktionen beginnen ab hier.
+
 
 @worktimeapp.route('/user')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -570,6 +591,8 @@ class UserRelatedAccountOperations(Resource):
             return "User not found", 500
 
 # Project
+
+
 @worktimeapp.route('/projects')
 class ProjectOperations(Resource):
     @worktimeapp.marshal_with(project)
@@ -784,6 +807,7 @@ class ActivityWithSTRINGOperations(Resource):
         return activity
 '''
 
+
 @worktimeapp.route('/events')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class EventListOperations(Resource):
@@ -883,7 +907,7 @@ class EventOperations(Resource):
 @worktimeapp.param('event_booking_id', 'Die ID der zugehörigen Ereignsisbuchung')
 class EventsByNameOperations(Resource):
     @worktimeapp.marshal_with(event)
-    #@secured
+    # @secured
     def get(self, event_booking_id):
         """ Auslesen von Event-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -893,14 +917,17 @@ class EventsByNameOperations(Resource):
         event = adm.get_event_by_name(event_booking_id)
         return event
 
+
 """
 Timeinterval
 """
+
+
 @worktimeapp.route('/timeinterval')
 class TimeIntervalOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
     @worktimeapp.expect(timeinterval)
-    #@secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = TimeIntervalBO.from_dict(api.payload)
@@ -915,26 +942,27 @@ class TimeIntervalOperations(Resource):
                 proposal.get_work_id()
             )
         return p
-    
+
     @worktimeapp.marshal_list_with(timeinterval)
-    #@secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         timeinterval = adm.get_all_timeintervals()
         return timeinterval
 
+
 @worktimeapp.route('timeinterval/<int:id>')
 @worktimeapp.param('id', 'ID des Timeintervalls')
 class TimeIntervalWithIDOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
-    #@secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_id(id)
         return timeinterval
 
     @worktimeapp.marshal_with(timeinterval)
-    #@secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_id(id)
@@ -942,7 +970,7 @@ class TimeIntervalWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(timeinterval)
     @worktimeapp.expect(timeinterval, validate=True)
-    #@secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = TimeIntervalBO.from_dict(api.payload)
@@ -954,25 +982,28 @@ class TimeIntervalWithIDOperations(Resource):
         else:
             return '', 500
 
+
 @worktimeapp.route('timeintervaltype/<string:type>')
 @worktimeapp.param('type', 'Type des Timeintervalls')
 class TimeIntervalWithTypeOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
-    #@secured
+    # @secured
     def get(self, type):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_type(type)
         return timeinterval
-        
+
 
 """
 Break
 """
+
+
 @worktimeapp.route('/break')
 class BreakOperations(Resource):
     @worktimeapp.marshal_with(breaks)
     @worktimeapp.expect(breaks)
-    #@secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = BreakBO.from_dict(api.payload)
@@ -987,24 +1018,25 @@ class BreakOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(breaks)
-    #@secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         breaks = adm.get_all_breaks()
         return breaks
 
+
 @worktimeapp.route('break/<int:id>')
 @worktimeapp.param('id', 'ID der Break')
 class BreakWithIDOperations(Resource):
     @worktimeapp.marshal_with(breaks)
-    #@secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         breaks = adm.get_break_by_id(id)
         return breaks
 
     @worktimeapp.marshal_with(breaks)
-    #@secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         breaks = adm.get_break_by_id(id)
@@ -1012,7 +1044,7 @@ class BreakWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(breaks)
     @worktimeapp.expect(breaks, validate=True)
-    #@secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = BreakBO.from_dict(api.payload)
@@ -1024,292 +1056,318 @@ class BreakWithIDOperations(Resource):
         else:
             return '', 500
 
-@worktimeapp.route('breakdate/<date:start>')
-@worktimeapp.param('start', 'Start von Break')
-class FindBreakByDate(Resource):
-    @worktimeapp.marshal_with(breaks)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        breaks = adm.get_breaks_by_date(start)
-        return breaks
 
-@worktimeapp.route('breakperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von Break', 'end', 'Ende von Break')
-class FindBreakByTimePeriod(Resource):
-    @worktimeapp.marshal_with(breaks)
-    #@secured
-    def get(self, start, end):
-        adm = Businesslogic()
-        breaks = adm.get_breaks_by_time_period(start, end)
-        return breaks
+# @worktimeapp.route('breakdate/<date:start>')
+# @worktimeapp.param('start', 'Start von Break')
+# class FindBreakByDate(Resource):
+#     @worktimeapp.marshal_with(breaks)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         breaks = adm.get_breaks_by_date(start)
+#         return breaks
+
+
+# @worktimeapp.route('breakperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von Break', 'end', 'Ende von Break')
+# class FindBreakByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(breaks)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         breaks = adm.get_breaks_by_time_period(start, end)
+#         return breaks
+
 
 """
 Illness
 """
-@worktimeapp.route('/illness')
-class IllnessOperations(Resource):
-    @worktimeapp.marshal_with(illness)
-    @worktimeapp.expect(illness)
-    #@secured
-    def post(self):
-        adm = Businesslogic()
-        proposal = IllnessBO.from_dict(api.payload)
-        if proposal is not None:
-            p = adm.create_illness(
-                proposal.get_start(),
-                proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
-                proposal.get_type(),
-            )
-        return p
 
-    @worktimeapp.marshal_list_with(illness)
-    #@secured
-    def get(self):
-        adm = Businesslogic()
-        illness = adm.get_all_illnesses()
-        return illness
 
-@worktimeapp.route('illness/<int:id>')
-@worktimeapp.param('id', 'ID der Illness')
-class IllnessWithIDOperations(Resource):
-    @worktimeapp.marshal_with(illness)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        illness = adm.get_illness_by_id(id)
-        return illness
+# @worktimeapp.route('/illness')
+# class IllnessOperations(Resource):
+#     @worktimeapp.marshal_with(illness)
+#     @worktimeapp.expect(illness)
+#     # @secured
+#     def post(self):
+#         adm = Businesslogic()
+#         proposal = IllnessBO.from_dict(api.payload)
+#         if proposal is not None:
+#             p = adm.create_illness(
+#                 proposal.get_start(),
+#                 proposal.get_end(),
+#                 proposal.get_start_event(),
+#                 proposal.get_end_event(),
+#                 proposal.get_type(),
+#             )
+#         return p
 
-    @worktimeapp.marshal_with(illness)
-    #@secured
-    def delete(self, id):
-        adm = Businesslogic()
-        illness = adm.get_illness_by_id(id)
-        adm.delete_illness(illness)
+#     @worktimeapp.marshal_list_with(illness)
+#     # @secured
+#     def get(self):
+#         adm = Businesslogic()
+#         illness = adm.get_all_illnesses()
+#         return illness
 
-    @worktimeapp.marshal_with(illness)
-    @worktimeapp.expect(illness, validate=True)
-    #@secured
-    def put(self, id):
-        adm = Businesslogic()
-        p = BreakBO.from_dict(api.payload)
 
-        if p is not None:
-            p.set_id(id)
-            adm.save_illness(p)
-            return p, 200
-        else:
-            return '', 500
+# @worktimeapp.route('illness/<int:id>')
+# @worktimeapp.param('id', 'ID der Illness')
+# class IllnessWithIDOperations(Resource):
+#     @worktimeapp.marshal_with(illness)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         illness = adm.get_illness_by_id(id)
+#         return illness
 
-@worktimeapp.route('illnessdate/<date:start>')
-@worktimeapp.param('start', 'Start von Illness')
-class FindIllnessByDate(Resource):
-    @worktimeapp.marshal_with(illness)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        illness = adm.get_illnesses_by_date(start)
-        return illness
+#     @worktimeapp.marshal_with(illness)
+#     # @secured
+#     def delete(self, id):
+#         adm = Businesslogic()
+#         illness = adm.get_illness_by_id(id)
+#         adm.delete_illness(illness)
 
-@worktimeapp.route('illnessperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von Illness', 'end', 'Ende von Illness')
-class FindIllnessByTimePeriod(Resource):
-    @worktimeapp.marshal_with(illness)
-    #@secured
-    def get(self, start, end):
-        adm = Businesslogic()
-        illness = adm.get_illnesses_by_time_period(start, end)
-        return illness
-"""
-ProjectDuration
-"""
-@worktimeapp.route('/projectduration')
-class ProjectDurationOperations(Resource):
-    @worktimeapp.marshal_with(projectduration)
-    @worktimeapp.expect(projectduration)
-    #@secured
-    def post(self):
-        adm = Businesslogic()
-        proposal = ProjectDurationBO.from_dict(api.payload)
-        if proposal is not None:
-            p = adm.create_project_duration(
-                proposal.get_start(),
-                proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
-                proposal.get_type(),
-                proposal.get_project_id()
-            )
-        return p
+#     @worktimeapp.marshal_with(illness)
+#     @worktimeapp.expect(illness, validate=True)
+#     # @secured
+#     def put(self, id):
+#         adm = Businesslogic()
+#         p = BreakBO.from_dict(api.payload)
 
-    @worktimeapp.marshal_list_with(projectduration)
-    #@secured
-    def get(self):
-        adm = Businesslogic()
-        projectduration = adm.get_all_project_durations()
-        return projectduration
+#         if p is not None:
+#             p.set_id(id)
+#             adm.save_illness(p)
+#             return p, 200
+#         else:
+#             return '', 500
 
-@worktimeapp.route('projectduration/<int:id>')
-@worktimeapp.param('id', 'ID der ProjectDuration')
-class ProjecDurationWithIDOperations(Resource):
-    @worktimeapp.marshal_with(projectduration)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_id(id)
-        return projectduration
 
-    @worktimeapp.marshal_with(projectduration)
-    #@secured
-    def delete(self, id):
-        adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_id(id)
-        adm.delete_project_duration(projectduration)
+# @worktimeapp.route('illnessdate/<date:start>')
+# @worktimeapp.param('start', 'Start von Illness')
+# class FindIllnessByDate(Resource):
+#     @worktimeapp.marshal_with(illness)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         illness = adm.get_illnesses_by_date(start)
+#         return illness
 
-    @worktimeapp.marshal_with(projectduration)
-    @worktimeapp.expect(projectduration, validate=True)
-    #@secured
-    def put(self, id):
-        adm = Businesslogic()
-        p = ProjectDurationBO.from_dict(api.payload)
 
-        if p is not None:
-            p.set_id(id)
-            adm.save_project_duration(p)
-            return p, 200
-        else:
-            return '', 500
+# @worktimeapp.route('illnessperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von Illness', 'end', 'Ende von Illness')
+# class FindIllnessByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(illness)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         illness = adm.get_illnesses_by_time_period(start, end)
+#         return illness
 
-@worktimeapp.route('projectdurationdate/<date:start>')
-@worktimeapp.param('start', 'Start von ProjectDuration')
-class FindProjectDurationByDate(Resource):
-    @worktimeapp.marshal_with(projectduration)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        projectduration = adm.get_project_durations_by_date(start)
-        return projectduration
 
-@worktimeapp.route('projectdurationperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von ProjectDuration', 'end', 'Ende von ProjectDuration')
-class FindProjectDurationByTimePeriod(Resource):
-    @worktimeapp.marshal_with(projectduration)
-    #@secured
-    def get(self, start, end):
-        adm = Businesslogic()
-        projectduration = adm.get_project_durations_by_time_period(start, end)
-        return projectduration
+# """
+# ProjectDuration
+# """
 
-@worktimeapp.route('projectdurationproject/<int:projectid>')
-@worktimeapp.param('id', 'Id von Project')
-class FindProjectDurationByProjectId(Resource):
-    @worktimeapp.marshal_with(projectduration)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_project_id(id)
-        return projectduration
 
-"""
-ProjectWork
-"""
-@worktimeapp.route('/projectwork')
-class ProjectWorkOperations(Resource):
-    @worktimeapp.marshal_with(projectwork)
-    @worktimeapp.expect(projectwork)
-    #@secured
-    def post(self):
-        adm = Businesslogic()
-        proposal = ProjectWorkBO.from_dict(api.payload)
-        if proposal is not None:
-            p = adm.create_project_work(
-                proposal.get_start(),
-                proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
-                proposal.get_type(),
-                proposal.get_activity_id()
-            )
-        return p
+# @worktimeapp.route('/projectduration')
+# class ProjectDurationOperations(Resource):
+#     @worktimeapp.marshal_with(projectduration)
+#     @worktimeapp.expect(projectduration)
+#     # @secured
+#     def post(self):
+#         adm = Businesslogic()
+#         proposal = ProjectDurationBO.from_dict(api.payload)
+#         if proposal is not None:
+#             p = adm.create_project_duration(
+#                 proposal.get_start(),
+#                 proposal.get_end(),
+#                 proposal.get_start_event(),
+#                 proposal.get_end_event(),
+#                 proposal.get_type(),
+#                 proposal.get_project_id()
+#             )
+#         return p
 
-    @worktimeapp.marshal_list_with(projectwork)
-    #@secured
-    def get(self):
-        adm = Businesslogic()
-        projectwork = adm.get_all_project_works()
-        return projectwork
+#     @worktimeapp.marshal_list_with(projectduration)
+#     # @secured
+#     def get(self):
+#         adm = Businesslogic()
+#         projectduration = adm.get_all_project_durations()
+#         return projectduration
 
-@worktimeapp.route('projectwork/<int:id>')
-@worktimeapp.param('id', 'ID der ProjectWork')
-class ProjecWorkWithIDOperations(Resource):
-    @worktimeapp.marshal_with(projectwork)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        projectwork = adm.get_project_work_by_id(id)
-        return projectwork
 
-    @worktimeapp.marshal_with(projectwork)
-    #@secured
-    def delete(self, id):
-        adm = Businesslogic()
-        projectwork = adm.get_project_work_by_id(id)
-        adm.delete_project_work(projectwork)
+# @worktimeapp.route('projectduration/<int:id>')
+# @worktimeapp.param('id', 'ID der ProjectDuration')
+# class ProjecDurationWithIDOperations(Resource):
+#     @worktimeapp.marshal_with(projectduration)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         projectduration = adm.get_project_duration_by_id(id)
+#         return projectduration
 
-    @worktimeapp.marshal_with(projectwork)
-    @worktimeapp.expect(projectwork, validate=True)
-    #@secured
-    def put(self, id):
-        adm = Businesslogic()
-        p = ProjectWorkBO.from_dict(api.payload)
+#     @worktimeapp.marshal_with(projectduration)
+#     # @secured
+#     def delete(self, id):
+#         adm = Businesslogic()
+#         projectduration = adm.get_project_duration_by_id(id)
+#         adm.delete_project_duration(projectduration)
 
-        if p is not None:
-            p.set_id(id)
-            adm.save_project_work(p)
-            return p, 200
-        else:
-            return '', 500
+#     @worktimeapp.marshal_with(projectduration)
+#     @worktimeapp.expect(projectduration, validate=True)
+#     # @secured
+#     def put(self, id):
+#         adm = Businesslogic()
+#         p = ProjectDurationBO.from_dict(api.payload)
 
-@worktimeapp.route('projectworkdate/<date:start>')
-@worktimeapp.param('start', 'Start von ProjectWork')
-class FindProjectWorkByDate(Resource):
-    @worktimeapp.marshal_with(projectwork)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        projectwork = adm.get_project_works_by_date(start)
-        return projectwork
+#         if p is not None:
+#             p.set_id(id)
+#             adm.save_project_duration(p)
+#             return p, 200
+#         else:
+#             return '', 500
 
-@worktimeapp.route('projectworkperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von ProjectWork', 'end', 'Ende von ProjectWork')
-class FindProjectWorkByTimePeriod(Resource):
-    @worktimeapp.marshal_with(projectwork)
-    #@secured
-    def get(self, start, end):
-        adm = Businesslogic()
-        projectwork = adm.get_project_works_by_time_period(start, end)
-        return projectwork
 
-@worktimeapp.route('projectworkactivity/<int:activitytid>')
-@worktimeapp.param('id', 'Id von Project')
-class FindProjectWorkByProjectId(Resource):
-    @worktimeapp.marshal_with(projectwork)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        projectwork = adm.get_project_works_by_activity_id(id)
-        return projectwork
+# @worktimeapp.route('projectdurationdate/<date:start>')
+# @worktimeapp.param('start', 'Start von ProjectDuration')
+# class FindProjectDurationByDate(Resource):
+#     @worktimeapp.marshal_with(projectduration)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         projectduration = adm.get_project_durations_by_date(start)
+#         return projectduration
 
-"""
-Vacation
-"""
+
+# @worktimeapp.route('projectdurationperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von ProjectDuration', 'end', 'Ende von ProjectDuration')
+# class FindProjectDurationByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(projectduration)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         projectduration = adm.get_project_durations_by_time_period(start, end)
+#         return projectduration
+
+
+# @worktimeapp.route('projectdurationproject/<int:projectid>')
+# @worktimeapp.param('id', 'Id von Project')
+# class FindProjectDurationByProjectId(Resource):
+#     @worktimeapp.marshal_with(projectduration)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         projectduration = adm.get_project_duration_by_project_id(id)
+#         return projectduration
+
+
+# """
+# ProjectWork
+# """
+
+
+# @worktimeapp.route('/projectwork')
+# class ProjectWorkOperations(Resource):
+#     @worktimeapp.marshal_with(projectwork)
+#     @worktimeapp.expect(projectwork)
+#     # @secured
+#     def post(self):
+#         adm = Businesslogic()
+#         proposal = ProjectWorkBO.from_dict(api.payload)
+#         if proposal is not None:
+#             p = adm.create_project_work(
+#                 proposal.get_start(),
+#                 proposal.get_end(),
+#                 proposal.get_start_event(),
+#                 proposal.get_end_event(),
+#                 proposal.get_type(),
+#                 proposal.get_activity_id()
+#             )
+#         return p
+
+#     @worktimeapp.marshal_list_with(projectwork)
+#     # @secured
+#     def get(self):
+#         adm = Businesslogic()
+#         projectwork = adm.get_all_project_works()
+#         return projectwork
+
+
+# @worktimeapp.route('projectwork/<int:id>')
+# @worktimeapp.param('id', 'ID der ProjectWork')
+# class ProjecWorkWithIDOperations(Resource):
+#     @worktimeapp.marshal_with(projectwork)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         projectwork = adm.get_project_work_by_id(id)
+#         return projectwork
+
+#     @worktimeapp.marshal_with(projectwork)
+#     # @secured
+#     def delete(self, id):
+#         adm = Businesslogic()
+#         projectwork = adm.get_project_work_by_id(id)
+#         adm.delete_project_work(projectwork)
+
+#     @worktimeapp.marshal_with(projectwork)
+#     @worktimeapp.expect(projectwork, validate=True)
+#     # @secured
+#     def put(self, id):
+#         adm = Businesslogic()
+#         p = ProjectWorkBO.from_dict(api.payload)
+
+#         if p is not None:
+#             p.set_id(id)
+#             adm.save_project_work(p)
+#             return p, 200
+#         else:
+#             return '', 500
+
+
+# @worktimeapp.route('projectworkdate/<date:start>')
+# @worktimeapp.param('start', 'Start von ProjectWork')
+# class FindProjectWorkByDate(Resource):
+#     @worktimeapp.marshal_with(projectwork)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         projectwork = adm.get_project_works_by_date(start)
+#         return projectwork
+
+
+# @worktimeapp.route('projectworkperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von ProjectWork', 'end', 'Ende von ProjectWork')
+# class FindProjectWorkByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(projectwork)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         projectwork = adm.get_project_works_by_time_period(start, end)
+#         return projectwork
+
+
+# @worktimeapp.route('projectworkactivity/<int:activitytid>')
+# @worktimeapp.param('id', 'Id von Project')
+# class FindProjectWorkByProjectId(Resource):
+#     @worktimeapp.marshal_with(projectwork)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         projectwork = adm.get_project_works_by_activity_id(id)
+#         return projectwork
+
+
+# """
+# Vacation
+# """
+
+
 @worktimeapp.route('/vacation')
 class VacationOperations(Resource):
     @worktimeapp.marshal_with(vacation)
     @worktimeapp.expect(vacation)
-    #@secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = VacationBO.from_dict(api.payload)
@@ -1321,144 +1379,214 @@ class VacationOperations(Resource):
                 proposal.get_end_event(),
                 proposal.get_type(),
             )
-        return p
 
-    @worktimeapp.marshal_list_with(vacation)
-    #@secured
-    def get(self):
-        adm = Businesslogic()
-        vacation = adm.get_all_vacations()
-        return vacation
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                None,
+                None,
+                None,
+                None,
+                p.get_id(),
+                None
+            )
 
-@worktimeapp.route('vacation/<int:id>')
-@worktimeapp.param('id', 'ID der Vacation')
-class VacationWithIDOperations(Resource):
-    @worktimeapp.marshal_with(vacation)
-    #@secured
+            tb = adm.create_timeinterval_booking(
+                t.get_id()
+            )
+        return p, t, tb
+
+
+#     @worktimeapp.marshal_list_with(vacation)
+#     # @secured
+#     def get(self):
+#         adm = Businesslogic()
+#         vacation = adm.get_all_vacations()
+#         return vacation
+
+
+# @worktimeapp.route('vacation/<int:id>')
+# @worktimeapp.param('id', 'ID der Vacation')
+# class VacationWithIDOperations(Resource):
+#     @worktimeapp.marshal_with(vacation)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         vacation = adm.get_vacation_by_id(id)
+#         return vacation
+
+#     @worktimeapp.marshal_with(vacation)
+#     # @secured
+#     def delete(self, id):
+#         adm = Businesslogic()
+#         vacation = adm.get_vacation_by_id(id)
+#         adm.delete_vacation(vacation)
+
+#     @worktimeapp.marshal_with(vacation)
+#     @worktimeapp.expect(vacation, validate=True)
+#     # @secured
+#     def put(self, id):
+#         adm = Businesslogic()
+#         p = VacationBO.from_dict(api.payload)
+
+#         if p is not None:
+#             p.set_id(id)
+#             adm.save_vacation(p)
+#             return p, 200
+#         else:
+#             return '', 500
+
+
+# @worktimeapp.route('vacationdate/<date:start>')
+# @worktimeapp.param('start', 'Start von Vacation')
+# class FindVacationByDate(Resource):
+#     @worktimeapp.marshal_with(vacation)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         vacation = adm.get_vacations_by_date(start)
+#         return vacation
+
+
+# @worktimeapp.route('vacationperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von Vacation', 'end', 'Ende von Vacation')
+# class FindVacationByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(vacation)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         vacation = adm.get_vacations_by_time_period(start, end)
+#         return vacation
+
+
+# """
+# Work
+# """
+
+
+# @worktimeapp.route('/work')
+# class WorkOperations(Resource):
+#     @worktimeapp.marshal_with(work)
+#     @worktimeapp.expect(work)
+#     # @secured
+#     def post(self):
+#         adm = Businesslogic()
+#         proposal = WorkBO.from_dict(api.payload)
+#         if proposal is not None:
+#             p = adm.create_work(
+#                 proposal.get_start(),
+#                 proposal.get_end(),
+#                 proposal.get_start_event(),
+#                 proposal.get_end_event(),
+#                 proposal.get_type(),
+#             )
+#         return p
+
+#     @worktimeapp.marshal_list_with(work)
+#     # @secured
+#     def get(self):
+#         adm = Businesslogic()
+#         work = adm.get_all_works()
+#         return work
+
+
+# @worktimeapp.route('work/<int:id>')
+# @worktimeapp.param('id', 'ID der Work')
+# class WorkWithIDOperations(Resource):
+#     @worktimeapp.marshal_with(work)
+#     # @secured
+#     def get(self, id):
+#         adm = Businesslogic()
+#         work = adm.get_work_by_id(id)
+#         return work
+
+#     @worktimeapp.marshal_with(work)
+#     # @secured
+#     def delete(self, id):
+#         adm = Businesslogic()
+#         work = adm.get_work_by_id(id)
+#         adm.delete_work(work)
+
+#     @worktimeapp.marshal_with(work)
+#     @worktimeapp.expect(work, validate=True)
+#     # @secured
+#     def put(self, id):
+#         adm = Businesslogic()
+#         p = WorkBO.from_dict(api.payload)
+
+#         if p is not None:
+#             p.set_id(id)
+#             adm.save_work(p)
+#             return p, 200
+#         else:
+#             return '', 500
+
+
+# @worktimeapp.route('workdate/<date:start>')
+# @worktimeapp.param('start', 'Start von Work')
+# class FindWorkByDate(Resource):
+#     @worktimeapp.marshal_with(work)
+#     # @secured
+#     def get(self, start):
+#         adm = Businesslogic()
+#         work = adm.get_works_by_date(start)
+#         return work
+
+
+# @worktimeapp.route('vacationperiod/<date:start>/<date:end>')
+# @worktimeapp.param('start', 'Start von Work', 'end', 'Ende von Work')
+# class FindWorkByTimePeriod(Resource):
+#     @worktimeapp.marshal_with(work)
+#     # @secured
+#     def get(self, start, end):
+#         adm = Businesslogic()
+#         work = adm.get_works_by_time_period(start, end)
+#         return work
+
+
+'''Booking Routes @author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+
+
+@worktimeapp.route('/booking/<int:id>')
+@worktimeapp.param('id', 'Die Worktimeaccount ID')
+class BookingOperations(Resource):
+    @worktimeapp.marshal_list_with(booking)
     def get(self, id):
         adm = Businesslogic()
-        vacation = adm.get_vacation_by_id(id)
-        return vacation
+        bookings = adm.get_all_bookings_for_worktime_account(id)
+        return bookings
 
-    @worktimeapp.marshal_with(vacation)
-    #@secured
-    def delete(self, id):
-        adm = Businesslogic()
-        vacation = adm.get_vacation_by_id(id)
-        adm.delete_vacation(vacation)
 
-    @worktimeapp.marshal_with(vacation)
-    @worktimeapp.expect(vacation, validate=True)
-    #@secured
-    def put(self, id):
-        adm = Businesslogic()
-        p = VacationBO.from_dict(api.payload)
-
-        if p is not None:
-            p.set_id(id)
-            adm.save_vacation(p)
-            return p, 200
-        else:
-            return '', 500
-
-@worktimeapp.route('vacationdate/<date:start>')
-@worktimeapp.param('start', 'Start von Vacation')
-class FindVacationByDate(Resource):
-    @worktimeapp.marshal_with(vacation)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        vacation = adm.get_vacations_by_date(start)
-        return vacation
-
-@worktimeapp.route('vacationperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von Vacation', 'end', 'Ende von Vacation')
-class FindVacationByTimePeriod(Resource):
-    @worktimeapp.marshal_with(vacation)
-    #@secured
-    def get(self, start, end):
-        adm = Businesslogic()
-        vacation = adm.get_vacations_by_time_period(start, end)
-        return vacation
-
-"""
-Work
-"""
-@worktimeapp.route('/work')
-class WorkOperations(Resource):
-    @worktimeapp.marshal_with(work)
-    @worktimeapp.expect(work)
-    #@secured
+@worktimeapp.route('/booking/timeintervalbooking')
+class TimeintervalBookingOperations(Resource):
+    @worktimeapp.marshal_with(booking)
+    @worktimeapp.expect(booking)
     def post(self):
         adm = Businesslogic()
-        proposal = WorkBO.from_dict(api.payload)
+        proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_work(
-                proposal.get_start(),
-                proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
+            b = adm.create_booking_for_timeinterval(
+                proposal.get_user_id(),
+                proposal.get_work_time_account_id(),
                 proposal.get_type(),
+                None
             )
-        return p
-
-    @worktimeapp.marshal_list_with(work)
-    #@secured
-    def get(self):
-        adm = Businesslogic()
-        work = adm.get_all_works()
-        return work
-
-@worktimeapp.route('work/<int:id>')
-@worktimeapp.param('id', 'ID der Work')
-class WorkWithIDOperations(Resource):
-    @worktimeapp.marshal_with(work)
-    #@secured
-    def get(self, id):
-        adm = Businesslogic()
-        work = adm.get_work_by_id(id)
-        return work
-
-    @worktimeapp.marshal_with(work)
-    #@secured
-    def delete(self, id):
-        adm = Businesslogic()
-        work = adm.get_work_by_id(id)
-        adm.delete_work(work)
-
-    @worktimeapp.marshal_with(work)
-    @worktimeapp.expect(work, validate=True)
-    #@secured
-    def put(self, id):
-        adm = Businesslogic()
-        p = WorkBO.from_dict(api.payload)
-
-        if p is not None:
-            p.set_id(id)
-            adm.save_work(p)
-            return p, 200
+            return b
         else:
-            return '', 500
+            return ''
 
-@worktimeapp.route('workdate/<date:start>')
-@worktimeapp.param('start', 'Start von Work')
-class FindWorkByDate(Resource):
-    @worktimeapp.marshal_with(work)
-    #@secured
-    def get(self, start):
-        adm = Businesslogic()
-        work = adm.get_works_by_date(start)
-        return work
 
-@worktimeapp.route('vacationperiod/<date:start>/<date:end>')
-@worktimeapp.param('start', 'Start von Work', 'end', 'Ende von Work')
-class FindWorkByTimePeriod(Resource):
-    @worktimeapp.marshal_with(work)
-    #@secured
-    def get(self, start, end):
+@worktimeapp.route('/booking/eventbooking')
+class EventBookingOperations(Resource):
+    def post(self):
         adm = Businesslogic()
-        work = adm.get_works_by_time_period(start, end)
-        return work
+        proposal = EventBookingBO.from_dict(api.payload)
+        if proposal is not None:
+            b = adm.create_event_booking(proposal.get_user_id(
+            ), proposal.get_work_time_account_id(), proposal.get_event_id(), proposal.get_type())
+            return b
+        else:
+            return ''
+
 
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
