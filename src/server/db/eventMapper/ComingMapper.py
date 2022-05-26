@@ -22,12 +22,11 @@ class ComingMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 coming.set_id(1)
 
-        command = "INSERT INTO worktimeapp.coming (id, date_of_last_change, date, eventid) VALUES (%s, %s,%s,%s)"
+        command = "INSERT INTO worktimeapp.coming (id, date_of_last_change, date) VALUES (%s, %s,%s)"
         data = (
             coming.get_id(),
             coming.get_date_of_last_change(),
             coming.get_time(),
-            coming.get_event_id(),
         )
 
         cursor.execute(command, data)
@@ -40,7 +39,7 @@ class ComingMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.coming"
+        command = "SELECT id, date FROM worktimeapp.coming"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -48,7 +47,6 @@ class ComingMapper(Mapper):
             coming = ComingBO()
             coming.set_id(id)
             coming.set_time(date)
-            coming.set_event_id(eventid)
             result.append(coming)
 
         self._cnx.commit()
@@ -60,17 +58,16 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.coming WHERE id={}".format(
+        command = "SELECT id, date FROM worktimeapp.coming WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date, eventid) = tuples[0]
+            (id, date) = tuples[0]
             coming = ComingBO()
             coming.set_id(id)
             coming.set_time(date)
-            coming.set_event_id(eventid)
             result = coming
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -86,7 +83,7 @@ class ComingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.coming WHERE date={}".format(
+        command = "SELECT id, date FROM worktimeapp.coming WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -95,7 +92,6 @@ class ComingMapper(Mapper):
             coming = ComingBO()
             coming.set_id(id)
             coming.set_time(date)
-            coming.set_event_id(eventid)
             result.append(coming)
 
         self._cnx.commit()
@@ -107,7 +103,7 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.coming WHERE chatid={}".format(
+        command = "SELECT id, date FROM worktimeapp.coming WHERE chatid={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -117,7 +113,6 @@ class ComingMapper(Mapper):
             coming = ComingBO()
             coming.set_id(id)
             coming.set_time(date)
-            coming.set_event_id(eventid)
             result = coming
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -130,13 +125,13 @@ class ComingMapper(Mapper):
         return result
 
     def update(self, coming):
-        datestamp = datedate.today()
+        datestamp = datetime.today()
         cursor = self._cnx.cursor()
         coming.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.coming " + \
-            "SET date=%s, eventid=%s WHERE id=%s"
-        data = (coming.get_time(), coming.get_event_id(),
+            "SET date=%s WHERE id=%s"
+        data = (coming.get_time(),
                 coming.get_id())
         cursor.execute(command, data)
 

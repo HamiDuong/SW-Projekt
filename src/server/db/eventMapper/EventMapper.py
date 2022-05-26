@@ -1,6 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.eventBOs.EventBO import EventBO
-from datedate import datedate
+from datetime import datetime
 
 
 class EventMapper(Mapper):
@@ -11,7 +11,7 @@ class EventMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.event ")
         tuples = cursor.fetchall()
-        datestamp = datedate.today()
+        datestamp = datetime.today()
         '''Wann immer ein neues Objekt in die Datenbank überführt wird, wird ein Zeitstempel erstellt
             und in die Spalte date_of_last_change eingefügt.'''
         event.set_date_of_last_change(datestamp)
@@ -25,11 +25,24 @@ class EventMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 event.set_id(1)
 
-        command = "INSERT INTO worktimeapp.event (id, dateoflastchange, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.event (id, dateoflastchange, type, coming_id, going_id, break_begin_id, \
+                   break_end_id, illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
+                   vacation_begin_id, vacation_end_id ) VALUES (%s, %s, %s, %s, %s,%s, %s, %s,%s ,%s, %s, %s, %s)"
         data = (
             event.get_id(),
             event.get_date_of_last_change(),
-            event.get_date()
+            event.get_type(),
+            event.get_coming_id(),
+            event.get_going_id(),
+            event.get_break_begin_id(),
+            event.get_break_end_id(),
+            event.get_illness_begin_id(),
+            event.get_illness_end_id(),
+            event.get_project_work_begin_id(),
+            event.get_project_work_end_id(),
+            event.get_vacation_begin_id(),
+            event.get_vacation_end_id()
+
         )
 
         cursor.execute(command, data)
@@ -42,15 +55,25 @@ class EventMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event"
+        command = "SELECT id, dateoflastchange, type, coming_id, going_id, break_begin_id, break_end_id,\
+                    illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
+                    vacation_begin_id, vacation_end_id FROM worktimeapp.event"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastange, date) in tuples:
+        for (id, dateoflastange,  type, coming_id, going_id, break_begin_id,  break_end_id,
+             illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
+             vacation_begin_id, vacation_end_id) in tuples:
+
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastange)
-            event.set_date(date)
+            event.set_type(type),
+            event.set_coming_id(coming_id), event.set_going_id(going_id),
+            event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
+            event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
+            event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
             result.append(event)
 
         self._cnx.commit()
@@ -62,17 +85,25 @@ class EventMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event WHERE id={}".format(
-            key)
+        command = "SELECT id, dateoflastchange, type, coming_id, going_id, break_begin_id, break_end_id,\
+                    illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
+                    vacation_begin_id, vacation_end_id FROM worktimeapp.event WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, type, coming_id, going_id, break_begin_id,  break_end_id,
+             illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
+             vacation_begin_id, vacation_end_id) = tuples[0]
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastchange)
-            event.set_date(date)
+            event.set_type(type),
+            event.set_coming_id(coming_id), event.set_going_id(going_id),
+            event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
+            event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
+            event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
             result = event
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -88,16 +119,25 @@ class EventMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateoflastchange, date FROM worktimeapp.event WHERE date={}".format(
+        command = "SELECT id, dateoflastchange, type, coming_id, going_id, break_begin_id, break_end_id,\
+                    illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
+                    vacation_begin_id, vacation_end_id FROM worktimeapp.event WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, type, coming_id, going_id, break_begin_id,  break_end_id,
+             illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
+             vacation_begin_id, vacation_end_id) in tuples:
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(dateoflastchange)
-            event.set_date(date)
+            event.set_type(type),
+            event.set_coming_id(coming_id), event.set_going_id(going_id),
+            event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
+            event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
+            event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
             result.append(event)
 
         self._cnx.commit()
@@ -107,15 +147,26 @@ class EventMapper(Mapper):
 
     def update(self, event):
         cursor = self._cnx.cursor()
-        datestamp = datedate.today()
+        datestamp = datetime.today()
         '''Wann immer ein vorhandenes Objekt in der Datenbank geändert wird, wird ein Zeitstempel erstellt
            und in die Spalte date_of_last_change eingefügt.'''
         event.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.event " + \
             "SET date=%s WHERE id=%s"
-        data = (event.get_date_of_last_change, event.get_date,
-                event.get_id())
+        data = ( event.get_id(),
+            event.get_date_of_last_change(),
+            event.get_type(),
+            event.get_coming_id(),
+            event.get_going_id(),
+            event.get_break_begin_id(),
+            event.get_break_end_id(),
+            event.get_illness_begin_id(),
+            event.get_illness_end_id(),
+            event.get_project_work_begin_id(),
+            event.get_project_work_end_id(),
+            event.get_vacation_begin_id(),
+            event.get_vacation_end_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
