@@ -1,7 +1,7 @@
 import BusinessObject from "./BusinessObject";
 
 export default class IllnessBO extends BusinessObject{
-    constructor(){
+    constructor(start, end, startEvent, endEvent, type){
         super(start, end, startEvent, endEvent, type);
         this.start = start;
         this.end = end;
