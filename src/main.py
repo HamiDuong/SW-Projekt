@@ -1239,6 +1239,18 @@ class FlexDayOperations(Resource):
     @worktimeapp.expect(flexday)
     #@secured
     def post(self):
+        adm = Businesslogic()
+        proposal = FlexDayBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_flex_day(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
+
 
     @worktimeapp.marshal_list_with(flexday)
     #@secured
