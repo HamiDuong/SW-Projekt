@@ -1,19 +1,25 @@
-from .bo.eventBOs.ComingBO import ComingBO
-from .db.eventMapper.ComingMapper import ComingMapper
-from .bo.eventBOs.GoingBO import GoingBO
-from .db.eventMapper.GoingMapper import GoingMapper
-from .bo.eventBOs.VacationBeginBO import VacationBeginBO
-from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from .bo.eventBOs.VacationEndBO import VacationEndBO
-from .db.eventMapper.VacationEndMapper import VacationEndMapper
-from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from .bo.eventBOs.IllnessEndBO import IllnessEndBO
-from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
+from bo.eventBOs.EventBO import EventBO
+from db.eventMapper.EventMapper import EventMapper
+from bo.eventBOs.ComingBO import ComingBO
+from db.eventMapper.ComingMapper import ComingMapper
+from bo.eventBOs.GoingBO import GoingBO
+from db.eventMapper.GoingMapper import GoingMapper
+from bo.eventBOs.VacationBeginBO import VacationBeginBO
+from db.eventMapper.VacationBeginMapper import VacationBeginMapper
+from bo.eventBOs.VacationEndBO import VacationEndBO
+from db.eventMapper.VacationEndMapper import VacationEndMapper
+from bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
+from bo.eventBOs.IllnessEndBO import IllnessEndBO
+from db.eventMapper.IllnessEndMapper import IllnessEndMapper
+from bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
+from db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
+from bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
+from db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
+from bo.eventBOs.BreakBeginBO import BreakBeginBO
+from db.eventMapper.BreakBeginMapper import BreakBeginMapper
+from bo.eventBOs.BreakEndBO import BreakEndBO
+from db.eventMapper.BreakEndMapper import BreakEndMapper
 
 from .bo.BookingBO import BookingBO
 from .db.BookingMapper import BookingMapper
@@ -42,16 +48,16 @@ from .bo.timeinterval.FlexDayBO import FlexDayBO
 from .db.timeinterval.FlexDayMapper import FlexDayMapper
 
 from datetime import datetime
-from .bo.UserBO import UserBO
-from .db.UserMapper import UserMapper
-from .bo.WorkTimeAccountBO import WorkTimeAccountBO
-from .db.WorkTimeAccountMapper import WorkTimeAccountMapper
-from .bo.ProjectBO import ProjectBO
-from .db.ProjectMapper import ProjectMapper
-from .bo.ProjectUserBO import ProjectUserBO
-from .db.ProjectUserMapper import ProjectUserMapper
-from .bo.ActivityBO import ActivityBO
-from .db.ActivityMapper import ActivityMapper
+from bo.UserBO import UserBO
+from db.UserMapper import UserMapper
+from bo.WorkTimeAccountBO import WorkTimeAccountBO
+from db.WorkTimeAccountMapper import WorkTimeAccountMapper
+from bo.ProjectBO import ProjectBO
+from db.ProjectMapper import ProjectMapper
+from bo.ProjectUserBO import ProjectUserBO
+from db.ProjectUserMapper import ProjectUserMapper
+from bo.ActivityBO import ActivityBO
+from db.ActivityMapper import ActivityMapper
 
 
 class Businesslogic():
@@ -62,11 +68,47 @@ class Businesslogic():
     '''Beginn der Event-& und Evensubklassenmethoden'''
     '''Author: Khadidja Kebaili'''
 
+    def create_event(self, type, coming_id, going_id, break_begin_id,  break_end_id,
+                    illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
+                    vacation_begin_id, vacation_end_id):
+        event = EventBO()
+        event.set_type(type),
+        event.set_coming_id(coming_id),
+        event.set_going_id(going_id),
+        event.set_break_begin_id(break_begin_id),
+        event.set_break_end_id(break_end_id),
+        event.set_illness_begin_id(illness_begin_id),
+        event.set_illness_end_id(illness_end_id),
+        event.set_project_work_begin_id(project_work_begin_id),
+        event.set_project_work_end_id(project_work_end_id),
+        event.set_vacation_begin_id(vacation_begin_id),
+        event.set_vacation_end_id(vacation_end_id)
+        with EventMapper() as mapper:
+            return mapper.insert(event)
+
+    # Methode um ein EventBO mit bestimmter ID aus der Datenbank zu laden
+    def get_event_by_id(self, number):
+        with EventMapper() as mapper:
+            return mapper.find_by_key(number)
+
+    # Methode um alle EventBOs aus der Datenbank zu laden
+    def get_all_events(self):
+        with EventMapper() as mapper:
+            return mapper.find_all()
+
+    # Methode um ein EventBOs zu updaten
+    def save_event(self, event):
+        with EventMapper() as mapper:
+            mapper.update(event)
+
+    # Methode um ein EventBO aus der Datenbank zu entfernen
+    def delete_event(self, event):
+        with EventMapper() as mapper:
+            mapper.delete(event)
     # Erstellung eines ComingBOs, also wenn ein Mitarbeiter sich einstempelt.
-    def create_coming(self, time, event_id):
+    def create_coming(self, time):
         coming = ComingBO()
         coming.set_time(time)
-        coming.set_event_id(event_id)
         with ComingMapper() as mapper:
             return mapper.insert(coming)
 
@@ -91,10 +133,9 @@ class Businesslogic():
             mapper.delete(coming)
 
     # Erstellung eines GoingBOs, also wenn ein Mitarbeiter sich ausstempelt.
-    def create_going(self, time, event_booking_id):
+    def create_going(self, time):
         going = GoingBO()
         going.set_time(time)
-        going.set_event_booking_id(event_booking_id)
         with GoingMapper() as mapper:
             return mapper.insert(going)
 
@@ -119,10 +160,9 @@ class Businesslogic():
             mapper.delete(going)
 
     # Erstellung eines ProjectWorkBeginBOs, also wenn ein Mitarbeiter mit der Projektarbeit beginnt
-    def create_project_work_begin(self, time, event_id):
+    def create_project_work_begin(self, time):
         project_work_begin = ProjectWorkBeginBO()
         project_work_begin.set_time(time)
-        project_work_begin.set_event_id(event_id)
         with ProjectWorkBeginMapper() as mapper:
             return mapper.insert(project_work_begin)
 
@@ -148,10 +188,9 @@ class Businesslogic():
 
       # Erstellung eines ProjectWorkEndBOs, also wenn ein Mitarbeiter mit der Projektarbeit aufhört
 
-    def create_project_work_end(self, time, event_id):
+    def create_project_work_end(self, time):
         project_work_end = ProjectWorkEndBO()
         project_work_end.set_time(time)
-        project_work_end.set_event_id(event_id)
         with ProjectWorkEndMapper() as mapper:
             return mapper.insert(project_work_end)
 
@@ -177,10 +216,9 @@ class Businesslogic():
 
     # Erstellung eines VacationBeginBOs, also wenn ein Mitarbeiter seinen Urlaub antritt
 
-    def create_vacation_begin(self, time, event_booking_id):
+    def create_vacation_begin(self, time):
         vacation_begin = VacationBeginBO()
         vacation_begin.set_time(time)
-        vacation_begin.set_event_booking_id(event_booking_id)
         with VacationBeginMapper() as mapper:
             return mapper.insert(vacation_begin)
 
@@ -205,10 +243,9 @@ class Businesslogic():
             mapper.delete(vacation_begin)
 
     # Erstellung eines VacationEndBOs, also wenn ein Mitarbeiter aus dem Urlaub kommt
-    def create_vacation_end(self, time, event_booking_id):
+    def create_vacation_end(self, time):
         vacation_end = VacationEndBO()
         vacation_end.set_time(time)
-        vacation_end.set_event_booking_id(event_booking_id)
         with VacationEndMapper() as mapper:
             return mapper.insert(vacation_end)
 
@@ -233,10 +270,9 @@ class Businesslogic():
             mapper.delete(vacation_end)
 
         # Erstellung eines IllnessBeginBOs, also der Beginn der Krankheit eines Mitarbeiters
-    def create_illnessBegin(self, time, event_id):
+    def create_illnessBegin(self, time):
         illnessBegin = IllnessBeginBO()
         illnessBegin.set_time(time)
-        illnessBegin.set_event_id(event_id)
         with IllnessBeginMapper() as mapper:
             return mapper.insert(illnessBegin)
 
@@ -261,10 +297,9 @@ class Businesslogic():
             mapper.delete(illnessBegin)
 
         # Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
-    def create_illnessEnd(self, time, event_id):
+    def create_illnessEnd(self, time):
         illnessEnd = IllnessEndBO()
         illnessEnd.set_time(time)
-        illnessEnd.set_event_id(event_id)
         with IllnessEndMapper() as mapper:
             return mapper.insert(illnessEnd)
 
@@ -287,6 +322,95 @@ class Businesslogic():
     def delete_illnessEnd(self, illnessEnd):
         with IllnessEndMapper() as mapper:
             mapper.delete(illnessEnd)
+        # Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
+
+    def create_break_begin(self, time):
+        break_begin = BreakBeginBO()
+        break_begin.set_time(time)
+        with BreakEndMapper() as mapper:
+            return mapper.insert(break_begin)
+
+    # Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
+    def get_break_begin_by_id(self, number):
+        with BreakBeginMapper() as mapper:
+            return mapper.find_by_key(number)
+        # Methode um alle BreakBeginBOs aus der Datenbank zu laden
+
+    def get_all_break_begins(self):
+        with BreakBeginMapper() as mapper:
+            return mapper.find_all()
+
+        # Methode um ein BreakBeginBO zu updaten
+
+    def save_break_begin(self, break_begin):
+        with BreakBeginMapper() as mapper:
+            mapper.update(break_begin)
+
+        # Methode um ein BreakBeginBO aus der Datenbank zu entfernen
+
+    def delete_break_begin(self, break_begin):
+        with BreakBeginMapper() as mapper:
+            mapper.delete(break_begin)
+
+        # Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
+
+    def create_break_end(self, time):
+        break_end = BreakEndBO()
+        break_end.set_time(time)
+        with BreakEndMapper() as mapper:
+            return mapper.insert(break_end)
+
+    # Methode um ein BreakEndBO mit bestimmter ID aus der Datenbank zu laden
+    def get_break_end_by_id(self, number):
+        with BreakEndMapper() as mapper:
+            return mapper.find_by_key(number)
+
+    # Methode um alle BreakEndBOs aus der Datenbank zu laden
+    def get_all_break_ends(self):
+        with BreakEndMapper() as mapper:
+            return mapper.find_all()
+
+    def get_break_end_by_timeinterval(self, start, end):
+        enddate = datetime.now().fromisoformat(str(end))
+        startend = datetime.now().fromisoformat(str(end))
+        events = self.get_all_break_ends()
+        interval = []
+        for elem in events:
+            if elem.get_time() >= start or elem.get_time() <=end:
+                interval.append(elem)
+            else:
+                pass
+        return interval
+
+    # Methode um ein BreakEndBO zu updaten
+    def save_break_end(self, break_end):
+        with BreakEndMapper() as mapper:
+            mapper.update(break_end)
+
+    # Methode um ein BreakEndBO aus der Datenbank zu entfernen
+    def delete_breakEnd(self, breakEnd):
+        with BreakEndMapper() as mapper:
+            mapper.delete(breakEnd)
+
+    '''Dieser Teil ist für die Filter-Funktion im Frontend'''
+    def in_between_times(self, event, start, end):
+        if event >= start and event <= end:
+            return event
+        else:  # over midnight e.g., 23:30-04:15
+            pass
+
+    def get_all_event_subclasses(self):
+        events = [self.get_all_break_ends(), self.get_all_break_begins(), self.get_all_project_work_begins(),
+                  self.get_all_project_work_ends(), self.get_all_vacation_begins(), self.get_all_vacation_ends(),
+                  self.get_all_illnessBegins(), self.get_all_illnessEnds(),
+                  self.get_all_comings(), self.get_all_goings()]
+        return events
+
+    def get_all_events_in_between_times(self, start, end):
+        events_in_between_times = []
+        events = self.get_all_event_subclasses()
+        for elem in events:
+            events_in_between_times.append(self.in_between_times(elem, start, end))
 
     """
     Timeinterval Methoden

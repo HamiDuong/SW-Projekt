@@ -152,9 +152,60 @@ activity = api.inherit('Activity', bo, {
 '''Event'''
 event = api.inherit('Event', bo, {
     'event_id': fields.Integer(attribute='_event_id', description='Die ID des Events'),
-    'time': fields.Float(attribute='_time', description='Der Event-Zeitpunkt'),
-    'event_booking_id': fields.Integer(attribute='_event_booking_id', description='Die ID der Buchung')
+    'type': fields.String(),
+    'coming_id': fields.Integer(attribute='_event_id', description='Die ID des Coming - Events'),
+    'going_id': fields.Integer(attribute='_event_id', description='Die ID des Going - Events'),
+    'break_begin_id': fields.Integer(attribute='_event_id', description='Die ID des Pausenbeginn-Events'),
+    'break_end_id': fields.Integer(attribute='_event_id', description='Die ID des Pausenende-Events'),
+    'illness_begin_id': fields.Integer(attribute='_event_id', description='Die ID des Krankheitsbeginn-Events'),
+    'illness_end_id': fields.Integer(attribute='_event_id', description='Die ID des Krankheitsende-Events'),
+    'project_work_begin_id': fields.Integer(attribute='_event_id', description='Die ID des Projektarbeitbeginn-Events'),
+    'project_work_end_id': fields.Integer(attribute='_event_id', description='Die ID des Projektarbeitende-Events'),
+    'vacation_begin_id': fields.Integer(attribute='_event_id', description='Die ID des Urlaubbeginn-Events'),
+    'vacation_end_id': fields.Integer(attribute='_event_id', description='Die ID des Urlaubende-Events')
+
 })
+
+comingBO = api.inherit('Coming', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+going = api.inherit('Going', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+break_begin = api.inherit('BreakBegin', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+break_end = api.inherit('BreakEnd', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+illness_end = api.inherit('IllnessEnd', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+illness_begin = api.inherit('IllnessBegin', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+vacation_end = api.inherit('VacationEnd', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+vacation_begin = api.inherit('VacationBegin', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+project_work_end = api.inherit('ProjectWorkEnd', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
+project_work_begin = api.inherit('ProjectWorkBegin', bo, {
+    'time': fields.Date(attribute = '_time', description = 'Zeitpunkt des Events')
+})
+
 
 """
 Timeinterval und zugehörige Subklassen
@@ -810,24 +861,12 @@ class EventListOperations(Resource):
     @worktimeapp.expect(event)
     # @secured
     def post(self):
-        """Anlegen eines neuen Event-Objekts.
+        """Anlegen eines neuen Event-Objekts."""
 
-        **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
-        So ist zum Beispiel die Vergabe der ID nicht Aufgabe des Clients.
-        Selbst wenn der Client eine ID in dem Proposal vergeben sollte, so
-        liegt es an der BankAdministration (Businesslogik), eine korrekte ID
-        zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
-        """
         adm = Businesslogic()
-
         proposal = event.from_dict(api.payload)
 
-        """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
         if proposal is not None:
-            """ Wir verwenden lediglich Vor- und Nachnamen des Proposals für die Erzeugung
-            eines Event-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
-            wird auch dem Client zurückgegeben. 
-            """
             c = adm.create_event(
                 proposal.get_id(), proposal.get_time(), proposal.get_event_booking_id())
             return c, 200

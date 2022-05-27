@@ -1,53 +1,53 @@
 from server.db.Mapper import Mapper
-from server.bo.eventBOs.ComingBO import ComingBO
+from server.bo.eventBOs.BreakEndBO import BreakEndBO
 from datetime import datetime
 
 
-class ComingMapper(Mapper):
+class BreakEndMapper(Mapper):
     def __init__(self):
         super().__init__()
 
-    def insert(self, coming):
+    def insert(self, break_end):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.coming ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.breakend ")
         tuples = cursor.fetchall()
-        coming.set_date_of_last_change(timestamp)
+        break_end.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
-                coming.set_id(maxid[0] + 1)
+                break_end.set_id(maxid[0] + 1)
             else:
                 """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
-                davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
-                coming.set_id(1)
+                davon aus, dass die Tabelle leer ist und wir mit der ID 1 endnen können."""
+                break_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.coming (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.breakend (id, date_of_last_change, date) VALUES (%s, %s,%s)"
         data = (
-            coming.get_id(),
-            coming.get_date_of_last_change(),
-            coming.get_time(),
+            break_end.get_id(),
+            break_end.get_date_of_last_change(),
+            break_end.get_time(),
         )
 
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
-        return coming
+        return break_end
 
     def find_all(self):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.coming"
+        command = "SELECT id, date FROM worktimeapp.breakend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
-            coming = ComingBO()
-            coming.set_id(id)
-            coming.set_time(date)
-            result.append(coming)
+        for (id, date) in tuples:
+            break_end = BreakEndBO()
+            break_end.set_id(id)
+            break_end.set_time(date)
+            result.append(break_end)
 
         self._cnx.commit()
         cursor.close()
@@ -58,17 +58,17 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.coming WHERE id={}".format(
+        command = "SELECT id, date FROM worktimeapp.breakend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
             (id, date) = tuples[0]
-            coming = ComingBO()
-            coming.set_id(id)
-            coming.set_time(date)
-            result = coming
+            break_end = BreakEndBO()
+            break_end.set_id(id)
+            break_end.set_time(date)
+            result = break_end
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -83,16 +83,16 @@ class ComingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.coming WHERE date={}".format(
+        command = "SELECT id, date FROM worktimeapp.breakend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
-            coming = ComingBO()
-            coming.set_id(id)
-            coming.set_time(date)
-            result.append(coming)
+        for (id, date) in tuples:
+            break_end = BreakEndBO()
+            break_end.set_id(id)
+            break_end.set_time(date)
+            result.append(break_end)
 
         self._cnx.commit()
         cursor.close()
@@ -103,17 +103,17 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.coming WHERE chatid={}".format(
+        command = "SELECT id, date FROM worktimeapp.breakend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date, eventid) = tuples[0]
-            coming = ComingBO()
-            coming.set_id(id)
-            coming.set_time(date)
-            result = coming
+            (id, date) = tuples[0]
+            break_end = BreakEndBO()
+            break_end.set_id(id)
+            break_end.set_time(date)
+            result = break_end
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -124,27 +124,27 @@ class ComingMapper(Mapper):
 
         return result
 
-    def update(self, coming):
+    def update(self, break_end):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
-        coming.set_date_of_last_change(datestamp)
+        break_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.coming " + \
+        command = "UPDATE worktimeapp.breakend " + \
             "SET date=%s WHERE id=%s"
-        data = (coming.get_time(),
-                coming.get_id())
+        data = (break_end.get_time(),
+                break_end.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return coming
+        return break_end
 
-    def delete(self, coming):
+    def delete(self, break_end):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.coming WHERE id={}".format(
-            coming.get_id())
+        command = "DELETE FROM worktimeapp.breakend WHERE id={}".format(
+            break_end.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
