@@ -93,7 +93,10 @@ class IllnessMapper(TimeIntervalMapper):
         illness.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            illness.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                illness.set_id(1)
+            else:
+                illness.set_id(maxid[0]+1)
 
         #command = "INSERT INTO worktimeapp.illnesses (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         #data = (illness.get_id(), illness.get_date_of_last_change(), illness.get_start(), illness. get_end(), illness.get_timeinterval_id(), illness.get_start_event(), illness.get_end_event(), "Illness")

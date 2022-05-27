@@ -114,7 +114,10 @@ class TimeIntervalMapper(Mapper):
         timeinterval.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            timeinterval.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                timeinterval.set_id(1)
+            else:
+                timeinterval.set_id(maxid[0]+1)
 
         #command = "INSERT INTO worktimeapp.timeintervals (id, dateOfLastChange, timeIntervalBookingId, type) VALUES (%s, %s, %s, %s)"
         #data = (timeinterval.get_id(), timeinterval.get_date_of_last_change(), timeinterval.get_timeinterval_booking_id(), timeinterval.get_type())

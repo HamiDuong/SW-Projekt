@@ -92,7 +92,10 @@ class ProjectWorkMapper(TimeIntervalMapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            projectwork_obj.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                projectwork_obj.set_id(1)
+            else:
+                projectwork_obj.set_id(maxid[0]+1)
 
         command = "INSET INTO worktimeapp.projectworks (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )"
         data = (projectwork_obj.get_id(), projectwork_obj.get_date_of_last_change(), projectwork_obj.get_start(), projectwork_obj. get_end(), projectwork_obj.get_start_event(), projectwork_obj.get_end_event(), projectwork_obj.get_type(), projectwork_obj.get_project_id())

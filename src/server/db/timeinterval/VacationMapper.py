@@ -92,7 +92,10 @@ class VacationMapper(TimeIntervalMapper):
         vacation.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            vacation.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                vacation.set_id(1)
+            else:
+                vacation.set_id(maxid[0]+1)
 
         command = "INSERT INTO worktimeapp.vacations (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         data = (vacation.get_id(), vacation.get_date_of_last_change(), vacation.get_start(), vacation. get_end(), vacation.get_start_event(), vacation.get_end_event(), "Vacation")
