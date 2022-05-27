@@ -42,6 +42,7 @@ class TimeIntervalBO (bo.BusinessObject):
         self._project_work_id = None
         self._vacation_id = None
         self._work_id = None
+        self._flex_day_id = None
 
     'Getter und Setter Methoden zu den Attributen der Klasse'
     def get_type(self):
@@ -124,6 +125,12 @@ class TimeIntervalBO (bo.BusinessObject):
     def set_work_id(self, id):
         self._work_id = id
 
+    def get_flex_day_id(self):
+        return self._flex_day_id
+
+    def set_flex_day_id(self, id):
+        self._flex_day_id = id
+
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
     def __str__(self):
         return "Timeintervall {}: Type: {}".format(self.get_id(), self.get_type())
@@ -142,5 +149,6 @@ class TimeIntervalBO (bo.BusinessObject):
         obj.set_project_work_id(dictionary["project_work_id"])
         obj.set_vacation_id(dictionary["vacation_id"])
         obj.set_work_id(dictionary["work_id"])
+        obj.set_flex_day_id(dictionary["flex_day_id"])
 
         return obj
