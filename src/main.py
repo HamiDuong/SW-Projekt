@@ -67,7 +67,7 @@ from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
 from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from server.bo.timeinterval.VacationBO import VacationBO
 from server.bo.timeinterval.WorkBO import WorkBO
-from src.server.bo.timeinterval.FlexDayBO import FlexDayBO
+from server.bo.timeinterval.FlexDayBO import FlexDayBO
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
