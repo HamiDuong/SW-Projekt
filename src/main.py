@@ -1301,7 +1301,7 @@ class FindBreakByDate(Resource):
         return flexday
 
 @worktimeapp.route('flexdayperiod/<string:start>/<string:end>')
-@worktimeapp.param('start', 'Start von FlexDay', 'end', 'Ende von Flexday')
+@worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByTimePeriod(Resource):
     @worktimeapp.marshal_with(flexday)
     #@secured
