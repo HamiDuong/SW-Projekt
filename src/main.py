@@ -179,43 +179,43 @@ event = api.inherit('Event', bo, {
 })
 
 coming = api.inherit('Coming', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 going = api.inherit('GoingBO', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 break_begin = api.inherit('BreakBegin', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 break_end = api.inherit('BreakEnd', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 illness_end = api.inherit('IllnessEnd', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 illness_begin = api.inherit('IllnessBegin', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 vacation_end = api.inherit('VacationEnd', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 vacation_begin = api.inherit('VacationBegin', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 project_work_end = api.inherit('ProjectWorkEnd', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 project_work_begin = api.inherit('ProjectWorkBegin', bo, {
-    'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
 """
@@ -223,12 +223,12 @@ Timeinterval und zugehörige Subklassen
 """
 timeinterval = api.inherit('TimeInterval', bo, {
     '_type': fields.String(attribute='_type', description='Art des Intervals'),
-    '_break_id': fields.Integer(attribute='_break_id', descriptiong= 'Fremdschlüssel zu BreakBO'),
-    '_illness_id': fields.Integer(attribute='_illness_id', descriptiong= 'Fremdschlüssel zu IllnessBO'),
-    '_project_duration_id': fields.Integer(attribute='_project_duration_id', descriptiong= 'Fremdschlüssel zu ProjectDurationBO'),
-    '_project_work_id': fields.Integer(attribute='_project_work_id', descriptiong= 'Fremdschlüssel zu ProjectWorkBO'),
-    '_vacation_id': fields.Integer(attribute='_vacation_id', descriptiong= 'Fremdschlüssel zu VacationBO'),
-    '_work_id': fields.Integer(attribute='_work_id', descriptiong= 'Fremdschlüssel zu WorkBO')
+    '_break_id': fields.Integer(attribute='_break_id', descriptiong='Fremdschlüssel zu BreakBO'),
+    '_illness_id': fields.Integer(attribute='_illness_id', descriptiong='Fremdschlüssel zu IllnessBO'),
+    '_project_duration_id': fields.Integer(attribute='_project_duration_id', descriptiong='Fremdschlüssel zu ProjectDurationBO'),
+    '_project_work_id': fields.Integer(attribute='_project_work_id', descriptiong='Fremdschlüssel zu ProjectWorkBO'),
+    '_vacation_id': fields.Integer(attribute='_vacation_id', descriptiong='Fremdschlüssel zu VacationBO'),
+    '_work_id': fields.Integer(attribute='_work_id', descriptiong='Fremdschlüssel zu WorkBO')
 })
 
 
@@ -298,6 +298,7 @@ projectwork = api.inherit('ProjectWork', bo, {
 })
 
 # Tatsächliche Funktionen beginnen ab hier.
+
 
 @worktimeapp.route('/user')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -648,6 +649,8 @@ class UserRelatedAccountOperations(Resource):
             return "User not found", 500
 
 # Project
+
+
 @worktimeapp.route('/projects')
 class ProjectOperations(Resource):
     @worktimeapp.marshal_with(project)
@@ -862,6 +865,7 @@ class ActivityWithSTRINGOperations(Resource):
         return activity
 '''
 
+
 @worktimeapp.route('/events')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class EventListOperations(Resource):
@@ -892,6 +896,7 @@ class EventListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/events/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -942,9 +947,11 @@ class EventOperations(Resource):
         else:
             return '', 500
 
+
 """
 Going
 """
+
 
 @worktimeapp.route('/going')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -976,6 +983,7 @@ class GoingListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/goings/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1026,9 +1034,11 @@ class GoingOperations(Resource):
         else:
             return '', 500
 
+
 """
 Coming
 """
+
 
 @worktimeapp.route('/coming')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1060,6 +1070,7 @@ class ComingListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/comings/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1110,9 +1121,11 @@ class ComingOperations(Resource):
         else:
             return '', 500
 
+
 """
 VacationBegin
 """
+
 
 @worktimeapp.route('/vacation_begin')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1144,6 +1157,7 @@ class VacationBeginListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/vacation_begins/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1194,9 +1208,11 @@ class VacationBeginOperations(Resource):
         else:
             return '', 500
 
+
 """
 VacationEnd
 """
+
 
 @worktimeapp.route('/vacation_end')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1228,6 +1244,7 @@ class VacationEndListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/vacation_ends/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1278,9 +1295,11 @@ class VacationEndOperations(Resource):
         else:
             return '', 500
 
+
 """
 IllnessEnd
 """
+
 
 @worktimeapp.route('/illness_end')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1312,6 +1331,7 @@ class IllnessEndListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/illness_ends/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1362,9 +1382,11 @@ class IllnessEndOperations(Resource):
         else:
             return '', 500
 
+
 """
 IllnessBegin
 """
+
 
 @worktimeapp.route('/illness_begin')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1396,6 +1418,7 @@ class IllnessBeginListOperations(Resource):
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/illness_begins/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1446,9 +1469,11 @@ class IllnessBeginOperations(Resource):
         else:
             return '', 500
 
+
 """
 BreakBegin
 """
+
 
 @worktimeapp.route('/break_begin')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1480,6 +1505,7 @@ class BreakBeginListOperations(Resource):
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/break_begins/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1530,9 +1556,11 @@ class BreakBeginOperations(Resource):
         else:
             return '', 500
 
+
 """
 BreakEnd
 """
+
 
 @worktimeapp.route('/break_end')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1564,6 +1592,7 @@ class BreakEndListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/break_ends/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1614,9 +1643,11 @@ class BreakEndOperations(Resource):
         else:
             return '', 500
 
+
 """
 ProjectWorkEnd
 """
+
 
 @worktimeapp.route('/project_work_end')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1648,6 +1679,7 @@ class ProjectWorkEndListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/project_work_ends/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1698,9 +1730,11 @@ class ProjectWorkEndOperations(Resource):
         else:
             return '', 500
 
+
 """
 ProjectWorkBegin
 """
+
 
 @worktimeapp.route('/project_work_begin')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1732,6 +1766,7 @@ class ProjectWorkBeginListOperations(Resource):
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
+
 
 @worktimeapp.route('/project_work_begins/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -1857,7 +1892,8 @@ class TimeIntervalWithTypeOperations(Resource):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_type(type)
         return timeinterval
-     
+
+
 """
 Break
 """
@@ -2005,6 +2041,7 @@ class IllnessWithIDOperations(Resource):
         else:
             return '', 500
 
+
 @worktimeapp.route('illnessdate/<string:start>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByDate(Resource):
@@ -2023,6 +2060,7 @@ class FindIllnessByDate(Resource):
             )
         return p
 
+
 @worktimeapp.route('illnessperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByTimePeriod(Resource):
@@ -2033,36 +2071,50 @@ class FindIllnessByTimePeriod(Resource):
         illness = adm.get_illnesses_by_time_period(start, end)
         return illness
 
+
 """
 FlexDay
 """
+
+
 @worktimeapp.route('/flexday')
 class FlexDayOperations(Resource):
     @worktimeapp.marshal_with(flexday)
     @worktimeapp.expect(flexday)
-    #@secured
+    # @secured
     def post(self):
-        pass
+        adm = Businesslogic()
+        proposal = FlexDayBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_flex_day(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
 
     @worktimeapp.marshal_list_with(flexday)
-    #@secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         flexday = adm.get_all_flex_days()
         return flexday
 
+
 @worktimeapp.route('flexday/<int:id>')
 @worktimeapp.param('id', 'ID der FlexDay')
 class FlexDayWithIDOperations(Resource):
     @worktimeapp.marshal_with(flexday)
-    #@secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         flexday = adm.get_flex_day_by_id(id)
         return flexday
 
     @worktimeapp.marshal_with(flexday)
-    #@secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         flexday = adm.get_flex_day_by_id(id)
@@ -2070,7 +2122,7 @@ class FlexDayWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(flexday)
     @worktimeapp.expect(flexday, validate=True)
-    #@secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = FlexDayBO.from_dict(api.payload)
@@ -2082,29 +2134,33 @@ class FlexDayWithIDOperations(Resource):
         else:
             return '', 500
 
+
 @worktimeapp.route('flexdaydate/<string:start>')
 @worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByDate(Resource):
     @worktimeapp.marshal_with(flexday)
-    #@secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         flexday = adm.get_flex_days_by_date(start)
         return flexday
 
+
 @worktimeapp.route('flexdayperiod/<string:start>/<string:end>')
-@worktimeapp.param('start', 'Start von FlexDay', 'end', 'Ende von Flexday')
+@worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByTimePeriod(Resource):
     @worktimeapp.marshal_with(flexday)
-    #@secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         flexday = adm.get_flex_days_by_time_period(start, end)
         return flexday
 
+
 """
 ProjectDuration
 """
+
 
 @worktimeapp.route('/projectduration')
 class ProjectDurationOperations(Resource):
@@ -2201,6 +2257,7 @@ class FindProjectDurationByProjectId(Resource):
 """
 ProjectWork
 """
+
 
 @worktimeapp.route('/projectwork')
 class ProjectWorkOperations(Resource):
@@ -2451,6 +2508,7 @@ class WorkWithIDOperations(Resource):
         else:
             return '', 500
 
+
 @worktimeapp.route('workdate/<string:start>')
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByDate(Resource):
@@ -2477,15 +2535,18 @@ class FindWorkByTimePeriod(Resource):
 Combined Methodes
 """
 
+
 @worktimeapp.route('userintervalbookings/<int:userid>')
 @worktimeapp.param('userid', 'ID des Users')
 class TimeintervalBookingsForUser(Resource):
     pass
 
+
 @worktimeapp.route('userintervalbookings/<int:userid>')
 @worktimeapp.param('userid', 'ID des Users')
 class EventBookingsForUser(Resource):
     pass
+
 
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
