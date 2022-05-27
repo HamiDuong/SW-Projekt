@@ -1,10 +1,10 @@
 from server.bo.eventBOs import EventBO
 
 
-class ComingBO(EventBO.EventBO):
+class FlexDayEndBO(EventBO.EventBO):
     """
-    Klasse Coming.
-    Ein ComingBO stellt das Ereignis "Kommen" dar bzw. wenn ein Mitarbeiter sich einstempelt und enthält einen Zeitpunkt
+    Klasse IllnessBegin.
+    Ein IllnessBeginBO stellt das Ereignis "Gleittagende" dar bzw. der Tag des Abbaus beendet wird.
     """
 
     def __init__(self):
@@ -20,7 +20,7 @@ class ComingBO(EventBO.EventBO):
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in ein ComingBO()."""
-        obj = ComingBO()
+        obj = FlexDayEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["date_of_last_change"])
         obj.set_time(dictionary["time"])

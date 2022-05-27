@@ -1,5 +1,5 @@
 from server.db.Mapper import Mapper
-from server.bo.eventBOs.ComingBO import ComingBO
+from server.bo.eventBOs.GoingBO import GoingBO
 from datetime import datetime
 
 
@@ -22,12 +22,11 @@ class GoingMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 going.set_id(1)
 
-        command = "INSERT INTO worktimeapp.going (id, date_of_last_change, date, eventid) VALUES (%s, %s,%s,%s)"
+        command = "INSERT INTO worktimeapp.going (id, date_of_last_change, date) VALUES (%s, %s,%s)"
         data = (
             going.get_id(),
             going.get_date_of_last_change(),
             going.get_time(),
-            going.get_event_id(),
         )
 
         cursor.execute(command, data)
@@ -40,15 +39,15 @@ class GoingMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.going"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
-            going = ComingBO()
+        for (id, dateoflastchange, date) in tuples:
+            going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
-            going.set_event_id(eventid)
             result.append(going)
 
         self._cnx.commit()
@@ -60,17 +59,17 @@ class GoingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.going WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date, eventid) = tuples[0]
-            going = ComingBO()
+            (id, dateoflastchange, date) = tuples[0]
+            going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
-            going.set_event_id(eventid)
             result = going
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -86,43 +85,17 @@ class GoingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.going WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
-            going = ComingBO()
+        for (id, dateoflastchage, date) in tuples:
+            going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchage)
             going.set_time(date)
-            going.set_event_id(eventid)
             result.append(going)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_event_booking_id(self, key):
-        result = None
-
-        cursor = self._cnx.cursor()
-        command = "SELECT id, date, eventid FROM worktimeapp.going WHERE chatid={}".format(
-            key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, date, eventid) = tuples[0]
-            going = ComingBO()
-            going.set_id(id)
-            going.set_time(date)
-            going.set_event_id(eventid)
-            result = going
-        except IndexError:
-            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-            result = None
 
         self._cnx.commit()
         cursor.close()
@@ -135,8 +108,8 @@ class GoingMapper(Mapper):
         going.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.going " + \
-            "SET date=%s, eventid=%s WHERE id=%s"
-        data = (going.get_time(), going.get_event_id(),
+            "SET date=%s WHERE id=%s"
+        data = (going.get_time(),
                 going.get_id())
         cursor.execute(command, data)
 

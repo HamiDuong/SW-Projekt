@@ -95,7 +95,10 @@ class ProjectDurationMapper(TimeIntervalMapper):
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            projectduration_obj.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                projectduration_obj.set_id(1)
+            else:
+                projectduration_obj.set_id(maxid[0]+1)
 
         #command = "INSET INTO projectdurations (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         #data = (projectduration_obj.get_id(), projectduration_obj.get_date_of_last_change(), projectduration_obj.get_start(), projectduration_obj.get_end(), projectduration_obj.get_timeinterval_id(), projectduration_obj.get_start_event() ,projectduration_obj.get_project_id())
