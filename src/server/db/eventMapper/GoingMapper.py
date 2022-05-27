@@ -39,13 +39,14 @@ class GoingMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.going"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
             result.append(going)
 
@@ -58,15 +59,16 @@ class GoingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.going WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
             result = going
         except IndexError:
@@ -83,41 +85,17 @@ class GoingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.going WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date, eventid) in tuples:
+        for (id, dateoflastchage, date) in tuples:
             going = GoingBO()
             going.set_id(id)
+            going.set_date_of_last_change(dateoflastchage)
             going.set_time(date)
             result.append(going)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_event_booking_id(self, key):
-        result = None
-
-        cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.going WHERE chatid={}".format(
-            key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, date, eventid) = tuples[0]
-            going = GoingBO()
-            going.set_id(id)
-            going.set_time(date)
-            result = going
-        except IndexError:
-            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-            result = None
 
         self._cnx.commit()
         cursor.close()

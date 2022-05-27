@@ -10,7 +10,7 @@ class VacationBeginMapper(Mapper):
     def insert(self, vacation_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.VacationBegin ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.vacationbegin ")
         tuples = cursor.fetchall()
         vacation_begin.set_date_of_last_change(timestamp)
 
@@ -39,13 +39,14 @@ class VacationBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationBegin"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationbegin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             vacation_begin = VacationBeginBO()
             vacation_begin.set_id(id)
+            vacation_begin.set_date_of_last_change(dateoflastchange)
             vacation_begin.set_time(date)
             result.append(vacation_begin)
 
@@ -58,15 +59,16 @@ class VacationBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationBegin WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationbegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             vacation_begin = VacationBeginBO()
             vacation_begin.set_id(id)
+            vacation_begin.set_date_of_last_change(dateoflastchange)
             vacation_begin.set_time(date)
             result = vacation_begin
         except IndexError:
@@ -83,41 +85,17 @@ class VacationBeginMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationBegin WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationbegin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             vacation_begin = VacationBeginBO()
             vacation_begin.set_id(id)
+            vacation_begin.set_date_of_last_change(dateoflastchange)
             vacation_begin.set_time(date)
             result.append(vacation_begin)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_event_booking_id(self, key):
-        result = None
-
-        cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationBegin WHERE chatid={}".format(
-            key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, date) = tuples[0]
-            vacation_begin = VacationBeginBO()
-            vacation_begin.set_id(id)
-            vacation_begin.set_time(date)
-            result = vacation_begin
-        except IndexError:
-            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-            result = None
 
         self._cnx.commit()
         cursor.close()
@@ -129,7 +107,7 @@ class VacationBeginMapper(Mapper):
         cursor = self._cnx.cursor()
         vacation_begin.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.VacationBegin " + \
+        command = "UPDATE worktimeapp.vacationbegin " + \
             "SET date=%s WHERE id=%s"
         data = (vacation_begin.get_time(),
                 vacation_begin.get_id())
@@ -143,7 +121,7 @@ class VacationBeginMapper(Mapper):
     def delete(self, vacation_begin):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.VacationBegin WHERE id={}".format(
+        command = "DELETE FROM worktimeapp.vacationbegin WHERE id={}".format(
             vacation_begin.get_id())
         cursor.execute(command)
 

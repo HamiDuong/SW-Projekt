@@ -10,7 +10,7 @@ class IllnessEndMapper(Mapper):
     def insert(self, illness_end):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.IllnessEnd ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.illnessend ")
         tuples = cursor.fetchall()
         illness_end.set_date_of_last_change(timestamp)
 
@@ -22,7 +22,7 @@ class IllnessEndMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 endnen können."""
                 illness_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.IllnessEnd (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.illnessend (id, date_of_last_change, date) VALUES (%s, %s,%s)"
         data = (
             illness_end.get_id(),
             illness_end.get_date_of_last_change(),
@@ -39,13 +39,14 @@ class IllnessEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessEnd"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
+            illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
             result.append(illness_end)
 
@@ -58,15 +59,16 @@ class IllnessEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessEnd WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
+            illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
             result = illness_end
         except IndexError:
@@ -83,14 +85,15 @@ class IllnessEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessEnd WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
+            illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
             result.append(illness_end)
 
@@ -99,37 +102,13 @@ class IllnessEndMapper(Mapper):
 
         return result
 
-    def find_by_event_booking_id(self, key):
-        result = None
-
-        cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessEnd WHERE chatid={}".format(
-            key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, date) = tuples[0]
-            illness_end = IllnessEndBO()
-            illness_end.set_id(id)
-            illness_end.set_time(date)
-            result = illness_end
-        except IndexError:
-            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-            result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
 
     def update(self, illness_end):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         illness_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.IllnessEnd " + \
+        command = "UPDATE worktimeapp.illnessend " + \
             "SET date=%s WHERE id=%s"
         data = (illness_end.get_time(),
                 illness_end.get_id())
@@ -143,7 +122,7 @@ class IllnessEndMapper(Mapper):
     def delete(self, illness_end):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.IllnessEnd WHERE id={}".format(
+        command = "DELETE FROM worktimeapp.illnessend WHERE id={}".format(
             illness_end.get_id())
         cursor.execute(command)
 

@@ -10,7 +10,7 @@ class IllnessBeginMapper(Mapper):
     def insert(self, illness_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.IllnessBegin ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.illnessbegin ")
         tuples = cursor.fetchall()
         illness_begin.set_date_of_last_change(timestamp)
 
@@ -22,7 +22,7 @@ class IllnessBeginMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 illness_begin.set_id(1)
 
-        command = "INSERT INTO worktimeapp.IllnessBegin (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.illnessbegin (id, date_of_last_change, date) VALUES (%s, %s,%s)"
         data = (
             illness_begin.get_id(),
             illness_begin.get_date_of_last_change(),
@@ -39,7 +39,7 @@ class IllnessBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessBegin"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessbegin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -58,7 +58,7 @@ class IllnessBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessBegin WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessbegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -83,14 +83,15 @@ class IllnessBeginMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessBegin WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessbegin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             illness_begin = IllnessBeginBO()
             illness_begin.set_id(id)
+            illness_begin.set_date_of_last_change(dateoflastchange)
             illness_begin.set_time(date)
             result.append(illness_begin)
 
@@ -103,15 +104,16 @@ class IllnessBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.IllnessBegin WHERE chatid={}".format(
+        command = "SELECT id, date FROM worktimeapp.illnessbegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             illness_begin = IllnessBeginBO()
             illness_begin.set_id(id)
+            illness_begin.set_date_of_last_change(dateoflastchange)
             illness_begin.set_time(date)
             result = illness_begin
         except IndexError:
@@ -129,7 +131,7 @@ class IllnessBeginMapper(Mapper):
         cursor = self._cnx.cursor()
         illness_begin.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.IllnessBegin " + \
+        command = "UPDATE worktimeapp.illnessbegin " + \
             "SET date=%s WHERE id=%s"
         data = (illness_begin.get_time(),
                 illness_begin.get_id())
@@ -143,7 +145,7 @@ class IllnessBeginMapper(Mapper):
     def delete(self, illness_begin):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.IllnessBegin WHERE id={}".format(
+        command = "DELETE FROM worktimeapp.illnessbegin WHERE id={}".format(
             illness_begin.get_id())
         cursor.execute(command)
 

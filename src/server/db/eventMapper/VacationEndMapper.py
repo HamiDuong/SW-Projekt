@@ -10,7 +10,7 @@ class VacationEndMapper(Mapper):
     def insert(self, vacation_end):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.VacationEnd ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.vacationend ")
         tuples = cursor.fetchall()
         vacation_end.set_date_of_last_change(timestamp)
 
@@ -39,13 +39,14 @@ class VacationEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationEnd"
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.VacationEnd"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
+            vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
             result.append(vacation_end)
 
@@ -58,15 +59,16 @@ class VacationEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationEnd WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date) = tuples[0]
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
+            vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
             result = vacation_end
         except IndexError:
@@ -83,14 +85,15 @@ class VacationEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationEnd WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date) in tuples:
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
+            vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
             result.append(vacation_end)
 
@@ -99,30 +102,6 @@ class VacationEndMapper(Mapper):
 
         return result
 
-    def find_by_event_booking_id(self, key):
-        result = None
-
-        cursor = self._cnx.cursor()
-        command = "SELECT id, date FROM worktimeapp.VacationEnd WHERE chatid={}".format(
-            key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, date) = tuples[0]
-            vacation_end = VacationEndBO()
-            vacation_end.set_id(id)
-            vacation_end.set_time(date)
-            result = vacation_end
-        except IndexError:
-            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
-            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
-            result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
 
     def update(self, vacation_end):
         datestamp = datetime.today()
