@@ -55,6 +55,17 @@ from server.bo.UserBO import UserBO
 from server.bo.WorkTimeAccountBO import WorkTimeAccountBO
 from server.bo.eventBOs.EventBO import EventBO
 from server.bo.eventBOs.GoingBO import GoingBO
+from server.bo.eventBOs.ComingBO import ComingBO
+from server.bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
+from server.bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
+from server.bo.eventBOs.VacationEndBO import VacationEndBO
+from server.bo.eventBOs.VacationBeginBO import VacationBeginBO
+from server.bo.eventBOs.BreakBeginBO import BreakBeginBO
+from server.bo.eventBOs.BreakEndBO import BreakEndBO
+from server.bo.eventBOs.IllnessEndBO import IllnessEndBO
+from server.bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from server.bo.eventBOs.FlexDayStart import FlexDayStartBO
+from server.bo.eventBOs.FlexDayEndBO import FlexDayEndBO
 from server.Businesslogic import Businesslogic
 from server.bo import ProjectBO
 from server.bo import ProjectUserBO
@@ -166,7 +177,7 @@ event = api.inherit('Event', bo, {
 
 })
 
-comingBO = api.inherit('Coming', bo, {
+coming = api.inherit('Coming', bo, {
     'time': fields.String(attribute = '_time', description = 'Zeitpunkt des Events')
 })
 
@@ -857,7 +868,7 @@ class EventListOperations(Resource):
         """Anlegen eines neuen Event-Objekts."""
 
         adm = Businesslogic()
-        proposal = event.from_dict(api.payload)
+        proposal = EventBO.from_dict(api.payload)
 
         if proposal is not None:
             c = adm.create_event(
@@ -866,38 +877,6 @@ class EventListOperations(Resource):
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
-
-@worktimeapp.route('/going')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-class EventListOperations(Resource):
-    @worktimeapp.marshal_list_with(going)
-    # #@secured
-    def get(self):
-        """Auslesen aller Event-Objekte.
-
-        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
-        adm = Businesslogic()
-        going = adm.get_all_goings()
-        return going
-
-    @worktimeapp.marshal_with(going, code=200)
-    # Wir erwarten ein Event-Objekt von Client-Seite.
-    @worktimeapp.expect(going)
-    # @secured
-    def post(self):
-        """Anlegen eines neuen Event-Objekts."""
-
-        adm = Businesslogic()
-        proposal = GoingBO.from_dict(api.payload)
-
-        if proposal is not None:
-            c = adm.create_going(
-                proposal.get_time())
-            return c, 200
-        else:
-            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
-            return '', 500
-
 
 @worktimeapp.route('/events/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -948,21 +927,845 @@ class EventOperations(Resource):
         else:
             return '', 500
 
+"""
+Going
+"""
 
-@worktimeapp.route('/events-by-event_booking_id/<int:event_booking_id>')
+@worktimeapp.route('/going')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('event_booking_id', 'Die ID der zugehörigen Ereignsisbuchung')
-class EventsByNameOperations(Resource):
-    @worktimeapp.marshal_with(event)
-    #@secured
-    def get(self, event_booking_id):
-        """ Auslesen von Event-Objekten, die durch den Nachnamen bestimmt werden.
+class GoingListOperations(Resource):
+    @worktimeapp.marshal_list_with(going)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
 
-        Die auszulesenden Objekte werden durch ```event_booking_id``` in dem URI bestimmt.
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        going = adm.get_all_goings()
+        return going
+
+    @worktimeapp.marshal_with(going, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(going)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = GoingBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_going(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/goings/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class GoingOperations(Resource):
+    @worktimeapp.marshal_with(going)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        event = adm.get_event_by_name(event_booking_id)
-        return event
+        cust = adm.get_going_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        going = adm.get_going_by_id(id)
+        adm.delete_going(going)
+        return '', 200
+
+    @worktimeapp.marshal_with(going)
+    @worktimeapp.expect(going, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = GoingBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+Coming
+"""
+
+@worktimeapp.route('/coming')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class ComingListOperations(Resource):
+    @worktimeapp.marshal_list_with(coming)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        coming = adm.get_all_comings()
+        return coming
+
+    @worktimeapp.marshal_with(coming, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(coming)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = ComingBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_coming(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/comings/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class ComingOperations(Resource):
+    @worktimeapp.marshal_with(coming)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_coming_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        coming = adm.get_coming_by_id(id)
+        adm.delete_coming(coming)
+        return '', 200
+
+    @worktimeapp.marshal_with(coming)
+    @worktimeapp.expect(coming, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = ComingBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+VacationBegin
+"""
+
+@worktimeapp.route('/vacation_begin')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class VacationBeginListOperations(Resource):
+    @worktimeapp.marshal_list_with(vacation_begin)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        vacation_begin = adm.get_all_vacation_begins()
+        return vacation_begin
+
+    @worktimeapp.marshal_with(vacation_begin, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(vacation_begin)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = VacationBeginBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_vacation_begin(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/vacation_begins/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class VacationBeginOperations(Resource):
+    @worktimeapp.marshal_with(vacation_begin)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_vacation_begin_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        vacation_begin = adm.get_vacation_begin_by_id(id)
+        adm.delete_vacation_begin(vacation_begin)
+        return '', 200
+
+    @worktimeapp.marshal_with(vacation_begin)
+    @worktimeapp.expect(vacation_begin, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = VacationBeginBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+VacationEnd
+"""
+
+@worktimeapp.route('/vacation_end')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class VacationEndListOperations(Resource):
+    @worktimeapp.marshal_list_with(vacation_end)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        vacation_end = adm.get_all_vacation_ends()
+        return vacation_end
+
+    @worktimeapp.marshal_with(vacation_end, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(vacation_end)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = VacationEndBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_vacation_end(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/vacation_ends/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class VacationEndOperations(Resource):
+    @worktimeapp.marshal_with(vacation_end)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_vacation_end_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        vacation_end = adm.get_vacation_end_by_id(id)
+        adm.delete_vacation_end(vacation_end)
+        return '', 200
+
+    @worktimeapp.marshal_with(vacation_end)
+    @worktimeapp.expect(vacation_end, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = VacationEndBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+IllnessEnd
+"""
+
+@worktimeapp.route('/illness_end')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class IllnessEndListOperations(Resource):
+    @worktimeapp.marshal_list_with(illness_end)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        illness_end = adm.get_all_illness_end()
+        return illness_end
+
+    @worktimeapp.marshal_with(illness_end, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(illness_end)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = IllnessEndBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_illness_end(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/illness_ends/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class IllnessEndOperations(Resource):
+    @worktimeapp.marshal_with(illness_end)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_illness_end_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        illness_end = adm.get_illness_end_by_id(id)
+        adm.delete_illness_end(illness_end)
+        return '', 200
+
+    @worktimeapp.marshal_with(illness_end)
+    @worktimeapp.expect(illness_end, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = IllnessEndBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+IllnessBegin
+"""
+
+@worktimeapp.route('/illness_begin')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class IllnessBeginListOperations(Resource):
+    @worktimeapp.marshal_list_with(illness_begin)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        illness_begin = adm.get_all_illness_begins()
+        return illness_begin
+
+    @worktimeapp.marshal_with(illness_begin, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(illness_begin)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = IllnessBeginBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_illness_begin(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/illness_begins/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class IllnessBeginOperations(Resource):
+    @worktimeapp.marshal_with(illness_begin)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_illness_begin_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        illness_begin = adm.get_illness_begin_by_id(id)
+        adm.delete_illness_begin(illness_begin)
+        return '', 200
+
+    @worktimeapp.marshal_with(illness_begin)
+    @worktimeapp.expect(illness_begin, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwbeginet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = IllnessBeginBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibbeginen (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+BreakBegin
+"""
+
+@worktimeapp.route('/break_begin')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class BreakBeginListOperations(Resource):
+    @worktimeapp.marshal_list_with(break_begin)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        break_begin = adm.get_all_break_begins()
+        return break_begin
+
+    @worktimeapp.marshal_with(break_begin, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(break_begin)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = BreakBeginBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_break_begin(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/break_begins/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class BreakBeginOperations(Resource):
+    @worktimeapp.marshal_with(break_begin)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_break_begin_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        break_begin = adm.get_break_begin_by_id(id)
+        adm.delete_break_begin(break_begin)
+        return '', 200
+
+    @worktimeapp.marshal_with(break_begin)
+    @worktimeapp.expect(break_begin, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwbeginet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = BreakBeginBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibbeginen (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+BreakEnd
+"""
+
+@worktimeapp.route('/break_end')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class BreakEndListOperations(Resource):
+    @worktimeapp.marshal_list_with(break_end)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        break_end = adm.get_all_break_ends()
+        return break_end
+
+    @worktimeapp.marshal_with(break_end, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(break_end)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = BreakEndBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_break_end(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/break_ends/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class BreakEndOperations(Resource):
+    @worktimeapp.marshal_with(break_end)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_break_end_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        break_end = adm.get_break_end_by_id(id)
+        adm.delete_break_end(break_end)
+        return '', 200
+
+    @worktimeapp.marshal_with(break_end)
+    @worktimeapp.expect(break_end, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = BreakEndBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+ProjectWorkEnd
+"""
+
+@worktimeapp.route('/project_work_end')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class ProjectWorkEndListOperations(Resource):
+    @worktimeapp.marshal_list_with(project_work_end)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        project_work_end = adm.get_all_project_work_ends()
+        return project_work_end
+
+    @worktimeapp.marshal_with(project_work_end, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(project_work_end)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = ProjectWorkEndBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_project_work_end(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/project_work_ends/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class ProjectWorkEndOperations(Resource):
+    @worktimeapp.marshal_with(project_work_end)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_project_work_end_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        project_work_end = adm.get_project_work_end_by_id(id)
+        adm.delete_project_work_end(project_work_end)
+        return '', 200
+
+    @worktimeapp.marshal_with(project_work_end)
+    @worktimeapp.expect(project_work_end, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = ProjectWorkEndBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+"""
+ProjectWorkBegin
+"""
+
+@worktimeapp.route('/project_work_begin')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class ProjectWorkBeginListOperations(Resource):
+    @worktimeapp.marshal_list_with(project_work_begin)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        project_work_begin = adm.get_all_project_work_begins()
+        return project_work_begin
+
+    @worktimeapp.marshal_with(project_work_begin, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(project_work_begin)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = ProjectWorkBeginBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_project_work_begin(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+@worktimeapp.route('/project_work_begins/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class ProjectWorkBeginOperations(Resource):
+    @worktimeapp.marshal_with(project_work_begin)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_project_work_begin_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        project_work_begin = adm.get_project_work_begin_by_id(id)
+        adm.delete_project_work_begin(project_work_begin)
+        return '', 200
+
+    @worktimeapp.marshal_with(project_work_begin)
+    @worktimeapp.expect(project_work_begin, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwbeginet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = ProjectWorkBeginBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibbeginen (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
 
 
 """
