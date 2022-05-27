@@ -18,7 +18,7 @@ type                        Art des Intervalls
 Verworfen
 timeIntervalId (FK)         Zuordnung zu TimeInterval 
 """
-class IllnessMapper(TimeIntervalMapper):
+class FlexDayMapper(TimeIntervalMapper):
 
     def __init__(self):
         super().__init__()
