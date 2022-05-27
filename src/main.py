@@ -2042,6 +2042,7 @@ class FlexDayOperations(Resource):
     @worktimeapp.expect(flexday)
     #@secured
     def post(self):
+        pass
 
     @worktimeapp.marshal_list_with(flexday)
     #@secured
