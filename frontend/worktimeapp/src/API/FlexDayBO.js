@@ -1,8 +1,8 @@
 import BusinessObject from "./BusinessObject";
 
-export default class VacationBO extends BusinessObject{
+export default class FlexDayBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type){
-        super();
+        super(start, end, startEvent, endEvent, type);
         this.start = start;
         this.end = end;
         this.startEvent = startEvent;
@@ -51,16 +51,16 @@ export default class VacationBO extends BusinessObject{
         return this.type;
     }
 
-    static fromJSON(vacation){
+    static fromJSON(illness){
         let res = [];
-        if(Array.isArray(vacation)){
-            vacation.forEach((elem) => {
-                Object.setPrototypeOf(elem, VacationBO.prototype);
+        if(Array.isArray(illness)){
+            illness.forEach((elem) => {
+                Object.setPrototypeOf(elem, FlexDayBO.prototype);
                 res.push(elem)
             })
         }else{
-            let elem = vacation;
-            Object.setPrototypeOf(elem, VacationBO.prototype);
+            let elem = illness;
+            Object.setPrototypeOf(elem, FlexDayBO.prototype);
             res.push(elem)
         }
         return res;

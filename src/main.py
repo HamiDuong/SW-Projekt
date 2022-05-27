@@ -42,7 +42,7 @@ B. Konventionen für dieses Module:
 """
 
 # Unser Service basiert auf Flask
-from attr import attributes
+#from attr import attributes
 from flask import Flask
 # Auf Flask aufbauend nutzen wir RestX
 from flask_restx import Api, Resource, fields
@@ -79,6 +79,7 @@ from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
 from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from server.bo.timeinterval.VacationBO import VacationBO
 from server.bo.timeinterval.WorkBO import WorkBO
+from server.bo.timeinterval.FlexDayBO import FlexDayBO
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
@@ -221,8 +222,13 @@ project_work_begin = api.inherit('ProjectWorkBegin', bo, {
 Timeinterval und zugehörige Subklassen
 """
 timeinterval = api.inherit('TimeInterval', bo, {
-    '_time_interval_booking_id': fields.Integer(attribute='_time_interval_booking_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_type': fields.String(attribute='_type', description='Art des Intervals')
+    '_type': fields.String(attribute='_type', description='Art des Intervals'),
+    '_break_id': fields.Integer(attribute='_break_id', descriptiong= 'Fremdschlüssel zu BreakBO'),
+    '_illness_id': fields.Integer(attribute='_illness_id', descriptiong= 'Fremdschlüssel zu IllnessBO'),
+    '_project_duration_id': fields.Integer(attribute='_project_duration_id', descriptiong= 'Fremdschlüssel zu ProjectDurationBO'),
+    '_project_work_id': fields.Integer(attribute='_project_work_id', descriptiong= 'Fremdschlüssel zu ProjectWorkBO'),
+    '_vacation_id': fields.Integer(attribute='_vacation_id', descriptiong= 'Fremdschlüssel zu VacationBO'),
+    '_work_id': fields.Integer(attribute='_work_id', descriptiong= 'Fremdschlüssel zu WorkBO')
 })
 
 
@@ -254,6 +260,15 @@ vacation = api.inherit('Vacation', bo, {
 })
 
 work = api.inherit('Work', bo, {
+    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
+    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
+    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
+flexday = api.inherit('FlexDay', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
@@ -1842,8 +1857,7 @@ class TimeIntervalWithTypeOperations(Resource):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_type(type)
         return timeinterval
-
-
+     
 """
 Break
 """
@@ -1991,7 +2005,6 @@ class IllnessWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('illnessdate/<string:start>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByDate(Resource):
@@ -1999,9 +2012,16 @@ class FindIllnessByDate(Resource):
     # @secured
     def get(self, start):
         adm = Businesslogic()
-        illness = adm.get_illnesses_by_date(start)
-        return illness
-
+        proposal = FlexDayBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_flex_day(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            )
+        return p
 
 @worktimeapp.route('illnessperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Illness')
@@ -2013,11 +2033,77 @@ class FindIllnessByTimePeriod(Resource):
         illness = adm.get_illnesses_by_time_period(start, end)
         return illness
 
+"""
+FlexDay
+"""
+@worktimeapp.route('/flexday')
+class FlexDayOperations(Resource):
+    @worktimeapp.marshal_with(flexday)
+    @worktimeapp.expect(flexday)
+    #@secured
+    def post(self):
+
+    @worktimeapp.marshal_list_with(flexday)
+    #@secured
+    def get(self):
+        adm = Businesslogic()
+        flexday = adm.get_all_flex_days()
+        return flexday
+
+@worktimeapp.route('flexday/<int:id>')
+@worktimeapp.param('id', 'ID der FlexDay')
+class FlexDayWithIDOperations(Resource):
+    @worktimeapp.marshal_with(flexday)
+    #@secured
+    def get(self, id):
+        adm = Businesslogic()
+        flexday = adm.get_flex_day_by_id(id)
+        return flexday
+
+    @worktimeapp.marshal_with(flexday)
+    #@secured
+    def delete(self, id):
+        adm = Businesslogic()
+        flexday = adm.get_flex_day_by_id(id)
+        adm.delete_flex_day(flexday)
+
+    @worktimeapp.marshal_with(flexday)
+    @worktimeapp.expect(flexday, validate=True)
+    #@secured
+    def put(self, id):
+        adm = Businesslogic()
+        p = FlexDayBO.from_dict(api.payload)
+
+        if p is not None:
+            p.set_id(id)
+            adm.save_flex_day(p)
+            return p, 200
+        else:
+            return '', 500
+
+@worktimeapp.route('flexdaydate/<string:start>')
+@worktimeapp.param('start', 'Start von FlexDay')
+class FindBreakByDate(Resource):
+    @worktimeapp.marshal_with(flexday)
+    #@secured
+    def get(self, start):
+        adm = Businesslogic()
+        flexday = adm.get_flex_days_by_date(start)
+        return flexday
+
+@worktimeapp.route('flexdayperiod/<string:start>/<string:end>')
+@worktimeapp.param('start', 'Start von FlexDay', 'end', 'Ende von Flexday')
+class FindBreakByTimePeriod(Resource):
+    @worktimeapp.marshal_with(flexday)
+    #@secured
+    def get(self, start, end):
+        adm = Businesslogic()
+        flexday = adm.get_flex_days_by_time_period(start, end)
+        return flexday
 
 """
 ProjectDuration
 """
-
 
 @worktimeapp.route('/projectduration')
 class ProjectDurationOperations(Resource):
@@ -2114,7 +2200,6 @@ class FindProjectDurationByProjectId(Resource):
 """
 ProjectWork
 """
-
 
 @worktimeapp.route('/projectwork')
 class ProjectWorkOperations(Resource):
@@ -2228,6 +2313,16 @@ class VacationOperations(Resource):
                 proposal.get_start_event(),
                 proposal.get_end_event(),
                 proposal.get_type(),
+            )
+
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                None,
+                None,
+                None,
+                None,
+                p.get_id(),
+                None
             )
         return p
 
@@ -2355,7 +2450,6 @@ class WorkWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('workdate/<string:start>')
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByDate(Resource):
@@ -2377,6 +2471,20 @@ class FindWorkByTimePeriod(Resource):
         work = adm.get_works_by_time_period(start, end)
         return work
 
+
+"""
+Combined Methodes
+"""
+
+@worktimeapp.route('userintervalbookings/<int:userid>')
+@worktimeapp.param('userid', 'ID des Users')
+class TimeintervalBookingsForUser(Resource):
+    pass
+
+@worktimeapp.route('userintervalbookings/<int:userid>')
+@worktimeapp.param('userid', 'ID des Users')
+class EventBookingsForUser(Resource):
+    pass
 
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,

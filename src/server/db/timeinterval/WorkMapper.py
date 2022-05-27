@@ -92,7 +92,10 @@ class WorkMapper(TimeIntervalMapper):
         work.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            work.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                work.set_id(1)
+            else:
+                work.set_id(maxid[0]+1)
 
         command = "INSERT INTO worktimeapp.works (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         data = (work.get_id(), work.get_date_of_last_change(), work.get_start(), work. get_end(), work.get_start_event(), work.get_end_event(), "Work")

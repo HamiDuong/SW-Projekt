@@ -25,27 +25,31 @@ from db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
 from bo.eventBOs.FlexDayEndBO import FlexDayEndBO
 from db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
 
-from bo.BookingBO import BookingBO
-from db.BookingMapper import BookingMapper
-from bo.EventBookingBO import EventBookingBO
-from db.EventBookingMapper import EventBookingMapper
-from bo.TimeIntervalBookingBO import TimeIntervalBookingBO
-from db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
+from .bo.BookingBO import BookingBO
+from .db.BookingMapper import BookingMapper
+from .bo.EventBookingBO import EventBookingBO
+from .db.EventBookingMapper import EventBookingMapper
+from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
 
-from bo.timeinterval.TimeIntervalBO import TimeIntervalBO
-from db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
-from bo.timeinterval.BreakBO import BreakBO
-from db.timeinterval.BreakMapper import BreakMapper
-from bo.timeinterval.IllnessBO import IllnessBO
-from db.timeinterval.IllnessMapper import IllnessMapper
-from bo.timeinterval.ProjectDurationBO import ProjectDurationBO
-from db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
-from bo.timeinterval.ProjectWorkBO import ProjectWorkBO
-from db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
-from bo.timeinterval.VacationBO import VacationBO
-from db.timeinterval.VacationMapper import VacationMapper
-from bo.timeinterval.WorkBO import WorkBO
-from db.timeinterval.WorkMapper import WorkMapper
+from asyncio.windows_events import NULL
+
+from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
+from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
+from .bo.timeinterval.BreakBO import BreakBO
+from .db.timeinterval.BreakMapper import BreakMapper
+from .bo.timeinterval.IllnessBO import IllnessBO
+from .db.timeinterval.IllnessMapper import IllnessMapper
+from .bo.timeinterval.ProjectDurationBO import ProjectDurationBO
+from .db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
+from .bo.timeinterval.ProjectWorkBO import ProjectWorkBO
+from .db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
+from .bo.timeinterval.VacationBO import VacationBO
+from .db.timeinterval.VacationMapper import VacationMapper
+from .bo.timeinterval.WorkBO import WorkBO
+from .db.timeinterval.WorkMapper import WorkMapper
+from .bo.timeinterval.FlexDayBO import FlexDayBO
+from .db.timeinterval.FlexDayMapper import FlexDayMapper
 
 from datetime import datetime
 from bo.UserBO import UserBO
@@ -507,6 +511,35 @@ class Businesslogic():
         with TimeIntervalMapper() as mapper:
             mapper.find_by_type(type)
 
+    #def get_timeinterval_by_user(self, userid):
+        #workaccount des aktuellen Users holen
+        #workaccount = self.get_worktimeaccount_by_user_id(userid)
+        #id des Workaccounts
+        #id = workaccount.get_id()
+
+        #alle TimeintervalBooking holen
+        
+        #alle Timeintervals holen
+
+        #Subklassen holen
+
+    def get_subclass_timeinterval_by_timeinterval(self, timeinterval):
+        type = timeinterval.get_type()
+        if type == 'Break':
+            res = self.get_break_by_id(timeinterval.get_break_id())
+        if type == 'Illness':
+            res = self.get_illness_by_id(timeinterval.get_illness_id())
+        if type == 'ProjectDuration':
+            res = self.get_project_duration_by_id(timeinterval.get_project_duration_id())
+        if type == 'ProjectWork':
+            res = self.get_project_work_by_id(timeinterval.get_project_work_id())
+        if type == 'Vacation':
+            res = self.get_vacation_by_id(timeinterval.get_vacation_id())
+        if type == 'Work':
+            res = self.get_work_by_id(timeinterval.get_work_id())
+        return res
+
+
     """
     Break Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -525,6 +558,18 @@ class Businesslogic():
         break_obj.set_start(start)
         break_obj.set_end(end)
         # break_obj.set_time_interval_id(time_interval_id)
+        break_obj.set_start_event(s_event)
+        break_obj.set_end_event(e_event)
+        break_obj.set_type("Break")
+
+        with BreakMapper() as mapper:
+            return mapper.insert(break_obj)
+
+    def create_break_with_interval(self, start, end, s_event, e_event):
+        break_obj = BreakBO()
+        break_obj.set_start(start)
+        break_obj.set_end(end)
+        #break_obj.set_time_interval_id(time_interval_id)
         break_obj.set_start_event(s_event)
         break_obj.set_end_event(e_event)
         break_obj.set_type("Break")
@@ -686,6 +731,51 @@ class Businesslogic():
     # def get_work_by_timeinterval_id(self, id):
     #     with WorkMapper() as mapper:
     #         return mapper.find_by_time_interval_id(id)
+
+    """
+    FlexDay Methoden
+    @author Ha Mi Duong (https://github.com/HamiDuong)
+    """
+    def get_all_flex_days(self):
+        with FlexDayMapper() as mapper:
+            return mapper.find_all()
+
+    def get_flex_day_by_id(self, id):
+        with FlexDayMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def create_flex_day(self, start, end, startevent, endevent):
+        work_obj = FlexDayBO()
+        work_obj.set_start(start)
+        work_obj.set_end(end)
+        # work_obj.set_time_interval_id(time_interval_id)
+        work_obj.set_start_event(startevent)
+        work_obj.set_end_event(endevent)
+        work_obj.set_type("Work")
+
+        with FlexDayMapper() as mapper:
+            return mapper.insert(work_obj)
+
+    def save_flex_day(self, work_obj):
+        with FlexDayMapper as mapper:
+            mapper.update(work_obj)
+
+    def delete_flex_day(self, work_obj):
+        with FlexDayMapper as mapper:
+            mapper.delete(work_obj)
+
+    def get_flex_days_by_date(self, date):
+        with FlexDayMapper() as mapper:
+            return mapper.find_by_date(date)
+
+    def get_flex_days_by_time_period(self, startdate, enddate):
+        with FlexDayMapper() as mapper:
+            return mapper.find_by_time_period(startdate, enddate)
+
+    # def get_work_by_timeinterval_id(self, id):
+    #     with WorkMapper() as mapper:
+    #         return mapper.find_by_time_interval_id(id)
+
 
     """
     ProjectDuration Methoden
@@ -999,10 +1089,6 @@ class Businesslogic():
     def delete_user(self, worktimeaccount_obj):
         with WorkTimeAccountMapper() as mapper:
             mapper.delete(worktimeaccount_obj)
-
-    def get_vacation_by_timeinterval_booking_id(self, id):
-        with VacationMapper() as mapper:
-            return mapper.find_by_time_interval_booking(id)
 
     # Project
 

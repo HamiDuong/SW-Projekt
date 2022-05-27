@@ -96,7 +96,10 @@ class BreakMapper(TimeIntervalMapper):
         breakobj.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
-            breakobj.set_id(maxid[0]+1)
+            if maxid[0] == None:
+                breakobj.set_id(1)
+            else:
+                breakobj.set_id(maxid[0]+1)
 
         #command = "INSERT INTO worktimeapp.breaks (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         #data = (breakobj.get_id(), breakobj.get_date_of_last_change(), breakobj.get_start(), breakobj. get_end(), breakobj.get_timeinterval_id(), breakobj.get_start_event(), breakobj.get_end_event(), "Break")
