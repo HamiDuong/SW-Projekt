@@ -19,6 +19,8 @@ class EventBO(bo.BusinessObject):
         self._project_work_end_ID = 0
         self._break_begin_ID = 0
         self._break_end_ID = 0
+        self._flex_day_end_ID = 0
+        self._flex_day_start_ID = 0
 
     def set_type(self, type):
         """Setzen des Typs des Ereignisses"""
@@ -107,18 +109,36 @@ class EventBO(bo.BusinessObject):
         """Auslesen der Ereignisbuchung-ID."""
         return self._break_end_ID
 
+    def set_flex_day_start_id(self, flex_day_start_begin_id):
+        """Setzen der Ereignisbuchung-ID."""
+        self._flex_day_start_ID = flex_day_start_begin_id
+
+    def get_flex_day_start_id(self):
+        """Auslesen der Ereignisbuchung-ID."""
+        return self._flex_day_start_ID
+
+    def set_flex_day_end_id(self, flex_day_start_end_id):
+        """Setzen der Ereignisbuchung-ID."""
+        self._flex_day_end_ID = flex_day_start_end_id
+
+    def get_flex_day_end_id(self):
+        """Auslesen der Ereignisbuchung-ID."""
+        return self._flex_day_end_ID
+
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
-        return "EventBO {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(),
+        return "EventBO {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}".format(
+                                               self.get_id(), self.get_date_of_last_change(),
                                                self.get_type(),
                                                self.get_coming_id(), self.get_going_id(),
                                                self.get_break_begin_id(),  self.get_break_end_id(),
                                                self.get_illness_begin_id(), self.get_illness_end_id(),
                                                self.get_project_work_begin_id(), self.get_project_work_end_id(),
-                                               self.get_vacation_begin_id(), self.get_vacation_end_id())
+                                               self.get_vacation_begin_id(), self.get_vacation_end_id(),
+                                               self.get_flex_day_start_id(), self.get_flex_day_end_id())
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -135,4 +155,6 @@ class EventBO(bo.BusinessObject):
         obj.set_project_work_end_id(dictionary["ProjectWorkEndID"])
         obj.set_vacation_begin_id(dictionary["VacationBeginID"])
         obj.set_vacation_end_id(dictionary["VacationEndID"])
+        obj.set_flex_day_start_id(dictionary["FlexDayStartID"])
+        obj.set_flex_day_end_id(dictionary["FlexDayEndID"])
         return obj
