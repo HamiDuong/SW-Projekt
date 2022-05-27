@@ -1013,9 +1013,23 @@ class BreakOperations(Resource):
                 proposal.get_end(),
                 proposal.get_start_event(),
                 proposal.get_end_event(),
-                proposal.get_type(),
+
             )
-        return p
+
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                p.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            tb = adm.create_timeinterval_booking(
+                t.get_id()
+            )
+        return p, t, tb
 
     @worktimeapp.marshal_list_with(breaks)
     # @secured
@@ -1084,23 +1098,36 @@ Illness
 """
 
 
-# @worktimeapp.route('/illness')
-# class IllnessOperations(Resource):
-#     @worktimeapp.marshal_with(illness)
-#     @worktimeapp.expect(illness)
-#     # @secured
-#     def post(self):
-#         adm = Businesslogic()
-#         proposal = IllnessBO.from_dict(api.payload)
-#         if proposal is not None:
-#             p = adm.create_illness(
-#                 proposal.get_start(),
-#                 proposal.get_end(),
-#                 proposal.get_start_event(),
-#                 proposal.get_end_event(),
-#                 proposal.get_type(),
-#             )
-#         return p
+@worktimeapp.route('/illness')
+class IllnessOperations(Resource):
+    @worktimeapp.marshal_with(illness)
+    @worktimeapp.expect(illness)
+    # @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = IllnessBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_illness(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+            )
+
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                None,
+                p.get_id(),
+                None,
+                None,
+                None,
+                None
+            )
+
+            ti = adm.create_timeinterval_booking(
+                t.get_id()
+            )
+        return p, t, ti
 
 #     @worktimeapp.marshal_list_with(illness)
 #     # @secured
@@ -1266,24 +1293,36 @@ Illness
 # """
 
 
-# @worktimeapp.route('/projectwork')
-# class ProjectWorkOperations(Resource):
-#     @worktimeapp.marshal_with(projectwork)
-#     @worktimeapp.expect(projectwork)
-#     # @secured
-#     def post(self):
-#         adm = Businesslogic()
-#         proposal = ProjectWorkBO.from_dict(api.payload)
-#         if proposal is not None:
-#             p = adm.create_project_work(
-#                 proposal.get_start(),
-#                 proposal.get_end(),
-#                 proposal.get_start_event(),
-#                 proposal.get_end_event(),
-#                 proposal.get_type(),
-#                 proposal.get_activity_id()
-#             )
-#         return p
+@worktimeapp.route('/projectwork')
+class ProjectWorkOperations(Resource):
+    @worktimeapp.marshal_with(projectwork)
+    @worktimeapp.expect(projectwork)
+    # @secured
+    def post(self):
+        adm = Businesslogic()
+        proposal = ProjectWorkBO.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_project_work(
+                proposal.get_start(),
+                proposal.get_end(),
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_activity_id()
+            )
+            t = adm.create_timeinterval(
+                proposal.get_type(),
+                None,
+                None,
+                None,
+                p.get_id(),
+                None,
+                None
+            )
+
+            ti = adm.create_timeinterval_booking(
+                t.get_id()
+            )
+        return p
 
 #     @worktimeapp.marshal_list_with(projectwork)
 #     # @secured
