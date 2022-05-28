@@ -13,6 +13,17 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import BreakBeginBO from '../API/BreakBeginBO';
+import BreakEndBO from '../API/BreakEndBO';
+import VacationBeginBO from '../API/VacationBegin';
+import VacationEndBO from '../API/VacationEnd';
+import IllnessBeginBO from '../API/IllnessBegin';
+import IllnessEndBO from '../API/IllnessEnd';
+import ProjectWorkBeginBO from '../API/ProjectWorkBegin';
+import ProjectWorkEndBO from '../API/ProjectWorkEnd';
+import ComingBO from '../API/ComingBO';
+import GoingBO from '../API/GoingBO';
+import FlexDayBeginBO from '../API/FlexDayBegin';
+import FlexDayEndBO from '../API/FlexDayEnd';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import BookingBO from '../API/BookingBO';
 import { format } from "date-fns";
@@ -54,21 +65,21 @@ class EventBookings extends Component {
             console.log(newVacationEndBO)
             console.log(newBookingBO)}
 
-        else if ((this.state.type) === "workBegin"){
-            let newWorkBeginBO = new WorkBeginBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addWorkBeginBooking(newWorkBeginBO)
+        else if ((this.state.type) === "coming"){
+            let newComingBO = new ComingBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addComingBooking(newComingBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newWorkBeginBO)
+            console.log(newComingBO)
             console.log(newBookingBO)
         }
 
-        else if ((this.state.type) === "workEnd"){
-            let newWorkEndBO = new WorkEndBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addWorkEndBooking(newWorkEndBO)
+        else if ((this.state.type) === "going"){
+            let newGoingBO = new GoingBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addGoingBooking(newGoingBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newWorkEndBO)
+            console.log(newGoingBO)
             console.log(newBookingBO)
         }
         else if ((this.state.type) === "illnessBegin"){
@@ -125,8 +136,8 @@ class EventBookings extends Component {
         }
 
         else if ((this.state.type) === "flexdayBegin"){
-            let newFlexdayBeginBO = new FlexdayBeginBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addFlexdayBeginBooking(newFlexdayBeginBO)
+            let newFlexdayBeginBO = new FlexDayBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addFlexDayBeginBooking(newFlexdayBeginBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
             console.log(newFlexdayBeginBO)
@@ -134,8 +145,8 @@ class EventBookings extends Component {
         }
 
         else if ((this.state.type) === "flexdayEnd"){
-            let newFlexdayEndBO = new FlexdayEndBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addFlexdayEndBooking(newFlexdayEndBO)
+            let newFlexdayEndBO = new FlexDayEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addFlexDayEndBooking(newFlexdayEndBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
             console.log(newFlexdayEndBO)
@@ -186,7 +197,7 @@ class EventBookings extends Component {
                             <MenuItem value={"going"}>Going</MenuItem>
                             <MenuItem value={"breakBegin"}>Break Begin</MenuItem>
                             <MenuItem value={"breakEnd"}>Break End</MenuItem>
-                            <MenuItem value={"flexdayStart"}>Flexday Start</MenuItem>
+                            <MenuItem value={"flexdayBegin"}>Flexday Begin</MenuItem>
                             <MenuItem value={"flexdayEnd"}>Flexday End</MenuItem>
                             <MenuItem value={"illnessBegin"}>Illness Begin</MenuItem>
                             <MenuItem value={"illnessEnd"}>Illness End</MenuItem>

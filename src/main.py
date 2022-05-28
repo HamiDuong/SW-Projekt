@@ -966,7 +966,25 @@ class GoingListOperations(Resource):
         if proposal is not None:
             c = adm.create_going(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "going",
+                None,
+                c.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1049,7 +1067,25 @@ class ComingListOperations(Resource):
         if proposal is not None:
             c = adm.create_coming(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "coming",
+                c.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1132,7 +1168,25 @@ class VacationBeginListOperations(Resource):
         if proposal is not None:
             c = adm.create_vacation_begin(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "vacationBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1215,7 +1269,25 @@ class VacationEndListOperations(Resource):
         if proposal is not None:
             c = adm.create_vacation_end(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "vacationEnd",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id()
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1298,7 +1370,25 @@ class IllnessEndListOperations(Resource):
         if proposal is not None:
             c = adm.create_illness_end(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "illnessBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None,
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1381,7 +1471,25 @@ class IllnessBeginListOperations(Resource):
         if proposal is not None:
             c = adm.create_illness_begin(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "illnessBegin",
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1482,7 +1590,7 @@ class BreakBeginListOperations(Resource):
             eb = adm.create_event_booking(
                 e.get_id()
             )
-            return c, 200
+            return c, e, eb
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1565,7 +1673,25 @@ class BreakEndListOperations(Resource):
         if proposal is not None:
             c = adm.create_break_end(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "breakend",
+                None,
+                None,
+                None,
+                c.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1648,7 +1774,25 @@ class ProjectWorkEndListOperations(Resource):
         if proposal is not None:
             c = adm.create_project_work_end(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "projectWorkEnd",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1731,7 +1875,25 @@ class ProjectWorkBeginListOperations(Resource):
         if proposal is not None:
             c = adm.create_project_work_begin(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "projectWorkBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb
         else:
             # Wenn irgbeginetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -2609,7 +2771,7 @@ class EventBookingOperations(Resource):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
-            b = adm.create_event_booking(
+            b = adm.create_booking_for_event(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
                 proposal.get_type(),

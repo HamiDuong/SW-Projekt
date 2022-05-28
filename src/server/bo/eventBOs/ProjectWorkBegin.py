@@ -7,7 +7,6 @@ class ProjectWorkBeginBO(EventBO.EventBO):
     Ein ProjectWorkEndBO stellt das Ereignis "Beginn der Projektarbeit" dar, also wenn ein Mitarbeiter mit der Projektarbeit beginnt.
     """
 
-
     def __init__(self):
         super().__init__()
         self._time = None
@@ -23,6 +22,6 @@ class ProjectWorkBeginBO(EventBO.EventBO):
         """Umwandeln eines Python dict() in ein ComingBO()."""
         obj = ProjectWorkBeginBO
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_time(dictionary["time"])
         return obj

@@ -8,7 +8,18 @@ import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
 import TimeIntervalBookingBO from './TimeIntervalBookingBO';
-import BreakBeginBO from './BreakBeginBO'
+import BreakBeginBO from './BreakBeginBO';
+import BreakEndBO from './BreakEndBO';
+import VacationBeginBO from './VacationBegin';
+import VacationEndBO from './VacationEnd';
+import IllnessBeginBO from './IllnessBegin';
+import IllnessEndBO from './IllnessEnd';
+import ProjectWorkBeginBO from './ProjectWorkBegin';
+import ProjectWorkEndBO from './ProjectWorkEnd';
+import ComingBO from './ComingBO';
+import GoingBO from './GoingBO';
+import FlexDayBeginBO from './FlexDayBegin';
+import FlexDayEndBO from './FlexDayEnd';
 
 export default class WorkTimeAppAPI{
     static #api = null
@@ -89,6 +100,19 @@ export default class WorkTimeAppAPI{
 
     //Event URLS 
     #addBreakBeginURL = () => `${this.#worktimeappServerBaseURL}/break_begin`
+    #addBreakEndURL = () => `${this.#worktimeappServerBaseURL}/break_end`
+    #addVacationBeginURL = () => `${this.#worktimeappServerBaseURL}/vacation_begin`
+    #addVacationEndURL = () => `${this.#worktimeappServerBaseURL}/vacation_end`
+    #addIllnessBeginURL = () => `${this.#worktimeappServerBaseURL}/illness_begin`
+    #addIllnesEndURL = () => `${this.#worktimeappServerBaseURL}/illness_end`
+    #addFlexDayBeginURL = () => `${this.#worktimeappServerBaseURL}/flexday_begin`
+    #addFlexDayEndURL = () => `${this.#worktimeappServerBaseURL}/flexday_end`
+    #addProjectWorkBeginURL = () => `${this.#worktimeappServerBaseURL}/project_work_begin`
+    #addProjectWorkEndURL = () => `${this.#worktimeappServerBaseURL}/project_work_end`
+    #addComingURL = () => `${this.#worktimeappServerBaseURL}/coming`
+    #addGoingURL = () => `${this.#worktimeappServerBaseURL}/going`
+
+
 
     static getAPI(){
         if(this.#api == null){
@@ -829,6 +853,204 @@ export default class WorkTimeAppAPI{
           }).then((responseJSON) => {
             console.log("TEST")
             let responseBookingBO = BreakBeginBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addBreakEndBooking(breakendBO){
+        return this.#fetchAdvanced(this.#addBreakEndURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(breakendBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = BreakEndBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addVacationBeginBooking(vacationbeginBO){
+        return this.#fetchAdvanced(this.#addVacationBeginURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationbeginBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = VacationBeginBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addVacationEndBooking(vacationendBO){
+        return this.#fetchAdvanced(this.#addVacationEndURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationendBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = VacationEndBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addIllnessBeginBooking(illnessbeginBO){
+        return this.#fetchAdvanced(this.#addIllnessBeginURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessbeginBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = IllnessBeginBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addIllnessEndBooking(illnessendBO){
+        return this.#fetchAdvanced(this.#addIllnesEndURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessendBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = IllnessEndBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addProjectWorkBeginBooking(projectWorkBeginBO){
+        return this.#fetchAdvanced(this.#addProjectWorkBeginURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectWorkBeginBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = ProjectWorkBeginBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addProjectWorkEndBooking(projectWorkEndBO){
+        return this.#fetchAdvanced(this.#addProjectWorkEndURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectWorkEndBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = ProjectWorkEndBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addComingBooking(comingBO){
+        return this.#fetchAdvanced(this.#addComingURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(comingBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = ComingBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addGoingBooking(goingBO){
+        return this.#fetchAdvanced(this.#addGoingURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(goingBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = GoingBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addFlexDayBeginBooking(flexDayBeginBO){
+        return this.#fetchAdvanced(this.#addFlexDayBeginURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexDayBeginBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = FlexDayBeginBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addFlexDayEndBooking(flexDayEndBO){
+        return this.#fetchAdvanced(this.#addFlexDayEndURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexDayEndBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = FlexDayEndBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);

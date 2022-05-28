@@ -977,10 +977,10 @@ class Businesslogic():
     def create_event_booking(self, eventbookingId):
         """Ein Event Booking anlegen"""
 
-        eventbooking = TimeIntervalBookingBO()
-        eventbooking.set_timeinterval_id(eventbookingId)
+        eventbooking = EventBookingBO()
+        eventbooking.set_event_id(eventbookingId)
 
-        with TimeIntervalBookingMapper() as mapper:
+        with EventBookingMapper() as mapper:
             return mapper.insert(eventbooking)
 
     def create_booking_for_event(self, userId, worktimeAccountId, type, timeintervalbookingId):

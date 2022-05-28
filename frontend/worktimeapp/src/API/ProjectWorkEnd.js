@@ -1,6 +1,6 @@
 import BusinessObject from './BusinessObject';
 
-export default class BreakBeginBO extends BusinessObject {
+export default class ProjectWorkEndBO extends BusinessObject {
 
 
   constructor(time) {
@@ -21,18 +21,18 @@ export default class BreakBeginBO extends BusinessObject {
 
 
   
-  static fromJSON(breakbegins) {
+  static fromJSON(projectworkends) {
     let result = [];
 
-    if (Array.isArray(breakbegins)) {
-      breakbegins.forEach((b) => {
-        Object.setPrototypeOf(b, BreakBeginBO.prototype);
+    if (Array.isArray(projectworkends)) {
+      projectworkends.forEach((b) => {
+        Object.setPrototypeOf(b, ProjectWorkEndBO.prototype);
         result.push(b);
       })
     } else {
       // Es handelt sich offenbar um ein singuläres Objekt
-      let b = breakbegins;
-      Object.setPrototypeOf(b, BreakBeginBO.prototype);
+      let b = projectworkends;
+      Object.setPrototypeOf(b, ProjectWorkEndBO.prototype);
       result.push(b);
     }
 
