@@ -22,11 +22,12 @@ class ProjectWorkBeginMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 project_work_begin.set_id(1)
 
-        command = "INSERT INTO worktimeapp.ProjectWorkBegin (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.ProjectWorkBegin (id, date_of_last_change, date, type) VALUES (%s, %s, %s, %s)"
         data = (
             project_work_begin.get_id(),
             project_work_begin.get_date_of_last_change(),
             project_work_begin.get_time(),
+            project_work_begin.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,15 +40,16 @@ class ProjectWorkBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.ProjectWorkBegin"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.ProjectWorkBegin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             project_work_begin = ProjectWorkBeginBO()
             project_work_begin.set_id(id)
             project_work_begin.set_date_of_last_change(dateoflastchange)
             project_work_begin.set_time(date)
+            project_work_begin.set_type(type)
             result.append(project_work_begin)
 
         self._cnx.commit()
@@ -59,18 +61,20 @@ class ProjectWorkBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.ProjectWorkBegin WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.ProjectWorkBegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             project_work_begin = ProjectWorkBeginBO()
             project_work_begin.set_id(id)
             project_work_begin.set_date_of_last_change(dateoflastchange)
             project_work_begin.set_time(date)
+            project_work_begin.set_type(type)
             result = project_work_begin
+
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -85,16 +89,17 @@ class ProjectWorkBeginMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.ProjectWorkBegin WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.ProjectWorkBegin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             project_work_begin = ProjectWorkBeginBO()
             project_work_begin.set_id(id)
             project_work_begin.set_date_of_last_change(dateoflastchange)
             project_work_begin.set_time(date)
+            project_work_begin.set_type(type)
             result.append(project_work_begin)
 
         self._cnx.commit()

@@ -14,6 +14,7 @@ class VacationBeginBO(EventBO.EventBO):
 
     def set_time(self, time):
         self._time = time
+        self._type = 'vacationbegin'
 
     def get_time(self):
         return self._time

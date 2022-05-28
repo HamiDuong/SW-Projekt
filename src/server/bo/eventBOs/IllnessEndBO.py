@@ -14,6 +14,7 @@ class IllnessEndBO(EventBO.EventBO):
 
     def set_time(self, time):
         self._time = time
+        self._type = 'illnessend'
 
     def get_time(self):
         return self._time

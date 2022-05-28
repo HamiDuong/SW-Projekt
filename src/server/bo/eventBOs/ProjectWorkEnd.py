@@ -10,6 +10,7 @@ class ProjectWorkEndBO(EventBO.EventBO):
     def __init__(self):
         super().__init__()
         self._time = None
+        self._type = 'projectworkend'
 
     def set_time(self, time):
         self._time = time

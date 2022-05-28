@@ -22,11 +22,12 @@ class FlexDayEndMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 flex_day_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.flexdayend (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.flexdayend (id, date_of_last_change, date, type) VALUES (%s, %s,%s ,%s)"
         data = (
             flex_day_end.get_id(),
             flex_day_end.get_date_of_last_change(),
             flex_day_end.get_time(),
+            flex_day_end.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,14 +40,16 @@ class FlexDayEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.flexdayend"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             flex_day_end = FlexDayEndBO()
             flex_day_end.set_id(id)
+            flex_day_end.set_date_of_last_change(dateoflastchange)
             flex_day_end.set_time(date)
+            flex_day_end.set_type(type)
             result.append(flex_day_end)
 
         self._cnx.commit()
@@ -58,7 +61,7 @@ class FlexDayEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.flexdayend WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -68,6 +71,7 @@ class FlexDayEndMapper(Mapper):
             flex_day_end = FlexDayEndBO()
             flex_day_end.set_id(id)
             flex_day_end.set_time(date)
+            flex_day_end.set_type(type)
             result = flex_day_end
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -83,16 +87,17 @@ class FlexDayEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.flexdayend WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             flex_day_end = FlexDayEndBO()
             flex_day_end.set_id(id)
             flex_day_end.set_date_of_last_change(dateoflastchange)
             flex_day_end.set_time(date)
+            flex_day_end.set_type(type)
             result.append(flex_day_end)
 
         self._cnx.commit()

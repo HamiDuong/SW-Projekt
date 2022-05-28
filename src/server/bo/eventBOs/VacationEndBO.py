@@ -10,12 +10,16 @@ class VacationEndBO(EventBO.EventBO):
     def __init__(self):
         super().__init__()
         self._time = None
+        self._type = 'vacationend'
 
     def set_time(self, time):
         self._time = time
 
     def get_time(self):
         return self._time
+
+    def get_type(self):
+        return self._type
 
     @staticmethod
     def from_dict(dictionary=dict()):

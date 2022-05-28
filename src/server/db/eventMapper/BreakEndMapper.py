@@ -22,11 +22,12 @@ class BreakEndMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 break_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.breakend (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.breakend (id, date_of_last_change, date, type) VALUES (%s, %s,%s,%s)"
         data = (
             break_end.get_id(),
             break_end.get_date_of_last_change(),
             break_end.get_time(),
+            break_end.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,15 +40,16 @@ class BreakEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakend"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             break_end = BreakEndBO()
             break_end.set_id(id)
             break_end.set_date_of_last_change(dateoflastchange)
             break_end.set_time(date)
+            break_end.set_type(type)
             result.append(break_end)
 
         self._cnx.commit()
@@ -59,17 +61,18 @@ class BreakEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakend WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             break_end = BreakEndBO()
             break_end.set_id(id)
             break_end.set_date_of_last_change(dateoflastchange)
             break_end.set_time(date)
+            break_end.set_type(type)
             result = break_end
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -85,16 +88,17 @@ class BreakEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakend WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchage, date) in tuples:
+        for (id, dateoflastchage, date, type) in tuples:
             break_end = BreakEndBO()
             break_end.set_id(id)
             break_end.set_date_of_last_change(dateoflastchage)
             break_end.set_time(date)
+            break_end.set_type(type)
             result.append(break_end)
 
         self._cnx.commit()
