@@ -12,6 +12,11 @@ import FormControl from '@mui/material/FormControl';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import BreakBeginBO from '../API/BreakBeginBO';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import BookingBO from '../API/BookingBO';
+import { format } from "date-fns";
+
 
 
 
@@ -21,16 +26,130 @@ class EventBookings extends Component {
         super(props);
         
         this.state = {
-            eventType: "",
-            time: Date
+            type: "",
+            time: Date,
+            workTimeAccountId:0,
+            userId:0,
+            eventBookingId: 0,
+            timeintervalBookingId: 0,
         }
     }
+
+    addEventBooking = () => {
+        if ((this.state.type) === "vacationBegin"){
+            let newVacationBeginBO = new VacationBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addVacationBeginBooking(newVacationBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(this.state.type)
+            console.log(newVacationBeginBO)
+            console.log(newBookingBO)}
+
+        else if ((this.state.type) === "vacationEnd"){
+            let newVacationEndBO = new VacationEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addVacationEndBooking(newVacationEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(this.state.type)
+            console.log(newVacationEndBO)
+            console.log(newBookingBO)}
+
+        else if ((this.state.type) === "workBegin"){
+            let newWorkBeginBO = new WorkBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addWorkBeginBooking(newWorkBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newWorkBeginBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "workEnd"){
+            let newWorkEndBO = new WorkEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addWorkEndBooking(newWorkEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newWorkEndBO)
+            console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "illnessBegin"){
+            let newIllnessBeginBO = new IllnessBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addIllnessBeginBooking(newIllnessBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newIllnessBeginBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "illnessEnd"){
+            let newIllnessEndBO = new IllnessEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addIllnessEndBooking(newIllnessEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newIllnessEndBO)
+            console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "projectWorkBegin"){
+            let newProjectWorkBeginBO = new ProjectWorkBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addProjectWorkBeginBooking(newProjectWorkBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newProjectWorkBeginBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "projectWorkEnd"){
+            let newProjectWorkEndBO = new ProjectWorkEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addProjectWorkEndBooking(newProjectWorkEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newProjectWorkEndBO)
+            console.log(newBookingBO)
+        }
+        
+        else if ((this.state.type) === "breakBegin"){
+            let newBreakBeginBO = new BreakBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addBreakBeginBooking(newBreakBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newBreakBeginBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "breakEnd"){
+            let newBreakEndBO = new BreakEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addBreakEndBooking(newBreakEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newBreakEndBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "flexdayBegin"){
+            let newFlexdayBeginBO = new FlexdayBeginBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addFlexdayBeginBooking(newFlexdayBeginBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newFlexdayBeginBO)
+            console.log(newBookingBO)
+        }
+
+        else if ((this.state.type) === "flexdayEnd"){
+            let newFlexdayEndBO = new FlexdayEndBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addFlexdayEndBooking(newFlexdayEndBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newFlexdayEndBO)
+            console.log(newBookingBO)
+        }
+       }
+
+
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
 
     handleDateChange(newValue){
         this.setState({
-            time: new Date(newValue)
+            time: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         
     }
@@ -58,13 +177,23 @@ class EventBookings extends Component {
                        <FormControl sx={{ minWidth: 258}}>
                           <InputLabel>Type</InputLabel>
                           <Select
-                            name="eventType"
-                            value={this.state.eventType}
+                            name="type"
+                            value={this.state.type}
                             label="Type"
                             onChange={this.handleChange}
                           >
-                            <MenuItem value={"Coming"}>Coming</MenuItem>
-                            <MenuItem value={"Going"}>Going</MenuItem>
+                            <MenuItem value={"coming"}>Coming</MenuItem>
+                            <MenuItem value={"going"}>Going</MenuItem>
+                            <MenuItem value={"breakBegin"}>Break Begin</MenuItem>
+                            <MenuItem value={"breakEnd"}>Break End</MenuItem>
+                            <MenuItem value={"flexdayStart"}>Flexday Start</MenuItem>
+                            <MenuItem value={"flexdayEnd"}>Flexday End</MenuItem>
+                            <MenuItem value={"illnessBegin"}>Illness Begin</MenuItem>
+                            <MenuItem value={"illnessEnd"}>Illness End</MenuItem>
+                            <MenuItem value={"projectWorkBegin"}>Project Work Begin</MenuItem>
+                            <MenuItem value={"projectWorkEnd"}>Project Work End</MenuItem>
+                            <MenuItem value={"vacationBegin"}>Vacation Begin</MenuItem>
+                            <MenuItem value={"vacationEnd"}>Vacation End</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -82,7 +211,7 @@ class EventBookings extends Component {
                             </LocalizationProvider>
                       </Grid>
                       <Grid item xs={12} sm={2}>
-                      <Button variant="contained">Book Event</Button>
+                      <Button variant="contained" onClick={this.addEventBooking}>Book Event</Button>
                       </Grid>
               </Grid>
           </Card>

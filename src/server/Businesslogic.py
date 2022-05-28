@@ -21,32 +21,32 @@ from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
 from .bo.eventBOs.BreakEndBO import BreakEndBO
 from .db.eventMapper.BreakEndMapper import BreakEndMapper
 
-from bo.eventBOs.EventBO import EventBO
-from db.eventMapper.EventMapper import EventMapper
-from bo.eventBOs.ComingBO import ComingBO
-from db.eventMapper.ComingMapper import ComingMapper
-from bo.eventBOs.GoingBO import GoingBO
-from db.eventMapper.GoingMapper import GoingMapper
-from bo.eventBOs.VacationBeginBO import VacationBeginBO
-from db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from bo.eventBOs.VacationEndBO import VacationEndBO
-from db.eventMapper.VacationEndMapper import VacationEndMapper
-from bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from bo.eventBOs.IllnessEndBO import IllnessEndBO
-from db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from bo.eventBOs.BreakBeginBO import BreakBeginBO
-from db.eventMapper.BreakBeginMapper import BreakBeginMapper
-from bo.eventBOs.BreakEndBO import BreakEndBO
-from db.eventMapper.BreakEndMapper import BreakEndMapper
-from bo.eventBOs.FlexDayStart import FlexDayStartBO
-from db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
-from bo.eventBOs.FlexDayEndBO import FlexDayEndBO
-from db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
+from .bo.eventBOs.EventBO import EventBO
+from .db.eventMapper.EventMapper import EventMapper
+from .bo.eventBOs.ComingBO import ComingBO
+from .db.eventMapper.ComingMapper import ComingMapper
+from .bo.eventBOs.GoingBO import GoingBO
+from .db.eventMapper.GoingMapper import GoingMapper
+from .bo.eventBOs.VacationBeginBO import VacationBeginBO
+from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
+from .bo.eventBOs.VacationEndBO import VacationEndBO
+from .db.eventMapper.VacationEndMapper import VacationEndMapper
+from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
+from .bo.eventBOs.IllnessEndBO import IllnessEndBO
+from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
+from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
+from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
+from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
+from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
+from .bo.eventBOs.BreakBeginBO import BreakBeginBO
+from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
+from .bo.eventBOs.BreakEndBO import BreakEndBO
+from .db.eventMapper.BreakEndMapper import BreakEndMapper
+from .bo.eventBOs.FlexDayStart import FlexDayStartBO
+from .db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
+from .bo.eventBOs.FlexDayEndBO import FlexDayEndBO
+from .db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
 
 
 from .bo.BookingBO import BookingBO
@@ -412,7 +412,7 @@ class Businesslogic():
     def create_break_begin(self, time):
         break_begin = BreakBeginBO()
         break_begin.set_time(time)
-        with BreakEndMapper() as mapper:
+        with BreakBeginMapper() as mapper:
             return mapper.insert(break_begin)
 
     # Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
@@ -974,32 +974,29 @@ class Businesslogic():
         with BookingMapper() as mapper:
             return mapper.insert(booking)
 
-    def create_event_booking(self, userId, worktimeAccountId, eventId, type):
+    def create_event_booking(self, eventbookingId):
         """Ein Event Booking anlegen"""
 
-        '''Als erstes wird das EventBooking Objekt erstellt und dessen Id wird in der variable eventbookingid gespeichert'''
+        eventbooking = TimeIntervalBookingBO()
+        eventbooking.set_timeinterval_id(eventbookingId)
 
-        eventbooking = EventBookingBO()
-        eventbooking.set_id(1)
-        eventbooking.set_event_id(eventId)
+        with TimeIntervalBookingMapper() as mapper:
+            return mapper.insert(eventbooking)
 
+    def create_booking_for_event(self, userId, worktimeAccountId, type, timeintervalbookingId):
         with EventBookingMapper() as mapper:
-            mapper.insert(eventbooking)
-            eventbookingid = eventbooking.get_id()
-
-        '''Jetzt wird das Booking Objekt gespeichert und die vorher gespeicherte id wird nun als Fremdschlüssel eingefügt'''
+            last_entry = mapper.find_last_entry()
+            id = last_entry.get_id()
 
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
         booking.set_type(type)
-        booking.set_event_booking_id(eventbookingid)
-        booking.set_id(1)
+        booking.set_event_booking_id(id)
+        booking.set_time_interval_booking_id(timeintervalbookingId)
 
         with BookingMapper() as mapper:
             return mapper.insert(booking)
-
-        # Hinzufügen der EventId von Khadi nach Absprache
 
     def get_all_bookings_for_worktime_account(self, account):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel TimeintervalbookingId 

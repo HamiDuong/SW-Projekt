@@ -8,6 +8,7 @@ import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
 import TimeIntervalBookingBO from './TimeIntervalBookingBO';
+import BreakBeginBO from './BreakBeginBO'
 
 export default class WorkTimeAppAPI{
     static #api = null
@@ -84,6 +85,10 @@ export default class WorkTimeAppAPI{
 
     //Booking URLS
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
+    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
+
+    //Event URLS 
+    #addBreakBeginURL = () => `${this.#worktimeappServerBaseURL}/break_begin`
 
     static getAPI(){
         if(this.#api == null){
@@ -789,6 +794,41 @@ export default class WorkTimeAppAPI{
             body: JSON.stringify(bookingBO)
           }).then((responseJSON) => {
             let responseBookingBO = BookingBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addEventBooking(bookingBO){
+        return this.#fetchAdvanced(this.#addEventBookingURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(bookingBO)
+          }).then((responseJSON) => {
+            let responseBookingBO = BookingBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addBreakBeginBooking(breakbeginBO){
+        return this.#fetchAdvanced(this.#addBreakBeginURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(breakbeginBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = BreakBeginBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);

@@ -14,6 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
 import VacationBO from '../API/VacationBO';
+import IllnessBO from '../API/IllnessBO'
 import WorkBO from '../API/WorkBO'
 import BookingBO from '../API/BookingBO';
 import BreakBO from '../API/BreakBO';
@@ -68,7 +69,7 @@ class TimeIntervalBookings extends Component {
             console.log(newBookingBO)
         }
         else if ((this.state.type) === "illness"){
-            let newIllnessBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            let newIllnessBO = new IllnessBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
