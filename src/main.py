@@ -218,6 +218,14 @@ project_work_begin = api.inherit('ProjectWorkBegin', bo, {
     'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
 
+flex_day_start = api.inherit('FlexDayStart', bo, {
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
+})
+
+flex_day_end = api.inherit('FlexDayEnd', bo, {
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
+})
+
 """
 Timeinterval und zugehörige Subklassen
 """
@@ -898,7 +906,7 @@ class EventListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/events/<int:id>')
+@worktimeapp.route('/event/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class EventOperations(Resource):
@@ -953,7 +961,7 @@ Going
 """
 
 
-@worktimeapp.route('/going')
+@worktimeapp.route('/goings')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class GoingListOperations(Resource):
     @worktimeapp.marshal_list_with(going)
@@ -985,7 +993,7 @@ class GoingListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/goings/<int:id>')
+@worktimeapp.route('/going/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class GoingOperations(Resource):
@@ -1040,7 +1048,7 @@ Coming
 """
 
 
-@worktimeapp.route('/coming')
+@worktimeapp.route('/comings')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ComingListOperations(Resource):
     @worktimeapp.marshal_list_with(coming)
@@ -1072,7 +1080,7 @@ class ComingListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/comings/<int:id>')
+@worktimeapp.route('/coming/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ComingOperations(Resource):
@@ -1127,7 +1135,7 @@ VacationBegin
 """
 
 
-@worktimeapp.route('/vacation_begin')
+@worktimeapp.route('/vacation_begins')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class VacationBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(vacation_begin)
@@ -1159,7 +1167,7 @@ class VacationBeginListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/vacation_begins/<int:id>')
+@worktimeapp.route('/vacation_begin/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class VacationBeginOperations(Resource):
@@ -1214,7 +1222,7 @@ VacationEnd
 """
 
 
-@worktimeapp.route('/vacation_end')
+@worktimeapp.route('/vacation_ends')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class VacationEndListOperations(Resource):
     @worktimeapp.marshal_list_with(vacation_end)
@@ -1246,7 +1254,7 @@ class VacationEndListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/vacation_ends/<int:id>')
+@worktimeapp.route('/vacation_end/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class VacationEndOperations(Resource):
@@ -1297,11 +1305,185 @@ class VacationEndOperations(Resource):
 
 
 """
+FlexDayStart
+"""
+
+
+@worktimeapp.route('/flex_day_starts')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class FlexDayStartListOperations(Resource):
+    @worktimeapp.marshal_list_with(flex_day_start)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        flex_day_start = adm.get_all_flex_day_starts()
+        return flex_day_start
+
+    @worktimeapp.marshal_with(flex_day_start, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(flex_day_start)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = FlexDayStartBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_flex_day_start(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+
+@worktimeapp.route('/flex_day_start/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class FlexDayStartOperations(Resource):
+    @worktimeapp.marshal_with(flex_day_start)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_flex_day_start_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        flex_day_start = adm.get_flex_day_start_by_id(id)
+        adm.delete_flex_day_start(flex_day_start)
+        return '', 200
+
+    @worktimeapp.marshal_with(flex_day_start)
+    @worktimeapp.expect(flex_day_start, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = FlexDayStartBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+
+"""
+FlexDayEnd
+"""
+
+
+@worktimeapp.route('/flex_day_ends')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class FlexDayEndListOperations(Resource):
+    @worktimeapp.marshal_list_with(flex_day_end)
+    # #@secured
+    def get(self):
+        """Auslesen aller Event-Objekte.
+
+        Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        flex_day_end = adm.get_all_flex_day_end()
+        return flex_day_end
+
+    @worktimeapp.marshal_with(flex_day_end, code=200)
+    # Wir erwarten ein Event-Objekt von Client-Seite.
+    @worktimeapp.expect(flex_day_end)
+    # @secured
+    def post(self):
+        """Anlegen eines neuen Event-Objekts."""
+
+        adm = Businesslogic()
+        proposal = FlexDayEndBO.from_dict(api.payload)
+
+        if proposal is not None:
+            c = adm.create_flex_day_end(
+                proposal.get_time())
+            return c, 200
+        else:
+            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+            return '', 500
+
+
+@worktimeapp.route('/flex_day_end/<int:id>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('id', 'Die ID des Event-Objekts')
+class FlexDayEndOperations(Resource):
+    @worktimeapp.marshal_with(flex_day_end)
+    # #@secured
+    def get(self, id):
+        """Auslesen eines bestimmten Event-Objekts.
+
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_flex_day_end_by_id(id)
+        return cust
+
+    # @secured
+    def delete(self, id):
+        """Löschen eines bestimmten Event-Objekts.
+
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        flex_day_end = adm.get_flex_day_end_by_id(id)
+        adm.delete_flex_day_end(flex_day_end)
+        return '', 200
+
+    @worktimeapp.marshal_with(flex_day_end)
+    @worktimeapp.expect(flex_day_end, validate=True)
+    # @secured
+    def put(self, id):
+        """Update eines bestimmten Event-Objekts.
+
+        **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+        verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+        Event-Objekts.
+        """
+        adm = Businesslogic()
+        go = FlexDayEndBO.from_dict(api.payload)
+
+        if go is not None:
+            """Hierdurch wird die id des zu überschreibenden (vgl. Update) Event-Objekts gesetzt.
+            Siehe Hinweise oben.
+            """
+            go.set_id(id)
+            adm.save_event(go)
+            return '', 200
+        else:
+            return '', 500
+
+
+"""
 IllnessEnd
 """
 
 
-@worktimeapp.route('/illness_end')
+@worktimeapp.route('/illness_ends')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class IllnessEndListOperations(Resource):
     @worktimeapp.marshal_list_with(illness_end)
@@ -1333,7 +1515,7 @@ class IllnessEndListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/illness_ends/<int:id>')
+@worktimeapp.route('/illness_end/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class IllnessEndOperations(Resource):
@@ -1388,7 +1570,7 @@ IllnessBegin
 """
 
 
-@worktimeapp.route('/illness_begin')
+@worktimeapp.route('/illness_begins')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class IllnessBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(illness_begin)
@@ -1420,7 +1602,7 @@ class IllnessBeginListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/illness_begins/<int:id>')
+@worktimeapp.route('/illness_begin/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class IllnessBeginOperations(Resource):
@@ -1475,7 +1657,7 @@ BreakBegin
 """
 
 
-@worktimeapp.route('/break_begin')
+@worktimeapp.route('/break_begins')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class BreakBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(break_begin)
@@ -1507,7 +1689,7 @@ class BreakBeginListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/break_begins/<int:id>')
+@worktimeapp.route('/break_begin/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class BreakBeginOperations(Resource):
@@ -1562,7 +1744,7 @@ BreakEnd
 """
 
 
-@worktimeapp.route('/break_end')
+@worktimeapp.route('/break_ends')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class BreakEndListOperations(Resource):
     @worktimeapp.marshal_list_with(break_end)
@@ -1594,7 +1776,7 @@ class BreakEndListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/break_ends/<int:id>')
+@worktimeapp.route('/break_end/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class BreakEndOperations(Resource):
@@ -1649,7 +1831,7 @@ ProjectWorkEnd
 """
 
 
-@worktimeapp.route('/project_work_end')
+@worktimeapp.route('/project_work_ends')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ProjectWorkEndListOperations(Resource):
     @worktimeapp.marshal_list_with(project_work_end)
@@ -1681,7 +1863,7 @@ class ProjectWorkEndListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/project_work_ends/<int:id>')
+@worktimeapp.route('/project_work_end/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ProjectWorkEndOperations(Resource):
@@ -1736,7 +1918,7 @@ ProjectWorkBegin
 """
 
 
-@worktimeapp.route('/project_work_begin')
+@worktimeapp.route('/project_work_begins')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ProjectWorkBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(project_work_begin)
@@ -1768,7 +1950,7 @@ class ProjectWorkBeginListOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/project_work_begins/<int:id>')
+@worktimeapp.route('/project_work_begin/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ProjectWorkBeginOperations(Resource):

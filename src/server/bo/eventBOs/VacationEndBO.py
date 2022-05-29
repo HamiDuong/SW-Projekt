@@ -21,6 +21,14 @@ class VacationEndBO(EventBO.EventBO):
     def get_type(self):
         return self._type
 
+    def __str__(self):
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
+
+        Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
+        des jeweiligen Events."""
+        return "VacationEndBO {}, {}, {}, {}".format(
+                                               self.get_id(), self.get_date_of_last_change(),
+                                               self.get_type(), self.get_time())
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in ein ComingBO()."""

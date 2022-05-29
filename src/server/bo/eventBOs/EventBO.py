@@ -9,18 +9,18 @@ class EventBO(bo.BusinessObject):
     def __init__(self):
         super().__init__()
         self._type = None
-        self._coming_ID = 0
-        self._going_ID = 0
-        self._vacation_begin_ID = 0
-        self._vacation_end_ID = 0
-        self._illness_begin_ID = 0
-        self._illness_end_ID = 0
-        self._project_work_begin_ID = 0
-        self._project_work_end_ID = 0
-        self._break_begin_ID = 0
-        self._break_end_ID = 0
-        self._flex_day_end_ID = 0
-        self._flex_day_start_ID = 0
+        self._coming_ID = None
+        self._going_ID = None
+        self._vacation_begin_ID = None
+        self._vacation_end_ID = None
+        self._illness_begin_ID = None
+        self._illness_end_ID = None
+        self._project_work_begin_ID = None
+        self._project_work_end_ID = None
+        self._break_begin_ID = None
+        self._break_end_ID = None
+        self._flex_day_end_ID = None
+        self._flex_day_start_ID = None
 
     def set_type(self, type):
         """Setzen des Typs des Ereignisses"""

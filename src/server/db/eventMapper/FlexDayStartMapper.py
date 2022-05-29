@@ -61,7 +61,7 @@ class FlexDayStartMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.flexdaystart WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdaystart WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()

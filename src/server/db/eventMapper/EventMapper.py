@@ -27,7 +27,8 @@ class EventMapper(Mapper):
 
         command = "INSERT INTO worktimeapp.event (id, date_of_last_change, type, coming_id, going_id, break_begin_id, \
                    break_end_id, illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
-                   vacation_begin_id, vacation_end_id ) VALUES (%s, %s, %s, %s, %s,%s, %s, %s,%s ,%s, %s, %s, %s)"
+                   vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id )  \
+                   VALUES (%s, %s, %s, %s, %s,%s, %s, %s,%s ,%s, %s, %s, %s, %s, %s)"
         data = (
             event.get_id(),
             event.get_date_of_last_change(),
@@ -41,7 +42,9 @@ class EventMapper(Mapper):
             event.get_project_work_begin_id(),
             event.get_project_work_end_id(),
             event.get_vacation_begin_id(),
-            event.get_vacation_end_id()
+            event.get_vacation_end_id(),
+            event.get_flex_day_start_id(),
+            event.get_flex_day_end_id()
 
         )
 
@@ -57,13 +60,13 @@ class EventMapper(Mapper):
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, type, coming_id, going_id, break_begin_id, break_end_id,\
                     illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
-                    vacation_begin_id, vacation_end_id FROM worktimeapp.event"
+                    vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id FROM worktimeapp.event"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, dateoflastange,  type, coming_id, going_id, break_begin_id,  break_end_id,
              illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
-             vacation_begin_id, vacation_end_id) in tuples:
+             vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id ) in tuples:
 
             event = EventBO()
             event.set_id(id)
@@ -73,7 +76,8 @@ class EventMapper(Mapper):
             event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
             event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
             event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
-            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id),
+            event.set_flex_day_start_id(flex_day_start_id), event.set_flex_day_end_id(flex_day_end_id)
             result.append(event)
 
         self._cnx.commit()
@@ -94,7 +98,7 @@ class EventMapper(Mapper):
         try:
             (id, date_of_last_change, type, coming_id, going_id, break_begin_id,  break_end_id,
              illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
-             vacation_begin_id, vacation_end_id) = tuples[0]
+             vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id ) = tuples[0]
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(date_of_last_change)
@@ -103,7 +107,8 @@ class EventMapper(Mapper):
             event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
             event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
             event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
-            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id),
+            event.set_flex_day_start_id(flex_day_start_id), event.set_flex_day_end_id(flex_day_end_id)
             result = event
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -121,14 +126,15 @@ class EventMapper(Mapper):
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, type, coming_id, going_id, break_begin_id, break_end_id,\
                     illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id, \
-                    vacation_begin_id, vacation_end_id FROM worktimeapp.event WHERE date={}".format(
+                    vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id \
+                    FROM worktimeapp.event WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, date_of_last_change, type, coming_id, going_id, break_begin_id,  break_end_id,
              illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
-             vacation_begin_id, vacation_end_id) in tuples:
+             vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id ) in tuples:
             event = EventBO()
             event.set_id(id)
             event.set_date_of_last_change(date_of_last_change)
@@ -137,7 +143,8 @@ class EventMapper(Mapper):
             event.set_break_begin_id(break_begin_id), event.set_break_end_id(break_end_id),
             event.set_illness_begin_id(illness_begin_id), event.set_illness_end_id(illness_end_id),
             event.set_project_work_begin_id(project_work_begin_id), event.set_project_work_end_id(project_work_end_id),
-            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id)
+            event.set_vacation_begin_id(vacation_begin_id), event.set_vacation_end_id(vacation_end_id),
+            event.set_flex_day_start_id(flex_day_start_id), event.set_flex_day_end_id(flex_day_end_id)
             result.append(event)
 
         self._cnx.commit()
@@ -166,7 +173,10 @@ class EventMapper(Mapper):
             event.get_project_work_begin_id(),
             event.get_project_work_end_id(),
             event.get_vacation_begin_id(),
-            event.get_vacation_end_id())
+            event.get_vacation_end_id(),
+            event.get_flex_day_start_id(),
+            event.get_flex_day_end_id())
+
         cursor.execute(command, data)
 
         self._cnx.commit()

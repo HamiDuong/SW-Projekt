@@ -61,7 +61,7 @@ class ComingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, date_of_last_change, date, type FROM worktimeapp.coming WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.coming WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
@@ -88,7 +88,7 @@ class ComingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date, date_of_last_change, date, type FROM worktimeapp.coming WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.coming WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()

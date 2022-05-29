@@ -67,9 +67,10 @@ class FlexDayEndMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             flex_day_end = FlexDayEndBO()
             flex_day_end.set_id(id)
+            flex_day_end.set_date_of_last_change(dateoflastchange)
             flex_day_end.set_time(date)
             flex_day_end.set_type(type)
             result = flex_day_end

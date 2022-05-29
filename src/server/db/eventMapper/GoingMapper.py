@@ -60,7 +60,7 @@ class GoingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM FROM worktimeapp.going WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
