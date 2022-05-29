@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `projectworkend`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `projectworkend` (
   `id` int NOT NULL,
-  `date_of_last_change` date NOT NULL,
+  `date_of_last_change` datetime NOT NULL,
   `date` datetime DEFAULT NULL,
   `type` varchar(45) DEFAULT 'projectworkend',
   UNIQUE KEY `id` (`id`)
@@ -37,7 +37,7 @@ CREATE TABLE `projectworkend` (
 
 LOCK TABLES `projectworkend` WRITE;
 /*!40000 ALTER TABLE `projectworkend` DISABLE KEYS */;
-INSERT INTO `projectworkend` VALUES (1,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(2,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(3,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(4,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(5,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(6,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(7,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(8,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(9,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(10,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(11,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(12,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(13,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(14,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(15,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(16,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(17,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(18,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(19,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(20,'2022-05-28','2022-05-06 20:05:00','projectworkend'),(21,'2022-05-28','2022-05-06 20:05:00','projectworkend');
+INSERT INTO `projectworkend` VALUES (1,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend'),(2,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend'),(3,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend'),(4,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend'),(5,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend'),(6,'2022-05-29 00:00:00','2022-05-17 18:34:00','projectworkend');
 /*!40000 ALTER TABLE `projectworkend` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-28 22:21:34
+-- Dump completed on 2022-05-29 10:55:36

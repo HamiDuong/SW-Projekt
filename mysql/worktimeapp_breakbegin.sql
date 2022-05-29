@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `breakbegin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `breakbegin` (
   `id` int NOT NULL,
-  `date_of_last_change` date NOT NULL,
+  `date_of_last_change` datetime NOT NULL,
   `date` datetime DEFAULT NULL,
   `type` varchar(45) DEFAULT 'breakbegin',
   UNIQUE KEY `id` (`id`)
@@ -37,6 +37,7 @@ CREATE TABLE `breakbegin` (
 
 LOCK TABLES `breakbegin` WRITE;
 /*!40000 ALTER TABLE `breakbegin` DISABLE KEYS */;
+INSERT INTO `breakbegin` VALUES (1,'2022-05-29 00:00:00','2022-05-17 18:34:00','breakbegin'),(2,'2022-05-29 00:00:00','2022-05-17 18:34:00','breakbegin'),(3,'2022-05-29 00:00:00','2022-05-17 18:34:00','breakbegin'),(4,'2022-05-29 00:00:00','2022-05-17 18:34:00','breakbegin');
 /*!40000 ALTER TABLE `breakbegin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-28 22:21:33
+-- Dump completed on 2022-05-29 10:55:38
