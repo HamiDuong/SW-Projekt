@@ -20,7 +20,7 @@ class VacationEndBO(EventBO.EventBO):
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in ein ComingBO()."""
-        obj = VacationEndBO
+        obj = VacationEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_time(dictionary["time"])
