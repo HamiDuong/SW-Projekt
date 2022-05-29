@@ -182,8 +182,8 @@ class Businesslogic():
         with GoingMapper() as mapper:
             mapper.insert(going)
         go_id = going.get_id()
-        self.create_event(type='going', going_id=go_id)
-        return going
+        ev = self.create_event(type='going', going_id=go_id)
+        return going, ev.get_id()
 
     # Methode um ein GoingBO mit bestimmter ID aus der Datenbank zu laden
     def get_going_by_id(self, number):
