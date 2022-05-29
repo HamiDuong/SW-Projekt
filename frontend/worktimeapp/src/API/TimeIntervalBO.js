@@ -1,7 +1,7 @@
 import BusinessObject from './BusinessObject';
 
 export default class TimeIntervalBO extends BusinessObject {
-    constructor(type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId){
+    constructor(type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId, flexDayId){
         super();
         this.type = type;
         this.breakId = breakId;
@@ -10,6 +10,7 @@ export default class TimeIntervalBO extends BusinessObject {
         this.projectWorkId = projectWorkId;
         this.vacationId = vacationId;
         this.workId = workId;
+        this.flexDayId = flexDayId;
     }
 
     setType(t){
@@ -21,51 +22,59 @@ export default class TimeIntervalBO extends BusinessObject {
     }
 
     setBreakId(id){
-        this.breakId = id
+        this.breakId = id;
     }
 
     getBreakId(){
-        return this.breakId
+        return this.breakId;
     }
 
     setIllnessId(id){
-        this.illnessId = id
+        this.illnessId = id;
     }
 
     getIllnessId(){
-        return this.illnessId
+        return this.illnessId;
     }
 
     setProjectDurationId(id){
-        this.projectDurationId = id
+        this.projectDurationId = id;
     }
 
     getProjectDurationId(){
-        return this.projectDurationId
+        return this.projectDurationId;
     }
 
     setProjectWorkId(id){
-        this.projectWorkId = id
+        this.projectWorkId = id;
     }
 
     getProjectWorkId(){
-        return this.projectWorkId
+        return this.projectWorkId;
     }
 
     setVacationId(id){
-        this.vacationId = id
+        this.vacationId = id;
     }
 
     getVacationId(){
-        return this.vacationId
+        return this.vacationId;
     }
 
     setWorkId(id){
-        this.workId = id
+        this.workId = id;
     }
 
     getWorkId(){
-        return this.workId
+        return this.workId;
+    }
+
+    setFlexDayId(id){
+        this.flexDayId = id;
+    }
+
+    getFlexDayId(){
+        return this.flexDayId;
     }
 
     static fromJSON(timeintervals){
