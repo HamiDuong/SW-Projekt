@@ -16,31 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `projectusers`
+-- Table structure for table `worktimeaccounts`
 --
 
-DROP TABLE IF EXISTS `projectusers`;
+DROP TABLE IF EXISTS `worktimeaccounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `projectusers` (
+CREATE TABLE `worktimeaccounts` (
   `id` int NOT NULL,
-  `dateOfLastChange` date DEFAULT NULL,
-  `projectId` int DEFAULT NULL,
-  `userId` int DEFAULT NULL,
-  `capacity` float DEFAULT NULL,
-  `currentCapacity` float DEFAULT NULL,
+  `dateOfLastChange` datetime NOT NULL,
+  `userId` int NOT NULL,
+  `contractTime` float NOT NULL,
+  `overTime` float NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `userID_idx` (`userId`),
+  CONSTRAINT `userID` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `projectusers`
+-- Dumping data for table `worktimeaccounts`
 --
 
-LOCK TABLES `projectusers` WRITE;
-/*!40000 ALTER TABLE `projectusers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectusers` ENABLE KEYS */;
+LOCK TABLES `worktimeaccounts` WRITE;
+/*!40000 ALTER TABLE `worktimeaccounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `worktimeaccounts` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-29 14:03:42
+-- Dump completed on 2022-05-29 14:03:41

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: localhost    Database: worktimeapp
+-- Host: 127.0.0.1    Database: worktimeapp
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,10 +29,20 @@ CREATE TABLE `activities` (
   `capacity` float DEFAULT NULL,
   `projectId` int DEFAULT NULL,
   `duration` float DEFAULT NULL,
+  `currentCapacity` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activities`
+--
+
+LOCK TABLES `activities` WRITE;
+/*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -43,4 +53,4 @@ CREATE TABLE `activities` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-18 10:55:12
+-- Dump completed on 2022-05-29 14:03:42
