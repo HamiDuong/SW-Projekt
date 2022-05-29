@@ -17,10 +17,18 @@ import {
     TextField,
     InputLabel,
     MenuItem,
-    Select
+    Select,
+    Checkbox
 } from '@mui/material';
 
 const header = [
+    {
+        id: '',
+        name: '',
+        numeric: false,
+        disablePadding: false,
+        label: ''
+    },
     {
         id: 'bookingtype',
         name: 'Booking Type',
@@ -391,7 +399,14 @@ class MyBookings extends Component {
                                             {/* <TableCell>{row.type}</TableCell>
                                             <TableCell>{row.start}</TableCell>
                                             <TableCell>{row.end}</TableCell> */}
+                                            <TableCell
+                                                padding="checkbox">
+                                                    <Checkbox
+                                                        color="primary"
+                                                    >                                                        
+                                                    </Checkbox>
 
+                                            </TableCell>
                                             <TableCell>{row.bookingtype}</TableCell>
                                             <TableCell>{row.type}</TableCell>
                                             <TableCell>{row.date}</TableCell>
