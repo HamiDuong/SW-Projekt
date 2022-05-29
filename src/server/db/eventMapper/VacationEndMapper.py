@@ -22,11 +22,12 @@ class VacationEndMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 endnen können."""
                 vacation_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.VacationEnd (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.vacationend (id, date_of_last_change, date, type) VALUES (%s, %s,%s, %s)"
         data = (
             vacation_end.get_id(),
             vacation_end.get_date_of_last_change(),
             vacation_end.get_time(),
+            vacation_end.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,15 +40,16 @@ class VacationEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.VacationEnd"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
             vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
+            vacation_end.set_type(type)
             result.append(vacation_end)
 
         self._cnx.commit()
@@ -59,18 +61,20 @@ class VacationEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationend WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
             vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
+            vacation_end.set_type(type)
             result = vacation_end
+
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -85,16 +89,17 @@ class VacationEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.vacationend WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             vacation_end = VacationEndBO()
             vacation_end.set_id(id)
             vacation_end.set_date_of_last_change(dateoflastchange)
             vacation_end.set_time(date)
+            vacation_end.set_type(type)
             result.append(vacation_end)
 
         self._cnx.commit()
@@ -108,7 +113,7 @@ class VacationEndMapper(Mapper):
         cursor = self._cnx.cursor()
         vacation_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.VacationEnd " + \
+        command = "UPDATE worktimeapp.vacationend" + \
             "SET date=%s WHERE id=%s"
         data = (vacation_end.get_time(),
                 vacation_end.get_id())
@@ -122,7 +127,7 @@ class VacationEndMapper(Mapper):
     def delete(self, vacation_end):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.VacationEnd WHERE id={}".format(
+        command = "DELETE FROM worktimeapp.vacationend WHERE id={}".format(
             vacation_end.get_id())
         cursor.execute(command)
 

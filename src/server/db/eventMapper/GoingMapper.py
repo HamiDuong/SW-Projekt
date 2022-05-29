@@ -39,15 +39,16 @@ class GoingMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             going = GoingBO()
             going.set_id(id)
             going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
+            going.set_type(type)
             result.append(going)
 
         self._cnx.commit()
@@ -59,18 +60,20 @@ class GoingMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             going = GoingBO()
             going.set_id(id)
             going.set_date_of_last_change(dateoflastchange)
             going.set_time(date)
+            going.set_type(type)
             result = going
+
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -85,16 +88,17 @@ class GoingMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.going WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchage, date) in tuples:
+        for (id, dateoflastchage, date, type) in tuples:
             going = GoingBO()
             going.set_id(id)
             going.set_date_of_last_change(dateoflastchage)
             going.set_time(date)
+            going.set_type(type)
             result.append(going)
 
         self._cnx.commit()

@@ -98,7 +98,7 @@ class Businesslogic():
 
     def create_event(self, type, coming_id, going_id, break_begin_id,  break_end_id,
                      illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
-                     vacation_begin_id, vacation_end_id):
+                     vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id):
         event = EventBO()
         event.set_type(type),
         event.set_coming_id(coming_id),
@@ -111,6 +111,8 @@ class Businesslogic():
         event.set_project_work_end_id(project_work_end_id),
         event.set_vacation_begin_id(vacation_begin_id),
         event.set_vacation_end_id(vacation_end_id)
+        event.set_flex_day_start_id(flex_day_start_id)
+        event.set_flex_day_end_id(flex_day_end_id)
         with EventMapper() as mapper:
             return mapper.insert(event)
 
@@ -123,6 +125,14 @@ class Businesslogic():
     def get_all_events(self):
         with EventMapper() as mapper:
             return mapper.find_all()
+
+    def get_all_events_by_type(self, type):
+        events = self.get_all_events()
+        events_of_type = []
+        for elem in events:
+            if elem.get_type == type:
+                events_of_type.append(elem)
+        return events_of_type
 
     # Methode um ein EventBOs zu updaten
     def save_event(self, event):
@@ -142,6 +152,7 @@ class Businesslogic():
             return mapper.insert(coming)
 
     # Methode um ein ComingBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_coming_by_id(self, number):
         with ComingMapper() as mapper:
             return mapper.find_by_key(number)
@@ -196,6 +207,7 @@ class Businesslogic():
             return mapper.insert(project_work_begin)
 
     # Methode um ein ProjectWorkBeginBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_project_work_begin_by_id(self, number):
         with ProjectWorkBeginMapper() as mapper:
             return mapper.find_by_key(number)
@@ -224,6 +236,7 @@ class Businesslogic():
             return mapper.insert(project_work_end)
 
     # Methode um ein ProjectWorkEndBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_project_work_end_by_id(self, number):
         with ProjectWorkEndMapper() as mapper:
             return mapper.find_by_key(number)
@@ -252,6 +265,7 @@ class Businesslogic():
             return mapper.insert(vacation_begin)
 
     # Methode um ein VacationBeginBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_vacation_begin_by_id(self, number):
         with VacationBeginMapper() as mapper:
             return mapper.find_by_key(number)
@@ -279,6 +293,7 @@ class Businesslogic():
             return mapper.insert(vacation_end)
 
     # Methode um ein VacationEndBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_vacation_end_by_id(self, number):
         with VacationEndMapper() as mapper:
             return mapper.find_by_key(number)
@@ -306,6 +321,7 @@ class Businesslogic():
             return mapper.insert(illness_begin)
 
     # Methode um ein IllnessBeginBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_illness_begin_by_id(self, number):
         with IllnessBeginMapper() as mapper:
             return mapper.find_by_key(number)
@@ -333,6 +349,7 @@ class Businesslogic():
             return mapper.insert(illness_end)
 
     # Methode um ein IllnessEndBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_illness_end_by_id(self, number):
         with IllnessEndMapper() as mapper:
             return mapper.find_by_key(number)
@@ -362,6 +379,7 @@ class Businesslogic():
             return mapper.insert(flex_day_start)
 
     # Methode um ein FlexDayStartBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_flex_day_start_by_id(self, number):
         with FlexDayStartMapper() as mapper:
             return mapper.find_by_key(number)
@@ -389,6 +407,7 @@ class Businesslogic():
             return mapper.insert(flex_day_end)
 
     # Methode um ein FlexDayEndBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_flex_day_end_by_id(self, number):
         with FlexDayEndMapper() as mapper:
             return mapper.find_by_key(number)
@@ -416,6 +435,7 @@ class Businesslogic():
             return mapper.insert(break_begin)
 
     # Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_break_begin_by_id(self, number):
         with BreakBeginMapper() as mapper:
             return mapper.find_by_key(number)
@@ -446,6 +466,7 @@ class Businesslogic():
             return mapper.insert(break_end)
 
     # Methode um ein BreakEndBO mit bestimmter ID aus der Datenbank zu laden
+
     def get_break_end_by_id(self, number):
         with BreakEndMapper() as mapper:
             return mapper.find_by_key(number)
@@ -1254,3 +1275,47 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
+
+
+#adm = Businesslogic()
+'''coming = adm.get_all_comings()
+going = adm.get_all_goings()
+projectworkstart = adm.get_all_project_work_begins()
+projectworkend = adm.get_all_project_work_ends()
+vacationbegin = adm.get_all_vacation_begins()
+vacationends = adm.get_all_vacation_ends()
+illnessbegin = adm.get_all_vacation_begins()
+illnessend = adm.get_all_vacation_ends()
+flexdaystart = adm.get_all_flex_day_starts()
+flexdayend = adm.get_all_flex_day_end()
+breakstart = adm.get_all_break_begins()
+breakend = adm.get_all_break_ends()
+events = adm.get_all_events()
+
+print(len(events))
+print(len(coming))
+print(len(going))
+print(len(breakstart))
+print(len(breakend))
+print(len(flexdayend))
+print(len(flexdaystart))
+print(len(illnessbegin))
+print(len(illnessend))
+print(len(vacationbegin))
+print(len(vacationends))
+print(len(projectworkend))
+print(len(projectworkstart))'''
+
+'''a = adm.get_coming_by_id(1)
+b = adm.get_break_end_by_id(1)
+c = adm.get_break_begin_by_id(1)
+d = adm.get_illness_begin_by_id(1)
+e = adm.get_illness_end_by_id(1)
+f = adm.get_vacation_begin_by_id(1)
+g = adm.get_vacation_end_by_id(1)
+h = adm.get_project_work_begin_by_id(1)
+i = adm.get_project_work_end_by_id(1)
+j = adm.get_going_by_id(1)
+k = adm.get_flex_day_end_by_id(1)
+l = adm.get_flex_day_start_by_id(1)
+print(a,b,c,d,e,f,g,h,i,j)'''

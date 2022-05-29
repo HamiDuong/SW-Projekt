@@ -22,11 +22,12 @@ class BreakBeginMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
                 break_begin.set_id(1)
 
-        command = "INSERT INTO worktimeapp.breakbegin (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.breakbegin (id, date_of_last_change, date, type) VALUES (%s, %s,%s,%s)"
         data = (
             break_begin.get_id(),
             break_begin.get_date_of_last_change(),
             break_begin.get_time(),
+            break_begin.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,15 +40,16 @@ class BreakBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakbegin"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             break_begin = BreakBeginBO()
             break_begin.set_id(id)
             break_begin.set_date_of_last_change(dateoflastchange)
             break_begin.set_time(date)
+            break_begin.set_type(type)
             result.append(break_begin)
 
         self._cnx.commit()
@@ -59,17 +61,18 @@ class BreakBeginMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakbegin WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             break_begin = BreakBeginBO()
             break_begin.set_id(id)
             break_begin.set_date_of_last_change(dateoflastchange)
             break_begin.set_time(date)
+            break_begin.set_type(type)
             result = break_begin
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
@@ -85,16 +88,17 @@ class BreakBeginMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.breakbegin WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             break_begin = BreakBeginBO()
             break_begin.set_id(id)
             break_begin.set_date_of_last_change(dateoflastchange)
             break_begin.set_time(date)
+            break_begin.set_type(type)
             result.appbegin(break_begin)
 
         self._cnx.commit()

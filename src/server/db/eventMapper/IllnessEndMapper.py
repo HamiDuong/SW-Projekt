@@ -22,11 +22,12 @@ class IllnessEndMapper(Mapper):
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 endnen können."""
                 illness_end.set_id(1)
 
-        command = "INSERT INTO worktimeapp.illnessend (id, date_of_last_change, date) VALUES (%s, %s,%s)"
+        command = "INSERT INTO worktimeapp.illnessend (id, date_of_last_change, date, type) VALUES (%s, %s,%s, %s)"
         data = (
             illness_end.get_id(),
             illness_end.get_date_of_last_change(),
             illness_end.get_time(),
+            illness_end.get_type()
         )
 
         cursor.execute(command, data)
@@ -39,15 +40,16 @@ class IllnessEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend"
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
             illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
+            illness_end.set_type(type)
             result.append(illness_end)
 
         self._cnx.commit()
@@ -59,18 +61,20 @@ class IllnessEndMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend WHERE id={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend WHERE id={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateoflastchange, date) = tuples[0]
+            (id, dateoflastchange, date, type) = tuples[0]
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
             illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
+            illness_end.set_type(type)
             result = illness_end
+
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -85,16 +89,17 @@ class IllnessEndMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date FROM worktimeapp.illnessend WHERE date={}".format(
+        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend WHERE date={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateoflastchange, date) in tuples:
+        for (id, dateoflastchange, date, type) in tuples:
             illness_end = IllnessEndBO()
             illness_end.set_id(id)
             illness_end.set_date_of_last_change(dateoflastchange)
             illness_end.set_time(date)
+            illness_end.set_type(type)
             result.append(illness_end)
 
         self._cnx.commit()
