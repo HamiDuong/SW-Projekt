@@ -67,10 +67,13 @@ from server.bo.eventBOs.IllnessBeginBO import IllnessBeginBO
 from server.bo.eventBOs.FlexDayStart import FlexDayStartBO
 from server.bo.eventBOs.FlexDayEndBO import FlexDayEndBO
 from server.Businesslogic import Businesslogic
-from server.bo import ProjectBO
-from server.bo import ProjectUserBO
-from server.bo import ActivityBO
+from server.bo.ProjectBO import ProjectBO
+from server.bo.ProjectUserBO import ProjectUserBO
+from server.bo.ActivityBO import ActivityBO
 #from SecurityDecorator import secured
+
+from server.bo.UserBO import UserBO
+from server.bo.WorkTimeAccountBO import WorkTimeAccountBO
 
 from server.bo.timeinterval.BreakBO import BreakBO
 from server.bo.timeinterval.IllnessBO import IllnessBO
@@ -130,12 +133,14 @@ user = api.inherit('User', bo, {
     'first_name': fields.String(attribute='_first_name', description='Vorname eines Benutzers'),
     'last_name': fields.String(attribute='_last_name', description='Nachname eines Benutzers'),
     'mail_adress': fields.String(attribute='_mail_adress', description='E-Mail-Adresse eines Benutzers'),
-    'user_name': fields.String(attribute='_user_name', description='User Name eines Benutzers')
+    'google_user_id': fields.String(attribute='_google_user_id', description='Google User Id')
 })
 
 """WorkTimeAccount"""
-Worktimeaccount = api.inherit('Object', bo, {
-    'user_id': fields.Integer(attribute='_user_id', description='User ID eines Benutzers')
+worktimeaccount = api.inherit('Object', bo, {
+    'user_id': fields.Integer(attribute='_user_id', description='User ID eines Benutzers'),
+    'contract_time': fields.Float(attribute='_contract_time', description='Vertragszeit des Benutzers'),
+    'overtime':fields.Float(attribute='_overtime', description='Überstunden des Benutzers')
 })
 
 '''Project'''
@@ -307,10 +312,13 @@ projectwork = api.inherit('ProjectWork', bo, {
 
 # Tatsächliche Funktionen beginnen ab hier.
 
+"""
+User Methoden
+"""
 
 @worktimeapp.route('/user')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-class UserListOperations(Resource):
+class UserOperations(Resource):
     @worktimeapp.marshal_list_with(user)
     # #@secured
     def get(self):
@@ -333,8 +341,7 @@ class UserListOperations(Resource):
         liegt es an der Businesslogic (Businesslogik), eine korrekte ID
         zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
         """
-        adm = user()
-
+        adm = Businesslogic()
         proposal = UserBO.from_dict(api.payload)
 
         """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
@@ -343,38 +350,41 @@ class UserListOperations(Resource):
             eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
             wird auch dem Client zurückgegeben. 
             """
-            c = adm.create_user(proposal.get_first_name(), proposal.get_last_name(
-            ), proposal.get_mail_adress(), proposal.get_user_name())
+            c = adm.create_user(
+                proposal.get_first_name(),
+                proposal.get_last_name(), 
+                proposal.get_mail_adress(), 
+                proposal.get_google_user_id())
             return c, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
 
 
-@worktimeapp.route('/users/<string:mail_adress>')
+@worktimeapp.route('/users/<int: id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('mail_adress', 'Die E-Mail-Adresse eines Benutzers')
-class UserOperations(Resource):
+@worktimeapp.param('id', 'Id des Objekts')
+class UserWithIdOperations(Resource):
     @worktimeapp.marshal_with(user)
-    # #@secured
+    #@secured
     def get(self, id):
         """Auslesen eines bestimmten User-Objekts.
 
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_mail_adress(id)
-        return cust
+        user = adm.get_user_by_id(id)
+        return user
 
-    # #@secured
+    #@secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_id(id)
-        adm.delete_user(cust)
+        user = adm.get_user_by_id(id)
+        adm.delete_user(user)
         return '', 200
 
     @worktimeapp.marshal_with(user)
@@ -388,55 +398,55 @@ class UserOperations(Resource):
         User-Objekts.
         """
         adm = Businesslogic()
-        c = UserBO.from_dict(api.payload)
+        user = UserBO.from_dict(api.payload)
 
-        if c is not None:
+        if user is not None:
             """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
             Siehe Hinweise oben.
             """
-            c.set_id(id)
-            adm.save_user(c)
+            user.set_id(id)
+            adm.save_user(user)
             return '', 200
         else:
             return '', 500
 
 
-@worktimeapp.route('/users-by-name/<string:user_name>')
+# @worktimeapp.route('/users-by-name/<string:user_name>')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('user_name', 'Der User Name des Benutzers')
+# class UsersByNameOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, user_name):
+#         """ Auslesen von User-Objekten, die durch den User Name bestimmt werden.
+
+#         Die auszulesenden Objekte werden durch ```user_name``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_user_name(user_name)
+#         return cust
+
+
+# @worktimeapp.route('/users-by-name/<string:last_name>')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('last_name', 'Der Nachname des Benutzers')
+# class UsersByNameOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, last_name):
+#         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
+
+#         Die auszulesenden Objekte werden durch ```last_name``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_last_name(last_name)
+#         return cust
+
+
+@worktimeapp.route('/usermail/<string:mail_adress>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('user_name', 'Der User Name des Benutzers')
-class UsersByNameOperations(Resource):
-    @worktimeapp.marshal_with(user)
-    # #@secured
-    def get(self, user_name):
-        """ Auslesen von User-Objekten, die durch den User Name bestimmt werden.
-
-        Die auszulesenden Objekte werden durch ```user_name``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        cust = adm.get_user_by_user_name(user_name)
-        return cust
-
-
-@worktimeapp.route('/users-by-name/<string:last_name>')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('last_name', 'Der Nachname des Benutzers')
-class UsersByNameOperations(Resource):
-    @worktimeapp.marshal_with(user)
-    # #@secured
-    def get(self, last_name):
-        """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
-
-        Die auszulesenden Objekte werden durch ```last_name``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        cust = adm.get_user_by_last_name(last_name)
-        return cust
-
-
-@worktimeapp.route('/users/<string:mail_adress>')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
-class UserRelatedAccountOperations(Resource):
+@worktimeapp.param('String', 'Die E-Mail-Adresse eines Benutzers')
+class UserWithEmailOperations(Resource):
     @worktimeapp.marshal_with(user)
     # #@secured
     def get(self, mail_adress):
@@ -445,30 +455,180 @@ class UserRelatedAccountOperations(Resource):
         Die auszulesenden Objekte werden durch ```mail_adress``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        usr = adm.get_user_by_mail_adress(mail_adress)
-        return usr
+        user = adm.get_user_by_mail_adress(mail_adress)
+        return user
 
 
-@worktimeapp.route('/users/<string:user_name>')
+# @worktimeapp.route('/users/<string:user_name>')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
+# class UserRelatedAccountOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, user_name):
+#         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
+
+#         Die auszulesenden Objekte werden durch ```user_name``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_user_name(user_name)
+#         return cust
+
+@worktimeapp.route('/usergoogle/<string:google_user_id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
-class UserRelatedAccountOperations(Resource):
+@worktimeapp.param('google_user_id', 'Google Id eines Benutzers')
+class UserWithGoogleOperations(Resource):
     @worktimeapp.marshal_with(user)
     # #@secured
-    def get(self, user_name):
+    def get(self, googleId):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
         Die auszulesenden Objekte werden durch ```user_name``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_user_name(user_name)
-        return cust
+        user = adm.get_user_by_google_user_id(googleId)
+        return user
+
+# @worktimeapp.route('/projects')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# class UserListOperations(Resource):
+#     @worktimeapp.marshal_list_with(user)
+#     # #@secured
+#     def get(self):
+#         """Auslesen aller User-Objekte.
+
+#         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+#         adm = Businesslogic()
+#         users = adm.get_all_users()
+#         return users
+
+#     @worktimeapp.marshal_with(user, code=200)
+#     @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
+#     # #@secured
+#     def post(self):
+#         """Anlegen eines neuen User-Objekts.
+
+#         **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
+#         So ist zum Beispiel die Vergabe der ID nicht Aufgabe des Clients.
+#         Selbst wenn der Client eine ID in dem Proposal vergeben sollte, so
+#         liegt es an der Businesslogic (Businesslogik), eine korrekte ID
+#         zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
+#         """
+#         adm = Businesslogic()
+
+#         proposal = user.from_dict(api.payload)
+
+#         """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
+#         if proposal is not None:
+#             """ Wir verwenden lediglich Vor- und Nachnamen des Proposals für die Erzeugung
+#             eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
+#             wird auch dem Client zurückgegeben. 
+#             """
+#             c = adm.create_user(proposal.get_first_name(),
+#                                 proposal.get_last_name())
+#             return c, 200
+#         else:
+#             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
+#             return '', 500
 
 
-@worktimeapp.route('/WorkTimeAccount')
+# @worktimeapp.route('/users/<int:id>')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('id', 'Die ID des User-Objekts')
+# class UserOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, id):
+#         """Auslesen eines bestimmten User-Objekts.
+
+#         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_id(id)
+#         return cust
+
+#     # #@secured
+#     def delete(self, id):
+#         """Löschen eines bestimmten User-Objekts.
+
+#         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_id(id)
+#         adm.delete_user(cust)
+#         return '', 200
+
+#     @worktimeapp.marshal_with(user)
+#     @worktimeapp.expect(user, validate=True)
+#     # #@secured
+#     def put(self, id):
+#         """Update eines bestimmten User-Objekts.
+
+#         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
+#         verwendet wird. Dieser Parameter überschreibt das ID-Attribut des im Payload der Anfrage übermittelten
+#         User-Objekts.
+#         """
+#         adm = Businesslogic()
+#         c = user.from_dict(api.payload)
+
+#         if c is not None:
+#             """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
+#             Siehe Hinweise oben.
+#             """
+#             c.set_id(id)
+#             adm.save_user(c)
+#             return '', 200
+#         else:
+#             return '', 500
+
+
+# @worktimeapp.route('/users-by-name/<string:lastname>')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('lastname', 'Der Nachname des Kunden')
+# class UsersByNameOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, lastname):
+#         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
+
+#         Die auszulesenden Objekte werden durch ```lastname``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         cust = adm.get_user_by_name(lastname)
+#         return cust
+
+
+# @worktimeapp.route('/users/<int:id>/accounts')
+# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+# @worktimeapp.param('id', 'Die ID des User-Objekts')
+# class UserRelatedAccountOperations(Resource):
+#     @worktimeapp.marshal_with(user)
+#     # #@secured
+#     def get(self, id):
+#         """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
+
+#         Das User-Objekt dessen Accounts wir lesen möchten, wird durch die ```id``` in dem URI bestimmt.
+#         """
+#         adm = Businesslogic()
+#         # Zunächst benötigen wir den durch id gegebenen User.
+#         cust = adm.get_user_by_id(id)
+
+#         # Haben wir eine brauchbare Referenz auf ein User-Objekt bekommen?
+#         if cust is not None:
+#             # Jetzt erst lesen wir die Konten des User aus.
+#             account_list = adm.get_accounts_of_user(cust)
+#             return account_list
+#         else:
+#             return "User not found", 500
+
+"""
+Worktimeaccount
+"""
+
+@worktimeapp.route('/worktimeaccount')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-class WorkTimeAccountListOperations(Resource):
-    @worktimeapp.marshal_list_with(Worktimeaccount)
+class WorkTimeAccountOperations(Resource):
+    @worktimeapp.marshal_list_with(worktimeaccount)
     # #@secured
     def get(self):
         """Auslesen aller WorkTimeAccount-Objekte.
@@ -478,9 +638,9 @@ class WorkTimeAccountListOperations(Resource):
         worktimeaccounts = adm.get_all_worktimeaccounts()
         return worktimeaccounts
 
-    @worktimeapp.marshal_with(Worktimeaccount, code=200)
+    @worktimeapp.marshal_with(worktimeaccount, code=200)
     # Wir erwarten ein Worktimeaccount-Objekt von Client-Seite.
-    @worktimeapp.expect(Worktimeaccount)
+    @worktimeapp.expect(worktimeaccount)
     # #@secured
     def post(self):
         """Anlegen eines neuen Worktimeaccount-Objekts.
@@ -491,7 +651,7 @@ class WorkTimeAccountListOperations(Resource):
         liegt es an der Businesslogic (Businesslogik), eine korrekte ID
         zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
         """
-        adm = Worktimeaccount()
+        adm = Businesslogic()
 
         proposal = WorkTimeAccountBO.from_dict(api.payload)
 
@@ -501,100 +661,46 @@ class WorkTimeAccountListOperations(Resource):
             eines Worktimeaccount-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
             wird auch dem Client zurückgegeben. 
             """
-            c = adm.create_Worktimeaccount(proposal.get_user_id(), )
+            c = adm.create_worktimeaccount(
+                proposal.get_user_id(),
+                proposal.get_contract_time(),
+                proposal.get_overtime()
+            )
             return c, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
 
 
-@worktimeapp.route('/worktimeaccounts/<int:user_id>')
+@worktimeapp.route('/worktimeaccount/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('user_id', 'Die User-ID eines Benutzers')
-class WorktimeaccountRelatedAccountOperations(Resource):
-    @worktimeapp.marshal_with(Worktimeaccount)
+@worktimeapp.param('id', 'Id des Accounts')
+class WorktimeaccountWithIdOperations(Resource):
+    @worktimeapp.marshal_with(worktimeaccount)
     # #@secured
-    def get(self, user_id):
+    def get(self, id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
         Die auszulesenden Objekte werden durch ```user_id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_user_name(user_id)
-        return cust
-
-
-@worktimeapp.route('/projects')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-class UserListOperations(Resource):
-    @worktimeapp.marshal_list_with(user)
-    # #@secured
-    def get(self):
-        """Auslesen aller User-Objekte.
-
-        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
-        adm = Businesslogic()
-        users = adm.get_all_users()
-        return users
-
-    @worktimeapp.marshal_with(user, code=200)
-    @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-    # #@secured
-    def post(self):
-        """Anlegen eines neuen User-Objekts.
-
-        **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
-        So ist zum Beispiel die Vergabe der ID nicht Aufgabe des Clients.
-        Selbst wenn der Client eine ID in dem Proposal vergeben sollte, so
-        liegt es an der Businesslogic (Businesslogik), eine korrekte ID
-        zu vergeben. *Das korrigierte Objekt wird schließlich zurückgegeben.*
-        """
-        adm = Businesslogic()
-
-        proposal = user.from_dict(api.payload)
-
-        """RATSCHLAG: Prüfen Sie stets die Referenzen auf valide Werte, bevor Sie diese verwenden!"""
-        if proposal is not None:
-            """ Wir verwenden lediglich Vor- und Nachnamen des Proposals für die Erzeugung
-            eines User-Objekts. Das serverseitig erzeugte Objekt ist das maßgebliche und 
-            wird auch dem Client zurückgegeben. 
-            """
-            c = adm.create_user(proposal.get_first_name(),
-                                proposal.get_last_name())
-            return c, 200
-        else:
-            # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
-            return '', 500
-
-
-@worktimeapp.route('/users/<int:id>')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('id', 'Die ID des User-Objekts')
-class UserOperations(Resource):
-    @worktimeapp.marshal_with(user)
-    # #@secured
-    def get(self, id):
-        """Auslesen eines bestimmten User-Objekts.
-
-        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        cust = adm.get_user_by_id(id)
-        return cust
-
-    # #@secured
+        worktimeaccount = adm.get_worktimeaccount_by_id(id)
+        return worktimeaccount
+    
+    @worktimeapp.marshal_with(worktimeaccount)
+    #@secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        cust = adm.get_user_by_id(id)
-        adm.delete_user(cust)
+        user = adm.get_worktimeaccount_by_id(id)
+        adm.delete_worktimeaccount(user)
         return '', 200
 
-    @worktimeapp.marshal_with(user)
-    @worktimeapp.expect(user, validate=True)
+    @worktimeapp.marshal_with(worktimeaccount)
+    @worktimeapp.expect(worktimeaccount, validate=True)
     # #@secured
     def put(self, id):
         """Update eines bestimmten User-Objekts.
@@ -604,61 +710,36 @@ class UserOperations(Resource):
         User-Objekts.
         """
         adm = Businesslogic()
-        c = user.from_dict(api.payload)
+        user = UserBO.from_dict(api.payload)
 
-        if c is not None:
+        if user is not None:
             """Hierdurch wird die id des zu überschreibenden (vgl. Update) User-Objekts gesetzt.
             Siehe Hinweise oben.
             """
-            c.set_id(id)
-            adm.save_user(c)
+            user.set_id(id)
+            adm.save_worktimeaccount(user)
             return '', 200
         else:
             return '', 500
 
-
-@worktimeapp.route('/users-by-name/<string:lastname>')
+@worktimeapp.route('/worktimeaccountuser/<int:user_id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('lastname', 'Der Nachname des Kunden')
-class UsersByNameOperations(Resource):
-    @worktimeapp.marshal_with(user)
-    # #@secured
-    def get(self, lastname):
-        """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
-
-        Die auszulesenden Objekte werden durch ```lastname``` in dem URI bestimmt.
-        """
-        adm = Businesslogic()
-        cust = adm.get_user_by_name(lastname)
-        return cust
-
-
-@worktimeapp.route('/users/<int:id>/accounts')
-@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-@worktimeapp.param('id', 'Die ID des User-Objekts')
-class UserRelatedAccountOperations(Resource):
-    @worktimeapp.marshal_with(user)
+@worktimeapp.param('user_id', 'User Id des Accounts')
+class WorktimeaccountWithUserIdOperations(Resource):
+    @worktimeapp.marshal_with(worktimeaccount)
     # #@secured
     def get(self, id):
-        """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
+        """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
-        Das User-Objekt dessen Accounts wir lesen möchten, wird durch die ```id``` in dem URI bestimmt.
+        Die auszulesenden Objekte werden durch ```user_id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        # Zunächst benötigen wir den durch id gegebenen User.
-        cust = adm.get_user_by_id(id)
+        worktimeaccount = adm.get_worktimeaccount_by_user_id(id)
+        return worktimeaccount
 
-        # Haben wir eine brauchbare Referenz auf ein User-Objekt bekommen?
-        if cust is not None:
-            # Jetzt erst lesen wir die Konten des User aus.
-            account_list = adm.get_accounts_of_user(cust)
-            return account_list
-        else:
-            return "User not found", 500
-
-# Project
-
-
+"""
+Project
+"""
 @worktimeapp.route('/projects')
 class ProjectOperations(Resource):
     @worktimeapp.marshal_with(project)
