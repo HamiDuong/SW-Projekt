@@ -148,12 +148,8 @@ class Businesslogic():
         coming = ComingBO()
         coming.set_time(time)
         with ComingMapper() as mapper:
-            mapper.insert(coming)
-        co_id = coming.get_id()
-        self.create_event(type='coming', coming_id=co_id)
-        return coming
-
-
+            return mapper.insert(coming)
+        
     # Methode um ein ComingBO mit bestimmter ID aus der Datenbank zu laden
 
     def get_coming_by_id(self, number):
@@ -180,10 +176,7 @@ class Businesslogic():
         going = GoingBO()
         going.set_time(time)
         with GoingMapper() as mapper:
-            mapper.insert(going)
-        go_id = going.get_id()
-        ev = self.create_event(type='going', going_id=go_id)
-        return going, ev.get_id()
+            return mapper.insert(going)
 
     # Methode um ein GoingBO mit bestimmter ID aus der Datenbank zu laden
     def get_going_by_id(self, number):
@@ -210,10 +203,8 @@ class Businesslogic():
         project_work_begin = ProjectWorkBeginBO()
         project_work_begin.set_time(time)
         with ProjectWorkBeginMapper() as mapper:
-            mapper.insert(project_work_begin)
-        prjwrk = project_work_begin.get_id()
-        self.create_event(type='projectworkbegin', project_work_begin_id=prjwrk)
-        return project_work_begin
+            return mapper.insert(project_work_begin)
+     
 
     # Methode um ein ProjectWorkBeginBO mit bestimmter ID aus der Datenbank zu laden
     def get_project_work_begin_by_id(self, number):
@@ -272,10 +263,8 @@ class Businesslogic():
         vacation_begin = VacationBeginBO()
         vacation_begin.set_time(time)
         with VacationBeginMapper() as mapper:
-            mapper.insert(vacation_begin)
-        vac_begin = vacation_begin.get_id()
-        self.create_event(type='vacationbegin', vacation_begin_id=vac_begin)
-        return vacation_begin
+            return mapper.insert(vacation_begin)
+        
 
     # Methode um ein VacationBeginBO mit bestimmter ID aus der Datenbank zu laden
     def get_vacation_begin_by_id(self, number):
@@ -302,10 +291,8 @@ class Businesslogic():
         vacation_end = VacationEndBO()
         vacation_end.set_time(time)
         with VacationEndMapper() as mapper:
-            mapper.insert(vacation_end)
-        vac_end = vacation_end.get_id()
-        self.create_event(type='vacationend', vacation_begin_id=vac_end)
-        return vacation_end
+            return mapper.insert(vacation_end)
+        
 
     # Methode um ein VacationEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_vacation_end_by_id(self, number):
@@ -332,10 +319,8 @@ class Businesslogic():
         illness_begin = IllnessBeginBO()
         illness_begin.set_time(time)
         with IllnessBeginMapper() as mapper:
-            mapper.insert(illness_begin)
-        ill_begin = illness_begin.get_id()
-        self.create_event(type='illnessbegin', illness_begin_id=ill_begin)
-        return illness_begin
+            return mapper.insert(illness_begin)
+        
 
     # Methode um ein IllnessBeginBO mit bestimmter ID aus der Datenbank zu laden
     def get_illness_begin_by_id(self, number):
@@ -362,10 +347,8 @@ class Businesslogic():
         illness_end = IllnessEndBO()
         illness_end.set_time(time)
         with IllnessEndMapper() as mapper:
-            mapper.insert(illness_end)
-        ill_end = illness_end.get_id()
-        self.create_event(type='illnessend', illness_end_id=ill_end)
-        return illness_end
+            return mapper.insert(illness_end)
+        
 
     # Methode um ein IllnessEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_illness_end_by_id(self, number):
@@ -394,10 +377,8 @@ class Businesslogic():
         flex_day_start = FlexDayStartBO()
         flex_day_start.set_time(time)
         with FlexDayStartMapper() as mapper:
-            mapper.insert(flex_day_start)
-        flex_begin = flex_day_start.get_id()
-        self.create_event(type='flexdaystart', flex_day_start_id = flex_begin)
-        return flex_day_start
+            return mapper.insert(flex_day_start)
+        
 
     # Methode um ein FlexDayStartBO mit bestimmter ID aus der Datenbank zu laden
     def get_flex_day_start_by_id(self, number):
@@ -424,10 +405,8 @@ class Businesslogic():
         flex_day_end = FlexDayEndBO()
         flex_day_end.set_time(time)
         with FlexDayEndMapper() as mapper:
-            mapper.insert(flex_day_end)
-        flex_end = flex_day_end.get_id()
-        self.create_event(type='flexdayend', flex_day_end_id=flex_end)
-        return flex_day_end
+            return mapper.insert(flex_day_end)
+        
 
     # Methode um ein FlexDayEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_flex_day_end_by_id(self, number):
@@ -454,10 +433,8 @@ class Businesslogic():
         break_begin = BreakBeginBO()
         break_begin.set_time(time)
         with BreakBeginMapper() as mapper:
-            mapper.insert(break_begin)
-        brk_begin = break_begin.get_id()
-        self.create_event(type='breakbegin', break_begin_id=brk_begin)
-        return break_begin
+            return mapper.insert(break_begin)
+        
 
     # Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
     def get_break_begin_by_id(self, number):
@@ -487,10 +464,8 @@ class Businesslogic():
         break_end = BreakEndBO()
         break_end.set_time(time)
         with BreakEndMapper() as mapper:
-            mapper.insert(break_end)
-        brk_end = break_end.get_id()
-        self.create_event(type='breakend', break_end_id=brk_end)
-        return break_end
+            return mapper.insert(break_end)
+        
 
     # Methode um ein BreakEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_break_end_by_id(self, number):
