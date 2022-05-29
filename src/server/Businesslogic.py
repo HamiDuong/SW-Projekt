@@ -232,10 +232,8 @@ class Businesslogic():
         project_work_end = ProjectWorkEndBO()
         project_work_end.set_time(time)
         with ProjectWorkEndMapper() as mapper:
-            mapper.insert(project_work_end)
-        prjwrk = project_work_end.get_id()
-        self.create_event(type='projectworkend', project_work_end_id=prjwrk)
-        return project_work_end
+            return mapper.insert(project_work_end)
+        
 
     # Methode um ein ProjectWorkEndBO mit bestimmter ID aus der Datenbank zu laden
     def get_project_work_end_by_id(self, number):
