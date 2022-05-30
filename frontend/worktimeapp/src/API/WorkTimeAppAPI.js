@@ -8,18 +8,18 @@ import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
 import TimeIntervalBookingBO from './TimeIntervalBookingBO';
-import BreakBeginBO from './BreakBeginBO';
-import BreakEndBO from './BreakEndBO';
-import VacationBeginBO from './VacationBegin';
-import VacationEndBO from './VacationEnd';
-import IllnessBeginBO from './IllnessBegin';
-import IllnessEndBO from './IllnessEnd';
-import ProjectWorkBeginBO from './ProjectWorkBegin';
-import ProjectWorkEndBO from './ProjectWorkEnd';
-import ComingBO from './ComingBO';
-import GoingBO from './GoingBO';
-import FlexDayBeginBO from './FlexDayBegin';
-import FlexDayEndBO from './FlexDayEnd';
+import BreakStartBO from './EventBOs/BreakStartBO';
+import BreakEndBO from './EventBOs/BreakEndBO';
+import VacationStartBO from './EventBOs/VacationStartBO';
+import VacationEndBO from './EventBOs/VacationEndBO';
+import IllnessStartBO from './EventBOs/IllnessStartBO';
+import IllnessEndBO from './EventBOs/IllnessEndBO';
+import ProjectWorkStartBO from './EventBOs/ProjectWorkStartBO';
+import ProjectWorkEndBO from './EventBOs/ProjectWorkEndBO';
+import ComingBO from './EventBOs/ComingBO';
+import GoingBO from './EventBOs/GoingBO';
+import FlexDayStartBO from './EventBOs/FlexDayStartBO';
+import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -97,21 +97,6 @@ export default class WorkTimeAppAPI {
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
     #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
 
-    //Event URLS 
-    #addBreakBeginURL = () => `${this.#worktimeappServerBaseURL}/break_begin`
-    #addBreakEndURL = () => `${this.#worktimeappServerBaseURL}/break_end`
-    #addVacationBeginURL = () => `${this.#worktimeappServerBaseURL}/vacation_begin`
-    #addVacationEndURL = () => `${this.#worktimeappServerBaseURL}/vacation_end`
-    #addIllnessBeginURL = () => `${this.#worktimeappServerBaseURL}/illness_begin`
-    #addIllnesEndURL = () => `${this.#worktimeappServerBaseURL}/illness_end`
-    #addFlexDayBeginURL = () => `${this.#worktimeappServerBaseURL}/flexday_begin`
-    #addFlexDayEndURL = () => `${this.#worktimeappServerBaseURL}/flexday_end`
-    #addProjectWorkBeginURL = () => `${this.#worktimeappServerBaseURL}/project_work_begin`
-    #addProjectWorkEndURL = () => `${this.#worktimeappServerBaseURL}/project_work_end`
-    #addComingURL = () => `${this.#worktimeappServerBaseURL}/coming`
-    #addGoingURL = () => `${this.#worktimeappServerBaseURL}/going`
-
-
 
     //Beginn aller Event-BOs
 
@@ -126,7 +111,7 @@ export default class WorkTimeAppAPI {
     //BreakStart
     #getBreakStartURL = (id) => `${this.#worktimeappServerBaseURL}/breakstart/${id}`;
     #getAllBreakStartsURL = () => `${this.#worktimeappServerBaseURL}/breakstarts`;
-    #addBreakStartURL = () => `${this.#worktimeappServerBaseURL}/breakstart`;
+    #addBreakStartURL = () => `${this.#worktimeappServerBaseURL}/break_begins`;
     #deleteBreakStartURL = (id) => `${this.#worktimeappServerBaseURL}/breakstart/${id}`;
     #updateBreakStartURL = (id) => `${this.#worktimeappServerBaseURL}/breakstart/${id}`;
     #getBreakStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/breakstartdate/${date}`;
@@ -134,7 +119,7 @@ export default class WorkTimeAppAPI {
     //BreakEnd
     #getBreakEndURL = (id) => `${this.#worktimeappServerBaseURL}/breakend/${id}`;
     #getAllBreakEndsURL = () => `${this.#worktimeappServerBaseURL}/breakends`;
-    #addBreakEndURL = () => `${this.#worktimeappServerBaseURL}/breakend`;
+    #addBreakEndURL = () => `${this.#worktimeappServerBaseURL}/break_ends`;
     #deleteBreakEndURL = (id) => `${this.#worktimeappServerBaseURL}/breakend/${id}`;
     #updateBreakEndURL = (id) => `${this.#worktimeappServerBaseURL}/breakend/${id}`;
     #getBreakEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/breakenddate/${date}`;
@@ -142,7 +127,7 @@ export default class WorkTimeAppAPI {
     //IllnessStart
     #getIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #getAllIllnessStartesURL = () => `${this.#worktimeappServerBaseURL}/illnessstarts`;
-    #addIllnessStartURL = () => `${this.#worktimeappServerBaseURL}/illnessstart`;
+    #addIllnessStartURL = () => `${this.#worktimeappServerBaseURL}/illness_starts`;
     #deleteIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #updateIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #getIllnessStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/illnessstartdate/${date}`;
@@ -150,7 +135,7 @@ export default class WorkTimeAppAPI {
     //IllnessEnd
     #getIllnessEndURL = (id) => `${this.#worktimeappServerBaseURL}/illnessend/${id}`;
     #getAllIllnessEndesURL = () => `${this.#worktimeappServerBaseURL}/illnessends`;
-    #addIllnessEndURL = () => `${this.#worktimeappServerBaseURL}/illnessend`;
+    #addIllnessEndURL = () => `${this.#worktimeappServerBaseURL}/illness_ends`;
     #deleteIllnessEndURL = (id) => `${this.#worktimeappServerBaseURL}/illnessend/${id}`;
     #updateIllnessEndURL = (id) => `${this.#worktimeappServerBaseURL}/illnessend/${id}`;
     #getIllnessEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/illnessenddate/${date}`;
@@ -158,15 +143,15 @@ export default class WorkTimeAppAPI {
     //ProjectWorkStart
     #getProjectWorkStartURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkstart/${id}`;
     #getAllProjectWorkStartsURL = () => `${this.#worktimeappServerBaseURL}/projectworkstarts`;
-    #addProjectWorkStartURL = () => `${this.#worktimeappServerBaseURL}/projectworkstart`;
+    #addProjectWorkStartURL = () => `${this.#worktimeappServerBaseURL}/projectwork_starts`;
     #deleteProjectWorkStartURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkstart/${id}`;
-    #updateProjectWorkStartURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkstart/${id}`;
+    #updateProjectWorkStartURL = (id) => `${this.#worktimeappServerBaseURL}/project_work_starts/${id}`;
     #getProjectWorkStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectworkstartdate/${date}`;
 
     //ProjectWorkEnd
     #getProjectWorkEndURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkend/${id}`;
     #getAllProjectWorkEndsURL = () => `${this.#worktimeappServerBaseURL}/projectworkends`;
-    #addProjectWorkEndURL = () => `${this.#worktimeappServerBaseURL}/projectworkend`;
+    #addProjectWorkEndURL = () => `${this.#worktimeappServerBaseURL}/project_work_ends`;
     #deleteProjectWorkEndURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkend/${id}`;
     #updateProjectWorkEndURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkend/${id}`;
     #getProjectWorkEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectworkenddate/${date}`;
@@ -174,7 +159,7 @@ export default class WorkTimeAppAPI {
     //VacationStart
     #getVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #getAllVacationStartsURL = () => `${this.#worktimeappServerBaseURL}/vacationstarts`;
-    #addVacationStartURL = () => `${this.#worktimeappServerBaseURL}/vacationstart`;
+    #addVacationStartURL = () => `${this.#worktimeappServerBaseURL}/vacation_starts`;
     #deleteVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #updateVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #getVacationStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/vacationstartdate/${date}`;
@@ -182,7 +167,7 @@ export default class WorkTimeAppAPI {
     //VacationEnd
     #getVacationEndURL = (id) => `${this.#worktimeappServerBaseURL}/vacationend/${id}`;
     #getAllVacationEndsURL = () => `${this.#worktimeappServerBaseURL}/vacationends`;
-    #addVacationEndURL = () => `${this.#worktimeappServerBaseURL}/vacationend`;
+    #addVacationEndURL = () => `${this.#worktimeappServerBaseURL}/vacation_ends`;
     #deleteVacationEndURL = (id) => `${this.#worktimeappServerBaseURL}/vacationend/${id}`;
     #updateVacationEndURL = (id) => `${this.#worktimeappServerBaseURL}/vacationend/${id}`;
     #getVacationEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/vacationenddate/${date}`;
@@ -191,7 +176,7 @@ export default class WorkTimeAppAPI {
     //FlexDayStart
     #getFlexDayStartURL = (id) => `${this.#worktimeappServerBaseURL}/flexdaystart/${id}`;
     #getAllFlexDayStartesURL = () => `${this.#worktimeappServerBaseURL}/flexdaystarts`;
-    #addFlexDayStartURL = () => `${this.#worktimeappServerBaseURL}/flexdaystart`;
+    #addFlexDayStartURL = () => `${this.#worktimeappServerBaseURL}/flex_day_starts`;
     #deleteFlexDayStartURL = (id) => `${this.#worktimeappServerBaseURL}/flexdaystart/${id}`;
     #updateFlexDayStartURL = (id) => `${this.#worktimeappServerBaseURL}/flexdaystart/${id}`;
     #getFlexDayStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/flexdaystartdate/${date}`;
@@ -199,7 +184,7 @@ export default class WorkTimeAppAPI {
     //FlexDayEnd
     #getFlexDayEndURL = (id) => `${this.#worktimeappServerBaseURL}/flexdayend/${id}`;
     #getAllFlexDayEndsURL = () => `${this.#worktimeappServerBaseURL}/flexdayends`;
-    #addFlexDayEndURL = () => `${this.#worktimeappServerBaseURL}/flexdayend`;
+    #addFlexDayEndURL = () => `${this.#worktimeappServerBaseURL}/flex_day_ends`;
     #deleteFlexDayEndURL = (id) => `${this.#worktimeappServerBaseURL}/flexdayend/${id}`;
     #updateFlexDayEndURL = (id) => `${this.#worktimeappServerBaseURL}/flexdayend/${id}`;
     #getFlexDayEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/flexdayenddate/${date}`;
@@ -207,7 +192,7 @@ export default class WorkTimeAppAPI {
     //Coming
     #getComingURL = (id) => `${this.#worktimeappServerBaseURL}/coming/${id}`;
     #getAllComingesURL = () => `${this.#worktimeappServerBaseURL}/coming`;
-    #addComingURL = () => `${this.#worktimeappServerBaseURL}/coming`;
+    #addComingURL = () => `${this.#worktimeappServerBaseURL}/comings`;
     #deleteComingURL = (id) => `${this.#worktimeappServerBaseURL}/coming/${id}`;
     #updateComingURL = (id) => `${this.#worktimeappServerBaseURL}/coming/${id}`;
     #getComingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/comingdate/${date}`;
@@ -215,7 +200,7 @@ export default class WorkTimeAppAPI {
     //Going
     #getGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getAllGoingesURL = () => `${this.#worktimeappServerBaseURL}/going`;
-    #addGoingURL = () => `${this.#worktimeappServerBaseURL}/going`;
+    #addGoingURL = () => `${this.#worktimeappServerBaseURL}/goings`;
     #deleteGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
@@ -824,6 +809,8 @@ export default class WorkTimeAppAPI {
 
     // Booking Methoden author Mihriban Dogan
 
+    //TimeintervalBookingMethoden
+
     addVacationBooking(vacationBO){
         return this.#fetchAdvanced(this.#addVacationURL(), {
             method: 'POST',
@@ -934,6 +921,8 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    //EventBookingMethoden
+
     addEventBooking(bookingBO){
         return this.#fetchAdvanced(this.#addEventBookingURL(), {
             method: 'POST',
@@ -952,7 +941,7 @@ export default class WorkTimeAppAPI {
     }
 
     addBreakBeginBooking(breakbeginBO){
-        return this.#fetchAdvanced(this.#addBreakBeginURL(), {
+        return this.#fetchAdvanced(this.#addBreakStartURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -961,7 +950,7 @@ export default class WorkTimeAppAPI {
             body: JSON.stringify(breakbeginBO)
           }).then((responseJSON) => {
             console.log("TEST")
-            let responseBookingBO = BreakBeginBO.fromJSON(responseJSON)[0];
+            let responseBookingBO = BreakStartBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
@@ -988,7 +977,7 @@ export default class WorkTimeAppAPI {
     }
 
     addVacationBeginBooking(vacationbeginBO){
-        return this.#fetchAdvanced(this.#addVacationBeginURL(), {
+        return this.#fetchAdvanced(this.#addVacationStartURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -997,7 +986,7 @@ export default class WorkTimeAppAPI {
             body: JSON.stringify(vacationbeginBO)
           }).then((responseJSON) => {
             console.log("TEST")
-            let responseBookingBO = VacationBeginBO.fromJSON(responseJSON)[0];
+            let responseBookingBO = VacationStartBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
@@ -1024,7 +1013,7 @@ export default class WorkTimeAppAPI {
     }
 
     addIllnessBeginBooking(illnessbeginBO){
-        return this.#fetchAdvanced(this.#addIllnessBeginURL(), {
+        return this.#fetchAdvanced(this.#addIllnessStartURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -1033,7 +1022,7 @@ export default class WorkTimeAppAPI {
             body: JSON.stringify(illnessbeginBO)
           }).then((responseJSON) => {
             console.log("TEST")
-            let responseBookingBO = IllnessBeginBO.fromJSON(responseJSON)[0];
+            let responseBookingBO = IllnessStartBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
@@ -1042,7 +1031,7 @@ export default class WorkTimeAppAPI {
     }
 
     addIllnessEndBooking(illnessendBO){
-        return this.#fetchAdvanced(this.#addIllnesEndURL(), {
+        return this.#fetchAdvanced(this.#addIllnessEndURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -1060,7 +1049,7 @@ export default class WorkTimeAppAPI {
     }
 
     addProjectWorkBeginBooking(projectWorkBeginBO){
-        return this.#fetchAdvanced(this.#addProjectWorkBeginURL(), {
+        return this.#fetchAdvanced(this.#addProjectWorkStartURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -1069,7 +1058,7 @@ export default class WorkTimeAppAPI {
             body: JSON.stringify(projectWorkBeginBO)
           }).then((responseJSON) => {
             console.log("TEST")
-            let responseBookingBO = ProjectWorkBeginBO.fromJSON(responseJSON)[0];
+            let responseBookingBO = ProjectWorkStartBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
@@ -1132,7 +1121,7 @@ export default class WorkTimeAppAPI {
     }
 
     addFlexDayBeginBooking(flexDayBeginBO){
-        return this.#fetchAdvanced(this.#addFlexDayBeginURL(), {
+        return this.#fetchAdvanced(this.#addFlexDayStartURL(), {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain',
@@ -1141,7 +1130,7 @@ export default class WorkTimeAppAPI {
             body: JSON.stringify(flexDayBeginBO)
           }).then((responseJSON) => {
             console.log("TEST")
-            let responseBookingBO = FlexDayBeginBO.fromJSON(responseJSON)[0];
+            let responseBookingBO = FlexDayStartBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
