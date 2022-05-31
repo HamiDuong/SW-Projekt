@@ -85,6 +85,9 @@ class MyProfile extends Component {
             autoComplete="off"
             >
             <TextField id="first_name" label="Outlined" variant="outlined" value={first_name} onChange={(e)=>{this.setState({first_name:e.target.value})}}/>
+            <TextField id="last_name" label="Outlined" variant="outlined" value={last_name} onChange={(e)=>{this.setState({last_name:e.target.value})}}/>
+            <TextField id="mail_adress" label="Outlined" variant="outlined" value={mail_adress} onChange={(e)=>{this.setState({mail_adress:e.target.value})}}/>
+            <TextField id="user_name" label="Outlined" variant="outlined" value={user_name} onChange={(e)=>{this.setState({user_name:e.target.value})}}/>
             <Button variant="outlined" onClick={this.handleSave}>Speichern</Button>
             </Box>
             </>
