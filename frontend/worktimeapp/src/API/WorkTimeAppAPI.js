@@ -8,7 +8,7 @@ import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
 import TimeIntervalBookingBO from './TimeIntervalBookingBO';
-
+import UserBO from './UserBO';
 export default class WorkTimeAppAPI {
     static #api = null
 
@@ -23,7 +23,7 @@ export default class WorkTimeAppAPI {
     #addTimeIntervalURL = () => `${this.#worktimeappServerBaseURL}/timeinterval`;
     #deleteTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #updateTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
-    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${id}`;
+    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${type}`;
 
     //Break
     #getBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;
@@ -191,8 +191,9 @@ export default class WorkTimeAppAPI {
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
 
-
-
+    //User
+    #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
+    #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
 
     static getAPI() {
         if (this.#api == null) {
@@ -830,6 +831,44 @@ export default class WorkTimeAppAPI {
             })
         })
     }
+
+
+//User Methoden
+
+getAllUser() {
+    return this.#fetchAdvanced(this.#getAllUserURL()).then((responseJSON) => {
+        let responseUser = UserBO.fromJSON(responseJSON);
+        return new Promise(function (resolve) {
+            resolve(responseUser)
+        })
+    })
+
+}
+addUser(userBO) {
+    return this.#fetchAdvanced(this.#getAllUserURL(), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(userBO)
+    }).then((responseJSON) => {
+        let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+
+        return new Promise(function (resolve) {
+            resolve(responseUserBO);
+        })
+    })
+}
+getUserById(id) {
+    return this.#fetchAdvanced(this.#getUserByIdURL(id)).then((responseJSON) => {
+        let responseUserBO = UserBO.fromJSON(responseJSON);
+        return new Promise(function (resolve) {
+            resolve(responseUserBO)
+        })
+    })
+}
+
 }
 
 
