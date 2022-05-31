@@ -194,6 +194,11 @@ export default class WorkTimeAppAPI {
     //User
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
     #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
+    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    
+
 
     static getAPI() {
         if (this.#api == null) {
@@ -835,8 +840,8 @@ export default class WorkTimeAppAPI {
 
 //User Methoden
 
-getAllUser() {
-    return this.#fetchAdvanced(this.#getAllUserURL()).then((responseJSON) => {
+getAllUsers() {
+    return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
         let responseUser = UserBO.fromJSON(responseJSON);
         return new Promise(function (resolve) {
             resolve(responseUser)
@@ -845,7 +850,7 @@ getAllUser() {
 
 }
 addUser(userBO) {
-    return this.#fetchAdvanced(this.#getAllUserURL(), {
+    return this.#fetchAdvanced(this.#getAllUsersURL(), {
         method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain',
@@ -863,6 +868,31 @@ addUser(userBO) {
 getUserById(id) {
     return this.#fetchAdvanced(this.#getUserByIdURL(id)).then((responseJSON) => {
         let responseUserBO = UserBO.fromJSON(responseJSON);
+        return new Promise(function (resolve) {
+            resolve(responseUserBO)
+        })
+    })
+}
+deleteUser(user) {
+    return this.#fetchAdvanced(this.#deleteUserURL(user), {
+        method: 'DELETE'
+    }).then((responseJSON) => {
+        let responseUser = UserBO.fromJSON(responseJSON)[0];
+        return new Promise(function (resolve) {
+            resolve(responseUser)
+        })
+    })
+}
+updateUser(user) {
+    return this.#fetchAdvanced(this.#updateUserURL(user), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(user)
+    }).then((responseJSON) => {
+        let responseUserBO = UserBO.fromJSON(responseJSON)[0];
         return new Promise(function (resolve) {
             resolve(responseUserBO)
         })
