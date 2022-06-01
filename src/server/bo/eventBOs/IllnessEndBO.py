@@ -7,7 +7,6 @@ class IllnessEndBO(EventBO.EventBO):
     Ein IllnessEndBO stellt das Ereignis "Krankheitsende" dar bzw. wenn ein Mitarbeiter sich wieder fit fühlt.
     """
 
-
     def __init__(self):
         super().__init__()
         self._time = None
@@ -32,6 +31,6 @@ class IllnessEndBO(EventBO.EventBO):
         """Umwandeln eines Python dict() in ein ComingBO()."""
         obj = IllnessEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_time(dictionary["time"])
         return obj

@@ -16,30 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `timeintervals`
+-- Table structure for table `flexdays`
 --
 
-DROP TABLE IF EXISTS `timeintervals`;
+DROP TABLE IF EXISTS `flexdays`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `timeintervals` (
+CREATE TABLE `flexdays` (
   `id` int NOT NULL,
-  `dateOfLastChange` datetime NOT NULL,
+  `dateOfLastChange` datetime DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `startEvent` int DEFAULT NULL,
+  `endEvent` int DEFAULT NULL,
   `type` varchar(45) NOT NULL,
-  `breakId` int DEFAULT NULL,
-  `illnessId` int DEFAULT NULL,
-  `projectDurationId` int DEFAULT NULL,
-  `projectWorkId` int DEFAULT NULL,
-  `vacationId` int DEFAULT NULL,
-  `workId` int DEFAULT NULL,
-  `flexDayId` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `breakId` FOREIGN KEY (`id`) REFERENCES `breaks` (`id`),
-  CONSTRAINT `illnessId` FOREIGN KEY (`id`) REFERENCES `illnesses` (`id`),
-  CONSTRAINT `projectDurationId` FOREIGN KEY (`id`) REFERENCES `projectdurations` (`id`),
-  CONSTRAINT `projectWorkId` FOREIGN KEY (`id`) REFERENCES `projectworks` (`id`),
-  CONSTRAINT `vacationId` FOREIGN KEY (`id`) REFERENCES `vacations` (`id`),
-  CONSTRAINT `workId` FOREIGN KEY (`id`) REFERENCES `works` (`id`)
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
