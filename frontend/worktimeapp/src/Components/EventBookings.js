@@ -40,7 +40,7 @@ class EventBookings extends Component {
             type: "",
             time: Date,
             workTimeAccountId:0,
-            userId:0,
+            userId:1,
             eventBookingId: 0,
             timeintervalBookingId: 0,
         }

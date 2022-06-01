@@ -42,7 +42,7 @@ class TimeIntervalBookings extends Component {
             startEvent:0,
             endEvent:0,
             workTimeAccountId:0,
-            userId:0,
+            userId: 1,
             showSelectEventDialog: false,
             eventBookingId: 0,
             timeintervalBookingId: 0,

@@ -133,9 +133,9 @@ class TimeIntervalMapper(Mapper):
 
         #command = "INSERT INTO worktimeapp.timeintervals (id, dateOfLastChange, timeIntervalBookingId, type) VALUES (%s, %s, %s, %s)"
         #data = (timeinterval.get_id(), timeinterval.get_date_of_last_change(), timeinterval.get_timeinterval_booking_id(), timeinterval.get_type())
-        command = "INSERT INTO worktimeapp.timeintervals (id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId, flexDayId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        command = "INSERT INTO worktimeapp.timeintervals (id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId, flexDayId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         data = (timeinterval.get_id(), timeinterval.get_date_of_last_change(), timeinterval.get_type(), timeinterval.get_break_id(), timeinterval.get_illness_id(
-        ), timeinterval.get_project_duration(), timeinterval.get_vacation_id(), timeinterval.get_work_id(), timeinterval.get_flex_day_id())
+        ), timeinterval.get_project_duration_id(), timeinterval.get_project_work_id(), timeinterval.get_vacation_id(), timeinterval.get_work_id(), timeinterval.get_flex_day_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
