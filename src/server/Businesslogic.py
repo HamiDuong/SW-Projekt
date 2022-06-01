@@ -1223,12 +1223,12 @@ class Businesslogic():
     User Methoden
     """
 
-    def create_user(self, first_name, last_name, mail_adress, user_name):
+    def create_user(self, first_name, last_name, mail_adress, googleId):
         user_obj = UserBO()
         user_obj.set_first_name(first_name)
         user_obj.set_last_name(last_name)
         user_obj.set_mail_adress(mail_adress)
-        user_obj.set_user_name(user_name)
+        user_obj.set_google_user_id(googleId)
 
         with UserMapper() as mapper:
             return mapper.insert(user_obj)
@@ -1245,9 +1245,13 @@ class Businesslogic():
         with UserMapper() as mapper:
             return mapper.find_by_mail_adress(mail_adress)
 
-    def get_user_by_user_name(self, user_name):
+    def get_user_by_google_user_id(self, id):
         with UserMapper() as mapper:
-            return mapper.find_by_user_name(user_name)
+            return mapper.find_by_googleuserid(id)
+
+    # def get_user_by_user_name(self, user_name):
+    #     with UserMapper() as mapper:
+    #         return mapper.find_by_user_name(user_name)
 
     def get_user_by_id(self, number):
         with UserMapper() as mapper:
@@ -1269,10 +1273,11 @@ class Businesslogic():
     WorkTimeAccount Methoden
     """
 
-    def create_worktimeaccount(self, user_id):
+    def create_worktimeaccount(self, userId, contractTime, overTime):
         worktimeaccount_obj = WorkTimeAccountBO()
-        worktimeaccount_obj.set_user_id(user_id)
-        worktimeaccount_obj.set_id(1)
+        worktimeaccount_obj.set_user_id(userId)
+        worktimeaccount_obj.set_contract_time(contractTime)
+        worktimeaccount_obj.set_overtime(overTime)
 
         with WorkTimeAccountMapper() as mapper:
             return mapper.insert(worktimeaccount_obj)
@@ -1281,15 +1286,19 @@ class Businesslogic():
         with WorkTimeAccountMapper() as mapper:
             return mapper.find_by_user_id(user_id)
 
+    def get_worktimeaccount_by_id(self, id):
+        with WorkTimeAccountMapper() as mapper:
+            return mapper.find_by_key(id)
+
     def get_all_worktimeaccounts(self):
         with WorkTimeAccountMapper() as mapper:
             return mapper.find_all()
 
-    def save_user(self, worktimeaccount_obj):
+    def save_worktimeaccount(self, worktimeaccount_obj):
         with WorkTimeAccountMapper() as mapper:
             mapper.update(worktimeaccount_obj)
 
-    def delete_user(self, worktimeaccount_obj):
+    def delete_worktimeaccount(self, worktimeaccount_obj):
         with WorkTimeAccountMapper() as mapper:
             mapper.delete(worktimeaccount_obj)
 

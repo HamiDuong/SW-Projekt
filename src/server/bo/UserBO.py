@@ -1,6 +1,9 @@
 from server.bo import BusinessObject as bo
 
-
+"""
+@author Marco
+@co-author Ha Mi Duong (https://github.com/HamiDuong)
+"""
 class UserBO (bo.BusinessObject):
     
     def __init__(self):
@@ -8,7 +11,7 @@ class UserBO (bo.BusinessObject):
         self._first_name = ""  # Der Vorname des Benutzers.
         self._last_name = ""  # Der Nachname des Benutzers.
         self._mail_address = ""  # Die E-Mail-Adresse des Benutzers.
-        self._user_name = ""  # Der Username des Benutzers. 
+        self._google_user_id = ""
 
     def get_first_name(self):
         """Auslesen des Vornamens."""
@@ -34,25 +37,26 @@ class UserBO (bo.BusinessObject):
         """Setzen der E-Mail-Adresse."""
         self._mail_adress = value
 
-    def get_user_name(self):
+    def get_google_user_id(self):
         """Auslesen des Benutzernamens."""
-        return self._user_name
+        return self._google_user_id
 
-    def set_user_name(self, value):
+    def set_google_user_id(self, value):
         """Setzen des Benutzernamens."""
-        self._user_name = value        
+        self._google_user_id = value        
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
-        return "UserBO: {}, {}, {}, {}, {}".format(self.get_id(), self._first_name, self._last_name, self._mail_adress, self._user_name)
+        return "UserBO: Id {}, First Name {}, Last Name {}, Mail {}, GoogleId {}".format(self.get_id(), self.get_first_name(), self.get_last_name(), self.get_mail_adress(), self.get_google_user_id())
 
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in einen User()."""
         obj = UserBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_date_of_last_change(dictionary["date_of_last_change"])
         obj.set_first_name(dictionary["first_name"])
         obj.set_last_name(dictionary["last_name"])
         obj.set_mail_adress(dictionary["mail_adress"])
-        obj.set_user_name(dictionary["user_name"])        
+        obj.set_google_user_id(dictionary["google_user_id"])        
         return obj
