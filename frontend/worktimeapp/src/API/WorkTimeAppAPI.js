@@ -23,7 +23,7 @@ export default class WorkTimeAppAPI {
     #addTimeIntervalURL = () => `${this.#worktimeappServerBaseURL}/timeinterval`;
     #deleteTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #updateTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
-    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${id}`;
+    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${type}`;
 
     //Break
     #getBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;

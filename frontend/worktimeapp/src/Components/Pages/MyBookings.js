@@ -164,6 +164,34 @@ let intervalbookings = [
 //     pause
 // ]
 
+let fakebackend = {
+    "timeintervals": [
+        {
+            "start":"2022-05-30 15:01:21",
+            "end":"2022-05-31 15:15:26",
+            "start_event": 1,
+            "end_event": null,
+            "type": "Work",
+            "id": 19,
+            "date_of_last_change":"2022-05-30 15:26:56"
+        },
+        {
+            "start":"",
+            "end":"",
+            "start_event": 1,
+            "end_event": null,
+            "type": "Work",
+            "id": 19,
+            "date_of_last_change":""
+        }
+    ],
+    "events":[
+        {
+
+        }
+    ]
+}
+
 /***
  * Steps:
  * alle Eventbuchungen des Users holen -> eventbookingsmit mit EventSubklassenBO
