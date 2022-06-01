@@ -37,6 +37,7 @@ B. Konventionen für dieses Module:
 
 # Unser Service basiert auf Flask
 # from attr import attributes
+from asyncio import events
 from flask import Flask
 # Auf Flask aufbauend nutzen wir RestX
 from flask_restx import Api, Resource, fields
@@ -113,7 +114,7 @@ Namespaces erlauben die Strukturierung von APIs. In diesem Fall fasst dieser Nam
 Zeitwirtschaftsrelevanten Operationen unter dem Präfix /worktimeapp zusammen."""
 
 worktimeapp = api.namespace(
-    'worktimeapp', description='Funktionen des BankBeispiels')
+    'worktimeapp', description='Funktionen der Worktimeapp')
 
 """Nachfolgend werden analog zu unseren BusinessObject-Klassen transferierbare Strukturen angelegt.
 BusinessObject dient als Basisklasse, auf der die weiteren Strukturen User, Events, Projects, etc. aufsetzen."""
@@ -177,6 +178,11 @@ event = api.inherit('Event', bo, {
 
 })
 
+event_subclass = api.inherit('event_subclass', bo, {
+    'time': fields.String(attribute='_time', description='Zeitpunkt des Events'),
+    'type': fields.String(attribute='_type', description='Der Typ des Events'),
+})
+
 coming = api.inherit('Coming', bo, {
     'time': fields.String(attribute='_time', description='Zeitpunkt des Events')
 })
@@ -238,13 +244,20 @@ timeinterval = api.inherit('TimeInterval', bo, {
     '_work_id': fields.Integer(attribute='_work_id', descriptiong='Fremdschlüssel zu WorkBO')
 })
 
+timeinterval_subclass = api.inherit('TimeInterval_subclass', bo, {
+    'start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    'end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
+    'start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    'end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
+    'type': fields.String(attribute='_type', description='Art des Intervals')
+})
+
 
 breaks = api.inherit('Break', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
-    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
@@ -252,44 +265,40 @@ illness = api.inherit('Illness', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
 vacation = api.inherit('Vacation', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
-    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
 work = api.inherit('Work', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
-    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
 flexday = api.inherit('FlexDay', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
-    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals')
 })
 
 projectduration = api.inherit('ProjectDuration', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
-    '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals'),
     '_project_id': fields.Integer(attribute='_project_id', description='Fremschlüssel zum Projekt')
 })
@@ -298,8 +307,8 @@ projectwork = api.inherit('ProjectWork', bo, {
     '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_time_interval_id': fields.Integer(attribute='_time_interval_id', description='Fremdschlüssel zu Timeintervalbooking'),
-    '_start_event': fields.Integer(attribute='_start', description='Fremdschlüssel zum Startevent'),
-    '_end_event': fields.Integer(attribute='_end', description='Fremdschlüssel zum Endevent'),
+    '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
+    '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
     '_type': fields.String(attribute='_type', description='Art des Intervals'),
     '_activity_id': fields.Integer(attribute='_activity_id', description='Fremschlüssel zur Aktivity')
 })
@@ -319,6 +328,12 @@ eventbooking = api.inherit("Eventbooking", bo, {
 timeintervalbooking = api.inherit("Timeintervalbooking", bo, {
     '_time_interval_id': fields.Integer(attribute="_time_interval_id")
 })
+
+timeinterval_with_events = api.model("Timeinterval_with_events", {
+    "timeintervals": fields.Nested(timeinterval_subclass),
+    "events": fields.Nested(event_subclass)
+})
+
 
 # Tatsächliche Funktionen beginnen ab hier.
 """
@@ -369,7 +384,7 @@ class UserOperations(Resource):
             return '', 500
 
 
-@worktimeapp.route('/users/<int: id>')
+@worktimeapp.route('/users/<int:id>')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @worktimeapp.param('id', 'Id des Objekts')
 class UserWithIdOperations(Resource):
@@ -3046,8 +3061,8 @@ class EventBookingsForUser(Resource):
 @worktimeapp.route('/booking/timeintervalbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class TimeIntervalBookingOperationsWithParam(Resource):
-    @worktimeapp.marshal_with(event, timeinterval)
-    def get(self):
+    @worktimeapp.marshal_with(timeinterval_with_events)
+    def get(self, id):
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
 
@@ -3100,8 +3115,8 @@ class EventBookingOperations(Resource):
 @worktimeapp.route('/booking/eventbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
-    @worktimeapp.marshal_with(event)
-    def get(self):
+    @worktimeapp.marshal_with(event_subclass)
+    def get(self, id):
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
 

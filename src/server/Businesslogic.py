@@ -1019,18 +1019,14 @@ class Businesslogic():
             return mapper.insert(booking)
 
     def get_all_timeinterval_bookings_for_user(self, user):
-
-        with UserMapper() as mapper:
-            if not (user is None):
-                userId = mapper.find_by_key(user.get_id())
-
+        booking_types = ["timeintervals", "events"]
         res_ti = []
         res_ti_e = []
         res_final = []
 
         with BookingMapper() as mapper:
             timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
-                userId)
+                user.get_id())
 
         for elem in timeintervalbookings:
             timeintervalbookingid = elem.get_time_interval_booking_id()
@@ -1110,22 +1106,20 @@ class Businesslogic():
                             res_ti_e.append(event)
                             res_ti.append(res)
         res_final = [res_ti, res_ti_e]
-        return res_final
+        res_final_dict = dict(zip(booking_types, res_final))
+        print(res_final_dict)
+        return res_final_dict
 
     def get_all_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
         und dieser wird dann in der Tabelle Eventbooking eingefügt 
         und dort wird dann nach dem FK Eventid gesucht'''
 
-        with UserMapper() as mapper:
-            if not (user is None):
-                userId = mapper.find_by_key(user.get_id())
-
         res_e = []
 
         with BookingMapper() as mapper:
             eventbookings = mapper.find_event_bookings_by_user_id(
-                userId)
+                user.get_id())
 
         for elem in eventbookings:
             eventbookingid = elem.get_event_booking_id()
@@ -1169,6 +1163,7 @@ class Businesslogic():
             if type == 'going':
                 res = self.get_going_by_id(events.get_going_id())
                 res_e.append(res)
+        print(res_e)
         return res_e
 
     def delete_timeinterval_booking(self, bookingid):
@@ -1404,7 +1399,3 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
-
-
-adm = Businesslogic()
-adm.get_all_timeinterval_bookings_for_user(1)
