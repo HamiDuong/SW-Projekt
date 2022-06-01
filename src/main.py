@@ -987,6 +987,8 @@ class GoingListOperations(Resource):
                 None,
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -1088,6 +1090,8 @@ class ComingListOperations(Resource):
                 None,
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -1188,6 +1192,8 @@ class VacationBeginListOperations(Resource):
                 None,
                 None,
                 c.get_id(),
+                None,
+                None,
                 None
             )
 
@@ -1289,7 +1295,9 @@ class VacationEndListOperations(Resource):
                 None,
                 None,
                 None,
-                c.get_id()
+                c.get_id(),
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -1565,6 +1573,8 @@ class IllnessEndListOperations(Resource):
                 None,
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -1666,6 +1676,8 @@ class IllnessBeginListOperations(Resource):
                 None,
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -1766,7 +1778,9 @@ class BreakBeginListOperations(Resource):
                 None,
                 None,
                 None,
-                None
+                None,
+                None,
+                None,
             )
 
             eb = adm.create_event_booking(
@@ -1862,6 +1876,8 @@ class BreakEndListOperations(Resource):
                 None,
                 None,
                 c.get_id(),
+                None,
+                None,
                 None,
                 None,
                 None,
@@ -1969,6 +1985,8 @@ class ProjectWorkEndListOperations(Resource):
                 c.get_id(),
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -2070,6 +2088,8 @@ class ProjectWorkBeginListOperations(Resource):
                 None,
                 None,
                 None,
+                None,
+                None
             )
 
             eb = adm.create_event_booking(
@@ -2233,6 +2253,7 @@ class BreakOperations(Resource):
                 None,
                 None,
                 None,
+                None,
                 None
             )
 
@@ -2328,6 +2349,7 @@ class IllnessOperations(Resource):
                 proposal.get_type(),
                 None,
                 p.get_id(),
+                None,
                 None,
                 None,
                 None,
@@ -2619,6 +2641,7 @@ class ProjectWorkOperations(Resource):
                 None,
                 p.get_id(),
                 None,
+                None,
                 None
             )
 
@@ -2729,6 +2752,7 @@ class VacationOperations(Resource):
                 None,
                 None,
                 p.get_id(),
+                None,
                 None
             )
 
@@ -2826,6 +2850,7 @@ class WorkOperations(Resource):
                 None,
                 None,
                 None,
+                None,
                 p.get_id()
             )
 
@@ -2916,14 +2941,20 @@ class EventBookingsForUser(Resource):
 '''Booking Routes @author Mihriban Dogan (https://github.com/mihriban-dogan)'''
 
 
-@worktimeapp.route('/booking/<int:id>')
-@worktimeapp.param('id', 'Die Worktimeaccount ID')
-class BookingOperations(Resource):
-    @worktimeapp.marshal_list_with(booking)
-    def get(self, id):
+@worktimeapp.route('/booking/timeintervalbooking/<int:id>')
+@worktimeapp.param('id', 'Die User ID')
+class TimeIntervalBookingOperationsWithParam(Resource):
+    @worktimeapp.marshal_with(event, timeinterval)
+    def get(self):
         adm = Businesslogic()
-        bookings = adm.get_all_bookings_for_worktime_account(id)
-        return bookings
+        user = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
+        if user is not None:
+            # Jetzt erst lesen wir die Konten des Customer aus.
+            timeintervalbookings = adm.get_all_timeinterval_bookings_for_user(
+                user)
+            return timeintervalbookings
 
 
 @worktimeapp.route('/booking/timeintervalbooking')
@@ -2937,7 +2968,7 @@ class TimeintervalBookingOperations(Resource):
             b = adm.create_booking_for_timeinterval(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
-                proposal.get_type(),
+                "T",
                 None
             )
             return b
@@ -2956,12 +2987,27 @@ class EventBookingOperations(Resource):
             b = adm.create_booking_for_event(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
-                proposal.get_type(),
+                "E",
                 None
             )
             return b
         else:
             return ''
+
+
+@worktimeapp.route('/booking/eventbooking/<int:id>')
+@worktimeapp.param('id', 'Die User ID')
+class EventBookingOperationsWithParam(Resource):
+    @worktimeapp.marshal_with(event)
+    def get(self):
+        adm = Businesslogic()
+        user = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
+        if user is not None:
+            # Jetzt erst lesen wir die Konten des Customer aus.
+            eventbookings = adm.get_all_event_bookings_for_user(user)
+            return eventbookings
 
 
 """

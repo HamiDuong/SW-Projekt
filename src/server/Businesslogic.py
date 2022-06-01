@@ -1018,7 +1018,12 @@ class Businesslogic():
         with BookingMapper() as mapper:
             return mapper.insert(booking)
 
-    def get_all_timeinterval_bookings_for_user(self, userId):
+    def get_all_timeinterval_bookings_for_user(self, user):
+
+        with UserMapper() as mapper:
+            if not (user is None):
+                userId = mapper.find_by_key(user.get_id())
+
         res_ti = []
         res_ti_e = []
         res_final = []
@@ -1107,10 +1112,14 @@ class Businesslogic():
         res_final = [res_ti, res_ti_e]
         return res_final
 
-    def get_all_event_bookings_for_user(self, userId):
+    def get_all_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
         und dieser wird dann in der Tabelle Eventbooking eingefügt 
         und dort wird dann nach dem FK Eventid gesucht'''
+
+        with UserMapper() as mapper:
+            if not (user is None):
+                userId = mapper.find_by_key(user.get_id())
 
         res_e = []
 
