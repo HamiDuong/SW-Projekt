@@ -14,9 +14,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
 import VacationBO from '../API/VacationBO';
-import TimeIntervalBO from '../API/TimeIntervalBO';
+import IllnessBO from '../API/IllnessBO'
+import WorkBO from '../API/WorkBO'
 import BookingBO from '../API/BookingBO';
-import TimeIntervalBookingBO from '../API/TimeIntervalBookingBO';
+import BreakBO from '../API/BreakBO';
+import ProjectWorkBO from '../API/ProjectWorkBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import { format } from "date-fns";
 
@@ -40,24 +42,57 @@ class TimeIntervalBookings extends Component {
             startEvent:0,
             endEvent:0,
             workTimeAccountId:0,
-            userId:0,
+            userId: 1,
             showSelectEventDialog: false,
             eventBookingId: 0,
-            timeintervalBookingId: 0
+            timeintervalBookingId: 0,
+            activityId: 0,
             
          }
     }
 
     addTimeIntervalBooking = () => {
+        if ((this.state.type) === "vacation"){
             let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addTimeIntervalBooking(newVacationBO)
+            WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO)
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(this.state.type)
             console.log(newVacationBO)
+            console.log(newBookingBO)}
+        else if ((this.state.type) === "work"){
+            let newWorkBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newWorkBO)
             console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "illness"){
+            let newIllnessBO = new IllnessBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newIllnessBO)
+            console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "projectwork"){
+            let newProjectWorkBO = new ProjectWorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
+            WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newProjectWorkBO)
+            console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "break"){
+            let newBreakBO = new BreakBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newBreakBO)
+            console.log(newBookingBO)
+        }
        }
-
-
 
 
 
@@ -121,16 +156,16 @@ class TimeIntervalBookings extends Component {
                                 onChange={this.handleChange}
                             >
                                 <MenuItem value={"work"}>Work</MenuItem>
-                                <MenuItem value={"project"}>Project</MenuItem>
+                                <MenuItem value={"projectwork"}>Projectwork</MenuItem>
                                 <MenuItem value={"vacation"}>Vacation</MenuItem>
                                 <MenuItem value={"illness"}>Illness</MenuItem>
-                                <MenuItem value={"flexday"}>Flexday</MenuItem>
+                                <MenuItem value={"break"}>Break</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
-                   {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                   {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     <Grid item xs={12} sm={2} >
-                        {(this.state.type === "work" || this.state.type === "project"|| this.state.type === "flexday")?
+                        {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -162,9 +197,9 @@ class TimeIntervalBookings extends Component {
                     <Grid xs={12} sm={10} item>
                         <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
                     </Grid> 
-                     {/* Wenn Work, Projekt oder Flexday als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                     {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     <Grid xs={12} sm={2} item >
-                    {(this.state.type === "work" || this.state.type === "project"|| this.state.type === "flexday")?
+                    {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -199,7 +234,7 @@ class TimeIntervalBookings extends Component {
                      {/*
                     Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
                     */}
-                    {this.state.type === "project" && 
+                    {this.state.type === "projectwork" && 
                     <FormControl sx={{ minWidth: 220}}>
                             <InputLabel>Select Project</InputLabel>
                             <Select
@@ -213,7 +248,7 @@ class TimeIntervalBookings extends Component {
                         </FormControl>}
                     </Grid>
                     <Grid xs={12} sm={10} item>
-                    {this.state.type === "project" &&
+                    {this.state.type === "projectwork" &&
                     <FormControl sx={{ minWidth: 220}}>
                             <InputLabel>Select Activity</InputLabel>
                             <Select
