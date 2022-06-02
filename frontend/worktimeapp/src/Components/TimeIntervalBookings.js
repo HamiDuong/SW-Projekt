@@ -39,8 +39,8 @@ class TimeIntervalBookings extends Component {
             type: "",
             activity: "", 
             project: "",
-            startEvent:0,
-            endEvent:0,
+            startEvent: null,
+            endEvent: null,
             workTimeAccountId:0,
             userId: 1,
             showSelectEventDialog: false,
@@ -160,12 +160,13 @@ class TimeIntervalBookings extends Component {
                                 <MenuItem value={"vacation"}>Vacation</MenuItem>
                                 <MenuItem value={"illness"}>Illness</MenuItem>
                                 <MenuItem value={"break"}>Break</MenuItem>
+                                <MenuItem value={"flexdays"}>Flex Days</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     <Grid item xs={12} sm={2} >
-                        {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
+                        {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}

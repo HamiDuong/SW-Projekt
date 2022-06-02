@@ -2969,7 +2969,7 @@ class WorkOperations(Resource):
                 None,
                 None,
                 p.get_id()
-            )
+            ),
 
             tw = adm.create_timeinterval_booking(
                 t.get_id()
@@ -3088,9 +3088,14 @@ class TimeintervalBookingOperations(Resource):
                 "T",
                 None
             ),
-            d = adm.add_delta(b)
+            if proposal.get_type() == "vacation" or proposal.get_type() == "illness" or proposal.get_type() == "projectduration":
+                pass
+            elif proposal.get_type() == "projectwork":
+                p = adm.add_delta_for_project_work(b)
+            else:
+                d = adm.add_delta(b)
 
-            return b, d
+            return b, d, p
         else:
             return ''
 

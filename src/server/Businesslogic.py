@@ -952,13 +952,7 @@ class Businesslogic():
             for elem in booking:
                 print("ELEM", elem)
                 type = elem.get_type()
-                if (elem.get_start_event() and elem.get_end_event) == None:
-                    delta = elem.get_end() - elem.get_start()
-                    delta_float = (delta.total_seconds()/60)/60
-                    round(delta_float, 2)
-                    print(delta_float)
-                    self.calculate_delta(tbooking, delta_float)
-                elif not ((elem.get_start_event() and elem.get_end_event) == None):
+                if not ((elem.get_start_event() and elem.get_end_event) == None):
                     if type == 'Break':
                         with BreakBeginMapper() as mapper:
                             start_event = mapper.find_by_key(
@@ -971,35 +965,12 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
-                    if type == 'Illness':
-                        with IllnessBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                elem.get_start_event())
-                        with IllnessEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                elem.get_end_event())
 
-                        delta = end_event.get_time() - start_event.get_time()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
                     if type == 'ProjectWork':
                         with ProjectWorkBeginMapper() as mapper:
                             start_event = mapper.find_by_key(
                                 elem.get_start_event())
                         with ProjectWorkEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                elem.get_end_event())
-
-                        delta = end_event.get_time() - start_event.get_time()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
-                    if type == 'Vacation':
-                        with VacationBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                elem.get_start_event())
-                        with VacationEndMapper() as mapper:
                             end_event = mapper.find_by_key(
                                 elem.get_end_event())
 
@@ -1030,26 +1001,8 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
-                    if type == 'Illness':
-                        with IllnessBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                elem.get_start_event())
-
-                        delta = elem.get_end() - start_event.get_time()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
                     if type == 'ProjectWork':
                         with ProjectWorkBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                elem.get_start_event())
-
-                        delta = elem.get_end() - start_event.get_time()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
-                    if type == 'Vacation':
-                        with VacationBeginMapper() as mapper:
                             start_event = mapper.find_by_key(
                                 elem.get_start_event())
 
@@ -1066,6 +1019,7 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
+
                 elif not (elem.get_end_event() is None):
                     if type == 'Break':
                         with BreakEndMapper() as mapper:
@@ -1076,15 +1030,7 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
-                    if type == 'Illness':
-                        with IllnessEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                elem.get_end_event())
 
-                        delta = end_event.get_time() - elem.get_start()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
                     if type == 'ProjectWork':
                         with ProjectWorkEndMapper() as mapper:
                             end_event = mapper.find_by_key(
@@ -1094,15 +1040,7 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
-                    if type == 'Vacation':
-                        with VacationEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                elem.get_end_event())
 
-                        delta = end_event.get_time() - elem.get_start()
-                        delta_float = (delta.total_seconds()/60)/60
-                        round(delta_float, 2)
-                        self.calculate_delta(tbooking, delta_float)
                     if type == 'Work':
                         with GoingMapper() as mapper:
                             end_event = mapper.find_by_key(
@@ -1112,6 +1050,60 @@ class Businesslogic():
                         delta_float = (delta.total_seconds()/60)/60
                         round(delta_float, 2)
                         self.calculate_delta(tbooking, delta_float)
+
+                elif (elem.get_start_event() and elem.get_end_event) == None:
+                    delta = elem.get_end() - elem.get_start()
+                    delta_float = (delta.total_seconds()/60)/60
+                    round(delta_float, 2)
+                    print(delta_float)
+                    self.calculate_delta(tbooking, delta_float)
+
+    def add_delta_for_project_work(self, tbooking):
+        for elem in tbooking:
+            timeintervalbooking = self.get_timeinterval_booking_for_delta(
+                tbooking)
+
+            booking = timeintervalbooking.get("timeintervals")
+
+            for elem in booking:
+                print("ELEM", elem)
+                with ProjectWorkBeginMapper() as mapper:
+                    start_event = mapper.find_by_key(
+                        elem.get_start_event())
+                with ProjectWorkEndMapper() as mapper:
+                    end_event = mapper.find_by_key(
+                        elem.get_end_event())
+
+                    delta = end_event.get_time() - start_event.get_time()
+                    delta_float = (delta.total_seconds()/60)/60
+                    activityid = elem.get_activity_id()
+                    round(delta_float, 2)
+                    self.calculate_delta_for_project_work(tbooking, delta_float, activityid)
+    
+
+    def calculate_delta_for_project_work(self, tbooking, delta_float, activityid):
+        for elem in tbooking:
+            with ProjectUserMapper() as mapper:
+                projectuser = mapper.find_by_key(elem.get_user_id())
+                capacity = projectuser.get_capacity()
+
+            if projectuser.get_current_capacity() == None or projectuser.get_current_capacity() == 0:
+                current_capacity = capacity - delta_float
+                projectuser.set_current_capacity(current_capacity)
+
+            else:
+                new_current_capacity = projectuser.get_current_capacity() - delta_float
+                projectuser.set_current_capacity(new_current_capacity)
+
+            with ActivityMapper() as mapper:
+                activity = mapper.find_by_key(activityid)
+
+            if activity.get_current_capacity() == None or activity.get_current_capacity() == 0:
+                activity.set_current_capacity(delta_float)
+            else:
+                new_current_capacity_a = activity.get_current_capacity() + delta_float
+                activity.set_current_capacity(new_current_capacity_a)
+        return activity, projectuser
 
     def calculate_delta(self, tbooking, delta_float):
         for elem in tbooking:
@@ -1221,35 +1213,7 @@ class Businesslogic():
                             event = mapper.find_by_key(res.get_start_event())
                             res_ti_e.append(event)
                             res_ti.append(res)
-                if type == 'illness':
-                    res = self.get_illness_by_id(
-                        timeintervals.get_illness_id())
-                    if (res.get_start_event() and res.get_end_event) == None:
-                        res_ti.append(res)
-                    elif not ((res.get_start_event() and res.get_end_event()) == None):
-                        with IllnessBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                res.get_start_event())
-                        with IllnessEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                res.get_start_event())
-                        res_ti_e.append(start_event)
-                        res_ti_e.append(end_event)
-                        res_ti.append(res)
-                    elif not (res.get_start_event() is None):
-                        with IllnessBeginMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                    elif not (res.get_end_event() is None):
-                        with IllnessEndMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                if type == 'projectDuration':
-                    res = self.get_project_duration_by_id(
-                        timeintervals.get_project_duration_id())
-                    res_ti.append(res)
+
                 if type == 'projectWork':
                     res = self.get_project_work_by_id(
                         timeintervals.get_project_work_id())
@@ -1275,31 +1239,7 @@ class Businesslogic():
                             event = mapper.find_by_key(res.get_start_event())
                             res_ti_e.append(event)
                             res_ti.append(res)
-                if type == 'vacation':
-                    res = self.get_vacation_by_id(
-                        timeintervals.get_vacation_id())
-                    if (res.get_start_event() and res.get_end_event) == None:
-                        res_ti.append(res)
-                    elif not ((res.get_start_event() and res.get_end_event()) == None):
-                        with VacationBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                res.get_start_event())
-                        with VacationEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                res.get_start_event())
-                        res_ti_e.append(start_event)
-                        res_ti_e.append(end_event)
-                        res_ti.append(res)
-                    elif not (res.get_start_event() is None):
-                        with VacationBeginMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                    elif not (res.get_end_event() is None):
-                        with VacationEndMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
+
                 if type == 'work':
                     res = self.get_work_by_id(timeintervals.get_work_id())
                     if (res.get_start_event() and res.get_end_event) == None:
