@@ -1,5 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.ProjectUserBO import ProjectUserBO
+from datetime import datetime
 
 class ProjectUserMapper(Mapper):
     def __init__(self):
@@ -67,6 +68,9 @@ class ProjectUserMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM projectusers")
         tuples = cursor.fetchall()
 
+        timestamp = datetime.today()
+        projectuser_obj.set_date_of_last_change(timestamp)    
+
         for (maxid) in tuples:
             if maxid[0] == None:
                 projectuser_obj.set_id(1)
@@ -90,8 +94,11 @@ class ProjectUserMapper(Mapper):
     def update (self, projectuser_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE projectusers " + "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s WHERE id={}"
-        data = (projectuser_obj.get_(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity(), projectuser_obj.get_id())
+        timestamp = datetime.today()
+        projectuser_obj.set_date_of_last_change(timestamp)
+
+        command = "UPDATE projectusers " + "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (projectuser_obj.get_(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(),projectuser_obj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -119,7 +126,12 @@ class ProjectUserMapper(Mapper):
     def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
+
+        command = "SELECT * from projectusers WHERE projectId = {}"
+        data = (projectId)
+        cursor.execute(command, data)
+
+        #cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
         tuples = cursor.fetchall()
 
         for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:
