@@ -6,13 +6,16 @@ from datetime import datetime
 @author Marco
 @co-author Ha Mi Duong (https://github.com/HamiDuong)
 """
+
+
 class WorkTimeAccountMapper(Mapper):
     def __init__(self):
         super().__init__()
 
     def insert(self, account):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.worktimeaccounts ")
+        cursor.execute(
+            "SELECT MAX(id) AS maxid FROM worktimeapp.worktimeaccounts ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
@@ -33,7 +36,7 @@ class WorkTimeAccountMapper(Mapper):
             account.get_user_id(),
             account.get_contract_time(),
             account.get_overtime(),
-            )
+        )
 
         cursor.execute(command, data)
 
@@ -67,7 +70,8 @@ class WorkTimeAccountMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE id={}".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -94,11 +98,12 @@ class WorkTimeAccountMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE user_id={}".format(key)
+        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE user_id={}".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, userId, contractTime, overTime ) in tuples:
+        for (id, dateOfLastChange, userId, contractTime, overTime) in tuples:
             account = WorkTimeAccountBO()
             account.set_id(id)
             account.set_date_of_last_change(dateOfLastChange)
@@ -119,7 +124,8 @@ class WorkTimeAccountMapper(Mapper):
         account.set_date_of_last_change(timestamp)
 
         command = "UPDATE worktimeapp.worktimeaccounts SET dateOfLastChange=%s, contractTime=%s, overTime=%s WHERE id=%s"
-        data = (account.get_date_of_last_change(), account.get_contract_time(), account.get_overtime(), account.get_id())
+        data = (account.get_date_of_last_change(), account.get_contract_time(
+        ), account.get_overtime(), account.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -130,7 +136,8 @@ class WorkTimeAccountMapper(Mapper):
     def delete(self, account):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.worktimeaccounts WHERE id={}".format(account.get_id())
+        command = "DELETE FROM worktimeapp.worktimeaccounts WHERE id={}".format(
+            account.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

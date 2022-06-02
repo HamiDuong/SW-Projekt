@@ -3087,8 +3087,10 @@ class TimeintervalBookingOperations(Resource):
                 proposal.get_work_time_account_id(),
                 "T",
                 None
-            )
-            return b
+            ),
+            d = adm.add_delta(b)
+
+            return b, d
         else:
             return ''
 
