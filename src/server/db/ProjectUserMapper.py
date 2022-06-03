@@ -126,12 +126,7 @@ class ProjectUserMapper(Mapper):
     def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()
-
-        command = "SELECT * from projectusers WHERE projectId = {}"
-        data = (projectId)
-        cursor.execute(command, data)
-
-        #cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
+        cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
         tuples = cursor.fetchall()
 
         for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:
