@@ -142,8 +142,7 @@ worktimeaccount = api.inherit('Object', bo, {
 project = api.inherit('Project', bo, {
     'name': fields.String(attribute='_name', description='Der Name des Projekts'),
     'commissioner': fields.String(attribute='_commissioner', description='Der Name des Projektleiter'),
-    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
-    'duration': fields.Float(attribute='_duration', description='Die Dauer einer Aktivität')
+    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer')
 })
 
 '''ProjectUser'''
@@ -833,15 +832,15 @@ class ProjectWithIDOperations(Resource):
             return '', 50
 
 
-'''@worktimeapp.route('/project/<str:name>')
+@worktimeapp.route('/project/<name>')
 @worktimeapp.param('name', 'Der Name des Projekts')
 class ProjectWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(project)
     # @secured
     def get(self, name):
         adm = Businesslogic()
-        activity = adm.get_by_project_name(name)
-        return activity'''
+        project = adm.get_project_by_name(project)
+        return project
 
 
 # ProjectUser
