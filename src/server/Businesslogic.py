@@ -1475,6 +1475,42 @@ class Businesslogic():
         print(res_e)
         return res_e
 
+    def get_all_vacation_illness_event_bookings_for_user(self, user):
+        '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
+        und dieser wird dann in der Tabelle Eventbooking eingefügt 
+        und dort wird dann nach dem FK Eventid gesucht'''
+
+        res_e = []
+
+        with BookingMapper() as mapper:
+            eventbookings = mapper.find_event_bookings_by_user_id(
+                user.get_id())
+
+        for elem in eventbookings:
+            eventbookingid = elem.get_event_booking_id()
+            with EventBookingMapper() as mapper:
+                eventbooking = mapper.find_by_key(eventbookingid)
+                id = eventbooking.get_event_id()
+            with EventMapper() as mapper:
+                events = mapper.find_by_key(id)
+                type = events.get_type()
+            if type == 'illnessStart':
+                res = self.get_illness_begin_by_id(
+                    events.get_illness_begin_id())
+                res_e.append(res)
+            if type == 'illnessEnd':
+                res = self.get_illness_end_by_id(events.get_illness_begin_id())
+                res_e.append(res)
+            if type == 'vacationStart':
+                res = self.get_vacation_begin_by_id(
+                    events.get_vacation_begin_id())
+                res_e.append(res)
+            if type == 'vacationEnd':
+                res = self.get_vacation_end_by_id(events.get_vacation_end_id())
+                res_e.append(res)
+        print(res_e)
+        return res_e
+
     def delete_timeinterval_booking(self, bookingid):
 
         with BookingMapper() as mapper:

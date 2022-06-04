@@ -13,6 +13,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
+import SelectEndEventDialog from './SelectEndEventDialog';
 import VacationBO from '../API/VacationBO';
 import IllnessBO from '../API/IllnessBO'
 import WorkBO from '../API/WorkBO'
@@ -44,9 +45,12 @@ class TimeIntervalBookings extends Component {
             workTimeAccountId:0,
             userId: 1,
             showSelectEventDialog: false,
+            showSelectEndEventDialog: false,
             eventBookingId: 0,
             timeintervalBookingId: 0,
             activityId: 0,
+            vacationIllnessEvents: [],
+            event: Date
             
          }
     }
@@ -94,6 +98,17 @@ class TimeIntervalBookings extends Component {
         }
        }
 
+    getEventBookings = () => {
+        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(1).then(vacationBOs =>
+            this.setState({  
+                vacationIllnessEvents: vacationBOs,
+            }, function(){
+                console.log(this.state.vacationIllnessEvents)
+            }))
+    }
+
+    componentDidMount() {
+    this.getEventBookings()}
 
 
     handleChange = (e) =>{
@@ -117,11 +132,38 @@ class TimeIntervalBookings extends Component {
             showSelectEventDialog: true
         })
       }
-    
-    handleClose = () =>{
+    handleEndClickOpen = () => {
         this.setState({
-            showSelectEventDialog: false
+            showSelectEndEventDialog: true
         })
+      }
+    
+    handleClose = (newEvent) =>{
+        if (newEvent) {
+            this.setState({
+              start: newEvent,
+              showSelectEventDialog: false
+
+            });
+        }
+        else{
+            this.setState({
+            showSelectEventDialog: false
+        })}
+      }
+
+    handleEndClose = (newEvent) =>{
+        if (newEvent) {
+            this.setState({
+              end: newEvent,
+              showSelectEndEventDialog: false
+
+            });
+        }
+        else{
+            this.setState({
+            showSelectEndEventDialog: false
+        })}
       }
     
 
@@ -147,7 +189,7 @@ class TimeIntervalBookings extends Component {
                 </Grid>
                 <Grid container spacing={2}  alignItems="center">
                     <Grid item xs={12}>
-                        <FormControl sx={{ minWidth: 220}}>
+                        <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Type</InputLabel>
                             <Select
                                 name="type"
@@ -165,8 +207,9 @@ class TimeIntervalBookings extends Component {
                         </FormControl>
                     </Grid>
                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    <Grid item xs={12} sm={2} >
-                        {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
+                    
+                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
+                            <Grid item xs={12} sm={9} >
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -177,8 +220,12 @@ class TimeIntervalBookings extends Component {
                                     }}
                                     minDate={new Date('2022-01-01')}
                                 />
-                            </LocalizationProvider> :
+                                
+                            </LocalizationProvider> 
+                            </Grid>
+                            :
 
+                            <Grid item xs={12} sm={3} >
                              <LocalizationProvider dateAdapter={AdapterDateFns}>
                              <DateTimePicker
                                  renderInput={(props) => <TextField {...props} />}
@@ -193,14 +240,17 @@ class TimeIntervalBookings extends Component {
                                 }
                              />
                          </LocalizationProvider>
-                        }
-                    </Grid>
-                    <Grid xs={12} sm={10} item>
+                        
+                    </Grid>}
+                    {(this.state.type === "vacation" || this.state.type === "illness")?
+                    <Grid xs={12} sm={9} item>
                         <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
-                    </Grid> 
+                    </Grid>:
+                    null}
                      {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    <Grid xs={12} sm={2} item >
-                    {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
+                    
+                    {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
+                        <Grid xs={12} sm={9} item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -211,7 +261,10 @@ class TimeIntervalBookings extends Component {
                                     }}
                                     minDate={new Date('2022-01-01')}
                                 />
-                        </LocalizationProvider>:
+                        </LocalizationProvider>
+                        </Grid>
+                        :
+                        <Grid xs={12} sm={3} item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 renderInput={(props) => <TextField {...props} />}
@@ -226,17 +279,19 @@ class TimeIntervalBookings extends Component {
                                 }
                                 
                             />
-                        </LocalizationProvider>}
-                    </Grid>
-                    <Grid xs={12}  sm={8} item>
-                        <Button variant="contained" onClick={this.handleClickOpen}>Select Event</Button>
-                    </Grid>
+                        </LocalizationProvider>
+                    </Grid>}
+                    {(this.state.type === "vacation" || this.state.type === "illness")?
+                    <Grid xs={12}  sm={9} item>
+                        <Button variant="contained" onClick={this.handleEndClickOpen}>Select Event</Button>
+                    </Grid>:
+                    null}
                     <Grid xs={12}sm={4} item>
                      {/*
                     Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
                     */}
                     {this.state.type === "projectwork" && 
-                    <FormControl sx={{ minWidth: 220}}>
+                    <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Select Project</InputLabel>
                             <Select
                                 name="project"
@@ -250,7 +305,7 @@ class TimeIntervalBookings extends Component {
                     </Grid>
                     <Grid xs={12} sm={10} item>
                     {this.state.type === "projectwork" &&
-                    <FormControl sx={{ minWidth: 220}}>
+                    <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Select Activity</InputLabel>
                             <Select
                                 name="activity"
@@ -269,7 +324,9 @@ class TimeIntervalBookings extends Component {
                 </Grid>
                 </Card>
 
-                <SelectEventDialog show={this.state.showSelectEventDialog} onClose={this.handleClose}></SelectEventDialog>
+                <SelectEventDialog handleStartDateChange={this.handleStartDateChange} handlechange={this.handleChange} vacationIllnessEvents={this.state.vacationIllnessEvents} getEventBookings={this.getEventBookings} show={this.state.showSelectEventDialog} onClose={this.handleClose}></SelectEventDialog>
+                <SelectEndEventDialog handleEndDateChange={this.handleEndDateChange} handlechange={this.handleChange} vacationIllnessEvents={this.state.vacationIllnessEvents} getEventBookings={this.getEventBookings} show={this.state.showSelectEndEventDialog} onClose={this.handleEndClose}></SelectEndEventDialog>
+
             </div>
           
          );

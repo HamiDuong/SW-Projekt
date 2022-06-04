@@ -1,18 +1,27 @@
 import BusinessObject from '../BusinessObject'
 
 export default class VacationEndBO extends BusinessObject {
-    constructor(time) {
+    constructor(time, type) {
         super();
-        this.time = time
+        this.time = time,
+        this.type = type
     }
 
     //Getter und Setter
+    getTime(time) {
+        this.time = time;
+    }
+
     setTime(time) {
         this.time = time;
     }
 
-    getTime() {
-        return this.time;
+    setType() {
+        this.type = type;
+    }
+
+    getType() {
+        return this.type;
     }
 
 

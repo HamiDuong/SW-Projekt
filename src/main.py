@@ -3134,6 +3134,21 @@ class EventBookingOperationsWithParam(Resource):
             return eventbookings
 
 
+@worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness')
+@worktimeapp.param('id', 'Die User ID')
+class EventBookingOperationsWithParam(Resource):
+    @worktimeapp.marshal_with(event_subclass)
+    def get(self, id):
+        adm = Businesslogic()
+        user = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
+        if user is not None:
+            # Jetzt erst lesen wir die Konten des Customer aus.
+            eventbookings = adm.get_all_vacation_illness_event_bookings_for_user(user)
+            return eventbookings
+
+
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
 müssen nun die App auch tatsächlich zu starten.

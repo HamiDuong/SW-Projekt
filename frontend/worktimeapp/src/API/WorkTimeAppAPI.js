@@ -96,6 +96,7 @@ export default class WorkTimeAppAPI {
     //Booking URLS
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
     #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
+    #getVacationAndIllnessEventBookings = (id)  => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
 
 
     //Beginn aller Event-BOs
@@ -205,7 +206,7 @@ export default class WorkTimeAppAPI {
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
 
-
+    
 
 
     static getAPI() {
@@ -1155,6 +1156,18 @@ export default class WorkTimeAppAPI {
             })
           })
     }
+
+    getVacationIllnessEventBookings(customerID){
+        return this.#fetchAdvanced(this.#getVacationAndIllnessEventBookings(customerID))
+        .then((responseJSON) => {
+        let vacationBOs = VacationStartBO.fromJSON(responseJSON);
+        console.info(vacationBOs);
+        return new Promise(function (resolve) {
+          resolve(vacationBOs);
+        })
+      })
+     }
+    
 }
 
 
