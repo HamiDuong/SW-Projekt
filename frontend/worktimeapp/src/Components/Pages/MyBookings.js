@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
 import { 
     FormControl, 
-    TableHead, 
-    TableRow, 
-    TableCell, 
-    TableContainer,
     Box,
-    Paper,
-    Table,
-    TableBody,
     Button,
     FormControlLabel,
     Radio,
@@ -18,17 +11,27 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Checkbox
+    TableCell,
+    Paper,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableBody
 } from '@mui/material';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import EditBooking from '../Dialog/EditBooking';
+import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
+import MyBookingsEventEntry from '../MyBookingsEventEntry';
 
 const header = [
-    {
-        id: '',
-        name: '',
-        numeric: false,
-        disablePadding: false,
-        label: ''
-    },
+    // {
+    //     id: '',
+    //     name: '',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: ''
+    // },
     {
         id: 'bookingtype',
         name: 'Booking Type',
@@ -43,13 +46,6 @@ const header = [
         disablePadding: false,
         label: 'Type'
     },
-/*     {
-        id: 'date',
-        name: 'Date',
-        numeric: false,
-        disablePadding: false,
-        label: 'Date'
-    }, */
     {
         id: 'start',
         name: 'Start Date',
@@ -73,96 +69,63 @@ const header = [
     }
 ]
 
-const bookings = [
-    {
-        bookingtype:'Event',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start: new Date('2022-05-05T08:30:00').toLocaleString(),
-        end:'-',
-        remarks:''
-    },
-    {
-        bookingtype:'Event',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start:'-',
-        end: new Date('2022-05-05T18:30:00').toLocaleString(),
-        remarks:''
-    },
-    {
-        bookingtype:'Time Interval',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start:new Date('2022-05-05T08:30:00').toLocaleString(),
-        end:new Date('2022-05-05T18:30:00').toLocaleString(),
-        remarks:''
-    },
-    {
-        bookingtype:'Event',
-        type:'Break',
-        date: '2022-05-05',
-        start:'12:00',
-        end:'-',
-        remarks:''
-    },
-    {
-        bookingtype:'Time Interval',
-        type:'Break',
-        date: '2022-05-05',
-        start:'12:00',
-        end:'EMPTY',
-        remarks:'Open Interval, no End Event'
-    },                    
-]
-
-let intervalbookings = [
-    {
-        id: '1',
-        dateoflastchange: new Date('2022-05-05T18:30:00').toLocaleString(),
-        start: new Date('2022-05-05T08:30:00').toLocaleString(),
-        end: new Date('2022-05-05T18:30:00').toLocaleString(),
-        startevent: '1',
-        endevent: '2',
-        type: 'Work'
-    },
-    {
-        id: '2',
-        dateoflastchange: new Date('2022-05-05T12:30:00').toLocaleString(),
-        start: new Date('2022-05-05T12:30:00').toLocaleString(),
-        end: null,
-        startevent: '1',
-        endevent: null,
-        type: 'Break'
-    }
-]
-
-// let eventbookings = [
-//     {
-//         id: '1',
-//         dateoflastchange: new Date('2022-05-05T08:30:00'),
-//         time: new Date('2022-05-05T08:30:00')
-//     },
-//     {
-//         id: '2',
-//         dateoflastchange: new Date('2022-05-05T18:30:00'),
-//         time: new Date('2022-05-05T18:30:00')
-//     },
-//     {
-//         id: '1',
-//         dateoflastchange: new Date('2022-05-05T12:30:00'),
-//         time: new Date('2022-05-05T12:30:00')
-//     }
-// ]
-
-
-// let work = WorkBO(new Date('1995-12-17T03:24:00').toLocaleString(), new Date('1995-12-17T03:24:00').toLocaleString(), 1, 2, 'Work');
-// let pause = BreakBO(new Date('1995-12-17T03:24:00').toLocaleString(), new Date('1995-12-17T03:24:00').toLocaleString(), 1, 2, 'Work')
-
-// let hold = [
-//     work,
-//     pause
-// ]
+const fakebackend = {
+    "timeintervals": [
+        {
+            "start":"2022-05-30 08:00:00",
+            "end":"2022-05-30 18:00:00",
+            "start_event": 1,
+            "end_event": 2,
+            "type": "Work",
+            "id": 19,
+            "date_of_last_change":"2022-05-30 18:00:00"
+        },
+        {
+            "start":"2022-05-30 12:00:00",
+            "end":"2022-05-30 12:30:00",
+            "start_event": 3,
+            "end_event": 4,
+            "type": "Break",
+            "id": 20,
+            "date_of_last_change":"2022-05-30 "
+        },
+        {
+            "start":"2022-05-30 15:00:00",
+            "end":null,
+            "start_event": null,
+            "end_event": null,
+            "type": "Break",
+            "id": 21,
+            "date_of_last_change":"2022-05-30 15:00:00"
+        }
+    ],
+    "events":[
+        {
+            "time": "2022-05-30 8:00:00",
+            "type": "coming",
+            "id": 1,
+            "date_of_last_change": "2022-05-30 08:00:00"
+        },
+        {
+            "time": "2022-05-30 18:00:00",
+            "type": "going",
+            "id": 2,
+            "date_of_last_change": "2022-05-30 18:00:00"
+        },
+        {
+            "time": "2022-05-30 12:00:00",
+            "type": "breakbegin",
+            "id": 3,
+            "date_of_last_change": "2022-05-30 12:00:00"
+        },
+        {
+            "time": "2022-05-30 12:30:00",
+            "type": "breakend",
+            "id": 4,
+            "date_of_last_change": "2022-05-30 12:30:00"
+        }        
+    ]
+}
 
 /***
  * Steps:
@@ -179,17 +142,21 @@ class MyBookings extends Component {
             intervalbookings: [],
             eventbookings: [],
 
-            filterdintervalbookings: [],
-            filterdeventbookings: [],
+            filteredintervalbookings: [],
+            filteredeventbookings: [],
+
+            renderedbookings: [],
 
             bookingtype: 'all',
-            typefilter: '',
+            typefilter: null,
             startfilter: null,
             endfilter: null,
 
             loadingInProgress: false,
             showResetButton: true,
             error: null,
+
+            showEditWindow: false
         }
     }
 
@@ -197,19 +164,21 @@ class MyBookings extends Component {
         this.setState({ [ev.target.name] : ev.target.value });
     };
 
-    print = () => {
-        console.log(this.state.bookingtype);
-        console.log(this.state.typefilter);
-        this.setState({
-            showResetButton: false
-        })
-        console.log(this.state.showResetButton);
-        console.log(this.state.startfilter);
-        console.log(this.state.endfilter);
+    componentDidMount(){
+        this.getBookings();
     }
 
-    componentDidMount(){
-        //Methoden welche direkt aufgerufen werden sollen beim Instanziieren des Objects
+    getBookings = () => {
+        this.setState({
+            intervalbookings: fakebackend.timeintervals,
+            eventbookings: fakebackend.events,
+            filteredintervalbookings: fakebackend.timeintervals,
+            filteredeventbookings: fakebackend.events            
+        },function(){
+            console.log("ComponentDidMount")
+        })
+        console.log("getBookings")
+
     }
 
     setFilter = () => {
@@ -237,36 +206,103 @@ class MyBookings extends Component {
     }
 
     printState = () => {
+        console.log(this.state.intervalbookings);
+        console.log(this.state.eventbookings);
         console.log(this.state.bookingtype);
         console.log(this.state.typefilter);
         console.log(this.state.startfilter);
         console.log(this.state.endfilter);
+        console.log(this.state.showEditWindow);
     }
 
-    getIntervalBookings = () => {
+    filterBookings = () => {
+        //Sort for Bookingtype
+        if (this.state.bookingtype == "all"){
+            this.setState({
+                renderedbookings: this.state.filteredintervalbookings.concat[this.state.filteredeventbookings]
+            }, function(){
+                console.log("Bookingtype: All")
+            })
+        }else if(this.state.bookingtype == "timeinterval"){
+            this.setState({
+                renderedbookings:this.state.filteredintervalbookings
+            }, function(){
+                console.log("Bookingtype: Timeinterval")
+            })
+        }else{
+            this.setState({
+                renderedbookings:this.state.filteredeventbookings
+            }, function(){
+                console.log("Bookingtype: Event")
+            })
 
+        }
     }
 
-    makeRows = () => {
-        let holder = this.state.bookings;
-        let res = []
-        holder.forEach(elem => {
-            let p = {
-                bookingtype: "Interval",
-                type: elem.type,
-                start: elem.start.toLocaleString(),
-                end: elem.end.toLocaleString(),
-                remarks: ""
-            }
-            res.append(p);
-        })
-        this.state({
-            intervalbookings: res
-        })
+    renderIntervalBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredintervalbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Interval</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.start}</TableCell>
+                        <TableCell>{row.end}</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>           
+        )
+    }
+
+    renderEventBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredeventbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Event</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.time}</TableCell>
+                        <TableCell>-</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>    
+                )}
+            </TableBody>            
+        )
+    }
+
+    updateBooking = (obj) => {
+        let newBooking = null;
+        switch(obj.type){
+            case "Break":
+                newBooking = WorkTimeAppAPI.getAPI().updateBreak(obj)
+            
+            case "Flex Day":
+                newBooking = WorkTimeAppAPI.getAPI().updateFlexDay(obj)
+
+            case "Illness":
+                newBooking = WorkTimeAppAPI.getAPI().updateIllness(obj)
+
+            case "Project Duration":
+                newBooking = WorkTimeAppAPI.getAPI().updateProjectDuration(obj)
+
+            case "Projekt Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
+
+            case "Vacation":
+                newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
+
+            case "Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
+
+        }
+        //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
+        //gibt das passende Element zurück
         
-    }
+        //irgendwo müssen neue Werte abgespeichert werden
+        //set Attribute auf bestehendes Objekt
 
-    getEventBookings = () => {
+        //updateFunktion
 
     }
     
@@ -288,6 +324,15 @@ class MyBookings extends Component {
     //         filteredbookings: res
     //     })
     // }
+
+    editRow = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showEditWindow: true
+        },function(){
+            console.log("Editwindow wird geöffnet")
+        })
+    }
 
     render(){
         return(
@@ -371,7 +416,6 @@ class MyBookings extends Component {
                         Print State
                     </Button>
                 </Box>
-
                 <Box sx={{width: '100%'}}>
                     <Paper sx={{width: '100%', mb: 2}}>
                         <TableContainer>
@@ -392,31 +436,35 @@ class MyBookings extends Component {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        bookings.map( row =>
-                                        <TableRow
-                                            hover true
-                                        >
-                                            {/* <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.start}</TableCell>
-                                            <TableCell>{row.end}</TableCell> */}
-                                            <TableCell
-                                                padding="checkbox">
-                                                    <Checkbox
-                                                        color="primary"
-                                                    >                                                        
-                                                    </Checkbox>
+                                        this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
+                                    }
 
-                                            </TableCell>
-                                            <TableCell>{row.bookingtype}</TableCell>
+                                    {/* {this.state.filteredintervalbookings.map(row =>
+                                        <TableRow
+                                            hover
+                                            onClick = {() => console.log("Click")}
+                                        >
+                                            <TableCell>Interval</TableCell>
                                             <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.date}</TableCell>
                                             <TableCell>{row.start}</TableCell>
                                             <TableCell>{row.end}</TableCell>
-                                            <TableCell>{row.remarks}</TableCell>
-
+                                            <TableCell>Remark</TableCell>
                                         </TableRow>
-                                        )
-                                    }
+                                    )} */}
+                                </TableBody>
+                                <TableBody>
+                                    {/* {
+                                        this.state.filteredeventbookings.map( row => <MyBookingsEventEntry key={row.getId()} booking={row}/>)
+                                    } */}
+                                    {/* {this.state.filteredeventbookings.map(row =>
+                                        <TableRow>
+                                            <TableCell>Event</TableCell>
+                                            <TableCell>{row.type}</TableCell>
+                                            <TableCell>{row.time}</TableCell>
+                                            <TableCell>-</TableCell>
+                                            <TableCell>Remark</TableCell>
+                                        </TableRow>    
+                                    )} */}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -428,3 +476,4 @@ class MyBookings extends Component {
 }
  
 export default MyBookings;
+

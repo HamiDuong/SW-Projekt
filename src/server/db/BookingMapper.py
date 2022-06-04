@@ -35,13 +35,13 @@ class BookingMapper (Mapper):
 
         return result
 
-    def find_by_work_time_account_id(self, workTimeAccountId):
-        """Auslesen aller Bookings eines bestimmten Zeitkontos.
+    def find_by_user_id(self, userId):
+        """Auslesen aller Bookings eines bestimmten Users.
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} ORDER BY id".format(
-            workTimeAccountId)
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE userId={} ORDER BY id".format(
+            userId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -61,13 +61,13 @@ class BookingMapper (Mapper):
 
         return result
 
-    def find_timeinterval_bookings_by_work_time_account_id(self, workTimeAccountId):
+    def find_timeinterval_bookings_by_user_id(self, userId):
         """Auslesen aller Bookings eines bestimmten Zeitkontos.
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} AND type='T' ORDER BY id".format(
-            workTimeAccountId)
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE userId={} AND type='T' ORDER BY id".format(
+            userId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -87,13 +87,13 @@ class BookingMapper (Mapper):
 
         return result
 
-    def find_event_bookings_by_work_time_account_id(self, workTimeAccountId):
+    def find_event_bookings_by_user_id(self, userId):
         """Auslesen aller Bookings eines bestimmten Zeitkontos.
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE workTimeAccountId={} AND type='E' ORDER BY id".format(
-            workTimeAccountId)
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId FROM bookings WHERE userId={} AND type='E' ORDER BY id".format(
+            userId)
         cursor.execute(command)
         tuples = cursor.fetchall()
 

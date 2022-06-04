@@ -1,5 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.ProjectUserBO import ProjectUserBO
+from datetime import datetime
 
 class ProjectUserMapper(Mapper):
     def __init__(self):
@@ -15,13 +16,14 @@ class ProjectUserMapper(Mapper):
         cursor.execute("SELECT * from projectusers")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, project_id, user_id, capacity) in tuples:
+        for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:
             projectuserobj = ProjectUserBO()
             projectuserobj.set_id(id)
             projectuserobj.set_date_of_last_change(dateOfLastChange)
-            projectuserobj.set_project_id(project_id)
-            projectuserobj.set_user_id(user_id)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
             projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
 
             result.append(projectuserobj)
 
@@ -41,13 +43,14 @@ class ProjectUserMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, project_id, user_id, capacity) = tuples[0]
+            (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) = tuples[0]
             projectuserobj = ProjectUserBO()
             projectuserobj.set_id(id)
             projectuserobj.set_date_of_last_change(dateOfLastChange)
-            projectuserobj.set_project_id(project_id)
-            projectuserobj.set_user_id(user_id)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
             projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
             result = projectuserobj
 
         self._cnx.commit()
@@ -65,11 +68,17 @@ class ProjectUserMapper(Mapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM projectusers")
         tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            projectuser_obj.set_id(maxid[0]+1)
+        timestamp = datetime.today()
+        projectuser_obj.set_date_of_last_change(timestamp)    
 
-        command = "INSERT INTO projectusers (id, dateOfLastChange, project_id, user_id, capacity) VALUES (%s, %s, %s, %s, %s)"
-        data = (projectuser_obj.get_id(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_project_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity())
+        for (maxid) in tuples:
+            if maxid[0] == None:
+                projectuser_obj.set_id(1)
+            else:
+                projectuser_obj.set_id(maxid[0]+1)
+
+        command = "INSERT INTO projectusers (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (projectuser_obj.get_id(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_project_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -85,8 +94,11 @@ class ProjectUserMapper(Mapper):
     def update (self, projectuser_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE projectusers " + "SET project_id=%s, user_id=%s WHERE capacity=%s"
-        data = (projectuser_obj.get_(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity())
+        timestamp = datetime.today()
+        projectuser_obj.set_date_of_last_change(timestamp)
+
+        command = "UPDATE projectusers " + "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (projectuser_obj.get_(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(),projectuser_obj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -111,20 +123,20 @@ class ProjectUserMapper(Mapper):
     param: id (int) - UserId vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit user_id = id
     """
-    def find_all_project_members(self, project_id):
+    def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from projectusers WHERE project_id = {}",format(project_id) )
+        cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, project_id, user_id, capacity) in tuples:
+        for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:
             projectuserobj = ProjectUserBO()
             projectuserobj.set_id(id)
             projectuserobj.set_date_of_last_change(dateOfLastChange)
-            projectuserobj.set_project_id(project_id)
-            projectuserobj.set_user_id(user_id)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
             projectuserobj.set_capacity(capacity)
-
+            projectuserobj.set_current_capacity(currentCapacity)
             result.append(projectuserobj)
 
         self._cnx.commit()

@@ -32,6 +32,30 @@ class EventBookingMapper (Mapper):
 
         return result
 
+    def find_last_entry(self):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM eventbookings ORDER BY id DESC LIMIT 1"
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, eventId) = tuples[0]
+            eventbooking = EventBookingBO()
+            eventbooking.set_id(id)
+            eventbooking.set_date_of_last_change(dateOfLastChange)
+            eventbooking.set_event_id(eventId)
+            result = eventbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_event_id(self, eventId):
         """ Auslesen aller Bookings nach eventsIds. 
         """

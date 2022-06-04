@@ -1,5 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.UserBO import UserBO
+from datetime import datetime
 
 """
 @author Marco
@@ -13,6 +14,9 @@ class UserMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.users ")
         tuples = cursor.fetchall()
+
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
@@ -116,7 +120,7 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users WHERE googleUserId={}".format(key)
+        command = "SELECT * FROM worktimeapp.users WHERE googleUserId='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -124,7 +128,7 @@ class UserMapper(Mapper):
             (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
             user = UserBO()
             user.set_id(id)
-            user._date_of_last_change(dateOfLastChange)
+            user.set_date_of_last_change(dateOfLastChange)
             user.set_first_name(firstName)
             user.set_last_name(lastName)
             user.set_mail_adress(mailAdress)
@@ -140,15 +144,16 @@ class UserMapper(Mapper):
 
         return result
 
-    def find_by_mail_adress(self, key):
-        result = []
+    def find_by_mail(self, key):
+        result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users WHERE mailAdress={}".format(key)
+        command = "SELECT * FROM worktimeapp.users WHERE mailAdress='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) in tuples:
+        try:
+            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
             user = UserBO()
             user.set_id(id)
             user.set_date_of_last_change(dateOfLastChange)
@@ -156,7 +161,11 @@ class UserMapper(Mapper):
             user.set_last_name(lastName)
             user.set_mail_adress(mailAdress)
             user.set_google_user_id(googleUserId)
-            result.append(user)
+            result = user
+        except IndexError:
+            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
+            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
+            result = None
 
         self._cnx.commit()
         cursor.close()
@@ -188,9 +197,12 @@ class UserMapper(Mapper):
 
     def update(self, user):
         cursor = self._cnx.cursor()
+    
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s WHERE id=%s"
-        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_id())
+        command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_date_of_last_change(),user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

@@ -94,7 +94,7 @@ class WorkTimeAccountMapper(Mapper):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE user_id={}".format(key)
+        command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE userId={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
