@@ -1,4 +1,19 @@
 import React, { Component } from 'react';
+import BoilingVerdict from './exampl'
+import BasicSelect from '../dropdown';
+import { FormControl } from '@mui/material';
+import { FormHelperText } from '@mui/material';
+import { Input } from '@mui/material';
+import { InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
+import { MenuItem } from '@mui/material';
+import DropDown from './dropDownTrial';
+import { Box } from '@mui/material';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import Project from '../../API/ProjectBO';
+import { Button } from '@mui/material';
+import IndividualTimeEntry from './IndividualTimeEntry';
+
 
 class IndividualTime extends Component {
     constructor(props) {
@@ -7,7 +22,8 @@ class IndividualTime extends Component {
         this.handleAgeChange = this.handleAgeChange.bind(this);
         this.state = {
             temperature: '',
-            age: ''
+            age: '',
+            project: ''
         };
     }
 
@@ -18,6 +34,7 @@ class IndividualTime extends Component {
     handleAgeChange(e) {
         this.setState({ age: e.target.value });
     }
+
 
     render() {
         const temperature = this.state.temperature;
@@ -47,6 +64,7 @@ class IndividualTime extends Component {
                     <BoilingVerdict
                         celsius={(temperature)} />
                 </fieldset>
+                <IndividualTimeEntry />
             </div>
         );
     }

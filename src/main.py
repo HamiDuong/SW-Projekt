@@ -833,15 +833,15 @@ class ProjectWithIDOperations(Resource):
             return '', 50
 
 
-'''@worktimeapp.route('/project/<str:name>')
+@worktimeapp.route('/projects/<name>')
 @worktimeapp.param('name', 'Der Name des Projekts')
 class ProjectWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(project)
     # @secured
     def get(self, name):
         adm = Businesslogic()
-        activity = adm.get_by_project_name(name)
-        return activity'''
+        activity = adm.get_project_by_name(name)
+        return activity
 
 
 # ProjectUser

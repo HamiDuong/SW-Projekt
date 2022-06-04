@@ -47,7 +47,6 @@ from .bo.eventBOs.FlexDayStart import FlexDayStartBO
 from .db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
 from .bo.eventBOs.FlexDayEndBO import FlexDayEndBO
 from .db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
-
 from .bo.BookingBO import BookingBO
 from .db.BookingMapper import BookingMapper
 from .bo.EventBookingBO import EventBookingBO
@@ -1248,10 +1247,6 @@ class Businesslogic():
     '''def get_user_by_first_name(self, first_name):
         with UserMapper() as mapper:
             return mapper.find_by_first_name(first_name)
-<<<<<<< HEAD
-=======
-
->>>>>>> 117c65fdfdb7dcd2c1767e39ca9739db915238f3
     def get_user_by_last_name(self, last_name):
         with UserMapper() as mapper:
             return mapper.find_by_last_name(last_name)'''
@@ -1419,3 +1414,9 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
+
+    def get_project_by_name(self, name):
+        projects = self.get_all_projects()
+        for elem in projects:
+            if elem.get_name() == name:
+                return elem

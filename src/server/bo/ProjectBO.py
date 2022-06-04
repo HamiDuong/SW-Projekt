@@ -1,15 +1,16 @@
 from server.bo import BusinessObject as bo
 
+
 class ProjectBO(bo.BusinessObject):
     """Klasse Projekt.
     Ein Projekt besteht aus Projektleiter und Mitarbeiter
     """
+
     def __init__(self):
         super().__init__()
         self._name = None
         self._commissioner = None
         self._user_id = None
-        self._duration = None
 
     def get_name(self):
         """Auslesen des Namen"""
@@ -35,19 +36,11 @@ class ProjectBO(bo.BusinessObject):
         """Setzen der User ID"""
         self._user_id = user_id
 
-    def get_duration(self,):
-        """Auslesen der Projektdauer"""
-        return self._duration
-
-    def set_duration(self, duration):
-        """Setzen der Projektdauer"""
-        self._duration = duration
-
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-        
+
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
-        return "Customer: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_commissioner(), self.get_user_id, self.get_duration())
+        return "Customer: {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_commissioner(), self.get_user_id())
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -55,8 +48,7 @@ class ProjectBO(bo.BusinessObject):
         obj = ProjectBO()
         obj.set_id(dictionary["id"])
         obj.set_date_of_last_change(dictionary["date_of_last_change"])
-        obj.set_name(dictionary["name"])  
+        obj.set_name(dictionary["name"])
         obj.set_commissioner(dictionary["commissioner"])
         obj.set_user_id(dictionary["user_id"])
-        obj.set_duration(dictionary["duration"])
         return obj

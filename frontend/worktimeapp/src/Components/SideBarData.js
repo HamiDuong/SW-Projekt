@@ -20,51 +20,75 @@ export const SideBarData = [
     {
         title: 'MyProfile',
         path: '/myprofile',
-        icon: <AccountCircleIcon/>,
-        className : 'nav-text'
+        icon: <AccountCircleIcon />,
+        className: 'nav-text'
+    },
+    {
+        title: 'Example',
+        path: '/Example',
+        icon: <AccountCircleIcon />,
+        className: 'nav-text'
+    },
+    {
+        title: 'IndividualEntry',
+        path: '/IndividualEntry',
+        icon: <AccountCircleIcon />,
+        className: 'nav-text'
+    },
+    {
+        title: 'SelectionProjects',
+        path: '/SelectionProjects',
+        icon: <AccountCircleIcon />,
+        className: 'nav-text'
+    },
+    {
+        title: 'Individual',
+        path: '/Individual',
+        icon: <AccountCircleIcon />,
+        className: 'nav-text'
     },
     {
         title: 'MyWorkTime',
         path: '/myworktime',
-        icon: <WorkIcon/>,
-        className : 'nav-text'
+        icon: <WorkIcon />,
+        className: 'nav-text'
     },
     {
         title: 'MyProjects',
         path: '/myprojects',
-        icon: <AssignmentIcon/>,
-        className : 'nav-text'
+        icon: <AssignmentIcon />,
+        className: 'nav-text'
     },
     {
         title: 'CreateProjects',
         path: '/createprojects',
-        icon: <TaskIcon/>,
-        className : 'nav-text'
+        icon: <TaskIcon />,
+        className: 'nav-text'
     },
-    
+
     {
         title: 'MyBookings',
         path: '/mybookings',
-        icon: <PostAddIcon/>,
-        className : 'nav-text'
+        icon: <PostAddIcon />,
+        className: 'nav-text'
     },
     {
         title: 'TimeIntervalBookings',
         path: '/timeintervalbookings',
-        icon: <AccessTimeIcon/>,
-        className : 'nav-text'
+        icon: <AccessTimeIcon />,
+        className: 'nav-text'
     },
     {
         title: 'EventBookings',
         path: '/eventbookings',
-        icon: <AccessTimeFilledIcon/>,
-        className : 'nav-text'
+        icon: <AccessTimeFilledIcon />,
+        className: 'nav-text'
     },
     {
         title: 'MyProjectsTEST',
         path: '/myprojectstest',
-        icon: <AssignmentIcon/>,
+        icon: <AssignmentIcon />,
         className: 'nav-text'
     }
-    
+
 ]

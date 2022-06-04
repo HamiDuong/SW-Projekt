@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import { 
-    FormControl, 
+import React, { Component } from 'react';
+import {
+    FormControl,
     Box,
     Button,
     FormControlLabel,
@@ -69,34 +69,34 @@ const header = [
 const fakebackend = {
     "timeintervals": [
         {
-            "start":"2022-05-30 08:00:00",
-            "end":"2022-05-30 18:00:00",
+            "start": "2022-05-30 08:00:00",
+            "end": "2022-05-30 18:00:00",
             "start_event": 1,
             "end_event": 2,
             "type": "Work",
             "id": 19,
-            "date_of_last_change":"2022-05-30 18:00:00"
+            "date_of_last_change": "2022-05-30 18:00:00"
         },
         {
-            "start":"2022-05-30 12:00:00",
-            "end":"2022-05-30 12:30:00",
+            "start": "2022-05-30 12:00:00",
+            "end": "2022-05-30 12:30:00",
             "start_event": 3,
             "end_event": 4,
             "type": "Break",
             "id": 20,
-            "date_of_last_change":"2022-05-30 "
+            "date_of_last_change": "2022-05-30 "
         },
         {
-            "start":"2022-05-30 15:00:00",
-            "end":null,
+            "start": "2022-05-30 15:00:00",
+            "end": null,
             "start_event": null,
             "end_event": null,
             "type": "Break",
             "id": 21,
-            "date_of_last_change":"2022-05-30 15:00:00"
+            "date_of_last_change": "2022-05-30 15:00:00"
         }
     ],
-    "events":[
+    "events": [
         {
             "time": "2022-05-30 8:00:00",
             "type": "coming",
@@ -120,7 +120,7 @@ const fakebackend = {
             "type": "breakend",
             "id": 4,
             "date_of_last_change": "2022-05-30 12:30:00"
-        }        
+        }
     ]
 }
 
@@ -133,7 +133,7 @@ const fakebackend = {
  */
 
 class MyBookings extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             intervalbookings: [],
@@ -156,10 +156,10 @@ class MyBookings extends Component {
     }
 
     handleChange = ev => {
-        this.setState({ [ev.target.name] : ev.target.value });
+        this.setState({ [ev.target.name]: ev.target.value });
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.getBookings();
     }
 
@@ -168,8 +168,8 @@ class MyBookings extends Component {
             intervalbookings: fakebackend.timeintervals,
             eventbookings: fakebackend.events,
             filteredintervalbookings: fakebackend.timeintervals,
-            filteredeventbookings: fakebackend.events            
-        },function(){
+            filteredeventbookings: fakebackend.events
+        }, function () {
             console.log("ComponentDidMount")
         })
         console.log("getBookings")
@@ -198,7 +198,7 @@ class MyBookings extends Component {
             startfilter: starthold.value,
             endfilter: endhold.value,
             showResetButton: false
-        }, function(){
+        }, function () {
             console.log(this.state.startfilter);
         });
     }
@@ -210,7 +210,7 @@ class MyBookings extends Component {
             startfilter: null,
             endfilter: null,
             showResetButton: true
-        }, function(){
+        }, function () {
             console.log(this.state.startfilter)
         })
     }
@@ -243,22 +243,22 @@ class MyBookings extends Component {
 
     filterBookings = () => {
         //Sort for Bookingtype
-        if (this.state.bookingtype == "all"){
+        if (this.state.bookingtype == "all") {
             this.setState({
                 renderedbookings: this.state.filteredintervalbookings.concat[this.state.filteredeventbookings]
-            }, function(){
+            }, function () {
                 console.log("Bookingtype: All")
             })
-        }else if(this.state.bookingtype == "timeinterval"){
+        } else if (this.state.bookingtype == "timeinterval") {
             this.setState({
-                renderedbookings:this.state.filteredintervalbookings
-            }, function(){
+                renderedbookings: this.state.filteredintervalbookings
+            }, function () {
                 console.log("Bookingtype: Timeinterval")
             })
-        }else{
+        } else {
             this.setState({
-                renderedbookings:this.state.filteredeventbookings
-            }, function(){
+                renderedbookings: this.state.filteredeventbookings
+            }, function () {
                 console.log("Bookingtype: Event")
             })
 
@@ -266,7 +266,7 @@ class MyBookings extends Component {
     }
 
     renderIntervalBookings = () => {
-        return(
+        return (
             <TableBody>
                 {this.state.filteredintervalbookings.map(row =>
                     <TableRow>
@@ -277,12 +277,12 @@ class MyBookings extends Component {
                         <TableCell>Remark</TableCell>
                     </TableRow>
                 )}
-            </TableBody>           
+            </TableBody>
         )
     }
 
     renderEventBookings = () => {
-        return(
+        return (
             <TableBody>
                 {this.state.filteredeventbookings.map(row =>
                     <TableRow>
@@ -291,12 +291,12 @@ class MyBookings extends Component {
                         <TableCell>{row.time}</TableCell>
                         <TableCell>-</TableCell>
                         <TableCell>Remark</TableCell>
-                    </TableRow>    
+                    </TableRow>
                 )}
-            </TableBody>            
+            </TableBody>
         )
     }
-    
+
     // filterBookings = () => {
     //     let start = this.state.startfilter;
     //     let end = this.state.endfilter;
@@ -316,8 +316,8 @@ class MyBookings extends Component {
     //     })
     // }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 <h1>My Bookings</h1>
                 <div>
@@ -325,7 +325,7 @@ class MyBookings extends Component {
                         <FormLabel id="viewfilter"></FormLabel>
                         <RadioGroup
                             row
-                            name= 'bookingtype'
+                            name='bookingtype'
                             defaultValue="all"
                             onChange={this.handleChange}
                             value={this.state.bookingtype}
@@ -343,14 +343,14 @@ class MyBookings extends Component {
                         '& > :not(style)': { m: 1, width: '25ch' },
                     }}
                     noValidate
-                    autoComplete="off"                
+                    autoComplete="off"
                 >
                     <TextField
                         id="startfilter"
                         label="Start Date"
                         variant="standard"
                         format={'YYYY/MM/DD'}
-                        type = "date"
+                        type="date"
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -360,18 +360,18 @@ class MyBookings extends Component {
                         label="End Date"
                         variant="standard"
                         format={'YYYY/MM/DD'}
-                        type = "date"
+                        type="date"
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
-                    <FormControl sx={{ minWidth: 258}}>
+                    <FormControl sx={{ minWidth: 258 }}>
                         <InputLabel>Type</InputLabel>
                         <Select
-                        name='typefilter'
-                        value={this.state.typefilter}
-                        onChange={this.handleChange}
-                        variant="standard"
+                            name='typefilter'
+                            value={this.state.typefilter}
+                            onChange={this.handleChange}
+                            variant="standard"
                         >
                             <MenuItem value={"Work"}>Work</MenuItem>
                             <MenuItem value={"Flex Day"}>Flex Day</MenuItem>
@@ -387,7 +387,7 @@ class MyBookings extends Component {
                         Filter Results
                     </Button>
                     <Button
-                        disabled = {this.state.showResetButton}
+                        disabled={this.state.showResetButton}
                         onClick={this.resetFilter}
                     >
                         Remove Filter
@@ -398,15 +398,15 @@ class MyBookings extends Component {
                         Print State
                     </Button>
                 </Box>
-                <Box sx={{width: '100%'}}>
-                    <Paper sx={{width: '100%', mb: 2}}>
+                <Box sx={{ width: '100%' }}>
+                    <Paper sx={{ width: '100%', mb: 2 }}>
                         <TableContainer>
                             <Table>
                                 <TableHead>
                                     <TableRow>
                                         {header.map((headcell) => (
                                             <TableCell
-                                                key = {headcell.id}
+                                                key={headcell.id}
                                                 padding={headcell.disablePadding ? 'none' : 'normal'}
 
                                             >
@@ -419,7 +419,6 @@ class MyBookings extends Component {
                                 <TableBody>
                                     {this.state.filteredintervalbookings.map(row =>
                                         <TableRow
-                                            onClick = {() => handleClick(row.id)}
                                         >
                                             <TableCell>Interval</TableCell>
                                             <TableCell>{row.type}</TableCell>
@@ -437,7 +436,7 @@ class MyBookings extends Component {
                                             <TableCell>{row.time}</TableCell>
                                             <TableCell>-</TableCell>
                                             <TableCell>Remark</TableCell>
-                                        </TableRow>    
+                                        </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
@@ -448,6 +447,6 @@ class MyBookings extends Component {
         );
     }
 }
- 
+
 export default MyBookings;
 
