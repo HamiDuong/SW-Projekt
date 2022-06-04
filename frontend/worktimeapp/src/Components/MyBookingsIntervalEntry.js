@@ -46,6 +46,10 @@ class MyBookingsIntervalEntry extends Component {
         }
     }
 
+    componentDidMount(){
+        console.log(this.state.booking)
+    }
+
 
     render() { 
         return (
