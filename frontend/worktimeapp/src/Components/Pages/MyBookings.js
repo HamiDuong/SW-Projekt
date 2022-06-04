@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
 import { 
     FormControl, 
-    TableHead, 
-    TableRow, 
-    TableCell, 
-    TableContainer,
     Box,
-    Paper,
-    Table,
-    TableBody,
     Button,
     FormControlLabel,
     Radio,
@@ -18,17 +11,24 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    TableCell,
+    Paper,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableBody,
     Checkbox
 } from '@mui/material';
 
 const header = [
-    {
-        id: '',
-        name: '',
-        numeric: false,
-        disablePadding: false,
-        label: ''
-    },
+    // {
+    //     id: '',
+    //     name: '',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: ''
+    // },
     {
         id: 'bookingtype',
         name: 'Booking Type',
@@ -43,13 +43,6 @@ const header = [
         disablePadding: false,
         label: 'Type'
     },
-/*     {
-        id: 'date',
-        name: 'Date',
-        numeric: false,
-        disablePadding: false,
-        label: 'Date'
-    }, */
     {
         id: 'start',
         name: 'Start Date',
@@ -73,96 +66,63 @@ const header = [
     }
 ]
 
-const bookings = [
-    {
-        bookingtype:'Event',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start: new Date('2022-05-05T08:30:00').toLocaleString(),
-        end:'-',
-        remarks:''
-    },
-    {
-        bookingtype:'Event',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start:'-',
-        end: new Date('2022-05-05T18:30:00').toLocaleString(),
-        remarks:''
-    },
-    {
-        bookingtype:'Time Interval',
-        type:'Work',
-        date: new Date('1995-12-17T03:24:00').toLocaleString(),
-        start:new Date('2022-05-05T08:30:00').toLocaleString(),
-        end:new Date('2022-05-05T18:30:00').toLocaleString(),
-        remarks:''
-    },
-    {
-        bookingtype:'Event',
-        type:'Break',
-        date: '2022-05-05',
-        start:'12:00',
-        end:'-',
-        remarks:''
-    },
-    {
-        bookingtype:'Time Interval',
-        type:'Break',
-        date: '2022-05-05',
-        start:'12:00',
-        end:'EMPTY',
-        remarks:'Open Interval, no End Event'
-    },                    
-]
-
-let intervalbookings = [
-    {
-        id: '1',
-        dateoflastchange: new Date('2022-05-05T18:30:00').toLocaleString(),
-        start: new Date('2022-05-05T08:30:00').toLocaleString(),
-        end: new Date('2022-05-05T18:30:00').toLocaleString(),
-        startevent: '1',
-        endevent: '2',
-        type: 'Work'
-    },
-    {
-        id: '2',
-        dateoflastchange: new Date('2022-05-05T12:30:00').toLocaleString(),
-        start: new Date('2022-05-05T12:30:00').toLocaleString(),
-        end: null,
-        startevent: '1',
-        endevent: null,
-        type: 'Break'
-    }
-]
-
-// let eventbookings = [
-//     {
-//         id: '1',
-//         dateoflastchange: new Date('2022-05-05T08:30:00'),
-//         time: new Date('2022-05-05T08:30:00')
-//     },
-//     {
-//         id: '2',
-//         dateoflastchange: new Date('2022-05-05T18:30:00'),
-//         time: new Date('2022-05-05T18:30:00')
-//     },
-//     {
-//         id: '1',
-//         dateoflastchange: new Date('2022-05-05T12:30:00'),
-//         time: new Date('2022-05-05T12:30:00')
-//     }
-// ]
-
-
-// let work = WorkBO(new Date('1995-12-17T03:24:00').toLocaleString(), new Date('1995-12-17T03:24:00').toLocaleString(), 1, 2, 'Work');
-// let pause = BreakBO(new Date('1995-12-17T03:24:00').toLocaleString(), new Date('1995-12-17T03:24:00').toLocaleString(), 1, 2, 'Work')
-
-// let hold = [
-//     work,
-//     pause
-// ]
+const fakebackend = {
+    "timeintervals": [
+        {
+            "start":"2022-05-30 08:00:00",
+            "end":"2022-05-30 18:00:00",
+            "start_event": 1,
+            "end_event": 2,
+            "type": "Work",
+            "id": 19,
+            "date_of_last_change":"2022-05-30 18:00:00"
+        },
+        {
+            "start":"2022-05-30 12:00:00",
+            "end":"2022-05-30 12:30:00",
+            "start_event": 3,
+            "end_event": 4,
+            "type": "Break",
+            "id": 20,
+            "date_of_last_change":"2022-05-30 "
+        },
+        {
+            "start":"2022-05-30 15:00:00",
+            "end":null,
+            "start_event": null,
+            "end_event": null,
+            "type": "Break",
+            "id": 21,
+            "date_of_last_change":"2022-05-30 15:00:00"
+        }
+    ],
+    "events":[
+        {
+            "time": "2022-05-30 8:00:00",
+            "type": "coming",
+            "id": 1,
+            "date_of_last_change": "2022-05-30 08:00:00"
+        },
+        {
+            "time": "2022-05-30 18:00:00",
+            "type": "going",
+            "id": 2,
+            "date_of_last_change": "2022-05-30 18:00:00"
+        },
+        {
+            "time": "2022-05-30 12:00:00",
+            "type": "breakbegin",
+            "id": 3,
+            "date_of_last_change": "2022-05-30 12:00:00"
+        },
+        {
+            "time": "2022-05-30 12:30:00",
+            "type": "breakend",
+            "id": 4,
+            "date_of_last_change": "2022-05-30 12:30:00"
+        }        
+    ]
+}
 
 /***
  * Steps:
@@ -179,11 +139,13 @@ class MyBookings extends Component {
             intervalbookings: [],
             eventbookings: [],
 
-            filterdintervalbookings: [],
-            filterdeventbookings: [],
+            filteredintervalbookings: [],
+            filteredeventbookings: [],
+
+            renderedbookings: [],
 
             bookingtype: 'all',
-            typefilter: '',
+            typefilter: null,
             startfilter: null,
             endfilter: null,
 
@@ -197,6 +159,23 @@ class MyBookings extends Component {
         this.setState({ [ev.target.name] : ev.target.value });
     };
 
+    componentDidMount(){
+        this.getBookings();
+    }
+
+    getBookings = () => {
+        this.setState({
+            intervalbookings: fakebackend.timeintervals,
+            eventbookings: fakebackend.events,
+            filteredintervalbookings: fakebackend.timeintervals,
+            filteredeventbookings: fakebackend.events            
+        },function(){
+            console.log("ComponentDidMount")
+        })
+        console.log("getBookings")
+
+    }
+
     print = () => {
         console.log(this.state.bookingtype);
         console.log(this.state.typefilter);
@@ -208,8 +187,8 @@ class MyBookings extends Component {
         console.log(this.state.endfilter);
     }
 
-    componentDidMount(){
-        //Methoden welche direkt aufgerufen werden sollen beim Instanziieren des Objects
+    handleClick = (value) => {
+        console.log(value)
     }
 
     setFilter = () => {
@@ -237,37 +216,85 @@ class MyBookings extends Component {
     }
 
     printState = () => {
+        console.log(this.state.intervalbookings);
+        console.log(this.state.eventbookings);
         console.log(this.state.bookingtype);
         console.log(this.state.typefilter);
         console.log(this.state.startfilter);
         console.log(this.state.endfilter);
+        this.makeRows();
     }
 
-    getIntervalBookings = () => {
+    // makeRows = () => {
+    //     let holder = this.state.intervalbookings;
+    //     let res = []
+    //     holder.forEach(elem => {
+    //         let e = {
+    //             "bookingtype": "Interval",
+    //             "type": elem["type"],
+    //             "start": new Date(elem["start"]),
+    //             "end": new Date(elem["end"]),
+    //             "remarks": ""
+    //         }
+    //         res.push(e)
+    //     })
+    //     console.log(res)        
+    // }
 
+    filterBookings = () => {
+        //Sort for Bookingtype
+        if (this.state.bookingtype == "all"){
+            this.setState({
+                renderedbookings: this.state.filteredintervalbookings.concat[this.state.filteredeventbookings]
+            }, function(){
+                console.log("Bookingtype: All")
+            })
+        }else if(this.state.bookingtype == "timeinterval"){
+            this.setState({
+                renderedbookings:this.state.filteredintervalbookings
+            }, function(){
+                console.log("Bookingtype: Timeinterval")
+            })
+        }else{
+            this.setState({
+                renderedbookings:this.state.filteredeventbookings
+            }, function(){
+                console.log("Bookingtype: Event")
+            })
+
+        }
     }
 
-    makeRows = () => {
-        let holder = this.state.bookings;
-        let res = []
-        holder.forEach(elem => {
-            let p = {
-                bookingtype: "Interval",
-                type: elem.type,
-                start: elem.start.toLocaleString(),
-                end: elem.end.toLocaleString(),
-                remarks: ""
-            }
-            res.append(p);
-        })
-        this.state({
-            intervalbookings: res
-        })
-        
+    renderIntervalBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredintervalbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Interval</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.start}</TableCell>
+                        <TableCell>{row.end}</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>           
+        )
     }
 
-    getEventBookings = () => {
-
+    renderEventBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredeventbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Event</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.time}</TableCell>
+                        <TableCell>-</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>    
+                )}
+            </TableBody>            
+        )
     }
     
     // filterBookings = () => {
@@ -371,7 +398,6 @@ class MyBookings extends Component {
                         Print State
                     </Button>
                 </Box>
-
                 <Box sx={{width: '100%'}}>
                     <Paper sx={{width: '100%', mb: 2}}>
                         <TableContainer>
@@ -391,32 +417,28 @@ class MyBookings extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {
-                                        bookings.map( row =>
+                                    {this.state.filteredintervalbookings.map(row =>
                                         <TableRow
-                                            hover true
+                                            onClick = {() => handleClick(row.id)}
                                         >
-                                            {/* <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.start}</TableCell>
-                                            <TableCell>{row.end}</TableCell> */}
-                                            <TableCell
-                                                padding="checkbox">
-                                                    <Checkbox
-                                                        color="primary"
-                                                    >                                                        
-                                                    </Checkbox>
-
-                                            </TableCell>
-                                            <TableCell>{row.bookingtype}</TableCell>
+                                            <TableCell>Interval</TableCell>
                                             <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.date}</TableCell>
                                             <TableCell>{row.start}</TableCell>
                                             <TableCell>{row.end}</TableCell>
-                                            <TableCell>{row.remarks}</TableCell>
-
+                                            <TableCell>Remark</TableCell>
                                         </TableRow>
-                                        )
-                                    }
+                                    )}
+                                </TableBody>
+                                <TableBody>
+                                    {this.state.filteredeventbookings.map(row =>
+                                        <TableRow>
+                                            <TableCell>Event</TableCell>
+                                            <TableCell>{row.type}</TableCell>
+                                            <TableCell>{row.time}</TableCell>
+                                            <TableCell>-</TableCell>
+                                            <TableCell>Remark</TableCell>
+                                        </TableRow>    
+                                    )}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -428,3 +450,4 @@ class MyBookings extends Component {
 }
  
 export default MyBookings;
+

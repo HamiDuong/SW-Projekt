@@ -472,18 +472,6 @@ class Businesslogic():
         with BreakEndMapper() as mapper:
             return mapper.find_all()
 
-    def get_break_end_by_timeinterval(self, start, end):
-        enddate = datetime.now().fromisoformat(str(end))
-        startend = datetime.now().fromisoformat(str(end))
-        events = self.get_all_break_ends()
-        interval = []
-        for elem in events:
-            if elem.get_time() >= start or elem.get_time() <= end:
-                interval.append(elem)
-            else:
-                pass
-        return interval
-
     # Methode um ein BreakEndBO zu updaten
     def save_break_end(self, break_end):
         with BreakEndMapper() as mapper:
@@ -496,12 +484,14 @@ class Businesslogic():
 
     '''Dieser Teil ist für die Filter-Funktion im Frontend'''
 
+    # Support-Funktion
     def in_between_times(self, event, start, end):
         if event >= start and event <= end:
             return event
         else:  # over midnight e.g., 23:30-04:15
             pass
 
+    # Support-Funktion
     def get_all_event_subclasses(self):
         events = [self.get_all_break_ends(), self.get_all_break_begins(), self.get_all_project_work_begins(),
                   self.get_all_project_work_ends(), self.get_all_vacation_begins(
@@ -510,12 +500,39 @@ class Businesslogic():
             self.get_all_comings(), self.get_all_goings()]
         return events
 
+    # Support-Funktion
     def get_all_events_in_between_times(self, start, end):
         events_in_between_times = []
         events = self.get_all_event_subclasses()
         for elem in events:
             events_in_between_times.append(
                 self.in_between_times(elem, start, end))
+        return events_in_between_times
+
+    def get_all_events_by_timeperiod(self, start, end):
+        enddate = datetime.now().fromisoformat(str(end))
+        startdate = datetime.now().fromisoformat(str(start))
+        events = self.get_all_event_subclasses()
+        interval = []
+        for elem in events:
+            for x in elem:
+                if x.get_time() >= startdate or x.get_time() <= enddate:
+                    interval.append(x)
+                else:
+                    pass
+        return interval
+
+    def get_event_by_timeperiod_and_type(self, start, end, type):
+        enddate = datetime.now().fromisoformat(str(end))
+        startdate = datetime.now().fromisoformat(str(start))
+        events = self.get_events_by_type(type)
+        interval = []
+        for elem in events:
+            if elem.get_time() >= startdate or elem.get_time() <= enddate:
+                interval.append(elem)
+            else:
+                pass
+        return interval
 
     """
     Timeinterval Methoden

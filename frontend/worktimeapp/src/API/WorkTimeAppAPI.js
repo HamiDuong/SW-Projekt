@@ -35,7 +35,7 @@ export default class WorkTimeAppAPI {
     #addTimeIntervalURL = () => `${this.#worktimeappServerBaseURL}/timeinterval`;
     #deleteTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #updateTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
-    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${id}`;
+    #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${type}`;
 
     //Break
     #getBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;
@@ -208,7 +208,14 @@ export default class WorkTimeAppAPI {
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
 
-    
+    //Project
+    //Author Khadidja Kebaili
+    #getProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    #getAllProjectsURL = () => `${this.#worktimeappServerBaseURL}/projects`;
+    #addProjectURL = () => `${this.#worktimeappServerBaseURL}/projects`;
+    #deleteProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    //#getprojectByNAmeURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
 
 
     static getAPI() {
