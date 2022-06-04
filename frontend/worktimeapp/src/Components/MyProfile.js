@@ -8,7 +8,6 @@ import UserBO from '../API/UserBO';
 class MyProfile extends Component {
     constructor(props) {
       super(props)
-    
       this.state = {
           id:0,
       dateOfLastChange : 0,
@@ -73,24 +72,24 @@ class MyProfile extends Component {
           });
     }
 
+ 
+
     render() { 
         const {first_name, last_name, mail_adress, user_name} =this.state
-        return <>
+        return (
         <Box
             component="form"
-            sx={{
-                '& > :not(style)': { m: 1, width: '25ch' },
-            }}
+            sx={{'& > :not(style)': { m: 1, width: '25ch' }, }}
             noValidate
             autoComplete="off"
             >
-            <TextField id="first_name" label="Outlined" variant="outlined" value={first_name} onChange={(e)=>{this.setState({first_name:e.target.value})}}/>
+            <TextField id="first_name" label="Outlined" variant="outlined" value={first_name} onChange={this.handleNameChange}/>
             <TextField id="last_name" label="Outlined" variant="outlined" value={last_name} onChange={(e)=>{this.setState({last_name:e.target.value})}}/>
             <TextField id="mail_adress" label="Outlined" variant="outlined" value={mail_adress} onChange={(e)=>{this.setState({mail_adress:e.target.value})}}/>
             <TextField id="user_name" label="Outlined" variant="outlined" value={user_name} onChange={(e)=>{this.setState({user_name:e.target.value})}}/>
-            <Button variant="outlined" onClick={this.handleSave}>Speichern</Button>
+            <Button variant="outlined" onClick={this.handleNameChange}>Speichern</Button>
             </Box>
-            </>
+        )
 
     }
 }

@@ -13,7 +13,8 @@ import EventBookings from './Components/EventBookings';
 import Bookings from './Components/Bookings';
 import MyProjects from './Components/MyProjects';
 import MyProjectsTest from './Components/MyProjectsTest';
-
+import MyProfileTest from './Components/MyProfileTest';
+import CreateMyProfile from './Components/CreateMyProfile';
 
 class App extends React.Component {
  render(){
@@ -27,6 +28,8 @@ class App extends React.Component {
         <NavBar/>
         <Routes>
           <Route path='/myprofile' exact element={<MyProfile/>}/>
+          <Route path='/myprofiletest' exact element={<MyProfileTest/>}/>
+          <Route path='/createmyprofile' exact element={<CreateMyProfile/>}/>
           <Route path='/mybookings' exact element={<MyBookings/>}/>
           <Route path='/myprojects' exact element={<MyProjects/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings/>}/>

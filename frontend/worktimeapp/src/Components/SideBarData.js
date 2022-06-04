@@ -24,6 +24,12 @@ export const SideBarData = [
         className : 'nav-text'
     },
     {
+        title: 'MyProfileTest',
+        path: '/myprofiletest',
+        icon: <AccountCircleIcon/>,
+        className : 'nav-text'
+    },
+    {
         title: 'MyWorkTime',
         path: '/myworktime',
         icon: <WorkIcon/>,
