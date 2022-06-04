@@ -1248,6 +1248,10 @@ class Businesslogic():
     '''def get_user_by_first_name(self, first_name):
         with UserMapper() as mapper:
             return mapper.find_by_first_name(first_name)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 117c65fdfdb7dcd2c1767e39ca9739db915238f3
     def get_user_by_last_name(self, last_name):
         with UserMapper() as mapper:
             return mapper.find_by_last_name(last_name)'''

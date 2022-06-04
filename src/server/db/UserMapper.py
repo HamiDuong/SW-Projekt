@@ -1,54 +1,64 @@
 from server.db.Mapper import Mapper
 from server.bo.UserBO import UserBO
+from datetime import datetime
 
+"""
+@author Marco
+@co-author Ha Mi Duong (https://github.com/HamiDuong)
+"""
 class UserMapper(Mapper):
     def __init__(self):
         super().__init__()
 
-    def insert(self, event):
+    def insert(self, user):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM app.event ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.users ")
         tuples = cursor.fetchall()
+
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
-                event.set_id(maxid[0] + 1)
+                user.set_id(maxid[0] + 1)
             else:
                 """Wenn wir KEINE maximale ID feststellen konnten, dann gehen wir
                 davon aus, dass die Tabelle leer ist und wir mit der ID 1 beginnen können."""
-                event.set_id(1)
+                user.set_id(1)
 
-        command = "INSERT INTO app.event (id, first_name, last_name, mail_adresse, user_name) VALUES (%s, %s, %s, %s, %s)"
+        command = "INSERT INTO worktimeapp.users (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) VALUES (%s, %s, %s, %s, %s, %s)"
         data = (
-            event.get_id(),
-            event.get_first_name(),
-            event.get_last_name(),
-            event.get_mail_adresse(),
-            event.get_user_name
+            user.get_id(),
+            user.get_date_of_last_change(),
+            user.get_first_name(),
+            user.get_last_name(),
+            user.get_mail_adress(),
+            user.get_google_user_id()
             )
 
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
-        return event
+        return user
 
     def find_all(self):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event"
+        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
-            event = UserBO()
-            event.set_id(id)
-            event.set_first_name(first_name)
-            event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
-            event.set_user_name(user_name)
-            result.append(event)
+        for (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) in tuples:
+            user = UserBO()
+            user.set_id(id)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
+            result.append(user)
 
         self._cnx.commit()
         cursor.close()
@@ -59,20 +69,20 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE id={}".format(
-            key)
+        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, last_name, mail_adresse, user_name) = tuples[0]
-            event = UserBO()
-            event.set_id(id)
-            event.set_first_name(first_name)
-            event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
-            event.set_user_name(user_name)
-            result = event
+            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            user = UserBO()
+            user.set_id(id)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
+            result = user
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -83,47 +93,47 @@ class UserMapper(Mapper):
 
         return result
 
-    def find_by_name(self, key):
+    '''    def find_by_name(self, key):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE name={}".format(
+        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE name={}".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
-            event = UserBO()
-            event.set_id(id)
-            event.set_first_name(first_name)
-            event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
-            event.set_user_name(user_name)
-            result.append(event)
+        for (id, first_name, last_name, mail_adress, user_name) in tuples:
+            user = UserBO()
+            user.set_id(id)
+            user.set_first_name(first_name)
+            user.set_last_name(last_name)
+            user.set_mail_adress(mail_adress)
+            user.set_user_name(user_name)
+            result.append(user)
 
         self._cnx.commit()
         cursor.close()
 
-        return result
+        return result'''
 
     def find_by_googleuserid(self, key):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE googleuserid={}".format(
-            key)
+        command = "SELECT * FROM worktimeapp.users WHERE googleUserId='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, last_name, mail_adresse, user_name) = tuples[0]
-            event = UserBO()
-            event.set_id(id)
-            event.set_first_name(first_name)
-            event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
-            event.set_user_name(user_name)
-            result = event
+            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            user = UserBO()
+            user.set_id(id)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
+            result = user
         except IndexError:
             """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
             keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
@@ -134,48 +144,76 @@ class UserMapper(Mapper):
 
         return result
 
-    def find_by_email(self, key):
-        result = []
+    def find_by_mail(self, key):
+        result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adresse, user_name FROM app.event WHERE email={}".format(
-            key)
+        command = "SELECT * FROM worktimeapp.users WHERE mailAdress='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adresse, user_name) in tuples:
-            event = UserBO()
-            event.set_id(id)
-            event.set_first_name(first_name)
-            event.set_last_name(last_name)
-            event.set_mail_adresse(mail_adresse)
-            event.set_user_name(user_name)
-            result.append(event)
+        try:
+            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            user = UserBO()
+            user.set_id(id)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
+            result = user
+        except IndexError:
+            """Der IndexError wird oben beim Zugriff auf tuples[0] auftreten, wenn der vorherige SELECT-Aufruf
+            keine Tupel liefert, sondern tuples = cursor.fetchall() eine leere Sequenz zurück gibt."""
+            result = None
 
         self._cnx.commit()
         cursor.close()
 
         return result
 
-    def update(self, event):
-        cursor = self._cnx.cursor()
+    # def find_by_user_name(self, key):
+    #     result = []
 
-        command = "UPDATE app.event " + \
-            "SET first_name=%s, last_name=%s, mail_adresse=%s, user_name=%s WHERE id=%s"
-        data = (event.get_first_name(), event.get_last_name, event.get_mail_adresse
-                event.get_id())
+    #     cursor = self._cnx.cursor()
+    #     command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE user_name={}".format(
+    #         key)
+    #     cursor.execute(command)
+    #     tuples = cursor.fetchall()
+
+    #     for (id, first_name, last_name, mail_adress, user_name) in tuples:
+    #         user = UserBO()
+    #         user.set_id(id)
+    #         user.set_first_name(first_name)
+    #         user.set_last_name(last_name)
+    #         user.set_mail_adress(mail_adress)
+    #         user.set_user_name(user_name)
+    #         result.append(user)
+
+    #     self._cnx.commit()
+    #     cursor.close()
+
+    #     return result
+
+    def update(self, user):
+        cursor = self._cnx.cursor()
+    
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
+
+        command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_date_of_last_change(),user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return event
+        return user
 
-    def delete(self, event):
+    def delete(self, user):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM app.event WHERE id={}".format(
-            event.get_id())
+        command = "DELETE FROM worktimeapp.users WHERE id={}".format(user.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

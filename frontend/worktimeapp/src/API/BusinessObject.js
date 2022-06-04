@@ -8,6 +8,10 @@
      */
     constructor() {
       this.id = 0;
+      this.dateOfLastChange = 0;
+
+      //var today = new Date()
+      //this.dateOfLastChange = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     }
   
     /**
@@ -24,6 +28,14 @@
      */
     getID() {
       return this.id;
+    }
+
+    setDateOfLastChange(date){
+      this.dateOfLastChange = date;
+    }
+
+    getDateOfLastChange(){
+      return this.dateOfLastChange;
     }
   
     /**
