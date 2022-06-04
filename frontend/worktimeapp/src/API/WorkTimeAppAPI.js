@@ -96,8 +96,10 @@ export default class WorkTimeAppAPI {
     //Booking URLS
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
     #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
-    #getVacationAndIllnessEventBookings = (id)  => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
-
+    #getVacationAndIllnessEventBookingsURL = (id)  => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
+   
+    //Project URLs
+    #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`
 
     //Beginn aller Event-BOs
 
@@ -1157,8 +1159,8 @@ export default class WorkTimeAppAPI {
           })
     }
 
-    getVacationIllnessEventBookings(customerID){
-        return this.#fetchAdvanced(this.#getVacationAndIllnessEventBookings(customerID))
+    getVacationIllnessEventBookings(userID){
+        return this.#fetchAdvanced(this.#getVacationAndIllnessEventBookingsURL(userID))
         .then((responseJSON) => {
         let vacationBOs = VacationStartBO.fromJSON(responseJSON);
         console.info(vacationBOs);
@@ -1167,6 +1169,17 @@ export default class WorkTimeAppAPI {
         })
       })
      }
+
+    getProjectsForUser(){
+        return this.#fetchAdvanced(this.#getProjectsForUserURL(userID))
+        .then((responseJSON) => {
+        let projectBOs = ProjectBO.fromJSON(responseJSON);
+        console.info(projectBOs);
+        return new Promise(function (resolve) {
+          resolve(projectBOs);
+        })
+      })
+    }
     
 }
 
