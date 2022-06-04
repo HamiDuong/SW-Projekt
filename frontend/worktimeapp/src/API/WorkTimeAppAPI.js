@@ -1,6 +1,7 @@
 //Alle BOs importieren
 import TimeIntervalBO from './TimeIntervalBO'
 import BreakBO from './BreakBO';
+import FlexDayBO from './FlexDayBO';
 import IllnessBO from './IllnessBO';
 import ProjectDurationBO from './ProjectDurationBO';
 import ProjectWorkBO from './ProjectWorkBO';
@@ -45,6 +46,15 @@ export default class WorkTimeAppAPI {
     #updateBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;
     #getBreakByDateURL = (date) => `${this.#worktimeappServerBaseURL}/breakdate/${date}`;
     #getBreakByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/breakperiod/${start}/${end}`;
+
+    //FlexDay
+    #getFlexDayURL = (id) => `${this.#worktimeappServerBaseURL}/flexday/${id}`;
+    #getAllFlexDaysURL = () => `${this.#worktimeappServerBaseURL}/flexday`;
+    #addFlexDayURL = () => `${this.#worktimeappServerBaseURL}/flexday`;
+    #deleteFlexDayURL = (id) => `${this.#worktimeappServerBaseURL}/flexday/${id}`;
+    #updateFlexDayURL = (id) => `${this.#worktimeappServerBaseURL}/flexday/${id}`;
+    #getFlexDayByDateURL = (date) => `${this.#worktimeappServerBaseURL}/flexdaydate/${date}`;
+    #getFlexDayByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/flexdayperiod/${start}/${end}`;
 
     //Illness
     #getIllnessURL = (id) => `${this.#worktimeappServerBaseURL}/illness/${id}`;
@@ -375,6 +385,87 @@ export default class WorkTimeAppAPI {
             let responseBreak = BreakBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseBreak)
+            })
+        })
+    }
+
+    //FlexDay Methoden
+    getFlexDay(flexday) {
+        return this.#fetchAdvanced(this.#getFlexDayURL(flexday)).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+
+    }
+
+    getAllFlexDay() {
+        return this.#fetchAdvanced(this.#getAllFlexDaysURL()).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+    }
+
+    addFlexDay(flexday) {
+        return this.#fetchAdvanced(this.#addFlexDayURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexday)
+        }).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+    }
+
+    deleteFlexDay(flexday) {
+        return this.#fetchAdvanced(this.#deleteFlexDayURL(flexday), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+    }
+
+    updateFlexDay(flexday) {
+        return this.#fetchAdvanced(this.#updateFlexDayURL(flexday), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexday)
+        }).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+    }
+
+    getFlexDayByDate(date) {
+        return this.#fetchAdvanced(this.#getFlexDayByDateURL(date)).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
+            })
+        })
+    }
+
+    getFlexDayByPeriod(start, end) {
+        return this.#fetchAdvanced(this.#getFlexDayByPeriodURL(start, end)).then((responseJSON) => {
+            let responseFlexDay = FlexDayBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseFlexDay)
             })
         })
     }
