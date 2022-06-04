@@ -36,8 +36,8 @@ export const SideBarData = [
         className : 'nav-text'
     },
     {
-        title: 'CreateProjects',
-        path: '/createprojects',
+        title: 'CreateProject',
+        path: '/createproject',
         icon: <TaskIcon/>,
         className : 'nav-text'
     },

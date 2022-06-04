@@ -20,6 +20,7 @@ import ComingBO from './EventBOs/ComingBO';
 import GoingBO from './EventBOs/GoingBO';
 import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
+import ProjectBO from './ProjectBO';
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -205,7 +206,8 @@ export default class WorkTimeAppAPI {
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
 
-
+    //Project
+    #addProjectURL = () => `${this.#worktimeappServerBaseURL}/project`;
 
 
     static getAPI() {
@@ -1154,6 +1156,24 @@ export default class WorkTimeAppAPI {
               resolve(responseBookingBO);
             })
           })
+    }
+    //Projekt-Methoden
+
+    //Erstellen von Projekt
+    addProject(projectBO) {
+        return this.#fetchAdvanced(this.#addProjectURL(),{
+            method: 'POST',
+            headers:{
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectBO)
+        }).then((responseJSON) => {
+            let responseProjectBO = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function(resolve){
+                resolve(responseProjectBO);
+            })
+        })
     }
 }
 

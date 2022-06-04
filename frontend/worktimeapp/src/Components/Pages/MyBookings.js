@@ -419,7 +419,7 @@ class MyBookings extends Component {
                                 <TableBody>
                                     {this.state.filteredintervalbookings.map(row =>
                                         <TableRow
-                                            onClick = {() => handleClick(row.id)}
+                                            
                                         >
                                             <TableCell>Interval</TableCell>
                                             <TableCell>{row.type}</TableCell>

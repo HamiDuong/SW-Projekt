@@ -129,3 +129,14 @@ dmypy.json
 .pyre/
 .vscode/launch.json
 frontend/worktimeapp/package-lock.json
+.idea/misc.xml
+.idea/modules.xml
+.gitignore
+.gitignore
+.idea/SW-Projekt.iml
+.gitignore
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.gitignore
+.idea/inspectionProfiles/Project_Default.xml
+.DS_Store
