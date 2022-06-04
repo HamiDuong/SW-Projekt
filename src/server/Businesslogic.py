@@ -1416,3 +1416,9 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
+        
+    def get_project_by_name(self, name):
+        projects = self.get_all_projects()
+        for elem in projects:
+            if elem.get_name() == name:
+                return elem
