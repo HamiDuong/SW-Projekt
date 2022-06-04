@@ -215,7 +215,14 @@ export default class WorkTimeAppAPI {
     #updateGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getGoingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/goingdate/${date}`;
 
-
+    //Project
+    //Author Khadidja Kebaili
+    #getProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    #getAllProjectsURL = () => `${this.#worktimeappServerBaseURL}/projects`;
+    #addProjectURL = () => `${this.#worktimeappServerBaseURL}/projects`;
+    #deleteProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
+    //#getprojectByNAmeURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
 
 
     static getAPI() {
