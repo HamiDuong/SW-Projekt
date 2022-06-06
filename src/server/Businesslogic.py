@@ -83,7 +83,6 @@ from .db.ProjectUserMapper import ProjectUserMapper
 from .bo.ActivityBO import ActivityBO
 from .db.ActivityMapper import ActivityMapper
 
-
 class Businesslogic():
 
     def __init__(self):
@@ -1238,11 +1237,11 @@ class Businesslogic():
 
     def get_user_by_mail_adress(self, mail_adress):
         with UserMapper() as mapper:
-            return mapper.find_by_mail_adress(mail_adress)
+            return mapper.find_by_mail(mail_adress)
 
-    def get_user_by_google_user_id(self, id):
+    def get_user_by_google_user_id(self, string):
         with UserMapper() as mapper:
-            return mapper.find_by_googleuserid(id)
+            return mapper.find_by_googleuserid(string)
 
     # def get_user_by_user_name(self, user_name):
     #     with UserMapper() as mapper:
@@ -1297,7 +1296,9 @@ class Businesslogic():
         with WorkTimeAccountMapper() as mapper:
             mapper.delete(worktimeaccount_obj)
 
-    # Project
+    """
+    Project
+    """
 
     def create_project(self, name, commissioner, user_id, duration):
         project = ProjectBO()
@@ -1332,17 +1333,20 @@ class Businesslogic():
         with ProjectMapper() as mapper:
             mapper.find_by_project_name(name)
 
-    def get_project_duration_by_project_id(self, id):
-        with ProjectMapper() as mapper:
-            return mapper.find_by_project_id(id)
+    # def get_project_duration_by_project_id(self, id):
+    #     with ProjectMapper() as mapper:
+    #         return mapper.find_by_project_id(id)
 
-    # Projectuser
+    """
+    Projectuser
+    """
 
-    def create_projectuser(self, project_id, user_id, capacity):
+    def create_projectuser(self, project_id, user_id, capacity, current):
         projectuser = ProjectUserBO()
         projectuser.set_project_id(project_id)
         projectuser.set_user_id(user_id)
         projectuser.set_capacity(capacity)
+        projectuser.set_current_capacity(current)
         with ProjectUserMapper() as mapper:
             return mapper.insert(projectuser)
 
