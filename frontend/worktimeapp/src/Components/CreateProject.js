@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 //import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid'; 
-import AddActivities from './Dialog/AddActivities'
+import AddActivities from './Dialog/AddActivities';
+import AddMember from './Dialog/AddMembers';
 
 class CreateProject extends Component {
     constructor(props) {
@@ -64,10 +65,22 @@ class CreateProject extends Component {
                     <Button variant="contained" onClick={this.addProject}>Create Project</Button>
         </Grid>
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopup.bind(this)}>AddActivities</Button>
+                    <Button variant="contained" onClick={this.togglePopup.bind(this)}>Add Activities</Button>
         </Grid>
         {this.state.showPopup ? 
           <AddActivities
+            text='Close Me'
+            closePopup={this.togglePopup.bind(this)}
+          />
+          : null
+        }
+        
+        <Grid xs={12} item>
+                    <Button variant="contained" onClick={this.togglePopup.bind(this)}>Add Member</Button>
+        </Grid>
+        
+        {this.state.showPopup ? 
+          <AddMember
             text='Close Me'
             closePopup={this.togglePopup.bind(this)}
           />
