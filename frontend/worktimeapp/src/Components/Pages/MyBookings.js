@@ -17,9 +17,12 @@ import {
     Table,
     TableHead,
     TableRow,
-    TableBody,
-    Checkbox
+    TableBody
 } from '@mui/material';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import EditBooking from '../Dialog/EditBooking';
+import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
+import MyBookingsEventEntry from '../MyBookingsEventEntry';
 
 const header = [
     // {
@@ -152,6 +155,8 @@ class MyBookings extends Component {
             loadingInProgress: false,
             showResetButton: true,
             error: null,
+
+            showEditWindow: false
         }
     }
 
@@ -174,21 +179,6 @@ class MyBookings extends Component {
         })
         console.log("getBookings")
 
-    }
-
-    print = () => {
-        console.log(this.state.bookingtype);
-        console.log(this.state.typefilter);
-        this.setState({
-            showResetButton: false
-        })
-        console.log(this.state.showResetButton);
-        console.log(this.state.startfilter);
-        console.log(this.state.endfilter);
-    }
-
-    handleClick = (value) => {
-        console.log(value)
     }
 
     setFilter = () => {
@@ -222,24 +212,8 @@ class MyBookings extends Component {
         console.log(this.state.typefilter);
         console.log(this.state.startfilter);
         console.log(this.state.endfilter);
-        this.makeRows();
+        console.log(this.state.showEditWindow);
     }
-
-    // makeRows = () => {
-    //     let holder = this.state.intervalbookings;
-    //     let res = []
-    //     holder.forEach(elem => {
-    //         let e = {
-    //             "bookingtype": "Interval",
-    //             "type": elem["type"],
-    //             "start": new Date(elem["start"]),
-    //             "end": new Date(elem["end"]),
-    //             "remarks": ""
-    //         }
-    //         res.push(e)
-    //     })
-    //     console.log(res)        
-    // }
 
     filterBookings = () => {
         //Sort for Bookingtype
@@ -296,6 +270,41 @@ class MyBookings extends Component {
             </TableBody>            
         )
     }
+
+    updateBooking = (obj) => {
+        let newBooking = null;
+        switch(obj.type){
+            case "Break":
+                newBooking = WorkTimeAppAPI.getAPI().updateBreak(obj)
+            
+            case "Flex Day":
+                newBooking = WorkTimeAppAPI.getAPI().updateFlexDay(obj)
+
+            case "Illness":
+                newBooking = WorkTimeAppAPI.getAPI().updateIllness(obj)
+
+            case "Project Duration":
+                newBooking = WorkTimeAppAPI.getAPI().updateProjectDuration(obj)
+
+            case "Projekt Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
+
+            case "Vacation":
+                newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
+
+            case "Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
+
+        }
+        //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
+        //gibt das passende Element zurück
+        
+        //irgendwo müssen neue Werte abgespeichert werden
+        //set Attribute auf bestehendes Objekt
+
+        //updateFunktion
+
+    }
     
     // filterBookings = () => {
     //     let start = this.state.startfilter;
@@ -315,6 +324,15 @@ class MyBookings extends Component {
     //         filteredbookings: res
     //     })
     // }
+
+    editRow = (event) => {
+        event.stopPropagation();
+        this.setState({
+            showEditWindow: true
+        },function(){
+            console.log("Editwindow wird geöffnet")
+        })
+    }
 
     render(){
         return(
@@ -417,9 +435,14 @@ class MyBookings extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state.filteredintervalbookings.map(row =>
+                                    {
+                                        this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
+                                    }
+
+                                    {/* {this.state.filteredintervalbookings.map(row =>
                                         <TableRow
-                                            onClick = {() => handleClick(row.id)}
+                                            hover
+                                            onClick = {() => console.log("Click")}
                                         >
                                             <TableCell>Interval</TableCell>
                                             <TableCell>{row.type}</TableCell>
@@ -427,10 +450,13 @@ class MyBookings extends Component {
                                             <TableCell>{row.end}</TableCell>
                                             <TableCell>Remark</TableCell>
                                         </TableRow>
-                                    )}
+                                    )} */}
                                 </TableBody>
                                 <TableBody>
-                                    {this.state.filteredeventbookings.map(row =>
+                                    {/* {
+                                        this.state.filteredeventbookings.map( row => <MyBookingsEventEntry key={row.getId()} booking={row}/>)
+                                    } */}
+                                    {/* {this.state.filteredeventbookings.map(row =>
                                         <TableRow>
                                             <TableCell>Event</TableCell>
                                             <TableCell>{row.type}</TableCell>
@@ -438,7 +464,7 @@ class MyBookings extends Component {
                                             <TableCell>-</TableCell>
                                             <TableCell>Remark</TableCell>
                                         </TableRow>    
-                                    )}
+                                    )} */}
                                 </TableBody>
                             </Table>
                         </TableContainer>
