@@ -9,15 +9,25 @@ import {
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
+import BreakBO from '../../API/BreakBO';
+import FlexDayBO from '../../API/FlexDayBO';
+import IllnessBO from '../../API/IllnessBO';
+import ProjectDurationBO from '../../API/ProjectDurationBO';
+import ProjectWorkBO from '../../API/ProjectWorkBO';
+import VacationBO from '../../API/VacationBO';
+import WorkBO from '../../API/WorkBO';
+
 class EditBooking extends Component {
     constructor(props) {
         super(props);
         this.state = {
             booking: props.booking,
 
-            startdate: null,
-            enddate:null
-        }
+            startdate: props.booking.start,
+            enddate:props.booking.end,
+            type: props.booking.type
+        };
+        this.baseState = this.state;
     }
 
     handleClose = () => {
@@ -31,10 +41,70 @@ class EditBooking extends Component {
     }
 
     saveChanges = () => {
-        console.log("Booking bearbeiten")
-
+        let starthold = document.getElementById("startdate");
+        let endhold = document.getElementById("enddate");
+        this.setState({
+            startdate: starthold.value,
+            enddate: endhold.value,
+        }, function(){
+            console.log("State für neue Werte");
+        });
     }
 
+    updateBooking = () => {
+        let updatedbooking = null;
+        switch(this.state.type){
+            case "Break":
+                updatedbooking = Object.assign(new BreakBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                // WorkTimeAppAPI.getAPI().updateBreak(updatedbooking).then(booking =>{
+                //     console.log("Update Break")
+                // });
+            
+            case "Flex Day":
+                updatedbooking = Object.assign(new FlexDayBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                // WorkTimeAppAPI.getAPI().updateFlexDay(updatedbooking).then(booking =>{
+                //     console.log("Update Flex Day")
+                // });
+
+            case "Illness":
+                updatedbooking = Object.assign(new IllnessBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                // WorkTimeAppAPI.getAPI().updateIllness(updatedbooking).then(booking =>{
+                //     console.log("Update Illness")
+                // });
+
+            case "Project Duration":
+                updatedbooking = Object.assign(new ProjectDurationBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                // WorkTimeAppAPI.getAPI().updateBreak(updatedbooking).then(booking =>{
+                //     console.log("Update Break")
+                // });
+
+            case "Projekt Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
+
+            case "Vacation":
+                newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
+
+            case "Work":
+                newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
+
+        }
+        //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
+        //gibt das passende Element zurück
+        
+        //irgendwo müssen neue Werte abgespeichert werden
+        //set Attribute auf bestehendes Objekt
+
+        //updateFunktion
+
+    }
     render() { 
         const { classes, show } = this.props
         return (
