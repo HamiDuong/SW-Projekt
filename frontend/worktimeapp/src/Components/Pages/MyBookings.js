@@ -270,41 +270,6 @@ class MyBookings extends Component {
             </TableBody>            
         )
     }
-
-    updateBooking = (obj) => {
-        let newBooking = null;
-        switch(obj.type){
-            case "Break":
-                newBooking = WorkTimeAppAPI.getAPI().updateBreak(obj)
-            
-            case "Flex Day":
-                newBooking = WorkTimeAppAPI.getAPI().updateFlexDay(obj)
-
-            case "Illness":
-                newBooking = WorkTimeAppAPI.getAPI().updateIllness(obj)
-
-            case "Project Duration":
-                newBooking = WorkTimeAppAPI.getAPI().updateProjectDuration(obj)
-
-            case "Projekt Work":
-                newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
-
-            case "Vacation":
-                newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
-
-            case "Work":
-                newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
-
-        }
-        //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
-        //gibt das passende Element zurück
-        
-        //irgendwo müssen neue Werte abgespeichert werden
-        //set Attribute auf bestehendes Objekt
-
-        //updateFunktion
-
-    }
     
     // filterBookings = () => {
     //     let start = this.state.startfilter;

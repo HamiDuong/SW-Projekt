@@ -24,7 +24,7 @@ class MyBookingsIntervalEntry extends Component {
         this.setState({
             showDialog: true
         }, function(){
-            console.log("EditWindow öffnen via Button")
+            console.log("EditWindow öffnen per OnClick")
         })
     }
 
@@ -49,6 +49,10 @@ class MyBookingsIntervalEntry extends Component {
     componentDidMount(){
         console.log(this.state.booking)
     }
+
+    handleChange = ev => {
+        this.setState({ [ev.target.name] : ev.target.value });
+    };
 
 
     render() { 
