@@ -14,12 +14,19 @@ class CreateProject extends Component {
     constructor(props) {
         super(props);
         this.state={
-            showPopup: false
+            showPopupAddActivities: false,
+            showPopupAddMembers: false
         }
     }
-    togglePopup() {
+    togglePopupActivities() {
         this.setState({
-          showPopup: !this.state.showPopup
+          showPopupAddActivities: !this.state.showPopupAddActivities,
+        });
+      }
+    
+    togglePopupMembers() {
+        this.setState({
+          showPopupAddMembers: !this.state.showPopupAddMembers,
         });
       }
     
@@ -64,25 +71,30 @@ class CreateProject extends Component {
         <Grid xs={12} item>
                     <Button variant="contained" onClick={this.addProject}>Create Project</Button>
         </Grid>
+
+
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopup.bind(this)}>Add Activities</Button>
+                    <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>Add Activities</Button>
         </Grid>
-        {this.state.showPopup ? 
+        
+        {this.state.showPopupAddActivities ? 
           <AddActivities
             text='Close Me'
-            closePopup={this.togglePopup.bind(this)}
+            closePopupActivities={this.togglePopupActivities.bind(this)}
           />
           : null
         }
         
+
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopup.bind(this)}>Add Member</Button>
+                    <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>Add Members</Button>
         </Grid>
         
-        {this.state.showPopup ? 
+
+        {this.state.showPopupAddMembers ? 
           <AddMember
             text='Close Me'
-            closePopup={this.togglePopup.bind(this)}
+            closePopupMembers={this.togglePopupMembers.bind(this)}
           />
           : null
         }

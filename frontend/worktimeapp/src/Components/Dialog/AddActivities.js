@@ -23,9 +23,14 @@ class AddActivities extends Component {
                 
                 <TextField id="outlined-basic" label="Name" variant="outlined" />
                 <br/>
-                <TextField id="outlined-basic" label="Duration" variant="outlined" />
+                <br/>
+                <TextField id="outlined-basic" label="Capacity" variant="outlined" />
+                <br/>
                 <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.props.closePopup}>Close</Button>
+                    <Button variant="contained" onClick={this.addProject}>Add Activities</Button>
+                </Grid>
+                <Grid xs={12} item>
+                    <Button variant="contained" onClick={this.props.closePopupActivities}>Close</Button>
                 </Grid>
                 </div>
                
