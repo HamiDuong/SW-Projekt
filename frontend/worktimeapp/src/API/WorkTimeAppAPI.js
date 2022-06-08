@@ -21,6 +21,9 @@ import ComingBO from './EventBOs/ComingBO';
 import GoingBO from './EventBOs/GoingBO';
 import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
+import ProjectBO from "./ProjectBO";
+import ActivityBO from "./ActivityBO"
+
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -106,7 +109,10 @@ export default class WorkTimeAppAPI {
     //Booking URLS
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
     #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
-
+    #getVacationAndIllnessEventBookingsURL = (id)  => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
+   
+    //Project URLs
+    #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/user/${id}`
 
     //Beginn aller Event-BOs
 
@@ -223,6 +229,9 @@ export default class WorkTimeAppAPI {
     #deleteProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     //#getprojectByNAmeURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
+
+    //Activity
+    #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`
 
 
     static getAPI() {
@@ -1253,6 +1262,40 @@ export default class WorkTimeAppAPI {
             })
           })
     }
+
+    getVacationIllnessEventBookings(userID){
+        return this.#fetchAdvanced(this.#getVacationAndIllnessEventBookingsURL(userID))
+        .then((responseJSON) => {
+        let vacationBOs = VacationStartBO.fromJSON(responseJSON);
+        console.info(vacationBOs);
+        return new Promise(function (resolve) {
+          resolve(vacationBOs);
+        })
+      })
+     }
+
+    getProjectsForUser(userID){
+        return this.#fetchAdvanced(this.#getProjectsForUserURL(userID))
+        .then((responseJSON) => {
+        let projectBOs = ProjectBO.fromJSON(responseJSON);
+        console.info(projectBOs);
+        return new Promise(function (resolve) {
+          resolve(projectBOs);
+        })
+      })
+    }
+
+    getActivitiesByProject(projectID){
+        return this.#fetchAdvanced(this.#getActivitiesByProjectIdURL(projectID))
+        .then((responseJSON) => {
+        let activityBOs = ActivityBO.fromJSON(responseJSON);
+        console.info(activityBOs);
+        return new Promise(function (resolve) {
+          resolve(activityBOs);
+        })
+      })
+    }
+    
 }
 
 

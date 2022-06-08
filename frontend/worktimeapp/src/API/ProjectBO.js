@@ -7,7 +7,7 @@ export default class Project extends BusinessObject{
         this.commissioner = commissioner;
         this.userId = userId;
         this.projectId = projectId;
-        this.duration = duration;
+        
     }
 
     //Getter und Setter
@@ -43,13 +43,6 @@ export default class Project extends BusinessObject{
         return this.projectId;
     }
 
-    SetDuration(duration){
-        this.duration = duration;
-    }
-
-    GetDuration(){
-        return this.duration;
-    }
 
     static fromJSON(project){
         let res = [];
