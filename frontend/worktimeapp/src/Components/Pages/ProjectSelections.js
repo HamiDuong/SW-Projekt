@@ -1,20 +1,38 @@
 import React, { Component } from 'react';
-import WorkTimeAppAPI from '../../API/WorkTimeAppAPI'
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { InputLabel } from '@mui/material';
+import { Button } from '@mui/material';
+import { Box } from '@mui/system';
+import BoilingVerdict from './OverTimeEntry';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
 class ProjectSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            project: '',
             projects: [],
-        }
+            temperature: '',
+            project_name: '',
+        };
+        this.handleChange = this.handleChange.bind(this);
     }
 
+    handleChange(e) {
+        this.setState({ temperature: e.target.value },
+            function () {
+                console.log('HandleChange', this.state.temperature)
+            });
+    }
+
+
     getAllProjects = () => {
-        WorkTimeAppAPI.getAPI().getAllProjects().then(projectBOs =>
+        WorkTimeAppAPI.getAPI().getAllProjects().then(projectBO =>
             this.setState({
-                projects: projectBOs
+                projects: [projectBO],
             }, function () {
-                console.log(this.state.projects)
+                console.log('2', this.state.projects)
             }))
     }
 
@@ -22,17 +40,38 @@ class ProjectSelection extends Component {
         this.getAllProjects()
     }
 
-    render() {
+    somefunc() {
+        const projects = this.state.projects
         return (
-            <div>
-                {this.state.projects.map(elem => <div>{elem.name}</div>)}
-            </div>
+            <Select onChange={this.handleChange}>
+                {projects.map(project =>
+                    project.map(elem => <MenuItem value={elem.name} >{elem.name}</MenuItem>)
+
+                )}
+            </Select>
+        )
+    }
+
+    render() {
+        const projects = this.state.projects
+        const temperature = this.state.temperature
+        return (
+            <Box>
+                {/* <Select onChange={this.handleChange}>
+                    {projects.map(project =>
+                        project.map(elem => <MenuItem value={elem.name} >{elem.name}</MenuItem>)
+
+                    )}
+                </Select> */}
+                {this.somefunc()}
+                <fieldset>
+                    <legend>You have selected: </legend>
+                    <BoilingVerdict
+                        celsius={(temperature)} />
+                </fieldset>
+            </Box>
         );
     }
 }
 
 export default ProjectSelection;
-
-//Wie weit bin ich gekommen:
-//Die Namen werden mir korrekt angezeigt aber als Überschriften.
-//Ich will diese Komponente verwenden um alle Projektnamen für die Übersicht in den TimeOverviews einzufügen (statt Projekt A, etc.)

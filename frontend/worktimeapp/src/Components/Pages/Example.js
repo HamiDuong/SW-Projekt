@@ -9,49 +9,31 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import DropDown from './dropDownTrial';
 import { Box } from '@mui/material';
+import ProjectSelection from './ProjectSelections';
+import { Button } from '@mui/material';
 
 class ProjectTimeOverview extends React.Component {
     constructor(props) {
         super(props);
-        this.handleTempChange = this.handleTempChange.bind(this);
-        this.handleAgeChange = this.handleAgeChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             temperature: '',
-            age: ''
+            value: '',
         };
     }
 
-    handleTempChange(e) {
-        this.setState({ temperature: e.target.value });
+    handleChange(e) {
+        this.setState({ temperature: 'Neues Projekt' },
+            function () {
+                console.log('HandleChange', this.state.temperature)
+            });
     }
 
-    handleAgeChange(e) {
-        this.setState({ age: e.target.value });
-    }
 
     render() {
         const temperature = this.state.temperature;
-        const age = this.state.age;
         return (
             <div>
-                <div>
-                    <Box sx={{ margin: 2 }}>
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
-
-                            <InputLabel>Selet your project</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                value={age}
-                                label="Age"
-                                onChange={this.handleTempChange}>
-                                <MenuItem value={'project A'}>Project A</MenuItem>
-                                <MenuItem value={'project B'}>Project B</MenuItem>
-                                <MenuItem value={'project C'}>Project C</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </div>
                 <fieldset>
                     <legend>You have selected: </legend>
                     <BoilingVerdict

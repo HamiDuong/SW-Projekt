@@ -1,46 +1,55 @@
 import BusinessObject from "./BusinessObject";
 
-export default class Activity extends BusinessObject{
-    constructor(name, capacity, projectId){
+export default class Activity extends BusinessObject {
+    constructor(name, capacity, projectId, currentCapacity) {
         super();
         this.name = name;
         this.capacity = capacity;
         this.projectId = projectId;
+        this.currentCapacity = currentCapacity;
     }
 
     //Getter und Setter
-    SetName(name){
+    SetName(name) {
         this.name = name;
     }
 
-    GetName(){
+    GetName() {
         return this.name;
     }
 
-    SetCapacity(capacity){
+    SetCapacity(capacity) {
         this.capacity = capacity;
     }
 
-    GetCapacity(){
+    GetCapacity() {
         return this.capacity;
     }
 
-    SetProjectId(id){
+    SetProjectId(id) {
         this.projectId = id;
     }
 
-    GetProjectId(){
+    GetProjectId() {
         return this.projectId;
     }
 
-    static fromJSON(activity){
+    SetCurrentCapacity(id) {
+        this.currentCapacity = id;
+    }
+
+    GetProjectId() {
+        return this.currentCapacity;
+    }
+
+    static fromJSON(activity) {
         let res = [];
-        if(Array.isArray(activity)){
+        if (Array.isArray(activity)) {
             activity.forEach((elem) => {
                 Object.setPrototypeOf(elem, Activity.prototype);
                 res.push(elem)
             })
-        }else{
+        } else {
             let elem = activity;
             Object.setPrototypeOf(elem, Activity.prototype);
             res.push(elem)

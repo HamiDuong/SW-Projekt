@@ -16,13 +16,7 @@ class MyWorkTime extends Component {
         const projectName = this.state.projectName;
         return (
             <div>
-                <fieldset>
-                    <legend>Enter project name:</legend>
-                    <input
-                        value={projectName}
-                        onChange={this.handleChange} />
-                    <projectn celsius={(projectName)} />
-                </fieldset>
+
             </div>
 
         );

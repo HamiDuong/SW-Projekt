@@ -13,7 +13,7 @@ import EventBookings from './Components/EventBookings';
 import Bookings from './Components/Bookings';
 import MyProjects from './Components/MyProjects';
 import MyProjectsTest from './Components/MyProjectsTest';
-import ProjectWorkTime from './Components/Pages/Example'
+import ProjectTimeOverview from './Components/Pages/Example'
 import IndividualTime from './Components/Pages/IndividualTimes';
 import IndividualTimeEntry from './Components/Pages/IndividualTimeEntry';
 import ProjectSelection from './Components/Pages/ProjectSelections';
@@ -32,7 +32,7 @@ class App extends React.Component {
             <Routes>
               <Route path='/myprofile' exact element={<MyProfile />} />
               <Route path='/Individual' exact element={<IndividualTime />} />
-              <Route path='/Example' exact element={<IndividualTime />} />
+              <Route path='/Example' exact element={<ProjectTimeOverview />} />
               <Route path='/mybookings' exact element={<MyBookings />} />
               <Route path='/myprojects' exact element={<MyProjects />} />
               <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings />} />
