@@ -14,19 +14,18 @@ import PropTypes from 'prop-types';
 class CreateProject extends Component {
     constructor(props) {
         super(props);
-        let pn = '', cm = '';
-        if (props.project) {
-          pn = props.project.GetName();
-          cm = props.project.GetCommisioner();
-    }
+        // let pn = '', cm = '';
+        // if (props.project) {
+        //   pn = props.project.GetName();
+        //   cm = props.project.GetCommisioner();
         this.state={
             showPopupAddActivities: false,
             showPopupAddMembers: false,
           //Network states
             loadingInProgress: false,
             createprojectError: null,
-            projectName: pn,
-            commissioner: cm,
+            projectName: null,
+            commissioner: null,
             projectNameValidationFailed: false,
             projectNameEdited: false,
             commissionerValidationFailed: false,

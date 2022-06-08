@@ -228,7 +228,7 @@ export default class WorkTimeAppAPI {
     #addProjectURL = () => `${this.#worktimeappServerBaseURL}/projects`;
     #deleteProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
-    //#getprojectByNAmeURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
+    #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
 
     //Activity
     // Author Khadidja Kebaili

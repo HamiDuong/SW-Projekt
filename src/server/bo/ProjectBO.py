@@ -45,9 +45,9 @@ class ProjectBO(bo.BusinessObject):
         """Umwandeln eines Python dict() in einen Customer()."""
         obj = ProjectBO()
         obj.set_id(dictionary["id"])
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_name(dictionary["name"])  
         obj.set_commissioner(dictionary["commissioner"])
-        obj.set_user_id(dictionary["user_id"])
+        obj.set_user_id(dictionary["userId"])
         return obj
 
