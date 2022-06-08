@@ -793,6 +793,17 @@ class ProjectOperations(Resource):
         return project
 
 
+@worktimeapp.route('/project/user/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectWithUserIDOperations(Resource):
+    @worktimeapp.marshal_with(project)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        project = adm.get_projects_by_user_id(id)
+        return project
+
+
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -801,13 +812,6 @@ class ProjectWithIDOperations(Resource):
     def get(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
-        return project
-
-    @worktimeapp.marshal_with(project)
-    # @secured
-    def get_user(self, id):
-        adm = Businesslogic()
-        project = adm.get_projects_by_user_id(id)
         return project
 
     @worktimeapp.marshal_with(project)
@@ -3145,7 +3149,8 @@ class EventBookingOperationsWithParam(Resource):
         # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
         if user is not None:
             # Jetzt erst lesen wir die Konten des Customer aus.
-            eventbookings = adm.get_all_vacation_illness_event_bookings_for_user(user)
+            eventbookings = adm.get_all_vacation_illness_event_bookings_for_user(
+                user)
             return eventbookings
 
 

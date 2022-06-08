@@ -1,4 +1,3 @@
-from gc import get_stats
 from .bo.eventBOs.EventBO import EventBO
 from .db.eventMapper.EventMapper import EventMapper
 from .bo.eventBOs.ComingBO import ComingBO
@@ -54,7 +53,6 @@ from .bo.EventBookingBO import EventBookingBO
 from .db.EventBookingMapper import EventBookingMapper
 from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
 from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
-from asyncio.windows_events import NULL
 from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
 from .bo.timeinterval.BreakBO import BreakBO
@@ -1095,8 +1093,8 @@ class Businesslogic():
                     delta_float = (delta.total_seconds()/60)/60
                     activityid = elem.get_activity_id()
                     round(delta_float, 2)
-                    self.calculate_delta_for_project_work(tbooking, delta_float, activityid)
-    
+                    self.calculate_delta_for_project_work(
+                        tbooking, delta_float, activityid)
 
     def calculate_delta_for_project_work(self, tbooking, delta_float, activityid):
         for elem in tbooking:
@@ -1688,7 +1686,7 @@ class Businesslogic():
 
     def get_projects_by_user_id(self, id):
         with ProjectMapper() as mapper:
-            mapper.find_projects_by_user_id(id)
+            return mapper.find_projects_by_user_id(id)
 
     def get_by_project_name(self, name):
         with ProjectMapper() as mapper:

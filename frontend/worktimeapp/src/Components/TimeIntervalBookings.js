@@ -39,7 +39,7 @@ class TimeIntervalBookings extends Component {
             end: Date,
             type: "",
             activity: "", 
-            project: "",
+            project: null,
             startEvent: null,
             endEvent: null,
             workTimeAccountId:0,
@@ -50,6 +50,8 @@ class TimeIntervalBookings extends Component {
             timeintervalBookingId: 0,
             activityId: 0,
             vacationIllnessEvents: [],
+            projects: [],
+            activities: [],
             event: Date
             
          }
@@ -107,12 +109,40 @@ class TimeIntervalBookings extends Component {
             }))
     }
 
+    getProjects = () => {
+        WorkTimeAppAPI.getAPI().getProjectsForUser(1).then(projectBOs =>
+            this.setState({  
+                projects: projectBOs,
+            }, function(){
+                console.log(this.state.projects)
+            }))
+    }
+
+    getActivities = () => {
+        if (this.state.project != null){
+            WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.project).then(activityBOs =>
+                this.setState({  
+                    activities: activityBOs,
+                }, function(){
+                    console.log(this.state.activities)
+                }))}
+    }
+
+
     componentDidMount() {
-    this.getEventBookings()}
+    this.getEventBookings();
+    this.getProjects();
+    this.getActivities()}
 
 
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value });}
+        this.setState({ [e.target.name] : e.target.value }
+            , function(){
+                if (this.state.project != null){
+                    this.getActivities()
+                }
+                console.log(this.state.project)
+            });}
     
     handleStartDateChange(newValue){
         this.setState({
@@ -299,7 +329,12 @@ class TimeIntervalBookings extends Component {
                                 label="project"
                                 onChange={this.handleChange}
                             >
-                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                                 {this.state.projects.map(projectBOs =>
+                                <MenuItem key={projectBOs.getID()} value={projectBOs.getID()}>
+                                     {projectBOs.GetName()}
+                                   
+                                </MenuItem>
+                                )}
                             </Select>
                         </FormControl>}
                     </Grid>
@@ -313,7 +348,12 @@ class TimeIntervalBookings extends Component {
                                 label="activity"
                                 onChange={this.handleChange}
                             >
-                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                               {this.state.activities.map(activityBOs =>
+                                <MenuItem key={activityBOs.getID()} value={activityBOs.getID()}>
+                                     {activityBOs.GetName()}
+                                   
+                                </MenuItem>
+                                )}
                             </Select>
                         </FormControl>}
                     </Grid>
