@@ -2358,12 +2358,21 @@ class BreakOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = BreakBO.from_dict(api.payload)
+        proposal_break_begin = BreakBeginBO.from_dict_timeinterval(api.payload)
+        proposal_break_end = BreakEndBO.from_dict_timeinterval(api.payload)
+
         if proposal is not None:
+            eb = adm.create_break_begin(
+                proposal_break_begin.get_time()
+            )
+            ee = adm.create_break_end(
+                proposal_break_end.get_time()
+            )
             p = adm.create_break(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
+                eb.get_id(),
+                ee.get_id(),
 
             )
 
@@ -2381,7 +2390,7 @@ class BreakOperations(Resource):
             tb = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tb
+        return p, t, tb, eb, ee
 
     @worktimeapp.marshal_list_with(breaks)
     # @secured
@@ -2957,12 +2966,21 @@ class WorkOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = WorkBO.from_dict(api.payload)
+        proposal_coming = ComingBO.from_dict_timeinterval(api.payload)
+        proposal_going = GoingBO.from_dict_timeinterval(api.payload)
+
         if proposal is not None:
+            eb = adm.create_coming(
+                proposal_coming.get_time()
+            )
+            ee = adm.create_going(
+                proposal_going.get_time()
+            )
             p = adm.create_work(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event())
+                eb.get_id(),
+                ee.get_id())
 
             t = adm.create_timeinterval(
                 proposal.get_type(),
@@ -2973,12 +2991,12 @@ class WorkOperations(Resource):
                 None,
                 None,
                 p.get_id()
-            ),
+            )
 
             tw = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tw
+        return p, t, tw, eb, ee
 
     @worktimeapp.marshal_list_with(work)
     # @secured
@@ -3091,15 +3109,17 @@ class TimeintervalBookingOperations(Resource):
                 proposal.get_work_time_account_id(),
                 "T",
                 None
-            ),
-            if proposal.get_type() == "vacation" or proposal.get_type() == "illness" or proposal.get_type() == "projectduration":
-                pass
-            elif proposal.get_type() == "projectwork":
-                p = adm.add_delta_for_project_work(b)
-            else:
-                d = adm.add_delta(b)
+            )
+            # ,
+            # if proposal.get_type() == "vacation" or proposal.get_type() == "illness" or proposal.get_type() == "projectduration":
+            #     pass
+            # elif proposal.get_type() == "projectwork":
+            #     p = adm.add_delta_for_project_work(b)
+            # else:
+            #     d = adm.add_delta(b)
 
-            return b, d, p
+            # return b, d, p
+            return b
         else:
             return ''
 
