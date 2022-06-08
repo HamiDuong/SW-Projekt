@@ -123,8 +123,9 @@ class ProjectWorkMapper(TimeIntervalMapper):
     def update(self, projectwork_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE worktimeapp.projectworks " + "SET start=%s, end=%s WHERE id=%s"
-        data = (projectwork_obj.get_start(),
+        command = "UPDATE worktimeapp.projectworks " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (projectwork_obj.get_date_of_last_change(), projectwork_obj.get_start(),
                 projectwork_obj.get_end(), projectwork_obj.get_id())
         cursor.execute(command, data)
 

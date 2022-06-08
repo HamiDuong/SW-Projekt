@@ -3259,9 +3259,15 @@ class WorkWithIDOperations(Resource):
     def put(self, id):
         adm = Businesslogic()
         p = WorkBO.from_dict(api.payload)
+        proposal_coming = ComingBO.from_dict_timeinterval(api.payload)
+        proposal_going = GoingBO.from_dict_timeinterval(api.payload)
 
         if p is not None:
+            proposal_coming.set_id(p.get_start_event())
+            proposal_going.set_id(p.get_end_event())
             p.set_id(id)
+            adm.save_coming(proposal_coming)
+            adm.save_going(proposal_going)
             adm.save_work(p)
             return p, 200
         else:

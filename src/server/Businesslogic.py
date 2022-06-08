@@ -159,7 +159,12 @@ class Businesslogic():
     # Methode um ein ComingBOs zu updaten
     def save_coming(self, coming):
         with ComingMapper() as mapper:
-            mapper.update(coming)
+            coming = mapper.update(coming)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "coming_id", coming.get_id(), coming.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein ComingBO aus der Datenbank zu entfernen
     def delete_coming(self, coming):
@@ -186,9 +191,14 @@ class Businesslogic():
     # Methode um ein GoingBO zu updaten
     def save_going(self, going):
         with GoingMapper() as mapper:
-            mapper.update(going)
-
+            going = mapper.update(going)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "going_id", going.get_id(), going.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
     # Methode um ein GoingBO aus der Datenbank zu entfernen
+
     def delete_going(self, going):
         with GoingMapper() as mapper:
             mapper.delete(going)
@@ -777,8 +787,12 @@ class Businesslogic():
             return mapper.insert(work_obj)
 
     def save_work(self, work_obj):
-        with WorkMapper as mapper:
-            mapper.update(work_obj)
+        with WorkMapper() as mapper:
+            work = mapper.update(work_obj)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_key(work.get_id())
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_work(self, work_obj):
         with WorkMapper as mapper:
@@ -1526,6 +1540,22 @@ class Businesslogic():
         print(res_e)
         return res_e
 
+    def save_time_interval_booking(self, timeinterval):
+        with TimeIntervalBookingMapper() as mapper:
+            timeintervalbooking = mapper.find_by_key(timeinterval.get_id())
+            mapper.update(timeintervalbooking)
+        with BookingMapper() as mapper:
+            booking = mapper.find_by_key(timeintervalbooking.get_id())
+            mapper.update(booking)
+
+    def save_event_booking(self, event):
+        with EventBookingMapper() as mapper:
+            eventbooking = mapper.find_by_key(event.get_id())
+            mapper.update(eventbooking)
+        with BookingMapper() as mapper:
+            booking = mapper.find_by_key(eventbooking.get_id())
+            mapper.update(booking)
+
     def delete_timeinterval_booking(self, bookingid):
 
         with BookingMapper() as mapper:
@@ -1770,3 +1800,8 @@ class Businesslogic():
         for elem in projects:
             if elem.get_name() == name:
                 return elem
+
+
+# with EventMapper() as mapper:
+#     event = mapper.find_by_key_and_type(1, "coming")
+#     mapper.update(event)

@@ -168,6 +168,8 @@ class BookingMapper (Mapper):
     def update(self, booking):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
         """
+        timestamp = datetime.today()
+        booking.set_date_of_last_change(timestamp)
         cursor = self._cnx.cursor()
 
         command = "UPDATE bookings " + "SET dateOfLastChange=%s WHERE id=%s"
