@@ -3,9 +3,8 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/m
 import { Box } from '@mui/system';
 import { TableContainer } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
 
-const project = 'project A'
+const project = 'Neues Projekt'
 const activities2 = { 'Use Case erstellen': [1, 'Max Mustermann'], 'Malen': [2, 'Max Musterfrau'], 'Basteln': [3, 'Maxeuso deMustermann'], 'Kaffee trinken': [4, 'Max Musterfrau'], 'React hassen': [5000, 'Max Musterfrau'] }
 const plannedTime = { 'Use Case erstellen': [1, 'Max Mustermann'], 'Malen': [2, 'Max Musterfrau'], 'Basteln': [3, 'Maxeuso deMustermann'], 'Kaffee trinken': [4, 'Max Musterfrau'], 'React hassen': [5000, 'Max Musterfrau'] }
 const bookedTime = { 'Use Case erstellen': [1, 'Max Mustermann'], 'Malen': [2, 'Max Musterfrau'], 'Basteln': [2, 'Maxeuso deMustermann'], 'Kaffee trinken': [8, 'Max Musterfrau'], 'React hassen': [10000, 'Max Musterfrau'] }
