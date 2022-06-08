@@ -231,7 +231,14 @@ export default class WorkTimeAppAPI {
     //#getprojectByNAmeURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
 
     //Activity
+    // Author Khadidja Kebaili
     #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`
+    #getActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
+    #getAllActivitiesURL = () => `${this.#worktimeappServerBaseURL}/activities`;
+    #addActivityURL = () => `${this.#worktimeappServerBaseURL}/activities`;
+    #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
+    #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
+
 
 
     static getAPI() {
@@ -1294,6 +1301,58 @@ export default class WorkTimeAppAPI {
           resolve(activityBOs);
         })
       })
+    }
+
+    getAllActivitys() {
+        return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
+            let responseActivity = Activity.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
+    }
+
+    addActivity(activity) {
+        return this.#fetchAdvanced(this.#addActivityURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(activity)
+        }).them((responseJSON) => {
+            let responseActivity = Activity.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
+    }
+
+    deleteActivity(activity) {
+        return this.#fetchAdvanced(this.#deleteActivityURL(activity), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseActivity = Activity.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
+    }
+
+    updateActivity(activity) {
+        return this.#fetchAdvanced(this.#updateWorkURL(activity), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(activity)
+        }).then((responseJSON) => {
+            let responseActivity = WorkBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
     }
     
 }
