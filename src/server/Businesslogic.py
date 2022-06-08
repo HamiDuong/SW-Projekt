@@ -1464,7 +1464,7 @@ class Businesslogic():
                     events.get_illness_begin_id())
                 res_e.append(res)
             if type == 'illnessEnd':
-                res = self.get_illness_end_by_id(events.get_illness_begin_id())
+                res = self.get_illness_end_by_id(events.get_illness_end_id())
                 res_e.append(res)
             if type == 'projectWorkStart':
                 res = self.get_project_work_begin_by_id(
