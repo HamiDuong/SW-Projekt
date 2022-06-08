@@ -19,6 +19,7 @@ import IllnessBO from '../API/IllnessBO'
 import WorkBO from '../API/WorkBO'
 import BookingBO from '../API/BookingBO';
 import BreakBO from '../API/BreakBO';
+import FlexDayBO from '../API/FlexDayBO';
 import ProjectWorkBO from '../API/ProjectWorkBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import { format } from "date-fns";
@@ -38,7 +39,6 @@ class TimeIntervalBookings extends Component {
             start: Date,
             end: Date,
             type: "",
-            activity: "", 
             project: null,
             startEvent: null,
             endEvent: null,
@@ -48,7 +48,7 @@ class TimeIntervalBookings extends Component {
             showSelectEndEventDialog: false,
             eventBookingId: 0,
             timeintervalBookingId: 0,
-            activityId: 0,
+            activityId: null,
             vacationIllnessEvents: [],
             projects: [],
             activities: [],
@@ -98,6 +98,15 @@ class TimeIntervalBookings extends Component {
             console.log(newBreakBO)
             console.log(newBookingBO)
         }
+        else if ((this.state.type) === "flexday"){
+            let newFlexDayBO = new FlexDayBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newFlexDayBO)
+            console.log(newBookingBO)
+        }
+        
        }
 
     getEventBookings = () => {
@@ -141,7 +150,8 @@ class TimeIntervalBookings extends Component {
                 if (this.state.project != null){
                     this.getActivities()
                 }
-                console.log(this.state.project)
+                console.log("ACTIVITYID",this.state.activityId)
+                console.log("Menuitem",this.state.activityId)
             });}
     
     handleStartDateChange(newValue){
@@ -232,13 +242,13 @@ class TimeIntervalBookings extends Component {
                                 <MenuItem value={"vacation"}>Vacation</MenuItem>
                                 <MenuItem value={"illness"}>Illness</MenuItem>
                                 <MenuItem value={"break"}>Break</MenuItem>
-                                <MenuItem value={"flexdays"}>Flex Days</MenuItem>
+                                <MenuItem value={"flexday"}>Flex Days</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     
-                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
+                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                             <Grid item xs={12} sm={9} >
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
@@ -279,7 +289,7 @@ class TimeIntervalBookings extends Component {
                     null}
                      {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
                     
-                    {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexdays")?
+                    {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                         <Grid xs={12} sm={9} item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
@@ -343,8 +353,8 @@ class TimeIntervalBookings extends Component {
                     <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Select Activity</InputLabel>
                             <Select
-                                name="activity"
-                                value={this.state.activity}
+                                name="activityId"
+                                value={this.state.activityId}
                                 label="activity"
                                 onChange={this.handleChange}
                             >

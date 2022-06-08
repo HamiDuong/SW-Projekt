@@ -8,7 +8,7 @@ export default class ProjectWorkBO extends BusinessObject{
         this.startEvent = startEvent;
         this.endEvent = endEvent;
         this.type = type;
-        this.activitytId = activityId;
+        this.activityId = activityId;
     }
 
     //Getter und Setter
@@ -53,11 +53,11 @@ export default class ProjectWorkBO extends BusinessObject{
     }
 
     setActivityId(id){
-        this.activitytId = id;
+        this.activityId = id;
     }
 
     getActivityId(){
-        return this.activitytId;
+        return this.activityId;
     }
 
     static fromJSON(pWork){

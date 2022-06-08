@@ -81,6 +81,7 @@ from server.bo.timeinterval.FlexDayBO import FlexDayBO
 from server.bo.BookingBO import BookingBO
 from server.bo.EventBookingBO import EventBookingBO
 from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+import time
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
@@ -1507,7 +1508,27 @@ class FlexDayStartListOperations(Resource):
         if proposal is not None:
             c = adm.create_flex_day_start(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "FlexDayBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id(),
+                None
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1594,7 +1615,27 @@ class FlexDayEndListOperations(Resource):
         if proposal is not None:
             c = adm.create_flex_day_end(
                 proposal.get_time())
-            return c, 200
+
+            e = adm.create_event(
+                "FlexDayEnd",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                c.get_id()
+            )
+
+            eb = adm.create_event_booking(
+                e.get_id()
+            )
+            return c, e, eb, 200
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1682,7 +1723,7 @@ class IllnessEndListOperations(Resource):
                 proposal.get_time())
 
             e = adm.create_event(
-                "illnessBegin",
+                "illnessEnd",
                 None,
                 None,
                 None,
@@ -2364,9 +2405,49 @@ class BreakOperations(Resource):
             eb = adm.create_break_begin(
                 proposal_break_begin.get_time()
             )
+            ebe = adm.create_event(
+                "breakbegin",
+                None,
+                None,
+                eb.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+            )
+
+            eb = adm.create_event_booking(
+                ebe.get_id()
+            )
             ee = adm.create_break_end(
                 proposal_break_end.get_time()
             )
+
+            eee = adm.create_event(
+                "breakend",
+                None,
+                None,
+                None,
+                ee.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                eee.get_id()
+            )
+
             p = adm.create_break(
                 proposal.get_start(),
                 proposal.get_end(),
@@ -2389,7 +2470,7 @@ class BreakOperations(Resource):
             tb = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tb, eb, ee
+        return p
 
     @worktimeapp.marshal_list_with(breaks)
     # @secured
@@ -2488,7 +2569,7 @@ class IllnessOperations(Resource):
             ti = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, ti
+        return p
 
     @worktimeapp.marshal_list_with(illness)
     # @secured
@@ -2573,13 +2654,74 @@ class FlexDayOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = FlexDayBO.from_dict(api.payload)
+        proposal_flexday_start = FlexDayStartBO.from_dict_timeinterval(
+            api.payload)
+        proposal_flexday_end = FlexDayEndBO.from_dict_timeinterval(api.payload)
         if proposal is not None:
+            eb = adm.create_flex_day_start(
+                proposal_flexday_start.get_time()
+            )
+            ebe = adm.create_event(
+                "FlexDayBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                eb.get_id(),
+                None
+            )
+
+            e = adm.create_event_booking(
+                ebe.get_id()
+            )
+            ee = adm.create_flex_day_end(
+                proposal_flexday_end.get_time()
+            )
+
+            eee = adm.create_event(
+                "FlexDayEnd",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                ee.get_id()
+            )
+
+            eb = adm.create_event_booking(
+                eee.get_id()
+            )
             p = adm.create_flex_day(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
+                eb.get_id(),
+                ee.get_id()
+            )
+            t = adm.create_timeinterval(
                 proposal.get_type(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                p.get_id(),
+                None
+            )
+
+            tw = adm.create_timeinterval_booking(
+                t.get_id()
             )
         return p
 
@@ -2755,12 +2897,60 @@ class ProjectWorkOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = ProjectWorkBO.from_dict(api.payload)
+        proposal_projectwork_start = ProjectWorkBeginBO.from_dict_timeinterval(
+            api.payload)
+        proposal_projectwork_end = ProjectWorkEndBO.from_dict_timeinterval(
+            api.payload)
         if proposal is not None:
+            eb = adm.create_project_work_begin(
+                proposal_projectwork_start.get_time()
+            )
+            ebe = adm.create_event(
+                "projectWorkBegin",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                eb.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                ebe.get_id()
+            )
+            ee = adm.create_project_work_end(
+                proposal_projectwork_end.get_time()
+            )
+            eee = adm.create_event(
+                "projectWorkEnd",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                ee.get_id(),
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                eee.get_id()
+            )
             p = adm.create_project_work(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
+                eb.get_id(),
+                ee.get_id(),
                 proposal.get_activity_id()
             )
             t = adm.create_timeinterval(
@@ -2777,7 +2967,7 @@ class ProjectWorkOperations(Resource):
             td = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, td
+        return p
 
     @worktimeapp.marshal_list_with(projectwork)
     # @secured
@@ -2888,7 +3078,7 @@ class VacationOperations(Resource):
             tb = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tb
+        return p
 
     @worktimeapp.marshal_list_with(vacation)
     # @secured
@@ -2972,9 +3162,50 @@ class WorkOperations(Resource):
             eb = adm.create_coming(
                 proposal_coming.get_time()
             )
+
+            ebe = adm.create_event(
+                "coming",
+                eb.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                ebe.get_id()
+            )
             ee = adm.create_going(
                 proposal_going.get_time()
             )
+
+            eee = adm.create_event(
+                "going",
+                None,
+                ee.get_id(),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None
+            )
+
+            eb = adm.create_event_booking(
+                eee.get_id()
+            )
+
             p = adm.create_work(
                 proposal.get_start(),
                 proposal.get_end(),
@@ -2995,7 +3226,7 @@ class WorkOperations(Resource):
             tw = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tw, eb, ee
+        return p
 
     @worktimeapp.marshal_list_with(work)
     # @secured
@@ -3103,6 +3334,8 @@ class TimeintervalBookingOperations(Resource):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
+            t = 2
+            time.sleep(t)
             b = adm.create_booking_for_timeinterval(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
@@ -3131,6 +3364,8 @@ class EventBookingOperations(Resource):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
+            t = 2
+            time.sleep(t)
             b = adm.create_booking_for_event(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
