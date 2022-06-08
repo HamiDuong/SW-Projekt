@@ -1354,6 +1354,68 @@ export default class WorkTimeAppAPI {
             })
         })
     }
+
+
+    addProject(project) {
+        return this.#fetchAdvanced(this.#addProjectURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(project)
+        }).them((responseJSON) => {
+            let responseProject = Project.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    deleteProject(project) {
+        return this.#fetchAdvanced(this.#deleteProjectURL(project), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProject = Project.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    updateProject(project) {
+        return this.#fetchAdvanced(this.#updateWorkURL(project), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(project)
+        }).then((responseJSON) => {
+            let responseProject = WorkBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    getProjectByName(name) {
+        return this.#fetchAdvanced(this.#getProjectByNameURL(name)).then((responseJSON) => {
+            let responseProject = Project.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    getAllProjects() {
+        return this.#fetchAdvanced(this.#getAllProjectsURL()).then((responseJSON) => {
+            let responseProject = Project.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
     
 }
 
