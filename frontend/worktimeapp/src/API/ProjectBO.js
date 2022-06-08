@@ -43,14 +43,6 @@ export default class Project extends BusinessObject{
         return this.projectId;
     }
 
-    SetDuration(duration){
-        this.duration = duration;
-    }
-
-    GetDuration(){
-        return this.duration;
-    }
-
     static fromJSON(project){
         let res = [];
         if(Array.isArray(project)){
