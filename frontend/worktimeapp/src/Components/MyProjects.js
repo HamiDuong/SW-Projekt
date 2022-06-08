@@ -96,29 +96,9 @@
 // }
  
 // export default MyProjects;
-
-
 import React, { Component } from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import FormControl from '@mui/material/FormControl';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
+
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
@@ -133,8 +113,28 @@ import {withStyles,
     TextField,
     Button,
     List,
-    ListItem} from "@material-ui/core";
-import Box from '@mui/material/Box'
+    ListItem,
+    Box,
+    Collapse,
+    ListItemText,
+    ListItemIcon,
+    ListItemButton,
+    ListSubheader,
+    TableRow,
+    TableHead,
+    TableContainer,
+    TableCell,
+    TableBody,
+    Table,
+    Paper,
+    FormControl,
+    Card,
+    Grid,
+    Select,
+    MenuItem,
+    InputLabel
+} from '@mui/material';
+
 import { MyProjectpopup } from './MyProjectpopup';
 import EditActivity from './Dialog/EditActivity';
 import MyActivitiesEntry from './MyActivitiesEntry';
