@@ -1303,7 +1303,7 @@ export default class WorkTimeAppAPI {
       })
     }
 
-    getAllActivitys() {
+    getAllActivities() {
         return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
             let responseActivity = Activity.fromJSON(responseJSON);
             return new Promise(function (resolve) {
