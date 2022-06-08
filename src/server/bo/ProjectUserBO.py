@@ -9,6 +9,7 @@ class ProjectUserBO(bo.BusinessObject):
         self._project_id = None
         self._user_id = None
         self._capacity = None
+        self._current_capacity = None
 
     def get_project_id(self):
         """Auslesen der Projekt ID"""
@@ -34,6 +35,12 @@ class ProjectUserBO(bo.BusinessObject):
         """Setzen der Kapazitaet einer Aktivitaet"""
         self._capacity = capacity
 
+    def get_current_capacity(self):
+        return self._current_capacity
+
+    def set_current_capacity(self, cap):
+        self._current_capacity = cap
+
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
         
@@ -49,4 +56,5 @@ class ProjectUserBO(bo.BusinessObject):
         obj.set_project_id(dictionary["project_id"])  
         obj.set_user_id(dictionary["user_id"])
         obj.set_capacity(dictionary["capacity"])
+        obj.set_current_capacity(dictionary["current_capacity"])
         return obj

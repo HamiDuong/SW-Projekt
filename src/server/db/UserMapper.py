@@ -1,5 +1,6 @@
 from server.db.Mapper import Mapper
 from server.bo.UserBO import UserBO
+from datetime import datetime
 
 """
 @author Marco
@@ -13,6 +14,9 @@ class UserMapper(Mapper):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.users ")
         tuples = cursor.fetchall()
+
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] is not None:
@@ -193,9 +197,12 @@ class UserMapper(Mapper):
 
     def update(self, user):
         cursor = self._cnx.cursor()
+    
+        timestamp = datetime.today()
+        user.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s WHERE id=%s"
-        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_id())
+        command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_date_of_last_change(),user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

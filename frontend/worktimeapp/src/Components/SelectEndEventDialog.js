@@ -17,14 +17,14 @@ import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 
 
-class SelectEventDialog extends Component {
+class SelectEndEventDialog extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             timeframestart: Date,
             timeframeend: Date,
-            event: Date
+            endevent: Date
 
 
         }
@@ -54,7 +54,7 @@ class SelectEventDialog extends Component {
         } )}
 
     updateStart = () => {
-        this.props.onClose(this.state.event)
+        this.props.onClose(this.state.endevent)
     }
 
 
@@ -101,7 +101,7 @@ class SelectEventDialog extends Component {
                     <FormControl sx={{ width: "100%"}}>
                             <InputLabel>Select Event</InputLabel>
                             <Select
-                                name="event"
+                                name="endevent"
                                 value={this.state.start}
                                 label="Select Event"
                                 onChange={this.handleChange}
@@ -128,4 +128,4 @@ class SelectEventDialog extends Component {
     }
 }
  
-export default SelectEventDialog;
+export default SelectEndEventDialog;
