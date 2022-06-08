@@ -104,9 +104,9 @@ class ProjectWorkMapper(TimeIntervalMapper):
             else:
                 projectwork_obj.set_id(maxid[0]+1)
 
-        command = "INSET INTO worktimeapp.projectworks (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )"
+        command = "INSERT INTO worktimeapp.projectworks (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s )"
         data = (projectwork_obj.get_id(), projectwork_obj.get_date_of_last_change(), projectwork_obj.get_start(), projectwork_obj. get_end(
-        ), projectwork_obj.get_start_event(), projectwork_obj.get_end_event(), projectwork_obj.get_type(), projectwork_obj.get_project_id())
+        ), projectwork_obj.get_start_event(), projectwork_obj.get_end_event(), projectwork_obj.get_type(), projectwork_obj.get_activity_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

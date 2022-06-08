@@ -107,7 +107,6 @@ class IllnessEndMapper(Mapper):
 
         return result
 
-
     def update(self, illness_end):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
