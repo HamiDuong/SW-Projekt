@@ -1,6 +1,6 @@
 import BusinessObject from "./BusinessObject";
 
-export default class ProjectDuration extends BusinessObject{
+export default class ProjectDurationBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type, projectId){
         super();
         this.start = start;
@@ -64,12 +64,12 @@ export default class ProjectDuration extends BusinessObject{
         let res = [];
         if(Array.isArray(duration)){
             duration.forEach((elem) => {
-                Object.setPrototypeOf(elem, ProjectDuration.prototype);
+                Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
                 res.push(elem)
             })
         }else{
             let elem = duration;
-            Object.setPrototypeOf(elem, ProjectDuration.prototype);
+            Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
             res.push(elem)
         }
         return res;
