@@ -87,13 +87,22 @@ class EditBooking extends Component {
                 // });
 
             case "Projekt Work":
-                newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
+                updatedbooking = Object.assign(new ProjectWorkBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                //newBooking = WorkTimeAppAPI.getAPI().updateProjectWork(obj)
 
             case "Vacation":
-                newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
+                updatedbooking = Object.assign(new VacationBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                //newBooking = WorkTimeAppAPI.getAPI().updateVacation(obj)
 
             case "Work":
-                newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
+                updatedbooking = Object.assign(new WorkBO(), this.props.booking);
+                updatedbooking.setStart(this.state.startdate);
+                updatedbooking.setStart(this.state.enddate);
+                //newBooking = WorkTimeAppAPI.getAPI().updateWork(obj)
 
         }
         //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
