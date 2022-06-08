@@ -1453,20 +1453,20 @@ class Businesslogic():
             with EventMapper() as mapper:
                 events = mapper.find_by_key(id)
                 type = events.get_type()
-            if type == 'breakStart':
+            if type == 'breakBegin':
                 res = self.get_break_begin_by_id(events.get_break_begin_id())
                 res_e.append(res)
             if type == 'breakEnd':
                 res = self.get_break_end_by_id(events.get_break_end_id())
                 res_e.append(res)
-            if type == 'illnessStart':
+            if type == 'illnessBegin':
                 res = self.get_illness_begin_by_id(
                     events.get_illness_begin_id())
                 res_e.append(res)
             if type == 'illnessEnd':
                 res = self.get_illness_end_by_id(events.get_illness_end_id())
                 res_e.append(res)
-            if type == 'projectWorkStart':
+            if type == 'projectWorkBegin':
                 res = self.get_project_work_begin_by_id(
                     events.get_project_work_begin_id())
                 res_e.append(res)
@@ -1474,7 +1474,7 @@ class Businesslogic():
                 res = self.get_project_work_end_by_id(
                     events.get_project_work_end_id())
                 res_e.append(res)
-            if type == 'vacationStart':
+            if type == 'vacationBegin':
                 res = self.get_vacation_begin_by_id(
                     events.get_vacation_begin_id())
                 res_e.append(res)

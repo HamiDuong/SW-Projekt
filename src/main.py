@@ -1929,7 +1929,7 @@ class BreakBeginListOperations(Resource):
                 proposal.get_time())
 
             e = adm.create_event(
-                "breakbegin",
+                "breakBegin",
                 None,
                 None,
                 c.get_id(),
@@ -2032,7 +2032,7 @@ class BreakEndListOperations(Resource):
                 proposal.get_time())
 
             e = adm.create_event(
-                "breakend",
+                "breakEnd",
                 None,
                 None,
                 None,
