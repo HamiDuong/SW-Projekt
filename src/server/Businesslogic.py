@@ -54,7 +54,7 @@ from .bo.EventBookingBO import EventBookingBO
 from .db.EventBookingMapper import EventBookingMapper
 from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
 from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
-from asyncio.windows_events import NULL
+
 from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
 from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
 from .bo.timeinterval.BreakBO import BreakBO
@@ -1317,12 +1317,11 @@ class Businesslogic():
     Project
     """
 
-    def create_project(self, name, commissioner, user_id, duration):
+    def create_project(self, name, commissioner, user_id):
         project = ProjectBO()
         project.set_name(name)
         project.set_commissioner(commissioner)
         project.set_user_id(user_id)
-        project.set_duration(duration)
         with ProjectMapper() as mapper:
             return mapper.insert(project)
 
@@ -1349,10 +1348,6 @@ class Businesslogic():
     def get_by_project_name(self, name):
         with ProjectMapper() as mapper:
             mapper.find_by_project_name(name)
-
-    # def get_project_duration_by_project_id(self, id):
-    #     with ProjectMapper() as mapper:
-    #         return mapper.find_by_project_id(id)
 
     """
     Projectuser

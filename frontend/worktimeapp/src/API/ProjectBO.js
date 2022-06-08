@@ -1,13 +1,12 @@
 import BusinessObject from "./BusinessObject";
 
 export default class Project extends BusinessObject{
-    constructor(name, commissioner, userId, projectId,duration){
+    constructor(name, commissioner, userId){
         super();
         this.name = name;
         this.commissioner = commissioner;
         this.userId = userId;
-        this.projectId = projectId;
-        this.duration = duration;
+        // this.projectId = projectId;
     }
 
     //Getter und Setter
@@ -35,13 +34,13 @@ export default class Project extends BusinessObject{
         return this.userId;
     }
 
-    SetProjectId(id){
-        this.projectId = id;
-    }
+    // SetProjectId(id){
+    //     this.projectId = id;
+    // }
 
-    GetProjectId(){
-        return this.projectId;
-    }
+    // GetProjectId(){
+    //     return this.projectId;
+    // }
 
     static fromJSON(project){
         let res = [];

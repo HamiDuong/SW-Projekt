@@ -9,14 +9,33 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid'; 
 import AddActivities from './Dialog/AddActivities';
 import AddMember from './Dialog/AddMembers';
+import PropTypes from 'prop-types';
 
 class CreateProject extends Component {
     constructor(props) {
         super(props);
+        let pn = '', cm = '';
+        if (props.project) {
+          pn = props.project.GetName();
+          cm = props.project.GetCommisioner();
+    }
         this.state={
             showPopupAddActivities: false,
-            showPopupAddMembers: false
+            showPopupAddMembers: false,
+          //Network states
+            loadingInProgress: false,
+            createprojectError: null,
+            projectName: pn,
+            commissioner: cm,
+            projectNameValidationFailed: false,
+            projectNameEdited: false,
+            commissionerValidationFailed: false,
+            commissionerEdited: false,
+            userid: 0
+
         }
+        this.baseState = this.state;
+        
     }
     togglePopupActivities() {
         this.setState({
@@ -29,9 +48,42 @@ class CreateProject extends Component {
           showPopupAddMembers: !this.state.showPopupAddMembers,
         });
       }
-    
+
+    addProjects = () => { 
+      let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
+      console.log(newProject)
+      WorkTimeAppAPI.getAPI().addProject(newProject).then(project => {
+        this.setState(this.baseState);
+        this.props.onClose(project);
+      }).catch(e => 
+        this.setState({
+          updatingInProgress: false,
+          updatingError: e
+        })
+        );
+      this.setState({
+        updatingInProgress: true,
+        updatingError: null
+      });
+    }
+    /** Handles value changes of the forms textfields and validates them */
+    textFieldValueChange = (event) => {
+    const value = event.target.value;
+
+    let error = false;
+    if (value.trim().length === 0) {
+      error = true;
+    }
+
+    this.setState({
+      [event.target.id]: event.target.value,
+      [event.target.id + 'ValidationFailed']: error,
+      [event.target.id + 'Edited']: true
+    });
+    }
     render() { 
-        
+      const {classes} = this.props; 
+      const {projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed} = this.state     
         return ( 
     <Box
       component="form"
@@ -40,12 +92,15 @@ class CreateProject extends Component {
       }}
       noValidate
       autoComplete="off"
-    >
+    > 
+              <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName} 
+                onChange={this.textFieldValueChange} error={projectNameValidationFailed} 
+                helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='commissioner' label='commissioner:' value={commissioner}
+                onChange={this.textFieldValueChange} error={commissionerValidationFailed}
+                helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
+              
 
-      <TextField id="outlined-basic" label="Name" variant="outlined" />
-      <br/>
-      <TextField id="outlined-basic" label="Commissoner" variant="outlined" />
-      
       <br/>
       <TextField
         id="startfilter"
@@ -68,13 +123,11 @@ class CreateProject extends Component {
             shrink: true,
                         }}
         />
-        <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.addProject}>Create Project</Button>
-        </Grid>
+        
 
 
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>Add Activities</Button>
+                    <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>+</Button>
         </Grid>
         
         {this.state.showPopupAddActivities ? 
@@ -87,7 +140,7 @@ class CreateProject extends Component {
         
 
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>Add Members</Button>
+                    <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
         </Grid>
         
 
@@ -99,11 +152,35 @@ class CreateProject extends Component {
           : null
         }
 
+        <Grid xs={12} item>
+                    <Button 
+                    variant="contained" 
+                    onClick={this.addProjects}>
+                      Create Project
+                      </Button>
+        </Grid>   
+
         
     </Box>
 
     )
     }
+}
+/** PropTypes */
+CreateProject.propTypes = {
+  /** @ignore */
+  classes: PropTypes.object.isRequired,
+  /** The CustomerBO to be edited */
+  customer: PropTypes.object,
+  /** If true, the form is rendered */
+  show: PropTypes.bool.isRequired,
+  /**  
+   * Handler function which is called, when the dialog is closed.
+   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
+   *  
+   * Signature: onClose(CustomerBO customer);
+   */
+  onClose: PropTypes.func.isRequired,
 }
  
 export default CreateProject;

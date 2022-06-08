@@ -780,7 +780,6 @@ class ProjectOperations(Resource):
                 proposal.get_name(),
                 proposal.get_commissioner(),
                 proposal.get_user_id(),
-                proposal.get_duration()
             )
             return p
 
