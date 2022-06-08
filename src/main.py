@@ -791,6 +791,17 @@ class ProjectOperations(Resource):
         return project
 
 
+@worktimeapp.route('/project/user/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectWithUserIDOperations(Resource):
+    @worktimeapp.marshal_with(project)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        project = adm.get_projects_by_user_id(id)
+        return project
+
+
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -799,13 +810,6 @@ class ProjectWithIDOperations(Resource):
     def get(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
-        return project
-
-    @worktimeapp.marshal_with(project)
-    # @secured
-    def get_user(self, id):
-        adm = Businesslogic()
-        project = adm.get_projects_by_user_id(id)
         return project
 
     @worktimeapp.marshal_with(project)
@@ -2352,12 +2356,21 @@ class BreakOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = BreakBO.from_dict(api.payload)
+        proposal_break_begin = BreakBeginBO.from_dict_timeinterval(api.payload)
+        proposal_break_end = BreakEndBO.from_dict_timeinterval(api.payload)
+
         if proposal is not None:
+            eb = adm.create_break_begin(
+                proposal_break_begin.get_time()
+            )
+            ee = adm.create_break_end(
+                proposal_break_end.get_time()
+            )
             p = adm.create_break(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event(),
+                eb.get_id(),
+                ee.get_id(),
 
             )
 
@@ -2375,7 +2388,7 @@ class BreakOperations(Resource):
             tb = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tb
+        return p, t, tb, eb, ee
 
     @worktimeapp.marshal_list_with(breaks)
     # @secured
@@ -2951,12 +2964,21 @@ class WorkOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = WorkBO.from_dict(api.payload)
+        proposal_coming = ComingBO.from_dict_timeinterval(api.payload)
+        proposal_going = GoingBO.from_dict_timeinterval(api.payload)
+
         if proposal is not None:
+            eb = adm.create_coming(
+                proposal_coming.get_time()
+            )
+            ee = adm.create_going(
+                proposal_going.get_time()
+            )
             p = adm.create_work(
                 proposal.get_start(),
                 proposal.get_end(),
-                proposal.get_start_event(),
-                proposal.get_end_event())
+                eb.get_id(),
+                ee.get_id())
 
             t = adm.create_timeinterval(
                 proposal.get_type(),
@@ -2972,7 +2994,7 @@ class WorkOperations(Resource):
             tw = adm.create_timeinterval_booking(
                 t.get_id()
             )
-        return p, t, tw
+        return p, t, tw, eb, ee
 
     @worktimeapp.marshal_list_with(work)
     # @secured
@@ -3086,6 +3108,15 @@ class TimeintervalBookingOperations(Resource):
                 "T",
                 None
             )
+            # ,
+            # if proposal.get_type() == "vacation" or proposal.get_type() == "illness" or proposal.get_type() == "projectduration":
+            #     pass
+            # elif proposal.get_type() == "projectwork":
+            #     p = adm.add_delta_for_project_work(b)
+            # else:
+            #     d = adm.add_delta(b)
+
+            # return b, d, p
             return b
         else:
             return ''
@@ -3122,6 +3153,22 @@ class EventBookingOperationsWithParam(Resource):
         if user is not None:
             # Jetzt erst lesen wir die Konten des Customer aus.
             eventbookings = adm.get_all_event_bookings_for_user(user)
+            return eventbookings
+
+
+@worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness')
+@worktimeapp.param('id', 'Die User ID')
+class EventBookingOperationsWithParam(Resource):
+    @worktimeapp.marshal_with(event_subclass)
+    def get(self, id):
+        adm = Businesslogic()
+        user = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
+        if user is not None:
+            # Jetzt erst lesen wir die Konten des Customer aus.
+            eventbookings = adm.get_all_vacation_illness_event_bookings_for_user(
+                user)
             return eventbookings
 
 
