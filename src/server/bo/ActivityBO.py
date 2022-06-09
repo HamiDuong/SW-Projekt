@@ -66,5 +66,5 @@ class ActivityBO(bo.BusinessObject):
         obj.set_capacity(dictionary["capacity"])
         obj.set_project_id(dictionary)["projectId"]
         obj.set_duration(dictionary["duration"])
-        obj.set_current_capacity(dictionary["current_capacity"])
+        obj.set_current_capacity(dictionary["currentCapacity"])
         return obj
