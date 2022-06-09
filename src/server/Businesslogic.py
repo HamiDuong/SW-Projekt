@@ -81,6 +81,7 @@ from .db.ProjectUserMapper import ProjectUserMapper
 from .bo.ActivityBO import ActivityBO
 from .db.ActivityMapper import ActivityMapper
 
+
 class Businesslogic():
 
     def __init__(self):
@@ -815,7 +816,7 @@ class Businesslogic():
         # work_obj.set_time_interval_id(time_interval_id)
         work_obj.set_start_event(startevent)
         work_obj.set_end_event(endevent)
-        work_obj.set_type("Work")
+        work_obj.set_type("Flexday")
 
         with FlexDayMapper() as mapper:
             return mapper.insert(work_obj)
@@ -1508,14 +1509,14 @@ class Businesslogic():
             with EventMapper() as mapper:
                 events = mapper.find_by_key(id)
                 type = events.get_type()
-            if type == 'illnessStart':
+            if type == 'illnessBegin':
                 res = self.get_illness_begin_by_id(
                     events.get_illness_begin_id())
                 res_e.append(res)
             if type == 'illnessEnd':
-                res = self.get_illness_end_by_id(events.get_illness_begin_id())
+                res = self.get_illness_end_by_id(events.get_illness_end_id())
                 res_e.append(res)
-            if type == 'vacationStart':
+            if type == 'vacationBegin':
                 res = self.get_vacation_begin_by_id(
                     events.get_vacation_begin_id())
                 res_e.append(res)
@@ -1758,7 +1759,7 @@ class Businesslogic():
     def get_all_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
-        
+
     def get_project_by_name(self, name):
         projects = self.get_all_projects()
         for elem in projects:

@@ -143,7 +143,7 @@ export default class WorkTimeAppAPI {
     //IllnessStart
     #getIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #getAllIllnessStartesURL = () => `${this.#worktimeappServerBaseURL}/illnessstarts`;
-    #addIllnessStartURL = () => `${this.#worktimeappServerBaseURL}/illness_starts`;
+    #addIllnessStartURL = () => `${this.#worktimeappServerBaseURL}/illness_begins`;
     #deleteIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #updateIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #getIllnessStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/illnessstartdate/${date}`;
@@ -175,7 +175,7 @@ export default class WorkTimeAppAPI {
     //VacationStart
     #getVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #getAllVacationStartsURL = () => `${this.#worktimeappServerBaseURL}/vacationstarts`;
-    #addVacationStartURL = () => `${this.#worktimeappServerBaseURL}/vacation_starts`;
+    #addVacationStartURL = () => `${this.#worktimeappServerBaseURL}/vacation_begins`;
     #deleteVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #updateVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #getVacationStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/vacationstartdate/${date}`;
@@ -921,7 +921,7 @@ export default class WorkTimeAppAPI {
         })
     }
 
-    // Booking Methoden author Mihriban Dogan
+    //Booking Methoden author Mihriban Dogan
 
     //TimeintervalBookingMethoden
 
@@ -1008,6 +1008,24 @@ export default class WorkTimeAppAPI {
           }).then((responseJSON) => {
             console.log("TEST")
             let responseBookingBO = BreakBO.fromJSON(responseJSON)[0];
+           
+            return new Promise(function (resolve) {
+              resolve(responseBookingBO);
+            })
+          })
+    }
+
+    addFlexDayBooking(flexDayBO){
+        return this.#fetchAdvanced(this.#addFlexDayURL(), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexDayBO)
+          }).then((responseJSON) => {
+            console.log("TEST")
+            let responseBookingBO = FlexDayBO.fromJSON(responseJSON)[0];
            
             return new Promise(function (resolve) {
               resolve(responseBookingBO);
@@ -1323,7 +1341,7 @@ export default class WorkTimeAppAPI {
 
     getAllActivities() {
         return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
-            let responseActivity = Activity.fromJSON(responseJSON);
+            let responseActivity = ActivityBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseActivity)
             })
@@ -1339,7 +1357,7 @@ export default class WorkTimeAppAPI {
             },
             body: JSON.stringify(activity)
         }).them((responseJSON) => {
-            let responseActivity = Activity.fromJSON(responseJSON)[0];
+            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseActivity)
             })
@@ -1350,7 +1368,7 @@ export default class WorkTimeAppAPI {
         return this.#fetchAdvanced(this.#deleteActivityURL(activity), {
             method: 'DELETE'
         }).then((responseJSON) => {
-            let responseActivity = Activity.fromJSON(responseJSON)[0];
+            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseActivity)
             })
@@ -1383,7 +1401,7 @@ export default class WorkTimeAppAPI {
             },
             body: JSON.stringify(project)
         }).them((responseJSON) => {
-            let responseProject = Project.fromJSON(responseJSON)[0];
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
@@ -1394,7 +1412,7 @@ export default class WorkTimeAppAPI {
         return this.#fetchAdvanced(this.#deleteProjectURL(project), {
             method: 'DELETE'
         }).then((responseJSON) => {
-            let responseProject = Project.fromJSON(responseJSON)[0];
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
@@ -1419,7 +1437,7 @@ export default class WorkTimeAppAPI {
 
     getProjectByName(name) {
         return this.#fetchAdvanced(this.#getProjectByNameURL(name)).then((responseJSON) => {
-            let responseProject = Project.fromJSON(responseJSON);
+            let responseProject = ProjectBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
@@ -1428,7 +1446,7 @@ export default class WorkTimeAppAPI {
 
     getAllProjects() {
         return this.#fetchAdvanced(this.#getAllProjectsURL()).then((responseJSON) => {
-            let responseProject = Project.fromJSON(responseJSON);
+            let responseProject = ProjectBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
