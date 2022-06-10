@@ -1728,11 +1728,13 @@ class Businesslogic():
 
     # Activity
 
-    def create_activity(self, name, capacity, project_id):
+    def create_activity(self, name, capacity, project_id, current_capacity):
         activity = ActivityBO()
         activity.set_name(name)
         activity.set_capacity(capacity)
         activity.set_project_id(project_id)
+        activity.set_current_capacity(current_capacity)
+
         with ActivityMapper() as mapper:
             return mapper.insert(activity)
 

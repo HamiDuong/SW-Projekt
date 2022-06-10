@@ -65,6 +65,8 @@ class CreateProject extends Component {
         updatingError: null
       });
     }
+    
+
     /** Handles value changes of the forms textfields and validates them */
     textFieldValueChange = (event) => {
     const value = event.target.value;

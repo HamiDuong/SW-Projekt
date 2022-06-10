@@ -155,9 +155,10 @@ projectuser = api.inherit('ProjectUser', bo, {
 
 '''Activity'''
 activity = api.inherit('Activity', bo, {
-    'name': fields.String(attribute='_name', description='Der Name des Projekts'),
-    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
-    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projekts')
+    'name': fields.String(attribute='_name', description='Der Name des Akktivitäts'),
+    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Aktivitäts'),
+    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Aktivitäts'),
+    'current_capacity':fields.Float(attribute='_current_capacity', description='Die aktuelle Kapazität eines Aktivitäts')
 
 })
 
@@ -921,10 +922,11 @@ class ActivityOperations(Resource):
         adm = Businesslogic()
         proposal = ActivityBO.from_dict(api.payload)
         if proposal is not None:
-            p = adm.create_project(
+            p = adm.create_activity(
                 proposal.get_name(),
                 proposal.get_capacity(),
-                proposal.get_project_id()
+                proposal.get_project_id(),
+                proposal.get_current_capacity(),
             )
             return p
 

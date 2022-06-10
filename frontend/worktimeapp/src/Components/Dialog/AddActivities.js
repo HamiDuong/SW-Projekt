@@ -19,13 +19,14 @@ class AddActivities extends Component {
             activityNameEdited: false,
             capacityValidationFailed: false,
             capacityEdited: false,
-            projectid: 0
+            projectId: 0,
+            currentCapacity: 0,
     }
     this.baseState = this.state;
 }
 
     addActivity = () => { 
-        let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.state.projectid);
+        let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.state.projectId, this.state.currentCapacity);
         console.log(newActivity)
         WorkTimeAppAPI.getAPI().addActivity(newActivity).then(activity => {
           this.setState(this.baseState);
@@ -76,14 +77,17 @@ class AddActivities extends Component {
                 <TextField type='text' required fullWidth margin='normal' id='capacity' label='capacity:' value={capacity}
                 onChange={this.textFieldValueChange} error={capacityValidationFailed}
                 helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
+                
                 <Grid xs={12} item>
+                    
                     <Button 
                     variant="contained" 
                     onClick={this.addActivity}>
                       Create Activity
                       </Button>
+
                     </Grid> 
-                <Grid xs={12} item>
+                    <Grid xs={12} item>
                     <Button variant="contained" onClick={this.props.closePopupActivities}>Close</Button>
                 </Grid>
                 </div>

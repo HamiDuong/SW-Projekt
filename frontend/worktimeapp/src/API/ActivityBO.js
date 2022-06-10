@@ -1,11 +1,12 @@
 import BusinessObject from "./BusinessObject";
 
 export default class Activity extends BusinessObject{
-    constructor(name, capacity, projectId){
+    constructor(name, capacity, projectId, currentCapacity){
         super();
         this.name = name;
         this.capacity = capacity;
         this.projectId = projectId;
+        this.currentCapacity = currentCapacity;
     }
 
     //Getter und Setter
@@ -31,6 +32,14 @@ export default class Activity extends BusinessObject{
 
     GetProjectId(){
         return this.projectId;
+    }
+
+    SetCurrentCapacity(currentCapacity){
+        this.currentCapacity = currentCapacity
+    }
+
+    GetCurrentCapacity(){
+        return this.currentCapacity;
     }
 
     static fromJSON(activity){
