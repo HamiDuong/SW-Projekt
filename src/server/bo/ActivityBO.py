@@ -61,10 +61,9 @@ class ActivityBO(bo.BusinessObject):
         """Umwandeln eines Python dict() in einen Customer()."""
         obj = ActivityBO()
         obj.set_id(dictionary["id"])
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_name(dictionary["name"])
         obj.set_capacity(dictionary["capacity"])
         obj.set_project_id(dictionary)["projectId"]
-        obj.set_duration(dictionary["duration"])
-        obj.set_current_capacity(dictionary["current_capacity"])
+        obj.set_current_capacity(dictionary["currentCapacity"])
         return obj
