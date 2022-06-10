@@ -225,6 +225,11 @@ class Businesslogic():
     def save_project_work_begin(self, project_work_begin):
         with ProjectWorkBeginMapper() as mapper:
             mapper.update(project_work_begin)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "project_work_begin_id", project_work_begin.get_id(), project_work_begin.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein ProjectWorkBeginBO aus der Datenbank zu entfernen
     def delete_project_work_begin(self, project_work_begin):
@@ -254,6 +259,11 @@ class Businesslogic():
     def save_project_work_end(self, project_work_end):
         with ProjectWorkEndMapper() as mapper:
             mapper.update(project_work_end)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "project_work_end_id", project_work_end.get_id(), project_work_end.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein ProjectWorkEndBO aus der Datenbank zu entfernen
     def delete_project_work_end(self, project_work_end):
@@ -283,6 +293,11 @@ class Businesslogic():
     def save_vacation_begin(self, vacation_begin):
         with VacationBeginMapper() as mapper:
             mapper.update(vacation_begin)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein VacationBeginBO aus der Datenbank zu entfernen
     def delete_vacation_begin(self, vacation_begin):
@@ -339,6 +354,11 @@ class Businesslogic():
     def save_illness_begin(self, illness_begin):
         with IllnessBeginMapper() as mapper:
             mapper.update(illness_begin)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "illness_begin_id", illness_begin.get_id(), illness_begin.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
         # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
     def delete_illness_begin(self, illness_begin):
@@ -367,6 +387,11 @@ class Businesslogic():
     def save_illness_end(self, illness_end):
         with IllnessEndMapper() as mapper:
             mapper.update(illness_end)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "illness_end_id", illness_end.get_id(), illness_end.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein IllnessEndBO aus der Datenbank zu entfernen
     def delete_illness_end(self, illness_end):
@@ -397,6 +422,12 @@ class Businesslogic():
     def save_flex_day_start(self, flex_day_start):
         with FlexDayStartMapper() as mapper:
             mapper.update(flex_day_start)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type())
+                print(flex_day_start.get_id())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein FlexDayStartBO aus der Datenbank zu entfernen
     def delete_flex_day_start(self, flex_day_start):
@@ -425,6 +456,11 @@ class Businesslogic():
     def save_flex_day_end(self, flex_day_end):
         with FlexDayEndMapper() as mapper:
             mapper.update(flex_day_end)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein FlexDayEndBO aus der Datenbank zu entfernen
     def delete_flex_day_end(self, flex_day_end):
@@ -454,6 +490,11 @@ class Businesslogic():
     def save_break_begin(self, break_begin):
         with BreakBeginMapper() as mapper:
             mapper.update(break_begin)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "break_begin_id", break_begin.get_id(), break_begin.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
         # Methode um ein BreakBeginBO aus der Datenbank zu entfernen
 
@@ -484,6 +525,11 @@ class Businesslogic():
     def save_break_end(self, break_end):
         with BreakEndMapper() as mapper:
             mapper.update(break_end)
+            with EventMapper() as mapper:
+                event = mapper.find_by_foreign_key_and_type(
+                    "break_end_id", break_end.get_id(), break_end.get_type())
+                mapper.update(event)
+                self.save_event_booking(event)
 
     # Methode um ein BreakEndBO aus der Datenbank zu entfernen
     def delete_breakEnd(self, breakEnd):
@@ -652,11 +698,17 @@ class Businesslogic():
             return mapper.insert(break_obj)
 
     def save_break(self, break_obj):
-        with BreakMapper as mapper:
+        with BreakMapper() as mapper:
             mapper.update(break_obj)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "breakId", break_obj.get_id(), break_obj.get_type())
+                print(timeinterval)
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_break(self, break_obj):
-        with BreakMapper as mapper:
+        with BreakMapper() as mapper:
             mapper.delete(break_obj)
 
     def get_breaks_by_date(self, date):
@@ -697,11 +749,17 @@ class Businesslogic():
             return mapper.insert(illness)
 
     def save_illness(self, illness):
-        with IllnessMapper as mapper:
+        with IllnessMapper() as mapper:
             mapper.update(illness)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "illnessId", illness.get_id(), illness.get_type())
+                print(timeinterval)
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_illness(self, illness):
-        with IllnessMapper as mapper:
+        with IllnessMapper() as mapper:
             mapper.delete(illness)
 
     def get_illnesses_by_date(self, date):
@@ -742,11 +800,17 @@ class Businesslogic():
             return mapper.insert(vacation_obj)
 
     def save_vacation(self, vacation_obj):
-        with VacationMapper as mapper:
+        with VacationMapper() as mapper:
             mapper.update(vacation_obj)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "vacationId", vacation_obj.get_id(), vacation_obj.get_type())
+                print(timeinterval)
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_vacation(self, vacation_obj):
-        with VacationMapper as mapper:
+        with VacationMapper() as mapper:
             mapper.delete(vacation_obj)
 
     def get_vacations_by_date(self, date):
@@ -790,7 +854,8 @@ class Businesslogic():
         with WorkMapper() as mapper:
             work = mapper.update(work_obj)
             with TimeIntervalMapper() as mapper:
-                timeinterval = mapper.find_by_key(work.get_id())
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "workId", work.get_id(), work.get_type())
                 mapper.update(timeinterval)
                 self.save_time_interval_booking(timeinterval)
 
@@ -835,12 +900,18 @@ class Businesslogic():
         with FlexDayMapper() as mapper:
             return mapper.insert(work_obj)
 
-    def save_flex_day(self, work_obj):
-        with FlexDayMapper as mapper:
-            mapper.update(work_obj)
+    def save_flex_day(self, flex_day_obj):
+        with FlexDayMapper() as mapper:
+            mapper.update(flex_day_obj)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "flexDayId", flex_day_obj.get_id(), flex_day_obj.get_type())
+                print(timeinterval)
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_flex_day(self, work_obj):
-        with FlexDayMapper as mapper:
+        with FlexDayMapper() as mapper:
             mapper.delete(work_obj)
 
     def get_flex_days_by_date(self, date):
@@ -932,11 +1003,17 @@ class Businesslogic():
             return mapper.insert(project_work_obj)
 
     def save_project_work(self, project_work_obj):
-        with ProjectWorkMapper as mapper:
+        with ProjectWorkMapper() as mapper:
             mapper.update(project_work_obj)
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "projectWorkId", project_work_obj.get_id(), project_work_obj.get_type())
+                print(timeinterval)
+                mapper.update(timeinterval)
+                self.save_time_interval_booking(timeinterval)
 
     def delete_project_work(self, project_work_obj):
-        with ProjectWorkMapper as mapper:
+        with ProjectWorkMapper() as mapper:
             mapper.delete(project_work_obj)
 
     def get_project_works_by_date(self, date):
@@ -1545,7 +1622,7 @@ class Businesslogic():
             timeintervalbooking = mapper.find_by_key(timeinterval.get_id())
             mapper.update(timeintervalbooking)
         with BookingMapper() as mapper:
-            booking = mapper.find_by_key(timeintervalbooking.get_id())
+            booking = mapper.find_booking_by_booking_subclass("timeIntervalBookingId",timeintervalbooking.get_id(), "T")
             mapper.update(booking)
 
     def save_event_booking(self, event):
@@ -1553,8 +1630,11 @@ class Businesslogic():
             eventbooking = mapper.find_by_key(event.get_id())
             mapper.update(eventbooking)
         with BookingMapper() as mapper:
-            booking = mapper.find_by_key(eventbooking.get_id())
-            mapper.update(booking)
+            booking = mapper.find_booking_by_booking_subclass("eventBookingId", eventbooking.get_id(), "E")
+            if booking.get_type() == "E":
+                mapper.update(booking)
+            else:
+                pass
 
     def delete_timeinterval_booking(self, bookingid):
 

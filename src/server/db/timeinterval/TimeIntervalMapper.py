@@ -110,6 +110,38 @@ class TimeIntervalMapper(Mapper):
 
         return result
 
+    def find_by_foreign_key_and_type(self, foreign_key, key, type):
+        result = None
+        cursor = self._cnx.cursor()
+        #command = "SELECT id, dateOfLastChange, timeIntervalBookingId, type, from worktimeapp.timeintervals WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId, flexDayId from worktimeapp.timeintervals WHERE {}={} AND type='{}'".format(
+            foreign_key, key, type)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples[0] is not None:
+            #(id, dateOfLastChange, timeIntervalBookingId, type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId) = tuples[0]
+            (id, dateOfLastChange, type, breakId, illnessId, projectDurationId,
+             projectWorkId, vacationId, workId, flexDayId) = tuples[0]
+            timeinterval = TimeIntervalBO()
+            timeinterval.set_id(id)
+            timeinterval.set_date_of_last_change(dateOfLastChange)
+            # timeinterval.set_time_interval_booking_id(timeIntervalBookingId)
+            timeinterval.set_type(type)
+            timeinterval.set_break_id(breakId)
+            timeinterval.set_illness_id(illnessId)
+            timeinterval.set_project_duration_id(projectDurationId)
+            timeinterval.set_project_work_id(projectWorkId)
+            timeinterval.set_work_id(workId)
+            timeinterval.set_vacation_id(vacationId)
+            timeinterval.set_flex_day_id(flexDayId)
+            result = timeinterval
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     """
     Fügt ein TimeIntervalBO in die Datenbank ein
     param: timeinterval (TimeIntervalBO) - TimeIntervalBO welches eingefügt werden soll
