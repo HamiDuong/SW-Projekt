@@ -1,5 +1,6 @@
 from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
 from server.bo.timeinterval.ProjectDurationBO import ProjectDurationBO
+from datetime import datetime
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -101,6 +102,9 @@ class ProjectDurationMapper(TimeIntervalMapper):
         cursor.execute(
             "SELECT MAX(id) AS maxid FROM worktimeapp.projectdurations")
         tuples = cursor.fetchall()
+
+        timestamp = datetime.today()
+        projectduration_obj.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] == None:
