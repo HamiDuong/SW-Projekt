@@ -112,8 +112,8 @@ class ComingMapper(Mapper):
         coming.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.coming " + \
-            "SET date=%s WHERE id=%s"
-        data = (coming.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (coming.get_date_of_last_change(), coming.get_time(),
                 coming.get_id())
         cursor.execute(command, data)
 

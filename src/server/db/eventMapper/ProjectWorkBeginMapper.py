@@ -10,7 +10,8 @@ class ProjectWorkBeginMapper(Mapper):
     def insert(self, project_work_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.ProjectWorkBegin ")
+        cursor.execute(
+            "SELECT MAX(id) AS maxid FROM worktimeapp.ProjectWorkBegin ")
         tuples = cursor.fetchall()
         project_work_begin.set_date_of_last_change(timestamp)
 
@@ -107,15 +108,14 @@ class ProjectWorkBeginMapper(Mapper):
 
         return result
 
-
     def update(self, project_work_begin):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         project_work_begin.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.ProjectWorkBegin " + \
-            "SET date=%s WHERE id=%s"
-        data = (project_work_begin.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (project_work_begin.get_date_of_last_change(), project_work_begin.get_time(),
                 project_work_begin.get_id())
         cursor.execute(command, data)
 

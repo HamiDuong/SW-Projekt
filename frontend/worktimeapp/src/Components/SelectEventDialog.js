@@ -107,7 +107,7 @@ class SelectEventDialog extends Component {
                                 onChange={this.handleChange}
                             >
                                 {this.props.vacationIllnessEvents.map(vacationBOs =>
-                                <MenuItem key={vacationBOs.getID()} value={vacationBOs.getTime()}>
+                                <MenuItem key={vacationBOs.getDateOfLastChange()} value={vacationBOs.getTime()}>
                                     <div>
                                     <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
                                     <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}

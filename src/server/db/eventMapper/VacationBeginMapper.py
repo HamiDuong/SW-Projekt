@@ -10,7 +10,8 @@ class VacationBeginMapper(Mapper):
     def insert(self, vacation_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.vacationbegin ")
+        cursor.execute(
+            "SELECT MAX(id) AS maxid FROM worktimeapp.vacationbegin ")
         tuples = cursor.fetchall()
         vacation_begin.set_date_of_last_change(timestamp)
 
@@ -112,8 +113,8 @@ class VacationBeginMapper(Mapper):
         vacation_begin.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.vacationbegin " + \
-            "SET date=%s WHERE id=%s"
-        data = (vacation_begin.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (vacation_begin.get_date_of_last_change(), vacation_begin.get_time(),
                 vacation_begin.get_id())
         cursor.execute(command, data)
 
