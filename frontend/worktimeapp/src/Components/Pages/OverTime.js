@@ -23,7 +23,6 @@ class OverTime extends Component {
 
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
-        console.log('Hier sind die props: ', this.props.value)
 
     }
 

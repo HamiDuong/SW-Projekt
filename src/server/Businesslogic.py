@@ -1,84 +1,62 @@
-from .bo.eventBOs.EventBO import EventBO
-from .db.eventMapper.EventMapper import EventMapper
-from .bo.eventBOs.ComingBO import ComingBO
-from .db.eventMapper.ComingMapper import ComingMapper
-from .bo.eventBOs.GoingBO import GoingBO
-from .db.eventMapper.GoingMapper import GoingMapper
-from .bo.eventBOs.VacationBeginBO import VacationBeginBO
-from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from .bo.eventBOs.VacationEndBO import VacationEndBO
-from .db.eventMapper.VacationEndMapper import VacationEndMapper
-from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from .bo.eventBOs.IllnessEndBO import IllnessEndBO
-from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from .bo.eventBOs.BreakBeginBO import BreakBeginBO
-from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
-from .bo.eventBOs.BreakEndBO import BreakEndBO
-from .db.eventMapper.BreakEndMapper import BreakEndMapper
-from .bo.eventBOs.EventBO import EventBO
-from .db.eventMapper.EventMapper import EventMapper
-from .bo.eventBOs.ComingBO import ComingBO
-from .db.eventMapper.ComingMapper import ComingMapper
-from .bo.eventBOs.GoingBO import GoingBO
-from .db.eventMapper.GoingMapper import GoingMapper
-from .bo.eventBOs.VacationBeginBO import VacationBeginBO
-from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from .bo.eventBOs.VacationEndBO import VacationEndBO
-from .db.eventMapper.VacationEndMapper import VacationEndMapper
-from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from .bo.eventBOs.IllnessEndBO import IllnessEndBO
-from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from .bo.eventBOs.BreakBeginBO import BreakBeginBO
-from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
-from .bo.eventBOs.BreakEndBO import BreakEndBO
-from .db.eventMapper.BreakEndMapper import BreakEndMapper
-from .bo.eventBOs.FlexDayStart import FlexDayStartBO
-from .db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
-from .bo.eventBOs.FlexDayEndBO import FlexDayEndBO
-from .db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
-from .bo.BookingBO import BookingBO
-from .db.BookingMapper import BookingMapper
-from .bo.EventBookingBO import EventBookingBO
-from .db.EventBookingMapper import EventBookingMapper
-from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
-from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
-from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
-from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
-from .bo.timeinterval.BreakBO import BreakBO
-from .db.timeinterval.BreakMapper import BreakMapper
-from .bo.timeinterval.IllnessBO import IllnessBO
-from .db.timeinterval.IllnessMapper import IllnessMapper
-from .bo.timeinterval.ProjectDurationBO import ProjectDurationBO
-from .db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
-from .bo.timeinterval.ProjectWorkBO import ProjectWorkBO
-from .db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
-from .bo.timeinterval.VacationBO import VacationBO
-from .db.timeinterval.VacationMapper import VacationMapper
-from .bo.timeinterval.WorkBO import WorkBO
-from .db.timeinterval.WorkMapper import WorkMapper
-from .bo.timeinterval.FlexDayBO import FlexDayBO
-from .db.timeinterval.FlexDayMapper import FlexDayMapper
+from server.bo.eventBOs.EventBO import EventBO
+from server.db.eventMapper.EventMapper import EventMapper
+from server.bo.eventBOs.ComingBO import ComingBO
+from server.db.eventMapper.ComingMapper import ComingMapper
+from server.bo.eventBOs.GoingBO import GoingBO
+from server.db.eventMapper.GoingMapper import GoingMapper
+from server.bo.eventBOs.VacationBeginBO import VacationBeginBO
+from server.db.eventMapper.VacationBeginMapper import VacationBeginMapper
+from server.bo.eventBOs.VacationEndBO import VacationEndBO
+from server.db.eventMapper.VacationEndMapper import VacationEndMapper
+from server.bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from server.db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
+from server.bo.eventBOs.IllnessEndBO import IllnessEndBO
+from server.db.eventMapper.IllnessEndMapper import IllnessEndMapper
+from server.bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
+from server.db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
+from server.bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
+from server.db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
+from server.bo.eventBOs.BreakBeginBO import BreakBeginBO
+from server.db.eventMapper.BreakBeginMapper import BreakBeginMapper
+from server.bo.eventBOs.BreakEndBO import BreakEndBO
+from server.db.eventMapper.BreakEndMapper import BreakEndMapper
+from server.bo.eventBOs.FlexDayStart import FlexDayStartBO
+from server.db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
+from server.bo.eventBOs.FlexDayEndBO import FlexDayEndBO
+from server.db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
+from server.bo.BookingBO import BookingBO
+from server.db.BookingMapper import BookingMapper
+from server.bo.EventBookingBO import EventBookingBO
+from server.db.EventBookingMapper import EventBookingMapper
+from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+from server.db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
+from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
+from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
+from server.bo.timeinterval.BreakBO import BreakBO
+from server.db.timeinterval.BreakMapper import BreakMapper
+from server.bo.timeinterval.IllnessBO import IllnessBO
+from server.db.timeinterval.IllnessMapper import IllnessMapper
+from server.bo.timeinterval.ProjectDurationBO import ProjectDurationBO
+from server.db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
+from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
+from server.db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
+from server.bo.timeinterval.VacationBO import VacationBO
+from server.db.timeinterval.VacationMapper import VacationMapper
+from server.bo.timeinterval.WorkBO import WorkBO
+from server.db.timeinterval.WorkMapper import WorkMapper
+from server.bo.timeinterval.FlexDayBO import FlexDayBO
+from server.db.timeinterval.FlexDayMapper import FlexDayMapper
 from datetime import datetime
-from .bo.UserBO import UserBO
-from .db.UserMapper import UserMapper
-from .bo.WorkTimeAccountBO import WorkTimeAccountBO
-from .db.WorkTimeAccountMapper import WorkTimeAccountMapper
-from .bo.ProjectBO import ProjectBO
-from .db.ProjectMapper import ProjectMapper
-from .bo.ProjectUserBO import ProjectUserBO
-from .db.ProjectUserMapper import ProjectUserMapper
-from .bo.ActivityBO import ActivityBO
-from .db.ActivityMapper import ActivityMapper
+from server.bo.UserBO import UserBO
+from server.db.UserMapper import UserMapper
+from server.bo.WorkTimeAccountBO import WorkTimeAccountBO
+from server.db.WorkTimeAccountMapper import WorkTimeAccountMapper
+from server.bo.ProjectBO import ProjectBO
+from server.db.ProjectMapper import ProjectMapper
+from server.bo.ProjectUserBO import ProjectUserBO
+from server.db.ProjectUserMapper import ProjectUserMapper
+from server.bo.ActivityBO import ActivityBO
+from server.db.ActivityMapper import ActivityMapper
 
 
 class Businesslogic():
@@ -1665,7 +1643,6 @@ class Businesslogic():
         with TimeIntervalBookingMapper() as mapper:
             last_entry = mapper.find_last_entry()
             id = last_entry.get_id()
-
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
@@ -2321,3 +2298,50 @@ class Businesslogic():
         for elem in projects:
             if elem.get_name() == name:
                 return elem
+
+    def get_project_work_for_user_by_activity_id(self, projectwork_id, user_id, project_id):
+        all_activities = self.get_activities_by_project_id(project_id)
+        all_timeintervals = self.get_all_timeintervals()
+        all_project_user = self.get_all_projectusers()
+        all_projectwork_timeintervals = []
+        user = self.get_user_by_id(1)
+        
+
+        booked_time_for_activity = []
+        activities_for_project = []
+
+        projectwork_for_project = []
+
+        project_user = []
+        times = []
+        for elem in all_activities:
+            if elem.get_project_id() == project_id:
+                activities_for_project.append(elem)
+                booked_time_for_activity.append(elem.get_current_capacity())
+        for elem in all_timeintervals:
+            if elem.get_type() == 'ProjectWork':
+                prjwrk = self.get_project_work_by_id(elem.get_project_work_id())
+                all_projectwork_timeintervals.append(prjwrk)
+        for elem in all_projectwork_timeintervals:
+            for i in activities_for_project:
+                if elem.get_id() == i.get_id():
+                    projectwork_for_project.append(elem)
+        for elem in all_project_user:
+            if elem.get_project_id() == project_id:
+                project_user.append(elem)
+                print(elem)
+                sum = abs(elem.get_capacity() - elem.get_current_capacity())
+                times.append(sum)
+
+
+ex = Businesslogic()
+user = ex.get_user_by_id(1)
+ex.get_project_work_for_user_by_activity_id(1,user, 1)
+
+
+
+
+
+
+
+

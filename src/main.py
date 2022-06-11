@@ -3428,7 +3428,7 @@ class TimeintervalBookingOperations(Resource):
         proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
             t = 2
-            time.sleep(t)
+            time.sleep(2)
             b = adm.create_booking_for_timeinterval(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
