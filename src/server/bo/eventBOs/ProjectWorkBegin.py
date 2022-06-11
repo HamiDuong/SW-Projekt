@@ -24,8 +24,9 @@ class ProjectWorkBeginBO(EventBO.EventBO):
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
         return "ProjectWorkBeginBO {}, {}, {}, {}".format(
-                                               self.get_id(), self.get_date_of_last_change(),
-                                               self.get_type(), self.get_time())
+            self.get_id(), self.get_date_of_last_change(),
+            self.get_type(), self.get_time())
+
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in ein ComingBO()."""
@@ -33,4 +34,12 @@ class ProjectWorkBeginBO(EventBO.EventBO):
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_time(dictionary["time"])
+        return obj
+
+    @staticmethod
+    def from_dict_timeinterval(dictionary=dict()):
+        obj = ProjectWorkBeginBO()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
+        obj.set_time(dictionary["start"])
         return obj

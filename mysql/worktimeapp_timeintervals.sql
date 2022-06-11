@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: localhost    Database: worktimeapp
+-- Host: 127.0.0.1    Database: worktimeapp
 -- ------------------------------------------------------
--- Server version	8.0.25
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,14 +34,31 @@ CREATE TABLE `timeintervals` (
   `workId` int DEFAULT NULL,
   `flexDayId` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `breakId` FOREIGN KEY (`id`) REFERENCES `breaks` (`id`),
-  CONSTRAINT `illnessId` FOREIGN KEY (`id`) REFERENCES `illnesses` (`id`),
-  CONSTRAINT `projectDurationId` FOREIGN KEY (`id`) REFERENCES `projectdurations` (`id`),
-  CONSTRAINT `projectWorkId` FOREIGN KEY (`id`) REFERENCES `projectworks` (`id`),
-  CONSTRAINT `vacationId` FOREIGN KEY (`id`) REFERENCES `vacations` (`id`),
-  CONSTRAINT `workId` FOREIGN KEY (`id`) REFERENCES `works` (`id`)
+  KEY `breakId_idx` (`breakId`),
+  KEY `illnessId_idx` (`illnessId`),
+  KEY `vacationId_idx` (`vacationId`),
+  KEY `workId_idx` (`workId`),
+  KEY `flexDayId_idx` (`flexDayId`),
+  KEY `projectDurationId_idx` (`projectDurationId`),
+  KEY `projectWorkId_idx` (`projectWorkId`),
+  CONSTRAINT `breakId` FOREIGN KEY (`breakId`) REFERENCES `breaks` (`id`),
+  CONSTRAINT `flexDayId` FOREIGN KEY (`flexDayId`) REFERENCES `flexdays` (`id`),
+  CONSTRAINT `illnessId` FOREIGN KEY (`illnessId`) REFERENCES `illnesses` (`id`),
+  CONSTRAINT `projectDurationId` FOREIGN KEY (`projectDurationId`) REFERENCES `projectdurations` (`id`),
+  CONSTRAINT `projectWorkId` FOREIGN KEY (`projectWorkId`) REFERENCES `projectworks` (`id`),
+  CONSTRAINT `vacationId` FOREIGN KEY (`vacationId`) REFERENCES `vacations` (`id`),
+  CONSTRAINT `workId` FOREIGN KEY (`workId`) REFERENCES `works` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `timeintervals`
+--
+
+LOCK TABLES `timeintervals` WRITE;
+/*!40000 ALTER TABLE `timeintervals` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeintervals` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -52,4 +69,4 @@ CREATE TABLE `timeintervals` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-30 17:30:54
+-- Dump completed on 2022-06-08 10:00:01

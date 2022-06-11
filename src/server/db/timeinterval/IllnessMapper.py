@@ -130,8 +130,10 @@ class IllnessMapper(TimeIntervalMapper):
         timestamp = datetime.today()
         illness.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.illnesses " + "SET start=%s, end=%s WHERE id=%s"
-        data = (illness.get_start(), illness.get_end(), illness.get_id())
+        command = "UPDATE worktimeapp.illnesses " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (illness.get_date_of_last_change(), illness.get_start(),
+                illness.get_end(), illness.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

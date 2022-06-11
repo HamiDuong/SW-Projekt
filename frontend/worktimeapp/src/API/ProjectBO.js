@@ -7,6 +7,7 @@ export default class Project extends BusinessObject {
         this.commissioner = commissioner;
         this.userId = userId;
         this.projectId = projectId;
+
     }
 
     //Getter und Setter

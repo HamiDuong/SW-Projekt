@@ -134,8 +134,10 @@ class BreakMapper(TimeIntervalMapper):
         timestamp = datetime.today()
         breakobj.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.breaks " + "SET start=%s, end=%s WHERE id=%s"
-        data = (breakobj.get_start(), breakobj.get_end(), breakobj.get_id())
+        command = "UPDATE worktimeapp.breaks " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (breakobj.get_date_of_last_change(),
+                breakobj.get_start(), breakobj.get_end(), breakobj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

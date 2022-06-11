@@ -134,21 +134,22 @@ class ProjectMapper(Mapper):
     """
 
     def find_projects_by_user_id(self, key):
-        result = None
+        result = []
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM projects WHERE userId={}".format(key)
+        command = "SELECT * FROM worktimeapp.projects WHERE userId={}".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
-            (id, dateOfLastChange, name, commissioner, userId) = tuples[0]
+        for (id, dateOfLastChange, name, commissioner, userId) in tuples:
             projectobj = ProjectBO()
             projectobj.set_id(id)
             projectobj.set_date_of_last_change(dateOfLastChange)
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            result = projectobj
+            # projectobj.set_duration(duration)
+            result.append(projectobj)
 
         self._cnx.commit()
         cursor.close()
@@ -177,6 +178,7 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
+            # projectobj.set_duration(duration)
             result = projectobj
         except IndexError:
             result = None

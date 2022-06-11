@@ -35,3 +35,11 @@ class BreakEndBO(EventBO):
         obj.set_date_of_last_change(dictionary["date_of_last_change"])
         obj.set_time(dictionary["time"])
         return obj
+
+    @staticmethod
+    def from_dict_timeinterval(dictionary=dict()):
+        obj = BreakEndBO()
+        obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
+        obj.set_time(dictionary["end"])
+        return obj

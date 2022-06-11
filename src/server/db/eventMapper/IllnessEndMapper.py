@@ -107,15 +107,14 @@ class IllnessEndMapper(Mapper):
 
         return result
 
-
     def update(self, illness_end):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         illness_end.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.illnessend " + \
-            "SET date=%s WHERE id=%s"
-        data = (illness_end.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (illness_end.get_date_of_last_change(), illness_end.get_time(),
                 illness_end.get_id())
         cursor.execute(command, data)
 

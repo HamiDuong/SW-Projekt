@@ -1,9 +1,10 @@
 import BusinessObject from '../BusinessObject'
 
 export default class IllnessStartBO extends BusinessObject {
-    constructor(time) {
+    constructor(time, type) {
         super();
-        this.time = time
+        this.time = time;
+        this.type = type;
     }
 
     //Getter und Setter
@@ -13,6 +14,14 @@ export default class IllnessStartBO extends BusinessObject {
 
     getTime() {
         return this.time;
+    }
+
+    setType(type) {
+        this.type = type;
+    }
+
+    getType() {
+        return this.type;
     }
 
 

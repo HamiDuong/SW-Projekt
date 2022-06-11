@@ -13,11 +13,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import SelectEventDialog from './SelectEventDialog';
+import SelectEndEventDialog from './SelectEndEventDialog';
 import VacationBO from '../API/VacationBO';
 import IllnessBO from '../API/IllnessBO'
 import WorkBO from '../API/WorkBO'
 import BookingBO from '../API/BookingBO';
 import BreakBO from '../API/BreakBO';
+import FlexDayBO from '../API/FlexDayBO';
 import ProjectWorkBO from '../API/ProjectWorkBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import { format } from "date-fns";
@@ -37,16 +39,20 @@ class TimeIntervalBookings extends Component {
             start: Date,
             end: Date,
             type: "",
-            activity: "", 
-            project: "",
-            startEvent:0,
-            endEvent:0,
+            project: null,
+            startEvent: null,
+            endEvent: null,
             workTimeAccountId:0,
             userId: 1,
             showSelectEventDialog: false,
+            showSelectEndEventDialog: false,
             eventBookingId: 0,
             timeintervalBookingId: 0,
-            activityId: 0,
+            activityId: null,
+            vacationIllnessEvents: [],
+            projects: [],
+            activities: [],
+            event: Date
             
          }
     }
@@ -92,12 +98,61 @@ class TimeIntervalBookings extends Component {
             console.log(newBreakBO)
             console.log(newBookingBO)
         }
+        else if ((this.state.type) === "flexday"){
+            let newFlexDayBO = new FlexDayBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
+            WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newFlexDayBO)
+            console.log(newBookingBO)
+        }
+        
        }
 
+    getEventBookings = () => {
+        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(1).then(vacationBOs =>
+            this.setState({  
+                vacationIllnessEvents: vacationBOs,
+            }, function(){
+                console.log(this.state.vacationIllnessEvents)
+            }))
+    }
+
+    getProjects = () => {
+        WorkTimeAppAPI.getAPI().getProjectsForUser(1).then(projectBOs =>
+            this.setState({  
+                projects: projectBOs,
+            }, function(){
+                console.log(this.state.projects)
+            }))
+    }
+
+    getActivities = () => {
+        if (this.state.project != null){
+            WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.project).then(activityBOs =>
+                this.setState({  
+                    activities: activityBOs,
+                }, function(){
+                    console.log(this.state.activities)
+                }))}
+    }
+
+
+    componentDidMount() {
+    this.getEventBookings();
+    this.getProjects();
+    this.getActivities()}
 
 
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value });}
+        this.setState({ [e.target.name] : e.target.value }
+            , function(){
+                if (this.state.project != null){
+                    this.getActivities()
+                }
+                console.log("ACTIVITYID",this.state.activityId)
+                console.log("Menuitem",this.state.activityId)
+            });}
     
     handleStartDateChange(newValue){
         this.setState({
@@ -117,11 +172,38 @@ class TimeIntervalBookings extends Component {
             showSelectEventDialog: true
         })
       }
-    
-    handleClose = () =>{
+    handleEndClickOpen = () => {
         this.setState({
-            showSelectEventDialog: false
+            showSelectEndEventDialog: true
         })
+      }
+    
+    handleClose = (newEvent) =>{
+        if (newEvent) {
+            this.setState({
+              start: newEvent,
+              showSelectEventDialog: false
+
+            });
+        }
+        else{
+            this.setState({
+            showSelectEventDialog: false
+        })}
+      }
+
+    handleEndClose = (newEvent) =>{
+        if (newEvent) {
+            this.setState({
+              end: newEvent,
+              showSelectEndEventDialog: false
+
+            });
+        }
+        else{
+            this.setState({
+            showSelectEndEventDialog: false
+        })}
       }
     
 
@@ -147,7 +229,7 @@ class TimeIntervalBookings extends Component {
                 </Grid>
                 <Grid container spacing={2}  alignItems="center">
                     <Grid item xs={12}>
-                        <FormControl sx={{ minWidth: 220}}>
+                        <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Type</InputLabel>
                             <Select
                                 name="type"
@@ -160,12 +242,14 @@ class TimeIntervalBookings extends Component {
                                 <MenuItem value={"vacation"}>Vacation</MenuItem>
                                 <MenuItem value={"illness"}>Illness</MenuItem>
                                 <MenuItem value={"break"}>Break</MenuItem>
+                                <MenuItem value={"flexday"}>Flex Days</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    <Grid item xs={12} sm={2} >
-                        {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
+                    
+                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
+                            <Grid item xs={12} sm={9} >
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -176,8 +260,12 @@ class TimeIntervalBookings extends Component {
                                     }}
                                     minDate={new Date('2022-01-01')}
                                 />
-                            </LocalizationProvider> :
+                                
+                            </LocalizationProvider> 
+                            </Grid>
+                            :
 
+                            <Grid item xs={12} sm={3} >
                              <LocalizationProvider dateAdapter={AdapterDateFns}>
                              <DateTimePicker
                                  renderInput={(props) => <TextField {...props} />}
@@ -192,14 +280,17 @@ class TimeIntervalBookings extends Component {
                                 }
                              />
                          </LocalizationProvider>
-                        }
-                    </Grid>
-                    <Grid xs={12} sm={10} item>
+                        
+                    </Grid>}
+                    {(this.state.type === "vacation" || this.state.type === "illness")?
+                    <Grid xs={12} sm={9} item>
                         <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
-                    </Grid> 
+                    </Grid>:
+                    null}
                      {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    <Grid xs={12} sm={2} item >
-                    {(this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break")?
+                    
+                    {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
+                        <Grid xs={12} sm={9} item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     renderInput={(props) => <TextField {...props} />}
@@ -210,7 +301,10 @@ class TimeIntervalBookings extends Component {
                                     }}
                                     minDate={new Date('2022-01-01')}
                                 />
-                        </LocalizationProvider>:
+                        </LocalizationProvider>
+                        </Grid>
+                        :
+                        <Grid xs={12} sm={3} item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 renderInput={(props) => <TextField {...props} />}
@@ -225,17 +319,19 @@ class TimeIntervalBookings extends Component {
                                 }
                                 
                             />
-                        </LocalizationProvider>}
-                    </Grid>
-                    <Grid xs={12}  sm={8} item>
-                        <Button variant="contained" onClick={this.handleClickOpen}>Select Event</Button>
-                    </Grid>
+                        </LocalizationProvider>
+                    </Grid>}
+                    {(this.state.type === "vacation" || this.state.type === "illness")?
+                    <Grid xs={12}  sm={9} item>
+                        <Button variant="contained" onClick={this.handleEndClickOpen}>Select Event</Button>
+                    </Grid>:
+                    null}
                     <Grid xs={12}sm={4} item>
                      {/*
                     Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
                     */}
                     {this.state.type === "projectwork" && 
-                    <FormControl sx={{ minWidth: 220}}>
+                    <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Select Project</InputLabel>
                             <Select
                                 name="project"
@@ -243,21 +339,31 @@ class TimeIntervalBookings extends Component {
                                 label="project"
                                 onChange={this.handleChange}
                             >
-                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                                 {this.state.projects.map(projectBOs =>
+                                <MenuItem key={projectBOs.getID()} value={projectBOs.getID()}>
+                                     {projectBOs.GetName()}
+                                   
+                                </MenuItem>
+                                )}
                             </Select>
                         </FormControl>}
                     </Grid>
                     <Grid xs={12} sm={10} item>
                     {this.state.type === "projectwork" &&
-                    <FormControl sx={{ minWidth: 220}}>
+                    <FormControl sx={{ minWidth: 256}}>
                             <InputLabel>Select Activity</InputLabel>
                             <Select
-                                name="activity"
-                                value={this.state.activity}
+                                name="activityId"
+                                value={this.state.activityId}
                                 label="activity"
                                 onChange={this.handleChange}
                             >
-                                <MenuItem value={"tbd"}>TBD</MenuItem>
+                               {this.state.activities.map(activityBOs =>
+                                <MenuItem key={activityBOs.getID()} value={activityBOs.getID()}>
+                                     {activityBOs.GetName()}
+                                   
+                                </MenuItem>
+                                )}
                             </Select>
                         </FormControl>}
                     </Grid>
@@ -268,7 +374,9 @@ class TimeIntervalBookings extends Component {
                 </Grid>
                 </Card>
 
-                <SelectEventDialog show={this.state.showSelectEventDialog} onClose={this.handleClose}></SelectEventDialog>
+                <SelectEventDialog handleStartDateChange={this.handleStartDateChange} handlechange={this.handleChange} vacationIllnessEvents={this.state.vacationIllnessEvents} getEventBookings={this.getEventBookings} show={this.state.showSelectEventDialog} onClose={this.handleClose}></SelectEventDialog>
+                <SelectEndEventDialog handleEndDateChange={this.handleEndDateChange} handlechange={this.handleChange} vacationIllnessEvents={this.state.vacationIllnessEvents} getEventBookings={this.getEventBookings} show={this.state.showSelectEndEventDialog} onClose={this.handleEndClose}></SelectEndEventDialog>
+
             </div>
           
          );
