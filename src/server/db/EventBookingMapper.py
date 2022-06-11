@@ -155,6 +155,31 @@ class EventBookingMapper (Mapper):
 
         return result
 
+    def find_by_event_id(self, key):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, eventId from eventbookings WHERE eventId={}".format(
+            key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, eventId) = tuples[0]
+            eventbooking = EventBookingBO()
+            eventbooking.set_id(id)
+            eventbooking.set_date_of_last_change(dateOfLastChange)
+            eventbooking.set_event_id(eventId)
+            result = eventbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
 
 if (__name__ == "__main__"):
     with EventBookingMapper() as mapper:

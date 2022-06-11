@@ -1,9 +1,11 @@
 from server.bo import BusinessObject as bo
 
+
 class ProjectBO(bo.BusinessObject):
     """Klasse Projekt.
     Ein Projekt besteht aus Projektleiter und Mitarbeiter
     """
+
     def __init__(self):
         super().__init__()
         self._name = None
@@ -36,7 +38,7 @@ class ProjectBO(bo.BusinessObject):
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-        
+
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
         return "Customer: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_commissioner(), self.get_user_id())
 

@@ -127,8 +127,10 @@ class VacationMapper(TimeIntervalMapper):
         timestamp = datetime.today()
         vacation.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.vacations " + "SET start=%s, end=%s WHERE id=%s"
-        data = (vacation.get_start(), vacation.get_end(), vacation.get_id())
+        command = "UPDATE worktimeapp.vacations " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (vacation.get_date_of_last_change(),
+                vacation.get_start(), vacation.get_end(), vacation.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

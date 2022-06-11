@@ -10,7 +10,8 @@ class FlexDayStartMapper(Mapper):
     def insert(self, flex_day_start):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.flexdaystart ")
+        cursor.execute(
+            "SELECT MAX(id) AS maxid FROM worktimeapp.flexdaystart ")
         tuples = cursor.fetchall()
         flex_day_start.set_date_of_last_change(timestamp)
 
@@ -107,15 +108,14 @@ class FlexDayStartMapper(Mapper):
 
         return result
 
-
     def update(self, flex_day_start):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         flex_day_start.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.flexdaystart " + \
-                  "SET date=%s WHERE id=%s"
-        data = (flex_day_start.get_time(),
+                  "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (flex_day_start.get_date_of_last_change(), flex_day_start.get_time(),
                 flex_day_start.get_id())
         cursor.execute(command, data)
 

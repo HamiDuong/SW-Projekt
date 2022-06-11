@@ -127,12 +127,16 @@ class WorkMapper(TimeIntervalMapper):
         timestamp = datetime.today()
         work.set_date_of_last_change(timestamp)
 
-        command = "UPDATE worktimeapp.works " + "SET start=%s, end=%s WHERE id=%s"
-        data = (work.get_start(), work.get_end(), work.get_id())
+        command = "UPDATE worktimeapp.works " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (work.get_date_of_last_change(),
+                work.get_start(), work.get_end(), work.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
+
+        return work
 
     """
     Löscht ein WorkBO aus der Datenbank

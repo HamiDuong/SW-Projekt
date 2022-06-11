@@ -112,8 +112,8 @@ class BreakBeginMapper(Mapper):
         break_begin.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.breakbegin " + \
-            "SET date=%s WHERE id=%s"
-        data = (break_begin.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (break_begin.get_date_of_last_change(), break_begin.get_time(),
                 break_begin.get_id())
         cursor.execute(command, data)
 

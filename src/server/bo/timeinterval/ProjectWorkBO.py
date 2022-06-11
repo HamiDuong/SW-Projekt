@@ -28,7 +28,7 @@ class ProjectWorkBO (ti.TimeIntervalBO):
     def __init__(self):
         super().__init__()
         self._activity_id = None
-        self.set_type("Project Work")
+        self.set_type("ProjectWork")
 
     'Getter und Setter Methoden'
 
