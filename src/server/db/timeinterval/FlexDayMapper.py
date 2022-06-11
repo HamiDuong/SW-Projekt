@@ -110,7 +110,7 @@ class FlexDayMapper(TimeIntervalMapper):
         #data = (illness.get_id(), illness.get_date_of_last_change(), illness.get_start(), illness. get_end(), illness.get_timeinterval_id(), illness.get_start_event(), illness.get_end_event(), "Illness")
         command = "INSERT INTO worktimeapp.flexdays (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         data = (flexday.get_id(), flexday.get_date_of_last_change(), flexday.get_start(
-        ), flexday. get_end(), flexday.get_start_event(), flexday.get_end_event(), "Flex Day")
+        ), flexday. get_end(), flexday.get_start_event(), flexday.get_end_event(), "Flexday")
 
         cursor.execute(command, data)
 
