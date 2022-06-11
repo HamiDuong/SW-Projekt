@@ -110,7 +110,7 @@ class ProjectDurationMapper(TimeIntervalMapper):
 
         #command = "INSET INTO projectdurations (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         #data = (projectduration_obj.get_id(), projectduration_obj.get_date_of_last_change(), projectduration_obj.get_start(), projectduration_obj.get_end(), projectduration_obj.get_timeinterval_id(), projectduration_obj.get_start_event() ,projectduration_obj.get_project_id())
-        command = "INSET INTO worktimeapp.projectdurations (id, dateOfLastChange, start, end, startEvent, endEvent, type, projectId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        command = "INSERT INTO worktimeapp.projectdurations (id, dateOfLastChange, start, end, startEvent, endEvent, type, projectId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         data = (projectduration_obj.get_id(), projectduration_obj.get_date_of_last_change(), projectduration_obj.get_start(), projectduration_obj.get_end(
         ), projectduration_obj.get_start_event(), projectduration_obj.get_end_event(), projectduration_obj.get_type(), projectduration_obj.get_project_id())
 

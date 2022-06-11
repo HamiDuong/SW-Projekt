@@ -2844,7 +2844,6 @@ class ProjectDurationOperations(Resource):
                 proposal.get_end(),
                 proposal.get_start_event(),
                 proposal.get_end_event(),
-                proposal.get_type(),
                 proposal.get_project_id()
             )
             t = adm.create_timeinterval(
