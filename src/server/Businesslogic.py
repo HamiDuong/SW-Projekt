@@ -1411,7 +1411,7 @@ class Businesslogic():
         with ActivityMapper() as mapper:
             return mapper.find_by_name(name)
 
-    def get_all_by_project_id(self, project_id):
+    def get_activities_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
 

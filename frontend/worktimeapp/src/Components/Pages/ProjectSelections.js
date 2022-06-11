@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { InputLabel } from '@mui/material';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import BoilingVerdict from './OverTimeEntry';
+import OverTimeEntry from './OverTime';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
 class ProjectSelection extends Component {
@@ -14,16 +14,18 @@ class ProjectSelection extends Component {
             project: '',
             projects: [],
             temperature: '',
-            project_name: '',
+            projectName: '',
+            selected: false,
+            projectId: '',
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
-        this.setState({ temperature: e.target.value },
-            function () {
-                console.log('HandleChange', this.state.temperature)
-            });
+        this.setState({
+            temperature: e.target.value,
+            selected: true
+        });
     }
 
 
@@ -32,43 +34,38 @@ class ProjectSelection extends Component {
             this.setState({
                 projects: [projectBO],
             }, function () {
-                console.log('2', this.state.projects)
+                console.log(this.state.projects)
             }))
     }
+
 
     componentDidMount() {
         this.getAllProjects()
     }
 
-    somefunc() {
-        const projects = this.state.projects
-        return (
-            <Select onChange={this.handleChange}>
-                {projects.map(project =>
-                    project.map(elem => <MenuItem value={elem.name} >{elem.name}</MenuItem>)
 
-                )}
-            </Select>
-        )
+    showing() {
+        const temperature = this.state.temperature
+        if (this.state.selected) {
+            return <OverTimeEntry onChange={this.handleChange} value={this.state.temperature}
+                celsius={(temperature)} />
+        } else {
+            return <h1>You haven´t selected a project yet.</h1>
+        }
     }
 
     render() {
         const projects = this.state.projects
         const temperature = this.state.temperature
+        const func = this.showing()
         return (
             <Box>
-                {/* <Select onChange={this.handleChange}>
+                <Select onChange={this.handleChange}>
                     {projects.map(project =>
-                        project.map(elem => <MenuItem value={elem.name} >{elem.name}</MenuItem>)
-
+                        project.map(elem => <MenuItem value={elem.id} something={elem}>{elem.name}</MenuItem>)
                     )}
-                </Select> */}
-                {this.somefunc()}
-                <fieldset>
-                    <legend>You have selected: </legend>
-                    <BoilingVerdict
-                        celsius={(temperature)} />
-                </fieldset>
+                </Select>
+                <div>{func}</div>
             </Box>
         );
     }

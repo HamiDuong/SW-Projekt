@@ -223,7 +223,7 @@ export default class WorkTimeAppAPI {
     #addActivityURL = () => `${this.#worktimeappServerBaseURL}/activities`;
     #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
-    #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
+    #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activitybyproject/${id}`;
 
 
     static getAPI() {

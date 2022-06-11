@@ -933,6 +933,14 @@ class ActivityOperations(Resource):
         activity = adm.get_all_activities()
         return activity
 
+@worktimeapp.route('/activitybyproject/<int:id>')
+@worktimeapp.param('id', 'Die ID der Aktivitaet')
+class ActivityWithProjectIdperations(Resource):
+    @worktimeapp.marshal_list_with(activity)
+    def get(self, id):
+        adm = Businesslogic()
+        activity = adm.get_activities_by_project_id(id)
+        return activity
 
 @worktimeapp.route('/activity/<int:id>')
 @worktimeapp.param('id', 'Die ID der Aktivitaet')
@@ -942,11 +950,6 @@ class ActivityWithIDOperations(Resource):
     def get(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
-        return activity
-
-    def get_project_id(self, id):
-        adm = Businesslogic()
-        activity = adm.get_all_by_project_id(id)
         return activity
 
     @worktimeapp.marshal_with(activity)

@@ -10,40 +10,43 @@ class OverTimeEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            project: 1,
+            projectId: this.props.value,
             activities: [],
             capacity: [],
             current_capacity: '',
             employees: '',
             activity_names: [],
+            activity: false,
 
         }
     }
 
     componentDidMount() {
-        this.getActivitiesForProject(this.state.project)
-    }
-
-
-    getActivitiesForProject = (project) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
-            this.setState({
-                activities: [...this.state.activities, activity],
-            }, this.getCapacities(activity),
-                this.getCurrentCapacities(activity),
-                this.getActivityNames(activity)
-            ))
+        this.getActivitiesForProject(this.props.value)
+        console.log('Hier sind die props: ', this.props.value)
     }
 
     getActivitiesForProject = (project) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(element =>
             this.setState({
-                activities: [...this.state.activities, activity],
-            }, this.getCapacities(activity),
-                this.getCurrentCapacities(activity),
-                this.getActivityNames(activity)
+                activities: [...this.state.activities, element],
+            }, console.log('hier ist getActivties, dass in ProjectName aufgerufen wird'),
+                this.checkActivities(element)
             ))
     }
+
+    checkActivities = (element) => {
+        try {
+            this.getCapacities(element);
+            this.getCurrentCapacities(element);
+            this.getActivityNames(element)
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
 
     getActivities = () => {
         WorkTimeAppAPI.getAPI().getAllActivities().then(activity =>
@@ -60,7 +63,6 @@ class OverTimeEntry extends Component {
         const acti = this.state.activities
         let i = 0
         while (i <= acti.length) {
-            console.log('Hier', arr[i].capacity)
             this.setState({
                 capacity: [...this.state.capacity, arr[i].capacity]
             }, function () {
@@ -74,7 +76,6 @@ class OverTimeEntry extends Component {
         const acti = this.state.activities
         let i = 0
         while (i <= acti.length) {
-            console.log('before sS CC', arr[i].current_capacity)
             this.setState({
                 current_capacity: [...this.state.current_capacity, arr[i].current_capacity]
             }, function () {
@@ -88,7 +89,6 @@ class OverTimeEntry extends Component {
         const acti = this.state.activities
         let i = 0
         while (i <= acti.length) {
-            console.log('AN before sS', arr[i].name)
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].name]
             }, function () {
@@ -151,7 +151,6 @@ class OverTimeEntry extends Component {
             let new_data = this.createData(activities[i], planedTimes[i], bookedTimes[i])
             newthingy.push(new_data)
         }
-        console.log('Newthing', newthingy[0])
         return newthingy
     }
 
@@ -193,12 +192,10 @@ class OverTimeEntry extends Component {
                                 </TableHead>
                                 <TableBody>
                                     {rows.map((row) => {
-                                        console.log('Ich bin hier', row)
                                         return (
                                             <TableRow hover  >
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
-                                                    console.log('Ich will hier Value', value)
                                                     return (
                                                         <TableCell align={column.align}>
                                                             {value}
