@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-class OverTimeEntry extends Component {
+class OverTime extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,14 +24,15 @@ class OverTimeEntry extends Component {
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
         console.log('Hier sind die props: ', this.props.value)
+
     }
 
+
     getActivitiesForProject = (project) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(element =>
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
             this.setState({
-                activities: [...this.state.activities, element],
-            }, console.log('hier ist getActivties, dass in ProjectName aufgerufen wird'),
-                this.checkActivities(element)
+                activities: [...this.state.activities, activity],
+            }, this.checkActivities(activity)
             ))
     }
 
@@ -45,19 +46,6 @@ class OverTimeEntry extends Component {
             console.log(e);
         }
     }
-
-
-
-    getActivities = () => {
-        WorkTimeAppAPI.getAPI().getAllActivities().then(activity =>
-            this.setState({
-                activities: [...this.state.activities, activity],
-            }, this.getCapacities(activity),
-                this.getCurrentCapacities(activity),
-                this.getActivityNames(activity)
-            ))
-    }
-
 
     getCapacities = (arr) => {
         const acti = this.state.activities
@@ -216,4 +204,4 @@ class OverTimeEntry extends Component {
 
 }
 
-export default OverTimeEntry;
+export default OverTime;

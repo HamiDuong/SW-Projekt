@@ -845,7 +845,7 @@ class ProjectWithSTRINGOperations(Resource):
     # @secured
     def get(self, name):
         adm = Businesslogic()
-        project = adm.get_project_by_name(project)
+        project = adm.get_project_by_name(name)
         return project
 
 
