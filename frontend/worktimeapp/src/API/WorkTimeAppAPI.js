@@ -24,7 +24,6 @@ import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO"
 
-
 export default class WorkTimeAppAPI {
     static #api = null
 
@@ -229,15 +228,19 @@ export default class WorkTimeAppAPI {
     #deleteProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
+    #getProjectForAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/admin/${id}`;
+    #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
 
     //Activity
     // Author Khadidja Kebaili
     #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activitybyproject/${id}`
+    #getActivitiesByProjectIdAndUserIdURL = (projectid, userid) => `${this.#worktimeappServerBaseURL}/activitybyproject/${projectid, userid}`
     #getActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #getAllActivitiesURL = () => `${this.#worktimeappServerBaseURL}/activities`;
     #addActivityURL = () => `${this.#worktimeappServerBaseURL}/activities`;
     #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
+    #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
 
 
     static getAPI() {
@@ -250,7 +253,7 @@ export default class WorkTimeAppAPI {
     #fetchAdvanced = (url, init) => fetch(url, init).then(
         res => {
             if (!res.ok) {
-                throw Error(`${res.status} ${res.statusText}`);
+                throw Error(`${res.status} ${res.statusText} `);
             }
             return res.json();
         }
@@ -1496,6 +1499,24 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getAllProjectsForAdmin(id) {
+        return this.#fetchAdvanced(this.#getProjectForAdminURL(id)).then((responseJSON) => {
+            let responseProject = ProjectBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    getAllProjectsForUser(id) {
+        return this.#fetchAdvanced(this.#getProjectForUserURL(id)).then((responseJSON) => {
+            let responseProject = ProjectBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
     addActivity(activity) {
         return this.#fetchAdvanced(this.#addActivityURL(), {
             method: 'POST',
@@ -1557,6 +1578,11 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getBookedTimeOfUserForAnActivity(activityID, userID) {
+        return this.#fetchAdvanced(this.#getBookedTimesOfUserForActivity(activityID, userID)).then((responseJSON) => {
+            return responseJSON
+        })
+    }
 
 
 

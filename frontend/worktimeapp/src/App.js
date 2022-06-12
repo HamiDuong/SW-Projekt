@@ -17,6 +17,7 @@ import ProjectTimeOverview from './Components/Pages/Example'
 import IndividualTime from './Components/Pages/IndividualTimes';
 import IndividualTimeEntry from './Components/Pages/IndividualTimeEntry';
 import ProjectSelection from './Components/Pages/ProjectSelections';
+import ProjectSelectionNotAdmin from './Components/Pages/SelectionNotAdminView';
 
 
 class App extends React.Component {
@@ -40,7 +41,7 @@ class App extends React.Component {
               <Route path='/createproject' exact element={<CreateProject />} />
               <Route path='/myworktime' exact element={<MyWorkTime />} />
               <Route path='/myprojectstest' exact element={<MyProjectsTest />} />
-              <Route path='/IndividualEntry' exact element={<IndividualTimeEntry />} />
+              <Route path='/IndividualEntry' exact element={<ProjectSelectionNotAdmin />} />
               <Route path='/SelectionProjects' exact element={<ProjectSelection />} />
 
             </Routes>

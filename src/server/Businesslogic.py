@@ -57,6 +57,7 @@ from server.bo.ProjectUserBO import ProjectUserBO
 from server.db.ProjectUserMapper import ProjectUserMapper
 from server.bo.ActivityBO import ActivityBO
 from server.db.ActivityMapper import ActivityMapper
+import math
 
 
 class Businesslogic():
@@ -1508,7 +1509,7 @@ class Businesslogic():
     """
 
     def get_timeinterval_booking_by_id(self, id):
-        with TimeIntervalBookingMapper as mapper:
+        with TimeIntervalBookingMapper() as mapper:
             return mapper.find_by_key(id)
 
     def get_booking_by_id(self, id):
@@ -1638,6 +1639,7 @@ class Businesslogic():
 
         with TimeIntervalBookingMapper() as mapper:
             return mapper.insert(timeintervalbooking)
+
 
     def create_booking_for_timeinterval(self, userId, worktimeAccountId, type, eventbookingId):
         with TimeIntervalBookingMapper() as mapper:
@@ -2293,55 +2295,102 @@ class Businesslogic():
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
 
+    def get_all_timeinterval_bookings(self):
+        with TimeIntervalBookingMapper() as mapper:
+            return mapper.find_all()
+
+    def get_all_bookings_for_timeinterval(self):
+        with BookingMapper() as mapper:
+            return mapper.find_by_type('T')
+
     def get_project_by_name(self, name):
         projects = self.get_all_projects()
         for elem in projects:
             if elem.get_name() == name:
                 return elem
 
-    def get_project_work_for_user_by_activity_id(self, projectwork_id, user_id, project_id):
-        all_activities = self.get_activities_by_project_id(project_id)
-        all_timeintervals = self.get_all_timeintervals()
+
+    def get_projects_for_admin(self, admin):
+        all_projects = self.get_all_projects()
+        projects_for_admin = []
+        for elem in all_projects:
+            if elem.get_user_id() == admin:
+                projects_for_admin.append(elem)
+        return projects_for_admin
+
+    def get_projects_for_user(self, id):
+        user = self.get_user_by_id(id)
+        all_projects = self.get_all_projects()
         all_project_user = self.get_all_projectusers()
-        all_projectwork_timeintervals = []
-        user = self.get_user_by_id(1)
-        
-
-        booked_time_for_activity = []
-        activities_for_project = []
-
-        projectwork_for_project = []
-
-        project_user = []
-        times = []
-        for elem in all_activities:
-            if elem.get_project_id() == project_id:
-                activities_for_project.append(elem)
-                booked_time_for_activity.append(elem.get_current_capacity())
-        for elem in all_timeintervals:
-            if elem.get_type() == 'ProjectWork':
-                prjwrk = self.get_project_work_by_id(elem.get_project_work_id())
-                all_projectwork_timeintervals.append(prjwrk)
-        for elem in all_projectwork_timeintervals:
-            for i in activities_for_project:
-                if elem.get_id() == i.get_id():
-                    projectwork_for_project.append(elem)
+        projects = []
+        projects_of_user = []
         for elem in all_project_user:
-            if elem.get_project_id() == project_id:
-                project_user.append(elem)
-                print(elem)
-                sum = abs(elem.get_capacity() - elem.get_current_capacity())
-                times.append(sum)
+            if elem.get_user_id() == user.get_id():
+                projects.append(elem)
+        for elem in all_projects:
+            for x in projects:
+                if elem.get_id() == x.get_project_id():
+                    projects_of_user.append(elem)
+        return projects_of_user
+
+    def get_activities_by_project_id_and_user_id(self, project_id, user_id):
+        #Alle Aktivitäten für ein Projekt in dem der User Member ist
+        projects_for_user = self.get_projects_for_user(user_id)
+        activities = []
+        for elem in projects_for_user:
+            if elem.get_id() == project_id:
+                activities.append(self.get_activities_by_project_id(elem.get_id()))
+        return activities
 
 
+    def get_actual_working_time_for_user_by_activity_id(self, user_id, activity_id):
+
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings = self.get_all_bookings_for_timeinterval()
+
+        'Holen Aktivität und deren Capacity'
+        activity = self.get_activity_by_id(activity_id)
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        bookings_of_user = []
+        timeinterval_booking_of_user = []
+        timeintervals_of_user = []
+        projectwork_of_user = []
+        project_work_for_this_activity_of_user = []
+
+        'Hier sind alle Zeiten des Users für eine Aktivität'
+        sum_time = []
+
+        #In diesem Schritt werden von den PrjWrkBOs diejenigen selektiert, die der User bearbeitet hat
+        for elem in all_bookings:
+            if elem.get_user_id() == user_id:
+                bookings_of_user.append(elem)
+        for elem in bookings_of_user:
+            print('in bookins_of_user: ', elem)
+            ti_b_id = elem.get_time_interval_booking_id()
+            ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
+            timeinterval_booking_of_user.append(ti_b)
+        for elem in timeinterval_booking_of_user:
+            print('in ti_b for user: ', elem)
+            ti_id = elem.get_timeinterval_id()
+            ti = self.get_timeinterval_by_id(ti_id)
+            timeintervals_of_user.append(ti)
+        for elem in timeintervals_of_user:
+            print('in ti for user: ', elem)
+            if elem.get_type() == 'ProjectWork':
+                project_work = self.get_project_work_by_id(elem.get_project_work_id())
+                projectwork_of_user.append(project_work)
+        for elem in projectwork_of_user:
+            print('in projectwork for user: ', elem)
+            if elem.get_activity_id() == activity_id:
+                project_work_for_this_activity_of_user.append(elem)
+                sum = elem.get_end() - elem.get_start()
+                sum = sum.total_seconds()
+                sum_time.append(sum)
+        sum = math.fsum(sum_time)/3600
+        sum = round(sum,2)
+        return sum
+
+'''
 ex = Businesslogic()
-user = ex.get_user_by_id(1)
-ex.get_project_work_for_user_by_activity_id(1,user, 1)
-
-
-
-
-
-
-
-
+print(ex.get_actual_working_time_for_user_by_activity_id(1,1))'''

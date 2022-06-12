@@ -341,7 +341,6 @@ timeinterval_with_events = api.model("Timeinterval_with_events", {
 User Methoden
 """
 
-
 @worktimeapp.route('/user')
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class UserOperations(Resource):
@@ -804,6 +803,45 @@ class ProjectWithUserIDOperations(Resource):
         project = adm.get_projects_by_user_id(id)
         return project
 
+@worktimeapp.route('/projects/admin/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectAdminOperations(Resource):
+    @worktimeapp.marshal_list_with(project)
+    #@secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects = adm.get_projects_for_admin(id)
+        return projects
+
+@worktimeapp.route('/projects/for/user/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectUserOperationsII(Resource):
+    @worktimeapp.marshal_list_with(project)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects = adm.get_projects_for_user(id)
+        return projects
+
+@worktimeapp.route('/actvities/for/user/<int:project_id>/<int:user_id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ActivitiyOperationsII(Resource):
+    @worktimeapp.marshal_list_with(activity)
+    # @secured
+    def get(self, project_id, user_id):
+        adm = Businesslogic()
+        projects = adm.get_activities_by_project_id_and_user_id(project_id, user_id)
+        return projects
+
+@worktimeapp.route('/times/<int:activity_id>/<int:user_id>')
+class TimeOperations(Resource):
+    # #@secured
+    def get(self, activity_id, user_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_actual_working_time_for_user_by_activity_id(activity_id, user_id)
+        return time
 
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')

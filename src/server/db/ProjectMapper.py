@@ -29,6 +29,7 @@ class ProjectMapper(Mapper):
             result.append(projectobj)
 
         self._cnx.commit()
+        cursor.close()
         return result
 
     """

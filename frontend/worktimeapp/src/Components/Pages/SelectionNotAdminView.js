@@ -4,10 +4,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { InputLabel } from '@mui/material';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import OverTime from './OverTime';
+import OverTimeIndi from './IndividualTimes';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-class ProjectSelection extends Component {
+class ProjectSelectionNotAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,8 +29,8 @@ class ProjectSelection extends Component {
     }
 
 
-    getProjectsForAdmin = (id) => {
-        WorkTimeAppAPI.getAPI().getAllProjectsForAdmin(id).then(projectBO =>
+    getProjectsForUser = (id) => {
+        WorkTimeAppAPI.getAPI().getAllProjectsForUser(id).then(projectBO =>
             this.setState({
                 projects: [projectBO],
             }, function () {
@@ -40,14 +40,14 @@ class ProjectSelection extends Component {
 
 
     componentDidMount() {
-        this.getProjectsForAdmin(1)
+        this.getProjectsForUser(1)
     }
 
 
     showing() {
         const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverTime onChange={this.handleChange} value={this.state.temperature}
+            return <OverTimeIndi onChange={this.handleChange} value={this.state.temperature}
                 celsius={(temperature)} />
         } else {
             return <h1>You haven´t selected a project yet.</h1>
@@ -71,4 +71,4 @@ class ProjectSelection extends Component {
     }
 }
 
-export default ProjectSelection;
+export default ProjectSelectionNotAdmin;

@@ -1,73 +1,217 @@
 import React, { Component } from 'react';
-import BoilingVerdict from './exampl'
-import BasicSelect from '../dropdown';
-import { FormControl } from '@mui/material';
-import { FormHelperText } from '@mui/material';
-import { Input } from '@mui/material';
-import { InputLabel } from '@mui/material';
-import { Select } from '@mui/material';
-import { MenuItem } from '@mui/material';
-import DropDown from './dropDownTrial';
-import { Box } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box } from '@mui/system';
+import { TableContainer } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import Project from '../../API/ProjectBO';
-import { Button } from '@mui/material';
-import IndividualTimeEntry from './IndividualTimeEntry';
 
-
-class IndividualTime extends Component {
+class OverTimeIndi extends Component {
     constructor(props) {
         super(props);
-        this.handleTempChange = this.handleTempChange.bind(this);
-        this.handleAgeChange = this.handleAgeChange.bind(this);
         this.state = {
-            temperature: '',
-            age: '',
-            project: ''
-        };
+            projectId: this.props.value,
+            activities: [],
+            capacity: [],
+            current_capacity: '',
+            employees: '',
+            activity_names: [],
+            activity: false,
+
+        }
     }
 
-    handleTempChange(e) {
-        this.setState({ temperature: e.target.value });
+    componentDidMount() {
+        this.getActivitiesForProject(this.props.value)
+
     }
 
-    handleAgeChange(e) {
-        this.setState({ age: e.target.value });
+
+    getCapacityofUserForProject = (act_id, us_id) => {
+        WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(activity =>
+            this.setState({
+                current_capacity: [...this.state.current_capacity, activity],
+            }, function () {
+                console.log(activity)
+            }
+            ))
+    }
+
+
+    getActivitiesForProject = (project) => {
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
+            this.setState({
+                activities: [...this.state.activities, activity],
+            }, this.checkActivities(activity)
+            ))
+    }
+
+    checkActivities = (element) => {
+        try {
+            this.getCapacities(element);
+            this.getCapacityofUserForProject(1, 1)
+            this.getActivityNames(element)
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    getCapacities = (arr) => {
+        const acti = this.state.activities
+        let i = 0
+        while (i <= acti.length) {
+            this.setState({
+                capacity: [...this.state.capacity, arr[i].capacity]
+            }, function () {
+                console.log(this.state.capacity)
+            })
+            i = i + 1
+        }
+    }
+
+    getCurrentCapacities = (arr) => {
+        const acti = this.state.activities
+        let i = 0
+        while (i <= acti.length) {
+            this.setState({
+                current_capacity: [...this.state.current_capacity, arr[i].current_capacity]
+            }, function () {
+                console.log('CC', this.state.current_capacity)
+            })
+            i = i + 1
+        }
+    }
+
+    getActivityNames = (arr) => {
+        const acti = this.state.activities
+        let i = 0
+        while (i <= acti.length) {
+            this.setState({
+                activity_names: [...this.state.activity_names, arr[i].name]
+            }, function () {
+                console.log('AN', this.state.activity_names)
+            })
+            i = i + 1
+        }
+    }
+
+    columns() {
+        const columns = [
+            {
+                id: 'activity',
+                label: 'Activities',
+                minWidth: 170
+            },
+            {
+                id: 'capacity',
+                label: 'Capacity in (h)',
+                minWidth: 100
+            },
+            {
+                id: 'current_capacity',
+                label: 'Booked Time in (h)',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toLocaleString('de-DE'),
+            },
+            {
+                id: 'employee',
+                label: 'Employee',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toLocaleString('en-US'),
+            },
+            {
+                id: 'delta',
+                label: 'Delta (h)',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toFixed(2),
+            },
+        ];
+        return columns
+    }
+
+    createData(activity, capacity, current_capacity) {
+        const delta = capacity - current_capacity;
+        return { activity, capacity, current_capacity, delta };
+    }
+
+    smth() {
+        let newthingy = []
+        const activities = this.state.activity_names
+        const planedTimes = this.state.capacity
+        const bookedTimes = this.state.current_capacity
+        const employees = []
+
+        for (var i = 0; i <= activities.length; i++) {
+            let new_data = this.createData(activities[i], planedTimes[i], bookedTimes[i])
+            newthingy.push(new_data)
+        }
+        return newthingy
     }
 
 
     render() {
-        const temperature = this.state.temperature;
-        const age = this.state.age;
+        const rows = this.smth()
+        const columns = this.columns()
         return (
-            <div>
-                <div>
-                    <Box sx={{ margin: 2 }}>
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
+            <diV>
+                <Box sx={{ margin: 3 }} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Paper sx={{ width: '80%' }}>
+                        <TableContainer sx={{ maxHeight: 440 }}>
+                            <Table stickyHeader aria-label="sticky table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="left" colSpan={0}>
+                                            {this.state.project}
+                                        </TableCell>
+                                        <TableCell align="left" colSpan={6}>
+                                            Details
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        {columns.map((column) => (
+                                            <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                style={{ minWidth: column.minWidth }}
+                                            >
+                                                {column.label}
+                                            </TableCell>
+                                        ))}
 
-                            <InputLabel>Selet your project</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                value={age}
-                                label="Age"
-                                onChange={this.handleTempChange}>
-                                <MenuItem value={'project A'}>Project A</MenuItem>
-                                <MenuItem value={'project B'}>Project B</MenuItem>
-                                <MenuItem value={'project C'}>Project C</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </div>
-                <fieldset>
-                    <legend>You have selected: </legend>
-                    <BoilingVerdict
-                        celsius={(temperature)} />
-                </fieldset>
-                <IndividualTimeEntry />
-            </div>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row) => {
+                                        return (
+                                            <TableRow hover  >
+                                                {columns.map((column) => {
+                                                    const value = row[column.id];
+                                                    return (
+                                                        <TableCell align={column.align}>
+                                                            {value}
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Box>
+            </diV>
         );
     }
+
 }
 
-export default IndividualTime;
+export default OverTimeIndi;
