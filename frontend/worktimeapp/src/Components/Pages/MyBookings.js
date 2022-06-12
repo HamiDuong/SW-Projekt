@@ -25,13 +25,6 @@ import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
 
 const header = [
-    // {
-    //     id: '',
-    //     name: '',
-    //     numeric: false,
-    //     disablePadding: false,
-    //     label: ''
-    // },
     {
         id: 'bookingtype',
         name: 'Booking Type',
@@ -59,13 +52,6 @@ const header = [
         numeric: true,
         disablePadding: false,
         label: 'End Date'
-    },
-    {
-        id: 'remarks',
-        name: 'Remarks',
-        numeric: false,
-        disablePadding: false,
-        label: 'Remarks'
     }
 ]
 
@@ -127,12 +113,10 @@ const fakebackend = {
     ]
 }
 
-/***
- * Steps:
- * alle Eventbuchungen des Users holen -> eventbookingsmit mit EventSubklassenBO
- * alle Intervalbuchungen des Users holen -> intervalbookings mit IntervalSubklassenBO
+/**
+ * Auflistung aller Buchungen des aktiven Users
  * 
- * umwandeln in Date: new Date(this.state.startfilter)
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
  */
 
 class MyBookings extends Component {
@@ -169,16 +153,15 @@ class MyBookings extends Component {
     }
 
     getBookings = () => {
+        // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
         this.setState({
             intervalbookings: fakebackend.timeintervals,
             eventbookings: fakebackend.events,
             filteredintervalbookings: fakebackend.timeintervals,
             filteredeventbookings: fakebackend.events            
         },function(){
-            console.log("ComponentDidMount")
+            console.log("getBookings")
         })
-        console.log("getBookings")
-
     }
 
     setFilter = () => {
@@ -216,27 +199,31 @@ class MyBookings extends Component {
     }
 
     filterBookings = () => {
-        //Sort for Bookingtype
-        if (this.state.bookingtype == "all"){
-            this.setState({
-                renderedbookings: this.state.filteredintervalbookings.concat[this.state.filteredeventbookings]
-            }, function(){
-                console.log("Bookingtype: All")
-            })
-        }else if(this.state.bookingtype == "timeinterval"){
-            this.setState({
-                renderedbookings:this.state.filteredintervalbookings
-            }, function(){
-                console.log("Bookingtype: Timeinterval")
-            })
-        }else{
-            this.setState({
-                renderedbookings:this.state.filteredeventbookings
-            }, function(){
-                console.log("Bookingtype: Event")
-            })
+        let intervalbookings = this.state.intervalbookings;
+        let eventbookings = this.state.eventbookings;
+        let ires = [];
+        let eres = [];
+        intervalbookings.forEach(function(elem){
+            console.log(elem)
 
-        }
+            switch(this.state.typefilter){
+                case "":
+
+                case "Work":
+
+                case "Flex Day":
+
+                case "Sick Day":
+
+                case "Vacation":
+
+                case "Break":
+
+                case "Project Work":
+
+            }
+
+        }, this);
     }
 
     renderIntervalBookings = () => {
