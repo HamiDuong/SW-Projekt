@@ -13,7 +13,7 @@ class OverTimeIndi extends Component {
             projectId: this.props.value,
             activities: [],
             capacity: [],
-            current_capacity: '',
+            current_capacity: [],
             employees: '',
             activity_names: [],
             activity: false,
@@ -32,7 +32,7 @@ class OverTimeIndi extends Component {
             this.setState({
                 current_capacity: [...this.state.current_capacity, activity],
             }, function () {
-                console.log(activity)
+                console.log(this.state.current_capacity)
             }
             ))
     }
@@ -49,8 +49,8 @@ class OverTimeIndi extends Component {
     checkActivities = (element) => {
         try {
             this.getCapacities(element);
+            this.getActivityNames(element);
             this.getCapacityofUserForProject(1, 1)
-            this.getActivityNames(element)
 
         } catch (e) {
             console.log(e);
@@ -70,18 +70,6 @@ class OverTimeIndi extends Component {
         }
     }
 
-    getCurrentCapacities = (arr) => {
-        const acti = this.state.activities
-        let i = 0
-        while (i <= acti.length) {
-            this.setState({
-                current_capacity: [...this.state.current_capacity, arr[i].current_capacity]
-            }, function () {
-                console.log('CC', this.state.current_capacity)
-            })
-            i = i + 1
-        }
-    }
 
     getActivityNames = (arr) => {
         const acti = this.state.activities
@@ -116,13 +104,6 @@ class OverTimeIndi extends Component {
                 format: (value) => value.toLocaleString('de-DE'),
             },
             {
-                id: 'employee',
-                label: 'Employee',
-                minWidth: 170,
-                align: 'right',
-                format: (value) => value.toLocaleString('en-US'),
-            },
-            {
                 id: 'delta',
                 label: 'Delta (h)',
                 minWidth: 170,
@@ -143,10 +124,9 @@ class OverTimeIndi extends Component {
         const activities = this.state.activity_names
         const planedTimes = this.state.capacity
         const bookedTimes = this.state.current_capacity
-        const employees = []
 
         for (var i = 0; i <= activities.length; i++) {
-            let new_data = this.createData(activities[i], planedTimes[i], bookedTimes[i])
+            let new_data = this.createData(activities[i], planedTimes[i], bookedTimes[i + 1])
             newthingy.push(new_data)
         }
         return newthingy
