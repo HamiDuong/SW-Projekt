@@ -157,6 +157,31 @@ class TimeIntervalBookingMapper (Mapper):
 
         return result
 
+    def find_by_timeinterval_id(self, key):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings WHERE timeIntervalId={}".format(
+            key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, timeintervalId) = tuples[0]
+            timeintervalbooking = TimeIntervalBookingBO()
+            timeintervalbooking.set_id(id)
+            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
+            timeintervalbooking.set_timeinterval_id(timeintervalId)
+            result = timeintervalbooking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
 
 if (__name__ == "__main__"):
     with TimeIntervalBookingMapper() as mapper:

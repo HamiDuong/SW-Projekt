@@ -2,6 +2,7 @@ from server.db.Mapper import Mapper
 from server.bo.ProjectUserBO import ProjectUserBO
 from datetime import datetime
 
+
 class ProjectUserMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -9,7 +10,8 @@ class ProjectUserMapper(Mapper):
     """
     Gibt alle ProjectUserBO aus der Datenbank zurück
     return: Liste mit ProjectUserBO (list) - alle ProjectUserBO in der Datenbank
-    """    
+    """
+
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -34,7 +36,8 @@ class ProjectUserMapper(Mapper):
     Gibt das ProjectUserBO mit den gegebener Id zurück
     param: key (int) - Id vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit der Id = key
-    """    
+    """
+
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -43,7 +46,8 @@ class ProjectUserMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) = tuples[0]
+            (id, dateOfLastChange, projectId, userId,
+             capacity, currentCapacity) = tuples[0]
             projectuserobj = ProjectUserBO()
             projectuserobj.set_id(id)
             projectuserobj.set_date_of_last_change(dateOfLastChange)
@@ -63,13 +67,14 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches eingefügt werden soll
     return: projectuser_obj
     """
-    def insert (self, projectuser_obj):
+
+    def insert(self, projectuser_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM projectusers")
         tuples = cursor.fetchall()
 
         timestamp = datetime.today()
-        projectuser_obj.set_date_of_last_change(timestamp)    
+        projectuser_obj.set_date_of_last_change(timestamp)
 
         for (maxid) in tuples:
             if maxid[0] == None:
@@ -78,7 +83,8 @@ class ProjectUserMapper(Mapper):
                 projectuser_obj.set_id(maxid[0]+1)
 
         command = "INSERT INTO projectusers (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (projectuser_obj.get_id(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_project_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity())
+        data = (projectuser_obj.get_id(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_project_id(
+        ), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -91,14 +97,17 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO mit aktualisierten Daten
     return: None 
     """
-    def update (self, projectuser_obj):
+
+    def update(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
         timestamp = datetime.today()
         projectuser_obj.set_date_of_last_change(timestamp)
 
-        command = "UPDATE projectusers " + "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
-        data = (projectuser_obj.get_(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(),projectuser_obj.get_id())
+        command = "UPDATE projectusers " + \
+            "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
+        data = (projectuser_obj.get_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(
+        ), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -109,24 +118,28 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
+
     def delete(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM projectusers WHERE id={}".format(projectuser_obj.get_id())
+        command = "DELETE FROM projectusers WHERE id={}".format(
+            projectuser_obj.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
-        cursor.close()   
+        cursor.close()
 
     """
     Gibt das ProjectUserBO mit dem gegebenen Startdatum zurück
     param: id (int) - UserId vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit user_id = id
     """
+
     def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from projectusers WHERE projectId = {}".format(projectId) )
+        cursor.execute(
+            "SELECT * from projectusers WHERE projectId = {}".format(projectId))
         tuples = cursor.fetchall()
 
         for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:

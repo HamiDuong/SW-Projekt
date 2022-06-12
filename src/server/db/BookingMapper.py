@@ -168,6 +168,8 @@ class BookingMapper (Mapper):
     def update(self, booking):
         """Wiederholtes Schreiben eines Objekts in die Datenbank.
         """
+        timestamp = datetime.today()
+        booking.set_date_of_last_change(timestamp)
         cursor = self._cnx.cursor()
 
         command = "UPDATE bookings " + "SET dateOfLastChange=%s WHERE id=%s"
@@ -195,6 +197,36 @@ class BookingMapper (Mapper):
         cursor = self._cnx.cursor()
         command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId from bookings WHERE id={}".format(
             key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, workTimeAccountId, userId, type,
+             eventBookingId, timeIntervalBookingId) = tuples[0]
+            booking = BookingBO()
+            booking.set_id(id)
+            booking.set_date_of_last_change(dateOfLastChange)
+            booking.set_work_time_account_id(workTimeAccountId)
+            booking.set_user_id(userId)
+            booking.set_type(type)
+            booking.set_event_booking_id(eventBookingId)
+            booking.set_time_interval_booking_id(timeIntervalBookingId)
+            result = booking
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_booking_by_booking_subclass(self, foreignkey, key, type):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, dateOfLastChange, workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId from bookings WHERE {}={} AND type='{}'".format(
+            foreignkey, key, type)
         cursor.execute(command)
         tuples = cursor.fetchall()
 

@@ -1,5 +1,6 @@
 from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
 from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
+from datetime import datetime
 
 """
 @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -98,6 +99,9 @@ class ProjectWorkMapper(TimeIntervalMapper):
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.projectworks")
         tuples = cursor.fetchall()
 
+        timestamp = datetime.today()
+        projectwork_obj.set_date_of_last_change(timestamp)
+
         for (maxid) in tuples:
             if maxid[0] == None:
                 projectwork_obj.set_id(1)
@@ -123,8 +127,9 @@ class ProjectWorkMapper(TimeIntervalMapper):
     def update(self, projectwork_obj):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE worktimeapp.projectworks " + "SET start=%s, end=%s WHERE id=%s"
-        data = (projectwork_obj.get_start(),
+        command = "UPDATE worktimeapp.projectworks " + \
+            "SET dateOfLastChange=%s, start=%s, end=%s WHERE id=%s"
+        data = (projectwork_obj.get_date_of_last_change(), projectwork_obj.get_start(),
                 projectwork_obj.get_end(), projectwork_obj.get_id())
         cursor.execute(command, data)
 

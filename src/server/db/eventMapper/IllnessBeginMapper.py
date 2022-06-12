@@ -10,7 +10,8 @@ class IllnessBeginMapper(Mapper):
     def insert(self, illness_begin):
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.illnessbegin ")
+        cursor.execute(
+            "SELECT MAX(id) AS maxid FROM worktimeapp.illnessbegin ")
         tuples = cursor.fetchall()
         illness_begin.set_date_of_last_change(timestamp)
 
@@ -113,8 +114,8 @@ class IllnessBeginMapper(Mapper):
         illness_begin.set_date_of_last_change(datestamp)
 
         command = "UPDATE worktimeapp.illnessbegin " + \
-            "SET date=%s WHERE id=%s"
-        data = (illness_begin.get_time(),
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (illness_begin.get_date_of_last_change(), illness_begin.get_time(),
                 illness_begin.get_id())
         cursor.execute(command, data)
 

@@ -107,15 +107,14 @@ class VacationEndMapper(Mapper):
 
         return result
 
-
     def update(self, vacation_end):
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         vacation_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.vacationend" + \
-            "SET date=%s WHERE id=%s"
-        data = (vacation_end.get_time(),
+        command = "UPDATE worktimeapp.vacationend " + \
+            "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        data = (vacation_end.get_date_of_last_change(), vacation_end.get_time(),
                 vacation_end.get_id())
         cursor.execute(command, data)
 
