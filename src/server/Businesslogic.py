@@ -2131,11 +2131,11 @@ class Businesslogic():
     User Methoden
     """
 
-    def create_user(self, first_name, last_name, mail_adress, googleId):
+    def create_user(self, firstName, lastName, mailAdress, googleId):
         user_obj = UserBO()
-        user_obj.set_first_name(first_name)
-        user_obj.set_last_name(last_name)
-        user_obj.set_mail_adress(mail_adress)
+        user_obj.set_first_name(firstName)
+        user_obj.set_last_name(lastName)
+        user_obj.set_mail_adress(mailAdress)
         user_obj.set_google_user_id(googleId)
 
         with UserMapper() as mapper:

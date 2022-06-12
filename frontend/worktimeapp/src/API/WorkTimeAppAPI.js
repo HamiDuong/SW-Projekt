@@ -22,7 +22,8 @@ import GoingBO from './EventBOs/GoingBO';
 import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
-import ActivityBO from "./ActivityBO"
+import ActivityBO from "./ActivityBO";
+import UserBO from "./UserBO";
 
 
 export default class WorkTimeAppAPI {
@@ -239,7 +240,14 @@ export default class WorkTimeAppAPI {
     #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
 
-
+    //User
+    //Author Esra Özkul
+    #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
+    #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
+    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/customers-by-name/${userName}`;
 
     static getAPI() {
         if (this.#api == null) {
@@ -1452,6 +1460,76 @@ export default class WorkTimeAppAPI {
             })
         })
     }
+
+    //User-Methoden
+    getAllUsers() {
+        return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+    getUserById(userID){
+        return this.#fetchAdvanced(this.#getUserByIdURL(userID))
+        .then((responseJSON) => {
+        let userBOs = UserBO.fromJSON(responseJSON);
+        console.info(userBOs);
+        return new Promise(function (resolve) {
+          resolve(userBOs);
+        })
+      })
+    }
+    addUser (user) {
+        return this.#fetchAdvanced(this.#addUserURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }).them((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+    deleteUser(user) {
+        return this.#fetchAdvanced(this.#deleteUserURL(user), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+    updateUser(user) {
+        return this.#fetchAdvanced(this.#updateUserURL(user), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+    searchUser(userName) {
+        return this.#fetchAdvanced(this.#searchUserURL(userName)).then((responseJSON) => {
+            let userBOs = UserBO.fromJSON(responseJSON);
+            // console.info(customerBOs);
+            return new Promise(function (resolve) {
+              resolve(userBOs);
+            })
+          })
+    }
+
     
 }
 

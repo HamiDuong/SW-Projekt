@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import AddActivities from './Dialog/AddActivities';
 import AddMember from './Dialog/AddMembers';
 import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
 
 class CreateProject extends Component {
     constructor(props) {
