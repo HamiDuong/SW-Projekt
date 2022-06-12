@@ -99,7 +99,7 @@ class App extends React.Component {
          */}
         <NavBar user = {this.state.currentUser}/>
         <Routes>
-          <Route path='/myprofile' exact element={<MyProfile/>}/>
+          <Route path='/myprofile' exact element={<MyProfile user={this.state.currentUser}/>}/>
           <Route path='/mybookings' exact element={<MyBookings/>}/>
           <Route path='/myprojects' exact element={<MyProjects/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings/>}/>
