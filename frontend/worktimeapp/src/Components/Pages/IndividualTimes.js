@@ -14,9 +14,8 @@ class OverTimeIndi extends Component {
             activities: [],
             capacity: [],
             current_capacity: [],
-            employees: '',
             activity_names: [],
-            activity: false,
+            userId: 1
 
         }
     }
@@ -42,7 +41,8 @@ class OverTimeIndi extends Component {
         WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
             this.setState({
                 activities: [...this.state.activities, activity],
-            }, this.checkActivities(activity)
+            }, this.checkActivities(activity),
+                this.getCapacityofUserForProject(activity[0].id, this.state.userId)
             ))
     }
 
@@ -50,7 +50,8 @@ class OverTimeIndi extends Component {
         try {
             this.getCapacities(element);
             this.getActivityNames(element);
-            this.getCapacityofUserForProject(1, 1)
+
+
 
         } catch (e) {
             console.log(e);

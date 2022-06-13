@@ -60,6 +60,7 @@ class ProjectSelection extends Component {
         const func = this.showing()
         return (
             <Box>
+                <h1>Admin</h1>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
