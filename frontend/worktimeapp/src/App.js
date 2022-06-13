@@ -6,7 +6,7 @@ import { CssBaseline } from '@mui/material';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './Components/NavBar';
 import MyProfile from './Components/MyProfile';
-import CreateProject from './Components/CreateProject';
+import CreateProjectEntry from './Components/CreateProjectEntry';
 import MyWorkTime from './Components/MyWorkTime';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
@@ -31,7 +31,7 @@ class App extends React.Component {
           <Route path='/myprojects' exact element={<MyProjects/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings/>}/>
           <Route path='/eventbookings' exact element={<EventBookings/>}/>
-          <Route path='/createproject' exact element={<CreateProject/>}/>
+          <Route path='/createprojectentry' exact element={<CreateProjectEntry/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime/>}/>
           <Route path='/myprojectstest' exact element={<MyProjectsTest/>}/>
           
