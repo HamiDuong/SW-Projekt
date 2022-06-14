@@ -12,8 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import ActivityBookingEntry from './EntryOfEachBooking';
 import { Grid, TableContainer } from '@mui/material';
-import { Button } from '@mui/material';
-import { maxWidth } from '@mui/system';
 
 
 class Entry extends Component {

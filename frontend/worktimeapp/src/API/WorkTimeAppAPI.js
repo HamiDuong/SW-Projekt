@@ -1601,6 +1601,15 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getActivitiesByProjectForUser(project_id, user_id) {
+        return this.#fetchAdvanced(this.#getActivitiesByProjectIdAndUserIdURL(project_id, user_id)).then((responseJSON) => {
+            let responseActivity = ActivityBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
+    }
+
     getAllActivities() {
         return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON);

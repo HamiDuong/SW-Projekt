@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { Box } from '@mui/system';
-import { TableContainer } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import IndividualEntry from './Entry';
+import IndividualEntry from './IndividualEntry';
 
 
 class OverIndividualEntry extends Component {
@@ -23,7 +18,8 @@ class OverIndividualEntry extends Component {
 
 
     componentDidMount() {
-        this.getActivitiesForProject(this.props.value)
+        this.getActivitiesForProjectOfThisUser(this.props.value, this.state.userId)
+        console.log(this.props.value)
 
     }
 
@@ -39,8 +35,9 @@ class OverIndividualEntry extends Component {
     }
 
 
-    getActivitiesForProject = (project) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
+
+    getActivitiesForProjectOfThisUser = (project_id, user_id) => {
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectForUser(project_id, user_id).then(activity =>
             this.setState({
                 activities: [...this.state.activities, activity],
             }, this.checkActivities(activity),
@@ -90,11 +87,12 @@ class OverIndividualEntry extends Component {
     render() {
         return (
             <div>
-                <h1>HAAAALLLOOO</h1>
                 {this.state.activities.map((element, index) => {
                     const value = element[index].id
                     return (
-                        <IndividualEntry value={value} />
+                        <div>
+                            <IndividualEntry value={value} />
+                        </div>
                     )
                 })}
             </div>

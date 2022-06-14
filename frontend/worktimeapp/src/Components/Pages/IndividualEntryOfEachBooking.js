@@ -55,8 +55,8 @@ class IndividualEntriesOfEachBooking extends Component {
                     <Table>
                         <TableBody>
                             <TableCell width='70'>{this.state.time}</TableCell>
-                            <TableCell width='70'>{this.props.current_c}</TableCell>
                             <TableCell width='70'>{this.props.capacity}</TableCell>
+                            <TableCell width='70'>{this.props.current_c}</TableCell>
                         </TableBody>
                     </Table>
                 </Paper>

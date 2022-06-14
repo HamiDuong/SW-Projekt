@@ -3,7 +3,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverIndividualEntry from './OverEntry';
+import OverIndividualEntry from './OverIndividualEntries';
 
 
 class ProjectSelectionNotAdmin extends Component {
@@ -49,8 +49,7 @@ class ProjectSelectionNotAdmin extends Component {
     showing() {
         const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverIndividualEntry onChange={this.handleChange} value={this.state.temperature}
-                celsius={(temperature)} />
+            return <OverIndividualEntry onChange={this.handleChange} value={this.state.temperature} />
         } else {
             return <h1>You haven´t selected a project yet.</h1>
         }
@@ -58,11 +57,9 @@ class ProjectSelectionNotAdmin extends Component {
 
     render() {
         const projects = this.state.projects
-        const temperature = this.state.temperature
         const func = this.showing()
         return (
             <Box>
-                <h1>Nicht-Admin View</h1>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)

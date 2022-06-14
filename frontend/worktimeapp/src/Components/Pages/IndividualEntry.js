@@ -11,9 +11,11 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import { Grid, TableContainer } from '@mui/material';
-import { Button } from '@mui/material';
-import { maxWidth } from '@mui/system';
 import IndividualEntriesOfEachBooking from './IndividualEntryOfEachBooking';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import Divider from '@mui/material/Divider';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 
 class IndividualEntry extends Component {
@@ -73,58 +75,80 @@ class IndividualEntry extends Component {
         const setOpen = this.state.setOpen
         return (
             <div>
-                <Box
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                    <TableContainer>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableBody>
-                                <Box
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'left'
-                                    }}>
-
-                                    <IconButton aria-label="expand row"
-                                        size="small"
-                                        onClick={this.handleClick}>
-                                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                    <TableRow>{this.state.name}</TableRow>
-                                </Box>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-                </Box>
-
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <TableContainer style={{
-                        display: 'flex',
-                        justifyContent: 'center'
-                    }}>
-                        <Table sx={{ width: '75%' }}>
-                            <TableHead>
-                                <Box style={{
-                                    display: 'flex'
-                                }} sx={{ gap: 8 }}>
-                                    <TableRow>Booked times</TableRow>
-                                    <TableRow>Planed capacity</TableRow>
-                                    <TableRow>Current capacity</TableRow>
-                                </Box>
-                            </TableHead>
-                            <Grid>
+                <Box>
+                    <Box
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        <TableContainer>
+                            <Table stickyHeader aria-label="sticky table">
                                 <TableBody>
-                                    <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.current_capacity} />
+                                    <Box
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'left'
+                                        }}>
+
+                                        <IconButton aria-label="expand row"
+                                            size="small"
+                                            onClick={this.handleClick}>
+                                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                        <TableRow>{this.state.name}</TableRow>
+                                    </Box>
                                 </TableBody>
-                            </Grid>
-                        </Table>
-                    </TableContainer>
-                </Collapse>
+                            </Table>
+                        </TableContainer>
+
+                    </Box>
+
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <TableContainer style={{
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}>
+                            <Table sx={{ width: '60%' }}>
+                                <TableHead>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            width: 'fit-content',
+                                            border: (theme) => `1px solid ${theme.palette.divider}`,
+                                            borderRadius: 1,
+                                            bgcolor: 'background.paper',
+                                            color: 'text.secondary',
+                                            '& svg': {
+                                                m: 1.5,
+                                            },
+                                            '& hr': {
+                                                mx: 0.5,
+                                            },
+                                        }}
+                                    >
+                                        <TaskAltIcon />
+                                        <TableRow>Booked times</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <ScheduleIcon size={'small'} />
+                                        <TableRow>Planed project capacity</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <ListAltIcon size={'small'} />
+                                        <TableRow>Current capacity</TableRow>
+
+                                    </Box>
+                                </TableHead>
+                                <Grid>
+                                    <TableBody>
+                                        <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.current_capacity} />
+                                    </TableBody>
+                                </Grid>
+                            </Table>
+                        </TableContainer>
+                    </Collapse>
+                </Box>
             </div >
         );
     }
