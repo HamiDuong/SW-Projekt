@@ -2,59 +2,60 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, paperClasses, TextFi
 import { pickersDayClasses } from '@mui/x-date-pickers/PickersDay/pickersDayClasses';
 import React, { Component } from 'react';
 import ProjectBO from '../API/ProjectBO';
-import ActivityBO from '../API/ActivityBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import Box from '@mui/material/Box';
-//import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid'; 
 import AddActivities from './Dialog/AddActivities';
-import AddMembers from './Dialog/AddMembers';
+import AddMember from './Dialog/AddMembers';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
-import CreateProject from './CreateProject';
-import AddIcon from '@mui/icons-material/Add';
 
-class CreateProjectEntry extends Component {
+class CreateProject extends Component {
     constructor(props) {
         super(props);
-    
-    this.state = { 
-        //CreateProject
-        projectName: null,
-        commissioner: null,
-        projectNameValidationFailed: false,
-        projectNameEdited: false,
-        commissionerValidationFailed: false,
-        commissionerEdited: false,
-        userid: 0,
-
-        //AddActivity
-        activityName: null,
-        capacity: null,
-        activitytNameValidationFailed: false,
-        activityNameEdited: false,
-        capacityValidationFailed: false,
-        capacityEdited: false,
-        projectId: 0,
-        currentCapacity: 0,
-        showAddActivities: false,
-
-        //AddMember
-        firstName: null,
-        lastName: null,
-        loadingInProgress: false,
-        selectedProjectUser: null,
-        showAddMembers: false,
         
-    };
-    }   
-    //Methoden für CreateProject
-    addProjects = () => { 
+        this.state={
+            showPopupAddActivities: false,
+            showPopupAddMembers: false,
+          //Network states
+            loadingInProgress: false,
+            createprojectError: null,
+            projectName: null,
+            commissioner: null,
+            projectNameValidationFailed: false,
+            projectNameEdited: false,
+            commissionerValidationFailed: false,
+            commissionerEdited: false,
+            userid: 0,
+            members: [],
+            showAddMember: false,
+            userName: '',
+            targetMember: [],
+            selectedMember: null,
+
+        }
+        this.baseState = this.state;
+        
+    }
+    togglePopupActivities() {
+        this.setState({
+          showPopupAddActivities: !this.state.showPopupAddActivities,
+        });
+      }
+    
+    togglePopupMembers() {
+        this.setState({
+          showPopupAddMembers: !this.state.showPopupAddMembers,
+        });
+      }
+
+      addProjects = () => { 
         let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
         console.log(newProject)
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project => {
           this.setState(this.baseState);
+          console.log('Schau hier!')
           this.props.onClose(project);
         }).catch(e => 
           this.setState({
@@ -67,140 +68,166 @@ class CreateProjectEntry extends Component {
           updatingError: null
         });
       }
+    
+    
+
+    searchUser = async () => {
+              const {userName} = this.state;
+              if (userName.length > 0) {
+                  try {
+                      this.setState({
+                          targetUsers: [],
+                          selectedUser:null,
+                          loadingInProgress:true,
+                          userSearchError: null
+                      });
+                      const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
+                      console.log(users)
+      
+                      let selectedUser = null;
+      
+                      if (users.length > 0) {
+                          selectedUser = users[0];
+                      }
+      
+                      this.setState({
+                          targetUsers: users,
+                          selectedUser: selectedUser,
+                          loadingInProgress: false,
+                          userSearchError: null
+                      });
+                  } catch (e){
+                      this.setState ({
+                          targetUsers: [],
+                          selectedUser: null,
+                          loadingInProgress: false,
+                          userSearchError: e
+                      });
+      
+                  } 
+                  } else{
+                      this.setState({
+                          userNotFound: true
+                      });
+                  }
+              }
+
     /** Handles value changes of the forms textfields and validates them */
     textFieldValueChange = (event) => {
-        const value = event.target.value;
-    
-        let error = false;
-        if (value.trim().length === 0) {
-          error = true;
-        }
-    
-        this.setState({
-          [event.target.id]: event.target.value,
-          [event.target.id + 'ValidationFailed']: error,
-          [event.target.id + 'Edited']: true
-        });
-        }
-        //Methoden für AddActivitiy
-        // addActivity = () => { 
-        //     let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.state.projectId, this.state.currentCapacity);
-        //     console.log(newActivity)
-        //     WorkTimeAppAPI.getAPI().addActivity(newActivity).then(activity => {
-        //       this.setState(this.baseState);
-        //       this.props.onClose(activity);
-        //     }).catch(e => 
-        //       this.setState({
-        //         updatingInProgress: false,
-        //         updatingError: e
-        //       })
-        //       );
-        //     this.setState({
-        //       updatingInProgress: true,
-        //       updatingError: null
-        //     });
-        //   }
-        
-        //Aufruf, wenn der AddActivities Button geklickt wurde, vom AddActivities
-        addActivitiesButtonclicked = (event) => {
-            event.stopPropagation();
-            this.setState({
-            showAddActivities: true
-            });
-        }
-        //Schließen des Dialogs, onclose von AddMember Dialog
-        closeAddActivitiesDialog = (addActivity) => {
-            this.setState({
-                showAddActivities: false
-            });
-        }
-    
-        addMembersButtonclicked = (event) => {
-            event.stopPropagation();
-            this.setState({
-            showAddMembers: true
-            });
-        }
-        //Schließen des Dialogs, onclose von AddMember Dialog
-        closeAddMembersDialog = (addMember) => {
-            this.setState({
-                showAddMembers: false
-            });
-        }
-    
+    const value = event.target.value;
 
+    let error = false;
+    if (value.trim().length === 0) {
+      error = true;
+    }
 
-     
+    this.setState({
+      [event.target.id]: event.target.value,
+      [event.target.id + 'ValidationFailed']: error,
+      [event.target.id + 'Edited']: true
+    });
+    }
     render() { 
-        const {classes} = this.props; 
-        const {projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed} = this.state
+      const {classes} = this.props; 
+      const {projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed} = this.state     
         return ( 
-            // Methoden für CreateProject/AddProject
-            <Box component="form" sx={{'& > :not(style)': { m: 1, width: '25ch' }, }} noValidate autoComplete="off"> 
-
-            <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName} 
-            onChange={this.textFieldValueChange} error={projectNameValidationFailed} 
-            helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />
-            <TextField type='text' required fullWidth margin='normal' id='commissioner' label='commissioner:' value={commissioner}
-            onChange={this.textFieldValueChange} error={commissionerValidationFailed}
-            helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
+    <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    > 
+              <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName} 
+                onChange={this.textFieldValueChange} error={projectNameValidationFailed} 
+                helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />
+              <TextField type='text' required fullWidth margin='normal' id='commissioner' label='commissioner:' value={commissioner}
+                onChange={this.textFieldValueChange} error={commissionerValidationFailed}
+                helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
               
-            <br/>
 
-            <TextField
-            id="startfilter"
-            label="Duration Start"
-            variant="standard"
-            format={'YYYY/MM/DD'}
-            type = "date"
-            InputLabelProps={{
+      <br/>
+      <TextField
+        id="startfilter"
+        label="Duration Start"
+        variant="standard"
+        format={'YYYY/MM/DD'}
+        type = "date"
+        InputLabelProps={{
             shrink: true,
                         }}
-            />
-
-            <br/>
-
-            <TextField
-            id="startfilter"
-            label="Duration Ende"
-            variant="standard"
-            format={'YYYY/MM/DD'}
-            type = "date"
-            InputLabelProps={{
+        />
+        <br/>
+        <TextField
+        id="startfilter"
+        label="Duration Ende"
+        variant="standard"
+        format={'YYYY/MM/DD'}
+        type = "date"
+        InputLabelProps={{
             shrink: true,
                         }}
-            />
-            <Grid xs={12} item>
+        />
+        
+
+
+        <Grid xs={12} item>
+                    <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>+</Button>
+        </Grid>
+        
+        {this.state.showPopupAddActivities ? 
+          <AddActivities
+            projectId = {this.state.projectId}
+            text='Close Me'
+            closePopupActivities={this.togglePopupActivities.bind(this)}
+          />
+          : null
+        }
+        
+
+        <Grid xs={12} item>
+                    <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
+        </Grid>
+        
+
+        {this.state.showPopupAddMembers ? 
+          <AddMember
+            text='Close Me'
+            closePopupMembers={this.togglePopupMembers.bind(this)}
+          />
+          : null
+        }
+
+        <Grid xs={12} item>
                     <Button 
                     variant="contained" 
                     onClick={this.addProjects}>
                       Create Project
                       </Button>
-            </Grid>
-            {/* Methoden für Activity */}
-            <Button variant='contained' color='primary' startIcon={<AddIcon/>} onClick={this.addActivitiesButtonclicked}>
-                Add Activity
-            </Button>
-            <AddActivities show={this.state.showAddActivities} 
-            addActivty = {this.addActivity} textFieldValueChange={this.textFieldValueChange}
-            activityName = {this.state.activityName} capacity= {this.state.capacity}
-            onClose = {this.closeAddActivitiesDialog}/>
-            <br/>
-            
-            <Button variant='contained' color='primary' startIcon={<AddIcon/>} onClick={this.addMembersButtonclicked}>
-            Add Member
-            </Button>
-
-            <AddMembers show={this.state.showAddMembers} 
-            addMember = {this.addMember} textFieldValueChange={this.textFieldValueChange}
-            firstName = {this.state.firstName} lastName= {this.state.lastName}
-            onClose = {this.closeAddMembersDialog}/>
-            
-            </Box>
+        </Grid>   
 
         
-         );
+    </Box>
+
+    )
     }
 }
+/** PropTypes */
+CreateProject.propTypes = {
+  /** @ignore */
+  classes: PropTypes.object.isRequired,
+  /** The CustomerBO to be edited */
+  customer: PropTypes.object,
+  /** If true, the form is rendered */
+  show: PropTypes.bool.isRequired,
+  /**  
+   * Handler function which is called, when the dialog is closed.
+   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
+   *  
+   * Signature: onClose(CustomerBO customer);
+   */
+  onClose: PropTypes.func.isRequired,
+}
  
-export default CreateProjectEntry;
+export default CreateProject;
