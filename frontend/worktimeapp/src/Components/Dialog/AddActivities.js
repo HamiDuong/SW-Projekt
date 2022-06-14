@@ -22,28 +22,25 @@ class AddActivities extends Component {
             activityNameEdited: false,
             capacityValidationFailed: false,
             capacityEdited: false,
-            projectId: this.props.projectId,
+            projectId: '',
             currentCapacity: 0,
     }
     this.baseState = this.state;
 }
 
     addActivity = () => { 
-        let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.state.projectId, this.state.currentCapacity);
+        let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.props.projectId, this.state.currentCapacity);
         console.log(newActivity)
-        WorkTimeAppAPI.getAPI().addActivity(newActivity).then(activity => {
-          this.setState(this.baseState);
-          this.props.onClose(activity);
-        }).catch(e => 
-          this.setState({
-            updatingInProgress: false,
-            updatingError: e
-          })
-          );
-        this.setState({
-          updatingInProgress: true,
-          updatingError: null
-        });
+        WorkTimeAppAPI.getAPI().addActivity(newActivity).then(activity => 
+         this.setState({
+          activityName:activity.name,
+          capacity: activity.capacity,
+          currentCapacity: activity.currentCapacity,
+          projectId: activity.projectId
+         }, 
+         function(){
+          console.log('Here', this.state.projectId, this.state.activityName)
+         }))
       }
 
     // getActivity = () => {

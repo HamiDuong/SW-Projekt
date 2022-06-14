@@ -5,115 +5,126 @@ import ProjectBO from '../API/ProjectBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid'; 
+import Grid from '@mui/material/Grid';
 import AddActivities from './Dialog/AddActivities';
 import AddMember from './Dialog/AddMembers';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 
 class CreateProject extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state={
-            showPopupAddActivities: false,
-            showPopupAddMembers: false,
-          //Network states
-            loadingInProgress: false,
-            createprojectError: null,
-            projectName: null,
-            commissioner: null,
-            projectNameValidationFailed: false,
-            projectNameEdited: false,
-            commissionerValidationFailed: false,
-            commissionerEdited: false,
-            userid: 0,
-            members: [],
-            showAddMember: false,
-            userName: '',
-            targetMember: [],
-            selectedMember: null,
+  constructor(props) {
+    super(props);
 
-        }
-        this.baseState = this.state;
-        
+    this.state = {
+      showPopupAddActivities: false,
+      showPopupAddMembers: false,
+      //Network states
+      loadingInProgress: false,
+      createprojectError: null,
+      projectName: null,
+      commissioner: null,
+      projectNameValidationFailed: false,
+      projectNameEdited: false,
+      commissionerValidationFailed: false,
+      commissionerEdited: false,
+      userid: 0,
+      members: [],
+      showAddMember: false,
+      userName: '',
+      targetMember: [],
+      selectedMember: null,
+      projectId: '',
+
     }
-    togglePopupActivities() {
-        this.setState({
-          showPopupAddActivities: !this.state.showPopupAddActivities,
-        });
-      }
-    
-    togglePopupMembers() {
-        this.setState({
-          showPopupAddMembers: !this.state.showPopupAddMembers,
-        });
-      }
+    this.baseState = this.state;
 
-      addProjects = () => { 
-        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
-        console.log(newProject)
-        WorkTimeAppAPI.getAPI().addProject(newProject).then(project => {
-          this.setState(this.baseState);
-          console.log('Schau hier!')
-          this.props.onClose(project);
-        }).catch(e => 
-          this.setState({
-            updatingInProgress: false,
-            updatingError: e
-          })
-          );
+  }
+  togglePopupActivities() {
+    this.setState({
+      showPopupAddActivities: !this.state.showPopupAddActivities,
+    });
+  }
+
+  togglePopupMembers() {
+    this.setState({
+      showPopupAddMembers: !this.state.showPopupAddMembers,
+    });
+  }
+
+  addProjects = () => {
+    let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
+    console.log(newProject)
+    WorkTimeAppAPI.getAPI().addProject(newProject).then(projectBO =>
+      this.setState({
+        showPopupAddActivities: false,
+        showPopupAddMembers: false,
+        //Network states
+        loadingInProgress: false,
+        createprojectError: null,
+        projectName: null,
+        commissioner: null,
+        projectNameValidationFailed: false,
+        projectNameEdited: false,
+        commissionerValidationFailed: false,
+        commissionerEdited: false,
+        userid: 0,
+        members: [],
+        showAddMember: false,
+        userName: '',
+        targetMember: [],
+        selectedMember: null,
+        projectId: projectBO.id
+      }, function () {
+        console.log(this.state.projectId)
+      }))
+
+  }
+
+
+
+  searchUser = async () => {
+    const { userName } = this.state;
+    if (userName.length > 0) {
+      try {
         this.setState({
-          updatingInProgress: true,
-          updatingError: null
+          targetUsers: [],
+          selectedUser: null,
+          loadingInProgress: true,
+          userSearchError: null
         });
+        const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
+        console.log(users)
+
+        let selectedUser = null;
+
+        if (users.length > 0) {
+          selectedUser = users[0];
+        }
+
+        this.setState({
+          targetUsers: users,
+          selectedUser: selectedUser,
+          loadingInProgress: false,
+          userSearchError: null
+        });
+      } catch (e) {
+        this.setState({
+          targetUsers: [],
+          selectedUser: null,
+          loadingInProgress: false,
+          userSearchError: e
+        });
+
       }
-    
-    
+    } else {
+      this.setState({
+        userNotFound: true
+      });
+    }
+  }
 
-    searchUser = async () => {
-              const {userName} = this.state;
-              if (userName.length > 0) {
-                  try {
-                      this.setState({
-                          targetUsers: [],
-                          selectedUser:null,
-                          loadingInProgress:true,
-                          userSearchError: null
-                      });
-                      const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
-                      console.log(users)
-      
-                      let selectedUser = null;
-      
-                      if (users.length > 0) {
-                          selectedUser = users[0];
-                      }
-      
-                      this.setState({
-                          targetUsers: users,
-                          selectedUser: selectedUser,
-                          loadingInProgress: false,
-                          userSearchError: null
-                      });
-                  } catch (e){
-                      this.setState ({
-                          targetUsers: [],
-                          selectedUser: null,
-                          loadingInProgress: false,
-                          userSearchError: e
-                      });
-      
-                  } 
-                  } else{
-                      this.setState({
-                          userNotFound: true
-                      });
-                  }
-              }
-
-    /** Handles value changes of the forms textfields and validates them */
-    textFieldValueChange = (event) => {
+  /** Handles value changes of the forms textfields and validates them */
+  textFieldValueChange = (event) => {
     const value = event.target.value;
 
     let error = false;
@@ -126,72 +137,72 @@ class CreateProject extends Component {
       [event.target.id + 'ValidationFailed']: error,
       [event.target.id + 'Edited']: true
     });
-    }
-    render() { 
-      const {classes} = this.props; 
-      const {projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed} = this.state     
-        return ( 
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    > 
-              <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName} 
-                onChange={this.textFieldValueChange} error={projectNameValidationFailed} 
-                helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />
-              <TextField type='text' required fullWidth margin='normal' id='commissioner' label='commissioner:' value={commissioner}
-                onChange={this.textFieldValueChange} error={commissionerValidationFailed}
-                helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
-              
+  }
+  render() {
+    const { classes } = this.props;
+    const { projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed } = this.state
+    return (
+      <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName}
+          onChange={this.textFieldValueChange} error={projectNameValidationFailed}
+          helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />
+        <TextField type='text' required fullWidth margin='normal' id='commissioner' label='commissioner:' value={commissioner}
+          onChange={this.textFieldValueChange} error={commissionerValidationFailed}
+          helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
 
-      <br/>
-      <TextField
-        id="startfilter"
-        label="Duration Start"
-        variant="standard"
-        format={'YYYY/MM/DD'}
-        type = "date"
-        InputLabelProps={{
-            shrink: true,
-                        }}
-        />
-        <br/>
+
+        <br />
         <TextField
-        id="startfilter"
-        label="Duration Ende"
-        variant="standard"
-        format={'YYYY/MM/DD'}
-        type = "date"
-        InputLabelProps={{
+          id="startfilter"
+          label="Duration Start"
+          variant="standard"
+          format={'YYYY/MM/DD'}
+          type="date"
+          InputLabelProps={{
             shrink: true,
-                        }}
+          }}
         />
-        
+        <br />
+        <TextField
+          id="startfilter"
+          label="Duration Ende"
+          variant="standard"
+          format={'YYYY/MM/DD'}
+          type="date"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
 
 
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>+</Button>
+          <Button variant="contained" onClick={this.togglePopupActivities.bind(this)}>+</Button>
         </Grid>
-        
-        {this.state.showPopupAddActivities ? 
+
+        {this.state.showPopupAddActivities ?
           <AddActivities
-            projectId = {this.state.projectId}
+            projectId={this.state.projectId}
             text='Close Me'
             closePopupActivities={this.togglePopupActivities.bind(this)}
           />
           : null
         }
-        
+
 
         <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
+          <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
         </Grid>
-        
 
-        {this.state.showPopupAddMembers ? 
+
+        {this.state.showPopupAddMembers ?
           <AddMember
             text='Close Me'
             closePopupMembers={this.togglePopupMembers.bind(this)}
@@ -200,18 +211,18 @@ class CreateProject extends Component {
         }
 
         <Grid xs={12} item>
-                    <Button 
-                    variant="contained" 
-                    onClick={this.addProjects}>
-                      Create Project
-                      </Button>
-        </Grid>   
+          <Button
+            variant="contained"
+            onClick={this.addProjects}>
+            Create Project
+          </Button>
+        </Grid>
 
-        
-    </Box>
+
+      </Box>
 
     )
-    }
+  }
 }
 /** PropTypes */
 CreateProject.propTypes = {
@@ -229,5 +240,5 @@ CreateProject.propTypes = {
    */
   onClose: PropTypes.func.isRequired,
 }
- 
+
 export default CreateProject;
