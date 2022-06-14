@@ -150,7 +150,9 @@ project = api.inherit('Project', bo, {
 projectuser = api.inherit('ProjectUser', bo, {
     'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projektmitglieds'),
     'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
-    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts')
+    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
+'current_capacity': fields.Float(attribute='_current_capacity', description='Die Kapazität eines Projekts'),
+
 })
 
 '''Activity'''
@@ -912,6 +914,18 @@ class ProjectUserOperations(Resource):
         return projectuser
 
 
+@worktimeapp.route('/projectmembersbyprojectid/<int:id>')
+@worktimeapp.param('id', 'Die ID des Projekts')
+class ProjectWithIDOperations(Resource):
+    @worktimeapp.marshal_with(projectuser)
+    # @secured
+    def get(self,id):
+        adm = Businesslogic()
+        projectuser = adm.get_all_project_members(id)
+        return projectuser
+
+
+
 @worktimeapp.route('/projectuser/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -922,10 +936,7 @@ class ProjectWithIDOperations(Resource):
         projectuser = adm.get_projectuser_by_id(id)
         return projectuser
 
-    def get_project_members(self, project_id):
-        adm = Businesslogic()
-        projectuser = adm.get_all_project_members(project_id)
-        return projectuser
+
 
     @worktimeapp.marshal_with(projectuser)
     # @secured

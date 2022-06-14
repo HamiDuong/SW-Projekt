@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import OverTime from './OverTime';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import OverEntry from './OverEntry';
 
 class ProjectSelection extends Component {
     constructor(props) {
@@ -24,8 +25,11 @@ class ProjectSelection extends Component {
     handleChange(e) {
         this.setState({
             temperature: e.target.value,
-            selected: true
-        });
+            selected: true,
+            projectId: e.target.value,
+
+        },
+            console.log(this.state.projectId));
     }
 
 
@@ -44,10 +48,20 @@ class ProjectSelection extends Component {
     }
 
 
-    showing() {
+    showing1() {
         const temperature = this.state.temperature
         if (this.state.selected) {
             return <OverTime onChange={this.handleChange} value={this.state.temperature}
+                celsius={(temperature)} />
+        } else {
+            return <h1>You haven´t selected a project yet.</h1>
+        }
+    }
+
+    showing() {
+        const temperature = this.state.temperature
+        if (this.state.selected) {
+            return <OverEntry value={1} onChange={this.handleChange} value={temperature}
                 celsius={(temperature)} />
         } else {
             return <h1>You haven´t selected a project yet.</h1>
@@ -60,7 +74,8 @@ class ProjectSelection extends Component {
         const func = this.showing()
         return (
             <Box>
-                <h1>Admin</h1>
+
+                <h1>Admin-Sicht</h1>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
