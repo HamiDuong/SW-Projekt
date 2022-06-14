@@ -48,16 +48,6 @@ class ProjectSelection extends Component {
     }
 
 
-    showing1() {
-        const temperature = this.state.temperature
-        if (this.state.selected) {
-            return <OverTime onChange={this.handleChange} value={this.state.temperature}
-                celsius={(temperature)} />
-        } else {
-            return <h1>You haven´t selected a project yet.</h1>
-        }
-    }
-
     showing() {
         const temperature = this.state.temperature
         if (this.state.selected) {

@@ -24,12 +24,6 @@ export const SideBarData = [
         className: 'nav-text'
     },
     {
-        title: 'Example',
-        path: '/Example',
-        icon: <AccountCircleIcon />,
-        className: 'nav-text'
-    },
-    {
         title: 'IndividualEntry',
         path: '/IndividualEntry',
         icon: <AccountCircleIcon />,
@@ -39,18 +33,6 @@ export const SideBarData = [
         title: 'SelectionProjects',
         path: '/SelectionProjects',
         icon: <AccountCircleIcon />,
-        className: 'nav-text'
-    },
-    {
-        title: 'Individual',
-        path: '/Individual',
-        icon: <AccountCircleIcon />,
-        className: 'nav-text'
-    },
-    {
-        title: 'MyWorkTime',
-        path: '/myworktime',
-        icon: <WorkIcon />,
         className: 'nav-text'
     },
     {
