@@ -9,6 +9,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
+import UserBO from '../API/UserBO';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
 
 
@@ -23,6 +25,8 @@ class SelectEventDialog extends Component {
             firstName: "",
             lastName: ""
         }
+        this.baseState = this.state;
+
     }
 
     
@@ -31,12 +35,17 @@ class SelectEventDialog extends Component {
           }
           
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value }, function(){
-            console.log(this.state.event)
-        } )}
+        this.setState({ [e.target.name] : e.target.value })}
 
     updateUser = () => {
-        this.props.onClose(this.state.firstName, this.state.lastName)
+        let updatedUserBO = Object.assign(new UserBO(), this.props.currentUser)
+        updatedUserBO.setFirstName(this.state.firstName)
+        updatedUserBO.setLastName(this.state.lastName)
+        WorkTimeAppAPI.getAPI().updateUser(updatedUserBO)
+        console.log(updatedUserBO)
+        this.props.onClose(this.state.firstName, this.state.lastName, updatedUserBO)
+        this.setState(this.baseState);
+
     }
    
     render() { 

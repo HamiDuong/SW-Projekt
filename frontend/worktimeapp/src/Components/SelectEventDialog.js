@@ -16,10 +16,10 @@ import Select from '@mui/material/Select';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 
-{/* 
+/* 
 @author Mihriban Dogan (https://github.com/mihriban-dogan)
 SelectEventDialog stellt stellt den Dialog für die Auswahl von Start Events dar.
-*/}
+*/
 
 class SelectEventDialog extends Component {
     constructor(props) {

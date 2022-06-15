@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeleteProfile from './DeleteProfile';
 import EditProfile from './EditProfile.js'
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
 
 
@@ -33,7 +34,8 @@ class TimeIntervalBookings extends Component {
             lastName:"",
             mailAdress:"",
             showDeleteProfile: false,
-            showEditProfile: false
+            showEditProfile: false,
+            currentUser: null,
            
             
          }
@@ -43,15 +45,15 @@ class TimeIntervalBookings extends Component {
 
 
     componentDidMount() {
-        this.setUser();
+        this.getUser(this.props.user.uid);
    }
 
-   setUser = () =>{
-    this.setState({
-       mailAdress: this.props.user.email, 
-        })
+//    setUser = () =>{
+//     this.setState({
+//        mailAdress: this.props.user.email, 
+//         })
    
-   }
+//    }
 
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
@@ -78,11 +80,12 @@ class TimeIntervalBookings extends Component {
             showEditProfile: true
         })
       }
-    handleEditClose = (firstName, lastName) =>{
+    handleEditClose = (firstName, lastName, updatedUserBO) =>{
         if (firstName, lastName)
             this.setState({
             firstName: firstName,
             lastName: lastName,
+            currentUser: updatedUserBO,
             showEditProfile: false
             })
         else{
@@ -91,7 +94,18 @@ class TimeIntervalBookings extends Component {
             })
         }
         }
-      
+
+    getUser = (id) => {
+        WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>
+            this.setState({  
+                firstName: userBO[0].getFirstName(),
+                lastName: userBO[0].getLastName(),
+                mailAdress: this.props.user.email,
+                currentUser: userBO[0]
+            }, function(){
+                console.log(this.state.currentUser)
+            }))
+    }
       
 
     
@@ -133,7 +147,7 @@ class TimeIntervalBookings extends Component {
                 </Grid>
             </Card>
             <DeleteProfile show={this.state.showDeleteProfile} onClose={this.handleDeleteClose}/>
-            <EditProfile show={this.state.showEditProfile} onClose={this.handleEditClose}/>
+            <EditProfile show={this.state.showEditProfile} onClose={this.handleEditClose} currentUser = {this.state.currentUser} />
 
                 
             </div>

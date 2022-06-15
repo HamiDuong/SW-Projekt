@@ -245,8 +245,8 @@ export default class WorkTimeAppAPI {
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
     #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
-    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
-    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/customers-by-name/${userName}`
     #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id}`
 
@@ -1503,7 +1503,7 @@ export default class WorkTimeAppAPI {
         })
     }
     updateUser(user) {
-        return this.#fetchAdvanced(this.#updateUserURL(user), {
+        return this.#fetchAdvanced(this.#updateUserURL(user.getID()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
