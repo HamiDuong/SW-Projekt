@@ -91,7 +91,7 @@ from SecurityDecorator import secured
 """
 Instanzieren von Flask. Am Ende dieser Datei erfolgt dann erst der 'Start' von Flask.
 """
-app = Flask(__name__, static_folder='./static/reactclient/build', static_url_path='/')
+app = Flask(__name__)
 
 """
 Alle Ressourcen mit dem Präfix /worktimeapp für **Cross-Origin Resource Sharing** (CORS) freigeben.
