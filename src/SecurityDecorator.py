@@ -42,6 +42,7 @@ def secured(function):
 
                     google_user_id = claims.get("user_id")
                     email = claims.get("email")
+                    name = claims.get("name")
 
                     user = adm.get_user_by_google_user_id(google_user_id)
                     if user is not None:
@@ -57,7 +58,11 @@ def secured(function):
                         Wir legen daher ein neues User-Objekt an, um dieses ggf. später
                         nutzen zu können.
                         """
-                        user = adm.create_user(None, email, google_user_id)
+                        name_split = name.split()
+                        firstname = name_split[0]
+                        lastname = name_split[1]
+                        user = adm.create_user(
+                            firstname, lastname, email, google_user_id)
 
                     print(request.method, request.path,
                           "angefragt durch:", None, email)
@@ -72,6 +77,6 @@ def secured(function):
                 error_message = str(exc)
                 return exc, 401  # UNAUTHORIZED !!!
 
-        return print(id_token)  # UNAUTHORIZED !!!
+        return '', 401  # UNAUTHORIZED !!!
 
     return wrapper
