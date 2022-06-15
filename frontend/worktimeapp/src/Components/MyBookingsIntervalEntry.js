@@ -66,7 +66,6 @@ class MyBookingsIntervalEntry extends Component {
                     <TableCell>{this.state.booking.type}</TableCell>
                     <TableCell>{this.state.booking.start}</TableCell>
                     <TableCell>{this.state.booking.end}</TableCell>
-                    <TableCell>Remark</TableCell>
 
                 </TableRow>
                 <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}/>

@@ -7,13 +7,14 @@ import './NavBarCSS.css';
 import { Typography } from '@mui/material';
 import Search from '@mui/icons-material/Search';
 import SearchIcon from '@mui/icons-material/Search';
+import Logout from './Logout'
 
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
 //Die Funktion NavBar zeigt eine Navigationleiste da, diese zeigt die einzelnen Pages und
 //die den Namen unserer Applikation. 
-function NavBar () {
+function NavBar (props) {
     //setSidebar aktualisert den currentValue, useState wird false gesetzt, damit es noch nicht anzeigen tut 
     const [sidebar, setSidebar] = useState(false)
 
@@ -34,6 +35,8 @@ function NavBar () {
                     className='navbar-headline'>
                     WorkTimeApp 
                 </Typography>
+                <Logout user={props.user} />
+
                 
             </div>
             {/* Hier wird nachgefragt, ob der Sidebar aktiv ist oder nicht. 
