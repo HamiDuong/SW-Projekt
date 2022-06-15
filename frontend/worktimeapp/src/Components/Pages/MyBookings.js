@@ -59,7 +59,7 @@ const header = [
 const fakebackend = {
     "timeintervals": [
         {
-            "start":"2022-05-30 08:00:00",
+            "start": "2022-05-30 08:00:00",
             "end":"2022-05-30 18:00:00",
             "start_event": 1,
             "end_event": 2,
@@ -221,6 +221,20 @@ class MyBookings extends Component {
                 console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung")
             })
         });
+
+        if(this.state.bookingtype == "timeinterval"){
+            this.setState({
+                filteredeventbookings: null
+            },function(){
+                console.log("Nur Timeintervalbuchungen")
+            })
+        }else if(this.state.bookingtype == "event"){
+            this.setState({
+                filteredintervalbookings: null
+            }, function(){
+                console.log("Nur Eventbuchungen")
+            })
+        }
 
         // intervalbookings.forEach(function(elem){
         //     if(elem.start >= this.state.startfilter && elem.end <= this.state.endfilter){
@@ -409,9 +423,9 @@ class MyBookings extends Component {
                                     )} */}
                                 </TableBody>
                                 <TableBody>
-                                    {/* {
-                                        this.state.filteredeventbookings.map( row => <MyBookingsEventEntry key={row.getId()} booking={row}/>)
-                                    } */}
+                                    {
+                                        this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row}/>)
+                                    }
                                     {/* {this.state.filteredeventbookings.map(row =>
                                         <TableRow>
                                             <TableCell>Event</TableCell>

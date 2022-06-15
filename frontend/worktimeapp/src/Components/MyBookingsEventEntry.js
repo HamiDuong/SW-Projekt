@@ -5,32 +5,69 @@ import Table from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import EditBookingEvent from './Dialog/EditBookingEvent';
 
 class MyBookingsEventEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
             booking: props.booking,
+            showDialog: false,
 
             loadingInProgress: false,
             error: null,
         }
     }
 
-    //Erstellung eines Eintrags in der Tabelle
+    showEdit = () => {
+        this.setState({
+            showDialog: true
+        }, function(){
+            console.log("EditWindow öffnen per OnClick")
+        })
+    }
+
+    closeDialog = (booking) => {
+        if(booking){
+            this.updateBooking(booking)
+            this.setState({
+                showDialog: false
+            }, function(){
+                console.log("Editwindow wird geschlossen")
+            })
+        }else{
+            this.setState({
+                showDialog: false
+            },function(){
+                console.log("Editwindow wird geschlossen ohne Update")
+            })
+
+        }
+    }
+
+    componentDidMount(){
+        console.log(this.state.booking)
+    }
+
+    handleChange = ev => {
+        this.setState({ [ev.target.name] : ev.target.value });
+    };
 
     render() { 
         return (
-            <TableRow
-                hover
-                onClick = {() => console.log("Click")}
-            >
-                <TableCell>Interval</TableCell>
-                <TableCell>{this.state.booking.type}</TableCell>
-                <TableCell>{this.state.booking.time}</TableCell>
-                <TableCell>-</TableCell>
+            <>
+                <TableRow
+                    hover
+                    onClick = {this.showEdit}
+                >
+                    <TableCell>Event</TableCell>
+                    <TableCell>{this.state.booking.type}</TableCell>
+                    <TableCell>{this.state.booking.time}</TableCell>
+                    <TableCell>-</TableCell>
 
-            </TableRow>
+                </TableRow>
+                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}></EditBookingEvent>
+            </>
         );
     }
 }
