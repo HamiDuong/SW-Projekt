@@ -83,6 +83,8 @@ class EditBooking extends Component {
                 });
         }
 
+        this.handleClose()
+
     }
 
     saveChanges = () => {
@@ -97,8 +99,8 @@ class EditBooking extends Component {
     }
 
     updateBooking = () => {
-        let starthold = document.getElementById("startdate");
-        let endhold = document.getElementById("enddate");
+        let starthold = document.getElementById("start");
+        let endhold = document.getElementById("end");
         this.setState({
             startdate: starthold.value,
             enddate: endhold.value,
@@ -185,23 +187,35 @@ class EditBooking extends Component {
                         <h2>Edit the Interval-Booking</h2>
                     </DialogTitle>
                         <TextField
-                            id = "startdate"
-                            label="Start Date"
-                            variant = "standard"
-                            defaultValue={this.state.booking.start}
+                            id = "type"
+                            label = "Type"
+                            variant = 'standard'
+                            defaultValue={this.state.booking.type}       
                             InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                        <TextField
-                            id = "enddate"
-                            label="End Date"
-                            variant = "standard"
-                            defaultValue={this.state.booking.end}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                                readOnly: true
+                            }}                                             
+                        >
+                        </TextField>
+                        <div>
+                            <TextField
+                                id = "startdate"
+                                label="Start Date"
+                                variant = "standard"
+                                defaultValue={this.state.booking.start}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                id = "enddate"
+                                label="End Date"
+                                variant = "standard"
+                                defaultValue={this.state.booking.end}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </div>
                 </DialogContent>
                 <DialogActions>
                     <Button
