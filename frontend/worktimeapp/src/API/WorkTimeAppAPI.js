@@ -29,7 +29,7 @@ import UserBO from './UserBO'
 export default class WorkTimeAppAPI {
     static #api = null
 
-    #worktimeappServerBaseURL = 'http://127.0.0.1:5000/worktimeapp';
+    #worktimeappServerBaseURL = '/worktimeapp';
 
     //Hier alle URL Zuweisungen
     // # = () => `${this.#worktimeappServerBaseURL}/`;

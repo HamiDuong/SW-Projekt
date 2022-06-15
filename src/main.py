@@ -91,7 +91,7 @@ from SecurityDecorator import secured
 """
 Instanzieren von Flask. Am Ende dieser Datei erfolgt dann erst der 'Start' von Flask.
 """
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./static/reactclient/build', static_url_path='/')
 
 """
 Alle Ressourcen mit dem Präfix /worktimeapp für **Cross-Origin Resource Sharing** (CORS) freigeben.
@@ -102,7 +102,7 @@ CORS(app, resources={r"/worktimeapp/*": {"origins": "*"}})
 Allerdings würde dies dann eine Missbrauch Tür und Tor öffnen, so dass es ratsamer wäre, nicht alle
 "origins" zuzulassen, sondern diese explizit zu nennen. Weitere Infos siehe Doku zum Package flask-cors.
 """
-CORS(app, resources=r'*')
+CORS(app, resources=r'/worktimeapp/*')
 
 """
 In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt,
