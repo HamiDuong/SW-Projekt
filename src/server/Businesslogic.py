@@ -1940,6 +1940,30 @@ class Businesslogic():
                             event = mapper.find_by_key(res.get_start_event())
                             res_ti_e.append(event)
                             res_ti.append(res)
+                if type == 'flexday':
+                    res = self.get_flex_day_by_id(timeintervals.get_flex_day_id())
+                    if (res.get_start_event() and res.get_end_event) == None:
+                        res_ti.append(res)
+                    elif not ((res.get_start_event() and res.get_end_event()) == None):
+                        with FlexDayStartMapper() as mapper:
+                            start_event = mapper.find_by_key(
+                                res.get_start_event())
+                        with FlexDayEndMapper() as mapper:
+                            end_event = mapper.find_by_key(
+                                res.get_start_event())
+                        res_ti_e.append(start_event)
+                        res_ti_e.append(end_event)
+                        res_ti.append(res)
+                    elif not (res.get_start_event() is None):
+                        with FlexDayStartMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                    elif not (res.get_end_event() is None):
+                        with FlexDayEndMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
         res_final = [res_ti, res_ti_e]
         res_final_dict = dict(zip(booking_types, res_final))
         print(res_final_dict)
