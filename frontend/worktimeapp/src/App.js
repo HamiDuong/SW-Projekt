@@ -30,6 +30,7 @@ class App extends React.Component {
 			appError: null,
 			authError: null,
 			userId: null,
+			workTimeAccountId: null,
 		};
 
 	}
@@ -83,12 +84,15 @@ class App extends React.Component {
 	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
 			this.setState({
 				userId: userBO[0].getID()
-			}, function(){
-				console.log(this.state.userId)
-			})
+			}, this.getWorkTimeAccountId(userBO[0].getID()))
+			})}
 
-			})
-	}
+  getWorkTimeAccountId = (id) =>{
+	WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(id).then(accountBO =>{
+		this.setState({
+			workTimeAccountId: accountBO[0].getID()
+		})
+		})}
 
   componentDidMount() {
     onAuthStateChanged(auth, this.handleAuthStateChange)
@@ -106,14 +110,14 @@ class App extends React.Component {
          */}
         <NavBar user = {this.state.currentUser}/>
         <Routes>
-          <Route path='/myprofile' exact element={<MyProfile user={this.state.currentUser}/>}/>
-          <Route path='/mybookings' exact element={<MyBookings/>}/>
-          <Route path='/myprojects' exact element={<MyProjects/>}/>
-          <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings/>}/>
-          <Route path='/eventbookings' exact element={<EventBookings/>}/>
-          <Route path='/createproject' exact element={<CreateProject/>}/>
-          <Route path='/myworktime' exact element={<MyWorkTime/>}/>
-          <Route path='/myprojectstest' exact element={<MyProjectsTest/>}/>
+          <Route path='/myprofile' exact element={<MyProfile user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}/>}/>
+          <Route path='/mybookings' exact element={<MyBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/createproject' exact element={<CreateProject userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/myworktime' exact element={<MyWorkTime userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/myprojectstest' exact element={<MyProjectsTest userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
         </Routes>
       </Router>
       :

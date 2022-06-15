@@ -756,13 +756,13 @@ class WorktimeaccountWithIdOperations(Resource):
 class WorktimeaccountWithUserIdOperations(Resource):
     @worktimeapp.marshal_with(worktimeaccount)
     @secured
-    def get(self, id):
+    def get(self, user_id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
         Die auszulesenden Objekte werden durch ```user_id``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        worktimeaccount = adm.get_worktimeaccount_by_user_id(id)
+        worktimeaccount = adm.get_worktimeaccount_by_user_id(user_id)
         return worktimeaccount
 
 

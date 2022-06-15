@@ -23,7 +23,8 @@ import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO";
-import UserBO from './UserBO'
+import UserBO from './UserBO';
+import WorkTimeAccountBO from './WorkTimeAccountBO'
 
 
 export default class WorkTimeAppAPI {
@@ -249,6 +250,10 @@ export default class WorkTimeAppAPI {
     #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/customers-by-name/${userName}`
     #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id}`
+
+    //Account
+    #getWorkTimeAccountByUserIdURL = (id) => `${this.#worktimeappServerBaseURL}/worktimeaccountuser/${id}`;
+
 
     static getAPI() {
         if (this.#api == null) {
@@ -1525,6 +1530,18 @@ export default class WorkTimeAppAPI {
                 resolve(userBOs);
             })
         })
+    }
+
+    getWorkTimeAccountByUserId(id) {
+        return this.#fetchAdvanced(this.#getWorkTimeAccountByUserIdURL(id))
+            .then((responseJSON) => {
+                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
+                console.info(workTimeAccountBO);
+                return new Promise(function (resolve) {
+                    resolve(workTimeAccountBO);
+                })
+            })
+
     }
 
 }

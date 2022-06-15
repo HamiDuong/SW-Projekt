@@ -67,7 +67,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         if ((this.state.type) === "vacation"){
             let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(this.state.type)
             console.log(newVacationBO)
@@ -75,7 +75,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         else if ((this.state.type) === "work"){
             let newWorkBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newWorkBO)
             console.log(newBookingBO)
@@ -83,7 +83,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         else if ((this.state.type) === "illness"){
             let newIllnessBO = new IllnessBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newIllnessBO)
             console.log(newBookingBO)
@@ -91,7 +91,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         else if ((this.state.type) === "projectwork"){
             let newProjectWorkBO = new ProjectWorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
             WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newProjectWorkBO)
             console.log(newBookingBO)
@@ -99,7 +99,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         else if ((this.state.type) === "break"){
             let newBreakBO = new BreakBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newBreakBO)
             console.log(newBookingBO)
@@ -107,7 +107,7 @@ Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die e
         else if ((this.state.type) === "flexday"){
             let newFlexDayBO = new FlexDayBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newFlexDayBO)
             console.log(newBookingBO)
