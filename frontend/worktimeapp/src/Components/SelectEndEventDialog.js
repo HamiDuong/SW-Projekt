@@ -16,6 +16,11 @@ import Select from '@mui/material/Select';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 
+{/* 
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+SelectEventDialog stellt stellt den Dialog für die Auswahl von End Events dar.
+*/}
+
 
 class SelectEndEventDialog extends Component {
     constructor(props) {
@@ -29,13 +34,18 @@ class SelectEndEventDialog extends Component {
 
         }
     }
-
+/* 
+Speichert den Input des start feldes im state
+*/
     handleStartDateChange(newValue){
         this.setState({
             timeframestart: new Date(newValue)
         })
         console.log(this.state.start)
     }
+/* 
+Speichert den Input des end feldes im state
+*/
     handleEndDateChange(newValue){
         this.setState({
             timeframeend: new Date(newValue)

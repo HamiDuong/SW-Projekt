@@ -82,6 +82,7 @@ from server.bo.BookingBO import BookingBO
 from server.bo.EventBookingBO import EventBookingBO
 from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
 import time
+from SecurityDecorator import secured
 
 
 # Außerdem nutzen wir einen selbstgeschriebenen Decorator, der die Authentifikation übernimmt
@@ -101,7 +102,7 @@ CORS(app, resources={r"/worktimeapp/*": {"origins": "*"}})
 Allerdings würde dies dann eine Missbrauch Tür und Tor öffnen, so dass es ratsamer wäre, nicht alle
 "origins" zuzulassen, sondern diese explizit zu nennen. Weitere Infos siehe Doku zum Package flask-cors.
 """
-CORS(app, resources=r'/worktimeapp/*')
+CORS(app, resources=r'*')
 
 """
 In dem folgenden Abschnitt bauen wir ein Modell auf, das die Datenstruktur beschreibt,
@@ -503,13 +504,13 @@ class UserWithEmailOperations(Resource):
 class UserWithGoogleOperations(Resource):
     @worktimeapp.marshal_with(user)
     # #@secured
-    def get(self, googleId):
+    def get(self, google_user_id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
         Die auszulesenden Objekte werden durch ```user_name``` in dem URI bestimmt.
         """
         adm = Businesslogic()
-        user = adm.get_user_by_google_user_id(googleId)
+        user = adm.get_user_by_google_user_id(google_user_id)
         return user
 
 # @worktimeapp.route('/projects')
@@ -3232,7 +3233,7 @@ Work
 class WorkOperations(Resource):
     @worktimeapp.marshal_with(work)
     @worktimeapp.expect(work)
-    # @secured
+    @secured
     def post(self):
         adm = Businesslogic()
         proposal = WorkBO.from_dict(api.payload)

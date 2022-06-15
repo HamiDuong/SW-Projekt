@@ -17,7 +17,7 @@ import {GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } from "fireb
 import {auth} from './firebaseConfig.js';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-
+import WorkTimeAppAPI from './API/WorkTimeAppAPI';
 
 
 class App extends React.Component {
@@ -29,7 +29,7 @@ class App extends React.Component {
 			currentUser: null,
 			appError: null,
 			authError: null,
-			googleId: null,
+			userId: null,
 		};
 
 	}
@@ -61,11 +61,7 @@ class App extends React.Component {
 				this.setState({
 					currentUser: user,
 					authError: null,
-				}, function(){
-          console.log(this.state.currentUser)
-        }
-        
-        // this.getUserId(uid)
+				}, this.getUserId(user.uid)
 				);
 			}).catch(e => {
 				this.setState({
@@ -81,6 +77,17 @@ class App extends React.Component {
 				currentUser: null,
 			});
 		}
+	}
+
+  getUserId = (id) =>{
+	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
+			this.setState({
+				userId: userBO[0].getID()
+			}, function(){
+				console.log(this.state.userId)
+			})
+
+			})
 	}
 
   componentDidMount() {
