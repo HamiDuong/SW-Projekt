@@ -240,4 +240,4 @@ class EditBooking extends Component {
     }
 }
  
-// export default EditBooking;
+export default EditBooking;

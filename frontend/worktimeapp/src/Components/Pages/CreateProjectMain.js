@@ -11,7 +11,8 @@ import CreateProject from '../CreateProjectEntry';
 class CreateProjectMain extends Component {
     constructor(props) {
         super(props);
-        this.toggleActivities = this.toggleActivities.bind(this);
+        this.togglePopups = this.togglePopups.bind(this);
+        // this.toggleMembers = this.toggleMembers.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
 
@@ -30,14 +31,19 @@ class CreateProjectMain extends Component {
 
     }
 
-    toggleActivities() {
+    togglePopups() {
         this.setState({
             selected: true,
         });
     }
 
+    
+
+
+
     addProjects = () => {
         let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
+        console.log(newProject)
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
             this.setState({
                 projectName: project.name,
@@ -48,7 +54,6 @@ class CreateProjectMain extends Component {
                 console.log('add project läuft')
             })
         )
-
     }
 
 

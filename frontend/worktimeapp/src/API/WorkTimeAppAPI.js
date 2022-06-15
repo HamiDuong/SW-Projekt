@@ -248,6 +248,16 @@ export default class WorkTimeAppAPI {
     #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
     #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
     #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/customers-by-name/${userName}`;
+    
+    //ProjectUser
+    // Author Esra Özkul
+    #addProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectuser`;
+    #getAllProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
+    #getProjectUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+    #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+    updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+
+
 
     static getAPI() {
         if (this.#api == null) {

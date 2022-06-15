@@ -16,8 +16,8 @@ class CreateProject extends Component {
     super(props);
 
     this.state = {
-      showPopupAddActivities: false,
-      showPopupAddMembers: false,
+      showPopupActivity: false,
+      showPopupMember:false,
       //Network states
       loadingInProgress: false,
       createprojectError: null,
@@ -37,12 +37,6 @@ class CreateProject extends Component {
   }
   handleChange() {
     this.props.onChange()
-  }
-
-  togglePopupMembers() {
-    this.setState({
-      showPopupAddMembers: !this.state.showPopupAddMembers,
-    });
   }
 
 
@@ -71,18 +65,33 @@ class CreateProject extends Component {
       return (
         <div>
           <Grid xs={12} item>
-            <Button variant="contained" onClick={() => this.setState({ showPopupAddActivities: true })}>Add Activity</Button>
+            <Button variant="contained" onClick={() => this.setState({ showPopupActivity: true })}>Add Activity</Button>
           </Grid>
 
           {
-            this.state.showPopupAddActivities ?
+            this.state.showPopupActivity?
               <AddActivities
                 projectId={this.props.value}
                 text='Close Me'
-                closePopupActivities={() => this.setState({ showPopupAddActivities: false })}
+                closePopupActivities={() => this.setState({ showPopupActivity: false })}
               />
-              : null
-          }
+              : null}
+              
+            <Grid xs={12} item>
+            <Button variant="contained" onClick={() => this.setState({ showPopupMember: true })}>Add Members</Button>
+            </Grid>
+            {
+            this.state.showPopupMember?
+              <AddMember
+                projectId={this.props.value}
+                text='Close Me'
+                closePopupMembers={() => this.setState({ showPopupMember: false })}
+              />
+              : null}
+
+          
+
+
         </div >
       )
     } else {
@@ -103,7 +112,7 @@ class CreateProject extends Component {
         autoComplete="off"
       >
 
-        <Grid xs={12} item>
+        {/* <Grid xs={12} item>
           <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
         </Grid>
 
@@ -114,7 +123,7 @@ class CreateProject extends Component {
             closePopupMembers={this.togglePopupMembers.bind(this)}
           />
           : null
-        }
+        } */}
 
         {showing}
 
