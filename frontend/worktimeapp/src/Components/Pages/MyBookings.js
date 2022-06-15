@@ -17,7 +17,8 @@ import {
     Table,
     TableHead,
     TableRow,
-    TableBody
+    TableBody,
+    paperClasses
 } from '@mui/material';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import EditBooking from '../Dialog/EditBooking';
@@ -25,13 +26,6 @@ import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
 
 const header = [
-    // {
-    //     id: '',
-    //     name: '',
-    //     numeric: false,
-    //     disablePadding: false,
-    //     label: ''
-    // },
     {
         id: 'bookingtype',
         name: 'Booking Type',
@@ -59,13 +53,6 @@ const header = [
         numeric: true,
         disablePadding: false,
         label: 'End Date'
-    },
-    {
-        id: 'remarks',
-        name: 'Remarks',
-        numeric: false,
-        disablePadding: false,
-        label: 'Remarks'
     }
 ]
 
@@ -127,12 +114,10 @@ const fakebackend = {
     ]
 }
 
-/***
- * Steps:
- * alle Eventbuchungen des Users holen -> eventbookingsmit mit EventSubklassenBO
- * alle Intervalbuchungen des Users holen -> intervalbookings mit IntervalSubklassenBO
+/**
+ * Auflistung aller Buchungen des aktiven Users
  * 
- * umwandeln in Date: new Date(this.state.startfilter)
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
  */
 
 class MyBookings extends Component {
@@ -169,28 +154,15 @@ class MyBookings extends Component {
     }
 
     getBookings = () => {
+        // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
         this.setState({
             intervalbookings: fakebackend.timeintervals,
             eventbookings: fakebackend.events,
             filteredintervalbookings: fakebackend.timeintervals,
             filteredeventbookings: fakebackend.events            
         },function(){
-            console.log("ComponentDidMount")
+            console.log("getBookings")
         })
-        console.log("getBookings")
-
-    }
-
-    setFilter = () => {
-        let starthold = document.getElementById("startfilter");
-        let endhold = document.getElementById("endfilter");
-        this.setState({
-            startfilter: starthold.value,
-            endfilter: endhold.value,
-            showResetButton: false
-        }, function(){
-            console.log(this.state.startfilter);
-        });
     }
 
     resetFilter = () => {
@@ -216,27 +188,46 @@ class MyBookings extends Component {
     }
 
     filterBookings = () => {
-        //Sort for Bookingtype
-        if (this.state.bookingtype == "all"){
-            this.setState({
-                renderedbookings: this.state.filteredintervalbookings.concat[this.state.filteredeventbookings]
-            }, function(){
-                console.log("Bookingtype: All")
-            })
-        }else if(this.state.bookingtype == "timeinterval"){
-            this.setState({
-                renderedbookings:this.state.filteredintervalbookings
-            }, function(){
-                console.log("Bookingtype: Timeinterval")
-            })
-        }else{
-            this.setState({
-                renderedbookings:this.state.filteredeventbookings
-            }, function(){
-                console.log("Bookingtype: Event")
-            })
 
-        }
+        let starthold = document.getElementById("startfilter");
+        let endhold = document.getElementById("endfilter");
+        this.setState({
+            startfilter: starthold.value,
+            endfilter: endhold.value,
+            showResetButton: false
+        }, function(){
+            console.log(this.state.startfilter);
+        });
+
+        let intervalbookings = this.state.intervalbookings;
+        let eventbookings = this.state.eventbookings;
+        let ires = [];
+        let eres = [];
+
+        //Intervalbookings nach Type filtern
+        intervalbookings.forEach(function(elem){
+            if(this.state.typefilter == elem.type){
+                ires.push(elem)
+            }else if(this.state.typefilter == elem.type){
+                ires.push(elem)
+            }else{
+                console.log('Element gehört nicht in das Filter')
+            }
+
+        }, function(){
+            this.setState({
+                intervalbookings: ires
+            }, function(){
+                console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung")
+            })
+        });
+
+        // intervalbookings.forEach(function(elem){
+        //     if(elem.start >= this.state.startfilter && elem.end <= this.state.endfilter){
+        //         console.log(elem)
+        //     }
+        // })
+        // console.log(ires);
     }
 
     renderIntervalBookings = () => {
@@ -365,7 +356,7 @@ class MyBookings extends Component {
                         </Select>
                     </FormControl>
                     <Button
-                        onClick={this.setFilter}
+                        onClick={this.filterBookings}
                     >
                         Filter Results
                     </Button>

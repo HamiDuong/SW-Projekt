@@ -9,22 +9,25 @@ import {
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-import BreakBO from '../../API/BreakBO';
-import FlexDayBO from '../../API/FlexDayBO';
-import IllnessBO from '../../API/IllnessBO';
-import ProjectDurationBO from '../../API/ProjectDurationBO';
-import ProjectWorkBO from '../../API/ProjectWorkBO';
-import VacationBO from '../../API/VacationBO';
-import WorkBO from '../../API/WorkBO';
+import BreakEndBO from '../API/EventBOs/BreakEndBO';
+import BreakStartBO from '../../API/EventBOs/BreakStartBO';
+import ComingBO from '../../API/EventBOs/ComingBO';
+import GoingBO from '../../API/EventBOs/GoingBO';
+import FlexDayEndBO from '../../API/EventBOs/FlexDayEndBO';
+import FlexDayStartBO from '../../API/EventBOs/FlexDayStartBO';
+import IllnessEndBO from '../../API/EventBOs/IllnessEndBO';
+import IllnessStartBO from '../../API/EventBOs/IllnessStartBO';
+import ProjectWorkEndBO from '../../API/EventBOs/ProjectWorkEndBO';
+import ProjectWorkStartBO from '../../API/EventBOs/ProjectWorkStartBO';
+import VacationEndBO from '../../API/EventBOs/VacationEndBO';
+import VacationStartBO from '../../API/EventBOs/VacationStartBO';
 
-class EditBooking extends Component {
+class EditBookingEvent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             booking: props.booking,
-
-            startdate: props.booking.start,
-            enddate:props.booking.end,
+            date: props.booking.time,
             type: props.booking.type
         };
         this.baseState = this.state;
@@ -36,76 +39,76 @@ class EditBooking extends Component {
     
     deleteBooking = (obj) => {
         console.log("Booking löschen")
-
-        const { booking } = this.props;
-
+        // WorkTimeAppAPI.getAPI().deleteBooking(obj)
         switch(this.state.type){
-            case "Break":
-                WorkTimeAppAPI.getAPI().deleteBreak(booking.getId()).then(booking =>{
-                    console.log("Delete Break");
-                    console.log(booking);
+            case "BreakStart":
+                WorkTimeAppAPI.getAPI().deleteBreakStart(this.state.booking).then(booking =>{
+                    console.log("Delete BreakStart")
                 });
             
-            case "Flex Day":
-                WorkTimeAppAPI.getAPI().deleteFlexDay(booking.getId()).then(booking =>{
-                    console.log("Delete Flex Day");
-                    console.log(booking);
+            case "BreakEnd":
+                WorkTimeAppAPI.getAPI().deleteBreakEnd(this.state.booking).then(booking =>{
+                    console.log("Delete BreakEnd")
                 });
 
-            case "Illness":
-                WorkTimeAppAPI.getAPI().deleteIllness(booking.getId()).then(booking =>{
-                    console.log("Delete Illness");
-                    console.log(booking);
+            case "Coming":
+                WorkTimeAppAPI.getAPI().deleteComing(this.state.booking).then(booking =>{
+                    console.log("Delete Coming")
                 });
 
-            case "Project Duration":
-                WorkTimeAppAPI.getAPI().deleteProjectDuration(booking.getId()).then(booking =>{
-                    console.log("Delete Project Duration");
-                    console.log(booking);
+            case "Going":
+                WorkTimeAppAPI.getAPI().deleteGoing(this.state.booking).then(booking =>{
+                    console.log("Delete Going")
                 });
 
-            case "Projekt Work":
-                WorkTimeAppAPI.getAPI().deleteProjectWork(booking.getId()).then(booking =>{
-                    console.log("Delete Project Work");
-                    console.log(booking);
+            case "FlexDayEnd":
+                WorkTimeAppAPI.getAPI().deleteFlexDayEnd(this.state.booking).then(booking =>{
+                    console.log("Delete FlexDayEnd")
                 });
 
-            case "Vacation":
-                WorkTimeAppAPI.getAPI().deleteVacation(booking.getId()).then(booking =>{
-                    console.log("Delete Vacation");
-                    console.log(booking);
+            case "FlexDayBegin":
+                WorkTimeAppAPI.getAPI().deleteFlexDayBegin(this.state.booking).then(booking =>{
+                    console.log("Delete FlexDayBegin")
                 });
 
-            case "Work":
-                WorkTimeAppAPI.getAPI().deleteWork(booking.getId()).then(booking =>{
-                    console.log("Delete Work");
-                    console.log(booking);
+            case "IllnessStart":
+                WorkTimeAppAPI.getAPI().deleteIllnessStart(this.state.booking).then(booking =>{
+                    console.log("Delete IllnessStart")
                 });
+            case "IllnessEnd":
+                WorkTimeAppAPI.getAPI().deleteIllnessEnd(this.state.booking).then(booking =>{
+                    console.log("Update Work")
+                });
+            case "ProjectWorkStart":
+                WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking =>{
+                    console.log("Update Work")
+                });
+            case "ProjectWorkEnd":
+                WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking =>{
+                    console.log("Update Work")
+                });
+                case "VacationStart":
+                    WorkTimeAppAPI.getAPI().deleteVacationStart(this.state.booking).then(booking =>{
+                        console.log("Update Work")
+                    });
+                case "VacationEnd":
+                    WorkTimeAppAPI.getAPI().deleteVacationEnd(this.state.booking).then(booking =>{
+                        console.log("Update Work")
+                    });                    
         }
 
     }
 
-    // saveChanges = () => {
-    //     let starthold = document.getElementById("startdate");
-    //     let endhold = document.getElementById("enddate");
-    //     this.setState({
-    //         startdate: starthold.value,
-    //         enddate: endhold.value,
-    //     }, function(){
-    //         console.log("State für neue Werte");
-    //     });
-    // }
-
-    updateBooking = () => {
-        let starthold = document.getElementById("startdate");
-        let endhold = document.getElementById("enddate");
+    saveChanges = () => {
+        let datehold = document.getElementById("date");
         this.setState({
-            startdate: starthold.value,
-            enddate: endhold.value,
+            datehold: datehold.value
         }, function(){
             console.log("State für neue Werte");
         });
+    }
 
+    updateBooking = () => {
         let updatedbooking = null;
         switch(this.state.type){
             case "Break":
@@ -113,8 +116,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateBreak(updatedbooking).then(booking =>{
-                    console.log("Update Break");
-                    console.log(booking);
+                    console.log("Update Break")
                 });
             
             case "Flex Day":
@@ -122,8 +124,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateFlexDay(updatedbooking).then(booking =>{
-                    console.log("Update Flex Day");
-                    console.log(booking);
+                    console.log("Update Flex Day")
                 });
 
             case "Illness":
@@ -131,8 +132,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateIllness(updatedbooking).then(booking =>{
-                    console.log("Update Illness");
-                    console.log(booking);
+                    console.log("Update Illness")
                 });
 
             case "Project Duration":
@@ -140,8 +140,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateProjectDuration(updatedbooking).then(booking =>{
-                    console.log("Update Project Duration");
-                    console.log(booking);
+                    console.log("Update Project Duration")
                 });
 
             case "Projekt Work":
@@ -149,8 +148,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateProjectWork(updatedbooking).then(booking =>{
-                    console.log("Update Project Work");
-                    console.log(booking);
+                    console.log("Update Project Work")
                 });
 
             case "Vacation":
@@ -158,8 +156,7 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateVacation(updatedbooking).then(booking =>{
-                    console.log("Update Vacation");
-                    console.log(booking);
+                    console.log("Update Vacation")
                 });
 
             case "Work":
@@ -167,14 +164,19 @@ class EditBooking extends Component {
                 updatedbooking.setStart(this.state.startdate);
                 updatedbooking.setStart(this.state.enddate);
                 WorkTimeAppAPI.getAPI().updateWork(updatedbooking).then(booking =>{
-                    console.log("Update Work");
-                    console.log(booking);
+                    console.log("Update Work")
                 });
 
         }
-        this.handleClose();
-    }
+        //let booking = WorkTimeAppAPI.getAPI().    getBookingByTypeAndId(id, type)
+        //gibt das passende Element zurück
+        
+        //irgendwo müssen neue Werte abgespeichert werden
+        //set Attribute auf bestehendes Objekt
 
+        //updateFunktion
+
+    }
     render() { 
         const { classes, show } = this.props
         return (
@@ -182,12 +184,14 @@ class EditBooking extends Component {
             <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
                 <DialogContent>
                     <DialogTitle>
-                        <h2>Edit the Interval-Booking</h2>
+                        <h2>Edit the booking</h2>
                     </DialogTitle>
                         <TextField
                             id = "startdate"
                             label="Start Date"
                             variant = "standard"
+                            format={'YYYY/MM/DD'}
+                            type = "date"
                             defaultValue={this.state.booking.start}
                             InputLabelProps={{
                                 shrink: true,
@@ -197,6 +201,8 @@ class EditBooking extends Component {
                             id = "enddate"
                             label="End Date"
                             variant = "standard"
+                            format={'YYYY/MM/DD'}
+                            type = "date"
                             defaultValue={this.state.booking.end}
                             InputLabelProps={{
                                 shrink: true,
@@ -215,7 +221,7 @@ class EditBooking extends Component {
                         Delete
                     </Button>
                     <Button
-                        onClick={this.updateBooking}
+                        onClick={this.saveChanges}
                     >
                         Edit
                     </Button>
@@ -226,4 +232,4 @@ class EditBooking extends Component {
     }
 }
  
-export default EditBooking;
+export default EditBookingEvent;

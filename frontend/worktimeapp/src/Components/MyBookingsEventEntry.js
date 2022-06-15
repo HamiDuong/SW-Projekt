@@ -29,7 +29,6 @@ class MyBookingsEventEntry extends Component {
                 <TableCell>{this.state.booking.type}</TableCell>
                 <TableCell>{this.state.booking.time}</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>Remark</TableCell>
 
             </TableRow>
         );
