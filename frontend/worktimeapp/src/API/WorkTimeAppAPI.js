@@ -1400,22 +1400,6 @@ export default class WorkTimeAppAPI {
     }
 
 
-    addProject(project) {
-        return this.#fetchAdvanced(this.#addProjectURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(project)
-        }).then((responseJSON) => {
-            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseProject)
-            })
-        })
-    }
-
     deleteProject(project) {
         return this.#fetchAdvanced(this.#deleteProjectURL(project), {
             method: 'DELETE'
