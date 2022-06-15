@@ -1434,8 +1434,330 @@ export default class WorkTimeAppAPI {
             })
         })
     }
-    
+
+    //delete und update von EventSubklassen- Author: ViNam Le
+    deleteBreakStart(breakstart) {
+        return this.#fetchAdvanced(this.#deleteBreakStartURL(breakstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseBreakStart = BreakStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakStart)
+            })
+        })
+    }
+
+    updateBreakStart(breakstart) {
+        return this.#fetchAdvanced(this.#updateBreakStartURL(breakstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(breakstart)
+        }).then((responseJSON) => {
+            let responseBreakStart = BreakStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakStart)
+            })
+        })  
+    }
+
+    deleteBreakEnd(breakend) {
+        return this.#fetchAdvanced(this.#deleteBreakEndURL(breakend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseBreakEnd = BreakEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakEnd)
+            })
+        })
+    }
+
+    updateBreakEnd(breakend) {
+        return this.#fetchAdvanced(this.#updateBreakEndURL(breakend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(breakend)
+        }).then((responseJSON) => {
+            let responseBreakEnd = BreakEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakEnd)
+            })
+        })
+    }
+
+    deleteIllnessStart(illnessstart) {
+        return this.#fetchAdvanced(this.#deleteIllnessStartURL(illnessstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseIllnessStart = IllnessStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessStart)
+            })
+        })
+    }
+
+    updateIllnessStart(illnessstart) {
+        return this.#fetchAdvanced(this.#updateIllnessStartURL(illnessstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessstart)
+        }).then((responseJSON) => {
+            let responseIllnessStart = IllnessStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessStart)
+            })
+        })
+    }
+
+    deleteIllnessEnd(illnessend) {
+        return this.#fetchAdvanced(this.#deleteIllnessEndURL(illnessend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseIllnessEnd = IllnessEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessEnd)
+            })
+        })
+    }
+
+    updateIllnessEnd(illnessend) {
+        return this.#fetchAdvanced(this.#updateIllnessEndURL(illnessend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessend)
+        }).then((responseJSON) => {
+            let responseIllnessEnd = IllnessEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessEnd)
+            })
+        })
+    }
+
+    deleteProjectWorkStart(projectworkstart) {
+        return this.#fetchAdvanced(this.#deleteProjectWorkStartURL(projectworkstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProjectWorkStart = ProjectWorkStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkStart)
+            })
+        })
+    }
+
+    updateProjectWorkStart(projectworkstart) {
+        return this.#fetchAdvanced(this.#updateProjectWorkStartURL(projectworkstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectworkstart)
+        }).then((responseJSON) => {
+            let responseProjectWorkStart = ProjectWorkStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkStart)
+            })
+        })
+    }
+
+    deleteProjectWorkEnd(projectworkend) {
+        return this.#fetchAdvanced(this.#deleteProjectWorkEndURL(projectworkend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProjectWorkEnd = ProjectWorkEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkEnd)
+            })
+        })
+    }
+
+    updateProjectWorkEnd(projectworkend) {
+        return this.#fetchAdvanced(this.#updateProjectWorkEndURL(projectworkend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectworkend)
+        }).then((responseJSON) => {
+            let responseProjectWorkEnd = ProjectWorkEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkEnd)
+            })
+        })
+    }
+
+    deleteVacationStart(vacationstart) {
+        return this.#fetchAdvanced(this.#deleteVacationStartURL(vacationstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseVacationStart = VacationStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationStart)
+            })
+        })
+    }
+
+    updateVacationStart(vacationstart) {
+        return this.#fetchAdvanced(this.#updateVacationStartURL(vacationstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationstart)
+        }).then((responseJSON) => {
+            let responseVacationStart = VacationStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationStart)
+            })
+        })
+    }
+
+    deleteVacationEnd(vacationend) {
+        return this.#fetchAdvanced(this.#deleteVacationEndURL(vacationend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseVacationEnd = VacationEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationEnd)
+            })
+        })
+    }
+
+    updateVacationEnd(vacationend) {
+        return this.#fetchAdvanced(this.#updateVacationEndURL(vacationend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationend)
+        }).then((responseJSON) => {
+            let responseVacationEnd = VacationEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationEnd)
+            })
+        })
+    }
+
+    deleteFlexDayStart(flexdaystart) {
+        return this.#fetchAdvanced(this.#deleteFlexDayStartURL(flexdaystart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseFlexDayStart = FlexDayStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayStart)
+            })
+        })
+    }
+
+    updateFlexDayStart(flexdaystart) {
+        return this.#fetchAdvanced(this.#updateFlexDayStartURL(flexdaystart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexdaystart)
+        }).then((responseJSON) => {
+            let responseFlexDayStart = FlexDayStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayStart)
+            })
+        })
+    }
+
+    deleteFlexDayEnd(flexdayend) {
+        return this.#fetchAdvanced(this.#deleteFlexDayEndURL(flexdayend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseFlexDayEnd = FlexDayEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayEnd)
+            })
+        })
+    }
+
+    updateFlexDayEnd(flexdayend) {
+        return this.#fetchAdvanced(this.#updateFlexDayEndURL(flexdayend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexdayend)
+        }).then((responseJSON) => {
+            let responseFlexDayEnd = FlexDayEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayEnd)
+            })
+        })
+    }
+
+    deleteComing(coming) {
+        return this.#fetchAdvanced(this.#deleteComingURL(coming), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseComing = ComingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseComing)
+            })
+        })
+    }
+
+    updateComing(coming) {
+        return this.#fetchAdvanced(this.#updateComingURL(coming), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(coming)
+        }).then((responseJSON) => {
+            let responseComing = ComingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseComing)
+            })
+        })
+    }
+
+    deleteGoing(going) {
+        return this.#fetchAdvanced(this.#deleteGoingURL(going), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseGoing = GoingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGoing)
+            })
+        })
+    }
+
+    updateGoing(going) {
+        return this.#fetchAdvanced(this.#updateGoingURL(going), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(going)
+        }).then((responseJSON) => {
+            let responseGoing = GoingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGoing)
+            })
+        })
+    }
 }
-
-
 
