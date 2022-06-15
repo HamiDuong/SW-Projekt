@@ -14,8 +14,6 @@ class AddActivities extends Component {
     constructor(props) {
         super(props);
         this.state={
-            loadingInProgress: false,
-            createprojectError: null,
             activityName: null,
             capacity: null,
             activitytNameValidationFailed: false,
@@ -36,36 +34,13 @@ class AddActivities extends Component {
           activityName:activity.name,
           capacity: activity.capacity,
           currentCapacity: activity.currentCapacity,
-          projectId: activity.projectId
+          projectId: activity.project_id
          }, 
          function(){
-          console.log('Here', this.state.projectId, this.state.activityName)
+          console.log('Here', activity, this.state.projectId, this.state.activityName)
          }))
       }
 
-    // getActivity = () => {
-    //   WorkTimeAppAPI.getAPI().getActivitiesByProject(this.props.project.getID()).then(activitiyBOs =>
-    //     this.setState({
-    //       activities: activitiyBOs,
-    //       loadingInProgress: false,
-    //       loadingAcoountError: null
-    //     })).catch(e => 
-    //       this.setState({
-    //         activities: [],
-    //         loadingInProgress: false,
-    //         loadingAcoountError: e
-    //       }));
-
-    //     this.setState({
-    //       loadingInProgress: true,
-    //       loadingaccountError: null
-    //     })
-    // }
-    // componentDidMount() {
-    //   this.getActivity
-    // }
-    
-    /** Handles value changes of the forms textfields and validates them */
     textFieldValueChange = (event) => {
         const value = event.target.value;
     
