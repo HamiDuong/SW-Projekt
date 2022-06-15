@@ -45,14 +45,19 @@ def secured(function):
                     name = claims.get("name")
 
                     user = adm.get_user_by_google_user_id(google_user_id)
+
                     if user is not None:
                         """Fall: Der Benutzer ist unserem System bereits bekannt.
                         Wir gehen davon aus, dass die google_user_id sich nicht ändert.
                         Wohl aber können sich der zugehörige Klarname (name) und die
                         E-Mail-Adresse ändern. Daher werden diese beiden Daten sicherheitshalber
                         in unserem System geupdated."""
+                        account = adm.get_worktimeaccount_by_user_id(
+                            (user.get_id()))
                         user.set_mail_adress(email)
                         adm.save_user(user)
+                        adm.save_worktimeaccount(account)
+                        adm.save_worktimeaccount(account)
                     else:
                         """Fall: Der Benutzer war bislang noch nicht eingelogged. 
                         Wir legen daher ein neues User-Objekt an, um dieses ggf. später
@@ -63,6 +68,8 @@ def secured(function):
                         lastname = name_split[1]
                         user = adm.create_user(
                             firstname, lastname, email, google_user_id)
+                        account = adm.create_worktimeaccount(
+                            user.get_id(), 8, 0)
 
                     print(request.method, request.path,
                           "angefragt durch:", None, email)
