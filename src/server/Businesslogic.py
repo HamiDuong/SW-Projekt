@@ -1623,7 +1623,7 @@ class Businesslogic():
 
     def calculate_delta_work(self, tbooking, delta_float):
         with WorkTimeAccountMapper() as mapper:
-            account = mapper.find_by_key(tbooking.get_user_id())
+            account = mapper.find_by_user_id(tbooking.get_user_id())
             print(account)
             contracttime = account.get_contract_time()
             print("Gearbeitete Zeit", delta_float)
@@ -1646,7 +1646,7 @@ class Businesslogic():
 
     def calculate_delta_break_flexdays(self, tbooking, delta_float):
         with WorkTimeAccountMapper() as mapper:
-            account = mapper.find_by_key(tbooking.get_user_id())
+            account = mapper.find_by_user_id(tbooking.get_user_id())
 
         new_overtime = round((account.get_overtime() - delta_float), 2)
         account.set_overtime(new_overtime)
@@ -2174,8 +2174,41 @@ class Businesslogic():
             mapper.update(user_obj)
 
     def delete_user(self, user_obj):
-        with UserMapper() as mapper:
-            mapper.delete(user_obj)
+        projectuser = self.get_project_user_by_user_id(user_obj.get_id())
+        bookings = self.get_all_timeinterval_bookings_for_user(user_obj)
+        if bookings is not None:
+            for key, values in bookings.items():
+                if key == "timeintervals":
+                    for elem in values:
+                        if elem.get_type() == "Work":
+                            self.delete_work(elem)
+                        if elem.get_type() == "Break":
+                            self.delete_break(elem)
+                        if elem.get_type() == "Flexday":
+                            self.delete_flex_day(elem)
+                        if elem.get_type() == "Illness":
+                            self.delete_illness(elem)
+                        if elem.get_type() == "ProjectDuration":
+                            self.delete_project_duration(elem)
+                        if elem.get_type() == "Projectwork":
+                            self.delete_project_work(elem)
+                        if elem.get_type() == "Vacation":
+                            self.delete_vacation(elem)
+                if key == "events":
+                    for elem in values:
+                        if elem.get_type() == "breakbegin":
+                            self.delete_break_begin(elem)
+                        if elem.get_type() == "breakend":
+                            self.delete_breakEnd(elem)
+                        if elem.get_type() == "vacationbegin":
+                            self.delete_vacation_begin(elem)
+                        if elem.get_type() == "vacationend":
+                            self.delete_vacation_end(elem)
+                    if projectuser is not None:
+                        with ProjectUserMapper() as mapper:
+                            mapper.delete(projectuser)
+                    with UserMapper() as mapper:
+                        mapper.delete(user_obj)
 
     """
     WorkTimeAccount Methoden
@@ -2268,6 +2301,10 @@ class Businesslogic():
         with ProjectUserMapper() as mapper:
             return mapper.find_by_key(id)
 
+    def get_project_user_by_user_id(self, id):
+        with ProjectUserMapper() as mapper:
+            return mapper.find_project_user_by_user_id(id)
+
     def get_all_projectusers(self):
         with ProjectUserMapper() as mapper:
             return mapper.find_all()
@@ -2323,3 +2360,8 @@ class Businesslogic():
         for elem in projects:
             if elem.get_name() == name:
                 return elem
+
+
+# adm = Businesslogic()
+# user2 = adm.get_user_by_id(1)
+# adm.delete_user(user2)

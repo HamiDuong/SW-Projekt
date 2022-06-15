@@ -408,9 +408,9 @@ class UserWithIdOperations(Resource):
         """
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
-        adm.delete_user(user)
         account = adm.get_worktimeaccount_by_user_id(user.get_id())
         adm.delete_worktimeaccount(account)
+        adm.delete_user(user)
         return '', 200
 
     @worktimeapp.marshal_with(user)
