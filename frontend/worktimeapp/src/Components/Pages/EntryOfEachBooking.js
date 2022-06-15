@@ -21,6 +21,7 @@ class ActivityBookingEntry extends Component {
             time: '',
             user: '',
             userName: '',
+            projectDuration: '',
         })
     }
 
@@ -36,6 +37,7 @@ class ActivityBookingEntry extends Component {
     componentDidMount() {
         this.getProjectsForUser(this.props.act_id, this.props.us_id)
         this.getUserById(this.props.us_id)
+        this.getProjectDuration(1)
     }
 
     getUserById(id) {
@@ -48,16 +50,27 @@ class ActivityBookingEntry extends Component {
             }))
     }
 
+
+    getProjectDuration = (project_id) => {
+        WorkTimeAppAPI.getAPI().getProjectDurationInDays(project_id).then(projectDurationBO =>
+            this.setState({
+                projectDuration: projectDurationBO
+            }, function () {
+                console.log('Hier ist der User: ', this.state.projectDuration)
+            }))
+    }
+
     render() {
         return (
-            <Box sx={{ margin: 1.5 }}>
-                <Paper sx={{ width: '700px' }}>
+            <Box sx={{ margin: 1.5, justifyContent: 'space-evenly' }}>
+                <Paper sx={{ width: '100%' }}>
                     <Table>
                         <TableBody>
-                            <TableCell width='70'>{this.state.time}</TableCell>
-                            <TableCell width='70'>{this.state.userName}</TableCell>
-                            <TableCell width='70'>{this.props.current_c}</TableCell>
-                            <TableCell width='70'>{this.props.capacity}</TableCell>
+                            <TableCell width='90'>{this.state.time}</TableCell>
+                            <TableCell width='90'>{this.state.userName}</TableCell>
+                            <TableCell width='90'>{this.props.current_c}</TableCell>
+                            <TableCell width='90'>{this.props.capacity}</TableCell>
+                            <TableCell width='90'>{this.state.projectDuration}</TableCell>
                         </TableBody>
                     </Table>
                 </Paper>

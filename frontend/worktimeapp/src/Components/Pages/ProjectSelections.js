@@ -51,7 +51,7 @@ class ProjectSelection extends Component {
     showing() {
         const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverEntry value={1} onChange={this.handleChange} value={temperature}
+            return <OverEntry value={1} onChange={this.handleChange}
                 celsius={(temperature)} />
         } else {
             return <h1>You haven´t selected a project yet.</h1>

@@ -110,41 +110,47 @@ class IndividualEntry extends Component {
                             display: 'flex',
                             justifyContent: 'center'
                         }}>
-                            <Table sx={{ width: '60%' }}>
+                            <Table sx={{ width: '70%' }}  >
                                 <TableHead>
+
                                     <Box
                                         sx={{
-                                            display: 'flex',
+                                            width: '100%',
+                                            display: 'inline-flex',
                                             alignItems: 'center',
-                                            width: 'fit-content',
+                                            justifyContent: 'space-evenly',
                                             border: (theme) => `1px solid ${theme.palette.divider}`,
-                                            borderRadius: 1,
+
                                             bgcolor: 'background.paper',
                                             color: 'text.secondary',
                                             '& svg': {
                                                 m: 1.5,
                                             },
                                             '& hr': {
-                                                mx: 0.5,
+                                                mx: 1,
                                             },
+
                                         }}
                                     >
                                         <TaskAltIcon />
-                                        <TableRow>Booked times</TableRow>
+                                        <TableRow >Booked times</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <ScheduleIcon size={'small'} />
                                         <TableRow>Planed project capacity</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <ListAltIcon size={'small'} />
                                         <TableRow>Current capacity</TableRow>
-
                                     </Box>
                                 </TableHead>
-                                <Grid>
-                                    <TableBody>
-                                        <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.current_capacity} />
-                                    </TableBody>
-                                </Grid>
+
+                                <TableBody>
+
+                                    <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.current_capacity} />
+                                </TableBody>
+
+
+
+
                             </Table>
                         </TableContainer>
                     </Collapse>

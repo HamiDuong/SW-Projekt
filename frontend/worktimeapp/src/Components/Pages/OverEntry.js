@@ -93,7 +93,8 @@ class OverEntry extends Component {
                 {this.state.activities.map((element, index) => {
                     const value = element[index].id
                     return (
-                        <Entry value={value} />
+                        <Entry projectId={this.state.projectId
+                        } value={value} />
                     )
                 })}
             </div>

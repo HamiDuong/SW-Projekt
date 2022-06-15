@@ -845,6 +845,16 @@ class TimeOperations(Resource):
         time = adm.get_actual_working_time_for_user_by_activity_id(activity_id, user_id)
         return time
 
+@worktimeapp.route('/times/projectdurataion/<int:project_id>')
+class TimeOperations(Resource):
+    # #@secured
+    def get(self, project_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_project_duration_interval(project_id)
+        return time
+
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -2925,7 +2935,7 @@ class ProjectDurationOperations(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectduration/<int:id>')
+@worktimeapp.route('/projectduration/<int:id>')
 @worktimeapp.param('id', 'ID der ProjectDuration')
 class ProjecDurationWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -2979,14 +2989,14 @@ class FindProjectDurationByTimePeriod(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectdurationproject/<int:projectid>')
-@worktimeapp.param('id', 'Id von Project')
+@worktimeapp.route('/projectdurationproject/<int:projectid>')
+@worktimeapp.param('projectid', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
     @worktimeapp.marshal_with(projectduration)
     # @secured
-    def get(self, id):
+    def get(self, projectid):
         adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_project_id(id)
+        projectduration = adm.get_project_duration_by_project_id(projectid)
         return projectduration
 
 

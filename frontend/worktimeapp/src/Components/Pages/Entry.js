@@ -10,8 +10,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import ActivityBookingEntry from './EntryOfEachBooking';
+import ActivityBookingEntry from './EntryOfEachBooking'
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import Divider from '@mui/material/Divider';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Grid, TableContainer } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
 class Entry extends Component {
@@ -73,52 +79,77 @@ class Entry extends Component {
         const setOpen = this.state.setOpen
         return (
             <div>
-                <Box
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                    <TableContainer>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableBody>
-                                <Box
-                                    style={{
-                                        display: 'flex',
+                <Box>
+                    <Box
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        <TableContainer>
+                            <Table stickyHeader aria-label="sticky table">
+                                <TableBody>
+                                    <Box
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'left'
+                                        }}>
+
+                                        <IconButton aria-label="expand row"
+                                            size="small"
+                                            onClick={this.handleClick}>
+                                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                        <TableRow>{this.state.name}</TableRow>
+                                    </Box>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
+                    </Box>
+
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <TableContainer style={{
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}>
+                            <Table sx={{ width: '75%' }}>
+                                <TableHead>
+                                    <Box sx={{
+                                        marginTop: '5',
+                                        width: '100%',
+                                        display: 'inline-flex',
                                         alignItems: 'center',
-                                        justifyContent: 'left'
-                                    }}>
+                                        justifyContent: 'space-around',
+                                        border: (theme) => `1px solid ${theme.palette.divider}`,
 
-                                    <IconButton aria-label="expand row"
-                                        size="small"
-                                        onClick={this.handleClick}>
-                                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                    <TableRow>{this.state.name}</TableRow>
-                                </Box>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                        bgcolor: 'background.paper',
+                                        color: 'text.secondary',
+                                        '& svg': {
+                                            m: 2,
+                                        },
+                                        '& hr': {
+                                            mx: 1,
+                                        },
 
-                </Box>
+                                    }}><ListAltIcon size={'small'} />
+                                        <TableRow>Planed capacity</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <PersonIcon />
+                                        <TableRow>Employees</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <TaskAltIcon />
+                                        <TableRow >Booked times</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <ScheduleIcon size={'small'} />
+                                        <TableRow>Planed project capacity</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <MoreTimeIcon />
+                                        <TableRow>Current capacity</TableRow>
+                                    </Box>
+                                </TableHead>
 
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <TableContainer style={{
-                        display: 'flex',
-                        justifyContent: 'center'
-                    }}>
-                        <Table sx={{ width: '75%' }}>
-                            <TableHead>
-                                <Box style={{
-                                    display: 'flex'
-                                }} sx={{ gap: 8 }}>
-                                    <TableRow>Booked times</TableRow>
-                                    <TableRow>Employees</TableRow>
-                                    <TableRow>Planed capacity</TableRow>
-                                    <TableRow >Current capacity</TableRow>
-                                </Box>
-                            </TableHead>
-                            <Grid>
                                 <TableBody>
 
                                     {this.state.userIds.map(element => {
@@ -127,10 +158,11 @@ class Entry extends Component {
                                     })}
 
                                 </TableBody>
-                            </Grid>
-                        </Table>
-                    </TableContainer>
-                </Collapse>
+
+                            </Table>
+                        </TableContainer>
+                    </Collapse>
+                </Box>
             </div >
         );
     }

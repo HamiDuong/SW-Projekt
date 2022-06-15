@@ -78,6 +78,7 @@ export default class WorkTimeAppAPI {
     #getProjectDurationByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectdurationdate/${date}`;
     #getProjectDurationByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/projectdurationperiod/${start}/${end}`;
     #getProjectDurationByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/projectdurationproject/${id}`;
+    #getPRojectDurationByProjectAsTime = (projectId) => `${this.#worktimeappServerBaseURL}/times/projectdurataion/${projectId}`;
 
     //ProjectWork
     #getProjectWorkURL = (id) => `${this.#worktimeappServerBaseURL}/projectwork/${id}`;
@@ -1621,6 +1622,12 @@ export default class WorkTimeAppAPI {
 
     getBookedTimeOfUserForAnActivity(activityID, userID) {
         return this.#fetchAdvanced(this.#getBookedTimesOfUserForActivity(activityID, userID)).then((responseJSON) => {
+            return responseJSON
+        })
+    }
+
+    getProjectDurationInDays(projectId) {
+        return this.#fetchAdvanced(this.#getPRojectDurationByProjectAsTime(projectId)).then((responseJSON) => {
             return responseJSON
         })
     }

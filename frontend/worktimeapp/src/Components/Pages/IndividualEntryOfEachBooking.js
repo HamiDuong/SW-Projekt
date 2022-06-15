@@ -49,20 +49,33 @@ class IndividualEntriesOfEachBooking extends Component {
     }
 
     render() {
-        return (
-            <Box sx={{ margin: 1.5 }}>
-                <Paper sx={{ width: '700px' }}>
-                    <Table>
-                        <TableBody>
-                            <TableCell width='70'>{this.state.time}</TableCell>
-                            <TableCell width='70'>{this.props.capacity}</TableCell>
-                            <TableCell width='70'>{this.props.current_c}</TableCell>
-                        </TableBody>
-                    </Table>
-                </Paper>
+        return (<Paper>
+
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+
+                    bgcolor: 'background.paper',
+                    color: 'text.secondary',
+                    '& svg': {
+                        m: 1.5,
+                    },
+                    '& hr': {
+                        mx: 5,
+                    },
+
+                }}
+            >
+
+                <TableCell >{this.state.time}</TableCell>
+                <TableCell >{this.props.capacity}</TableCell>
+                <TableCell >{this.props.current_c}</TableCell>
             </Box>
-
-
+        </Paper>
         );
     }
 }

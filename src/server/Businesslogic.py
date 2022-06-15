@@ -1404,6 +1404,12 @@ class Businesslogic():
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_project_id(id)
 
+    def get_project_duration_interval(self, project_id):
+        duration = self.get_project_duration_by_project_id(project_id)
+        delta = duration.get_end() - duration.get_start()
+        delta_float = round((delta.total_seconds() /  86400), 2)
+        return delta_float
+
     """
     ProjectWork Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
