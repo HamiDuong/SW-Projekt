@@ -1493,7 +1493,7 @@ export default class WorkTimeAppAPI {
         })
     }
     deleteUser(user) {
-        return this.#fetchAdvanced(this.#deleteUserURL(user), {
+        return this.#fetchAdvanced(this.#deleteUserURL(user.getID()), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseUser = UserBO.fromJSON(responseJSON)[0];

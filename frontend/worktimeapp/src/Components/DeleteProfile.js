@@ -5,12 +5,25 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import firebase from 'firebase/app';
+import {signOut } from "firebase/auth";
+import {auth} from '../firebaseConfig.js';
 
 
 
 class DeleteProfile extends Component {
     constructor(props) {
         super(props);
+    }
+
+    
+
+    deleteUser = () => {
+      WorkTimeAppAPI.getAPI().deleteUser(this.props.currentUser)
+      this.props.onClose()
+      signOut(auth)
+
     }
 
     
@@ -27,7 +40,7 @@ class DeleteProfile extends Component {
                 <Button color="primary" onClick={this.props.onClose} >
                  Cancel
                 </Button>
-                <Button color="primary" onClick={this.deleteProfile} autoFocus>
+                <Button color="primary" onClick={this.deleteUser} autoFocus>
                   Delete
                 </Button>
               </DialogActions>

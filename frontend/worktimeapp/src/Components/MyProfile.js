@@ -146,7 +146,7 @@ class TimeIntervalBookings extends Component {
                         </Grid>
                 </Grid>
             </Card>
-            <DeleteProfile show={this.state.showDeleteProfile} onClose={this.handleDeleteClose}/>
+            <DeleteProfile show={this.state.showDeleteProfile} onClose={this.handleDeleteClose} currentUser = {this.state.currentUser}/>
             <EditProfile show={this.state.showEditProfile} onClose={this.handleEditClose} currentUser = {this.state.currentUser} />
 
                 
