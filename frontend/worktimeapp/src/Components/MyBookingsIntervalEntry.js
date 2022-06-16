@@ -57,7 +57,7 @@ class MyBookingsIntervalEntry extends Component {
 
     render() { 
         return (
-            <div>
+            <>
                 <TableRow
                     hover
                     onClick = {this.showEdit}
@@ -69,7 +69,7 @@ class MyBookingsIntervalEntry extends Component {
 
                 </TableRow>
                 <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}/>
-            </div>
+            </>
         );
     }
 }
