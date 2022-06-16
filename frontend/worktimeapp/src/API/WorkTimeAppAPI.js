@@ -252,7 +252,7 @@ export default class WorkTimeAppAPI {
     
     //ProjectUser
     // Author Esra Özkul
-    #addProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectuser`;
+    #addProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
     #getAllProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
     #getProjectUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
     #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;

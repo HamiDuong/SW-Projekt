@@ -1,11 +1,12 @@
 import BusinessObject from "./BusinessObject";
 
 export default class ProjectUser extends BusinessObject{
-    constructor(projectId, userId, capacity ){
+    constructor(projectId, userId, capacity, currentCapacity ){
         super();
         this.projectId = projectId;
         this.userId = userId;
         this.capacity = capacity;
+        this.currentCapacity = currentCapacity
     }
 
     //Getter und Setter
@@ -33,6 +34,14 @@ export default class ProjectUser extends BusinessObject{
 
     GetCapacity(){
         return this.capacity
+    }
+
+    SetCurrentCapacity(currentCapacity){
+        this.currentCapacity = currentCapacity;
+    }
+
+    GetCurrentCapacity(){
+        return this.currentCapacity
     }
 
 

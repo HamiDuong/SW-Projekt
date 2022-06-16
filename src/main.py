@@ -126,10 +126,10 @@ bo = api.model('BusinessObject', {
 
 """Users"""
 user = api.inherit('User', bo, {
-    'first_name': fields.String(attribute='_first_name', description='Vorname eines Benutzers'),
-    'last_name': fields.String(attribute='_last_name', description='Nachname eines Benutzers'),
-    'mail_adress': fields.String(attribute='_mail_adress', description='E-Mail-Adresse eines Benutzers'),
-    'google_user_id': fields.String(attribute='_google_user_id', description='Google User Id')
+    'firstName': fields.String(attribute='_first_name', description='Vorname eines Benutzers'),
+    'lastName': fields.String(attribute='_last_name', description='Nachname eines Benutzers'),
+    'mailAdress': fields.String(attribute='_mail_adress', description='E-Mail-Adresse eines Benutzers'),
+    'googleUserId': fields.String(attribute='_google_user_id', description='Google User Id')
 })
 
 """WorkTimeAccount"""
@@ -148,9 +148,10 @@ project = api.inherit('Project', bo, {
 
 '''ProjectUser'''
 projectuser = api.inherit('ProjectUser', bo, {
-    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projektmitglieds'),
-    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
-    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts')
+    'projectId': fields.Integer(attribute='_project_id', description='Die ID eines Projektmitglieds'),
+    'userId': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
+    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
+    'currentCapacity': fields.Float(attribute='_current_capacity', description='Die aktuelle Kapazität eines Aktivitäts')
 })
 
 '''Activity'''
@@ -862,7 +863,8 @@ class ProjectUserOperations(Resource):
             p = adm.create_projectuser(
                 proposal.get_project_id(),
                 proposal.get_user_id(),
-                proposal.get_capacity()
+                proposal.get_capacity(),
+                proposal.get_current_capacity()
             )
             return p
 

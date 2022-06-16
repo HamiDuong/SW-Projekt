@@ -10,16 +10,18 @@ class AddMembers extends Component {
   constructor(props) {
     super(props);
      this.state={
-      projectID: '',
-      userId: '',
-      capacity: null,
+      projectId: '',
+      userId: 1,
+      capacity: 0,
       users: [],
       userName:'',
-      targetuser: [],
+      targetusers: [],
       selecteduserName: null,
       loadingInProgress: false,
       userNameSearchError: null,
       userNotFound: false,
+      selectedUser: null,
+      currentCapacity: 0, 
   }
   
      }
@@ -37,7 +39,7 @@ class AddMembers extends Component {
 
         //Jetzt werden die User geladen
         const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
-      
+        console.log("Test")
       let selectedUser = null;
 
       if(users.length > 0) {
@@ -53,10 +55,12 @@ class AddMembers extends Component {
         selectedUser: selectedUser,
         loadingInProgress: false,
         userNameSearchError: null
+      }, function(){
+        console.log("State", this.state.targetusers)
       });
     } catch (e) {
       this.setState({
-        targetuser: [],
+        targetusers: [],
         selectedUser: null,
         loadingInProgress: false,
         userNameSearchError: e
@@ -72,6 +76,8 @@ class AddMembers extends Component {
       selectedUser: users,
     });
   }
+
+  
     /** Handles value changes of the forms textfields and validates the transferAmout field */
   textFieldValueChange = (event) => {
     const val = event.target.value;
@@ -95,13 +101,14 @@ class AddMembers extends Component {
        } 
 
        addProjectUser = () => { 
-        let newProjectUser = new ProjectUserBO(this.state.projectId, this.state.capacity, this.props.userId);
+        let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.userId, this.state.capacity, this.state.currentCapacity);
         console.log(newProjectUser)
         WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser => 
          this.setState({
           projectId: projectuser.project_id,
           capacity: projectuser.capacity,
-          userId: projectuser.userId
+          userId: projectuser.userId,
+          currentCapacity: projectuser.currentCapacity
          }, 
          function(){
           console.log('Here', projectuser, this.state.projectId, this.state.capacity)
@@ -115,14 +122,14 @@ class AddMembers extends Component {
   state = {  }
   render() { 
     const users = this.props;
-    const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetuser, searchUser, selectedUser} = this.state;
+    const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetusers, searchUser, selectedUser} = this.state;
     return ( 
       <Box>
 
             <form noValidate autoComplete='off'>
               {
                 // show a search text field if there are no searchedCustomer yet
-                (targetuser.length === 0) ?
+                (targetusers.length === 0) ? 
                   <TextField autoFocus fullWidth margin='normal' type='text' required id='userName' label='User name:'
                     onChange={this.textFieldValueChange}
                     onBlur={this.searchUserNamesForProject}
@@ -136,10 +143,11 @@ class AddMembers extends Component {
                   :
                   // Show a selection of targetCustomers, if there are any. Provide no search button. 
                   <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='Customer name:'
-                    value={selecteduserName}
+                    value={selectedUser}
                     onChange={this.userSelectionChange}>
                     {
-                      this.state.targetuser.map((users) => (
+                      targetusers.map((users) => (
+
                         <MenuItem key={users.getID()} value={users}>
                           {users.getLastName()}, {users.getFirstName()}
                         </MenuItem>

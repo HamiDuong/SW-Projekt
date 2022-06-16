@@ -1,9 +1,11 @@
 from server.bo import BusinessObject as bo
 
+
 class ProjectUserBO(bo.BusinessObject):
     """Klasse Projektmitarbeiter.
     Ein Projektmitarbeiter ist Teil eines oder mehreren Projekten
     """
+
     def __init__(self):
         super().__init__()
         self._project_id = None
@@ -43,18 +45,18 @@ class ProjectUserBO(bo.BusinessObject):
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-        
+
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
-        return "Customer: {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_project_id(), self.get_user_id(), self.get_capacity())
+        return "Customer: {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_project_id(), self.get_user_id(), self.get_capacity(), self.get_current_capacity())
 
     @staticmethod
     def from_dict(dictionary=dict()):
         """Umwandeln eines Python dict() in einen Customer()."""
         obj = ProjectUserBO()
         obj.set_id(dictionary["id"])
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
-        obj.set_project_id(dictionary["project_id"])  
-        obj.set_user_id(dictionary["user_id"])
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
+        obj.set_project_id(dictionary["projectId"])
+        obj.set_user_id(dictionary["userId"])
         obj.set_capacity(dictionary["capacity"])
-        obj.set_current_capacity(dictionary["current_capacity"])
+        obj.set_current_capacity(dictionary["currentCapacity"])
         return obj
