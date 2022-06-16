@@ -6,6 +6,8 @@ from datetime import datetime
 @author Marco
 @co-author Ha Mi Duong (https://github.com/HamiDuong)
 """
+
+
 class UserMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -34,7 +36,7 @@ class UserMapper(Mapper):
             user.get_last_name(),
             user.get_mail_adress(),
             user.get_google_user_id()
-            )
+        )
 
         cursor.execute(command, data)
 
@@ -69,12 +71,14 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users WHERE id={}".format(key)
+        command = "SELECT id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId FROM worktimeapp.users WHERE id={}".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            (id, dateOfLastChange, firstName, lastName,
+             mailAdress, googleUserId) = tuples[0]
             user = UserBO()
             user.set_id(id)
             user.set_date_of_last_change(dateOfLastChange)
@@ -120,12 +124,14 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM worktimeapp.users WHERE googleUserId='{}'".format(key)
+        command = "SELECT * FROM worktimeapp.users WHERE googleUserId='{}'".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            (id, dateOfLastChange, firstName, lastName,
+             mailAdress, googleUserId) = tuples[0]
             user = UserBO()
             user.set_id(id)
             user.set_date_of_last_change(dateOfLastChange)
@@ -148,12 +154,14 @@ class UserMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM worktimeapp.users WHERE mailAdress='{}'".format(key)
+        command = "SELECT * FROM worktimeapp.users WHERE mailAdress='{}'".format(
+            key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) = tuples[0]
+            (id, dateOfLastChange, firstName, lastName,
+             mailAdress, googleUserId) = tuples[0]
             user = UserBO()
             user.set_id(id)
             user.set_date_of_last_change(dateOfLastChange)
@@ -172,37 +180,39 @@ class UserMapper(Mapper):
 
         return result
 
-    # def find_by_user_name(self, key):
-    #     result = []
+    def find_by_last_name(self, key):
+        result = []
 
-    #     cursor = self._cnx.cursor()
-    #     command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE user_name={}".format(
-    #         key)
-    #     cursor.execute(command)
-    #     tuples = cursor.fetchall()
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM worktimeapp.users WHERE lastName='{}'".format(
+            key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
 
-    #     for (id, first_name, last_name, mail_adress, user_name) in tuples:
-    #         user = UserBO()
-    #         user.set_id(id)
-    #         user.set_first_name(first_name)
-    #         user.set_last_name(last_name)
-    #         user.set_mail_adress(mail_adress)
-    #         user.set_user_name(user_name)
-    #         result.append(user)
+        for (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) in tuples:
+            user = UserBO()
+            user.set_id(id)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
+            result.append(user)
 
-    #     self._cnx.commit()
-    #     cursor.close()
+        self._cnx.commit()
+        cursor.close()
 
-    #     return result
+        return result
 
     def update(self, user):
         cursor = self._cnx.cursor()
-    
+
         timestamp = datetime.today()
         user.set_date_of_last_change(timestamp)
 
         command = "UPDATE worktimeapp.users SET firstName=%s, lastName=%s, mailAdress=%s, dateOfLastChange=%s WHERE id=%s"
-        data = (user.get_first_name(), user.get_last_name(), user.get_mail_adress(), user.get_date_of_last_change(),user.get_id())
+        data = (user.get_first_name(), user.get_last_name(
+        ), user.get_mail_adress(), user.get_date_of_last_change(), user.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -213,7 +223,8 @@ class UserMapper(Mapper):
     def delete(self, user):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.users WHERE id={}".format(user.get_id())
+        command = "DELETE FROM worktimeapp.users WHERE id={}".format(
+            user.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

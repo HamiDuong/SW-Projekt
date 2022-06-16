@@ -608,20 +608,20 @@ class UserWithGoogleOperations(Resource):
 #             return '', 500
 
 
-# @worktimeapp.route('/users-by-name/<string:lastname>')
-# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-# @worktimeapp.param('lastname', 'Der Nachname des Kunden')
-# class UsersByNameOperations(Resource):
-#     @worktimeapp.marshal_with(user)
-#     # #@secured
-#     def get(self, lastname):
-#         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
+@worktimeapp.route('/users-by-name/<string:lastname>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('lastname', 'Der Nachname des Kunden')
+class UsersByNameOperations(Resource):
+    @worktimeapp.marshal_with(user)
+    # #@secured
+    def get(self, lastname):
+        """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
-#         Die auszulesenden Objekte werden durch ```lastname``` in dem URI bestimmt.
-#         """
-#         adm = Businesslogic()
-#         cust = adm.get_user_by_name(lastname)
-#         return cust
+        Die auszulesenden Objekte werden durch ```lastname``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_user_by_last_name(lastname)
+        return cust
 
 
 # @worktimeapp.route('/users/<int:id>/accounts')

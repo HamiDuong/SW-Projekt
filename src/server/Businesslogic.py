@@ -1941,7 +1941,8 @@ class Businesslogic():
                             res_ti_e.append(event)
                             res_ti.append(res)
                 if type == 'flexday':
-                    res = self.get_flex_day_by_id(timeintervals.get_flex_day_id())
+                    res = self.get_flex_day_by_id(
+                        timeintervals.get_flex_day_id())
                     if (res.get_start_event() and res.get_end_event) == None:
                         res_ti.append(res)
                     elif not ((res.get_start_event() and res.get_end_event()) == None):
@@ -2167,11 +2168,11 @@ class Businesslogic():
 
     '''def get_user_by_first_name(self, first_name):
         with UserMapper() as mapper:
-            return mapper.find_by_first_name(first_name)
+            return mapper.find_by_first_name(first_name)'''
 
     def get_user_by_last_name(self, last_name):
         with UserMapper() as mapper:
-            return mapper.find_by_last_name(last_name)'''
+            return mapper.find_by_last_name(last_name)
 
     def get_user_by_mail_adress(self, mail_adress):
         with UserMapper() as mapper:
