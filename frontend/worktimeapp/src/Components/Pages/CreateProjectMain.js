@@ -26,6 +26,9 @@ class CreateProjectMain extends Component {
             projectNameEdited: false,
             commissionerValidationFailed: false,
             commissionerEdited: false,
+            filteredUsers: [],
+            loadingInProgress: false,
+            error: null,
         }
 
 
@@ -36,8 +39,6 @@ class CreateProjectMain extends Component {
             selected: true,
         });
     }
-
-    
 
 
 
@@ -55,8 +56,31 @@ class CreateProjectMain extends Component {
             })
         )
     }
+    getAllUsers = () => {
+        WorkTimeAppAPI.getAPI().getAllUsers()
+        .then(userBOs =>
+            this.setState({
+                users: userBOs,
+                filteredUsers: [...userBOs],
+                loadingInProgress: false,
+                error: null
 
+            })).catch( e =>
+                this.setState({
+                    users: [],
+                    loadingInProgress: false,
+                    error: e
+                }));
+                this.setState({
+                    loadingInProgress: true,
+                    error: null
+                });
 
+    }
+    componentDidMount(){
+        this.getAllUsers();
+
+    }
 
     /** Handles value changes of the forms textfields and validates them */
     textFieldValueChange = (event) => {
@@ -78,8 +102,10 @@ class CreateProjectMain extends Component {
     showing() {
         if (this.state.selected) {
             console.log('showing läuft', this.state.projectId)
-            return <CreateProject onChange={this.handleChange} value={this.state.projectId} selected={true}
-            />
+            return <CreateProject onChange={this.handleChange} value={this.state.projectId} selected={true} 
+            // key={users.getID()} 
+            user={this.users}  /> 
+            
         } else {
             return <h1>You haven´t selected a project yet.</h1>
         }

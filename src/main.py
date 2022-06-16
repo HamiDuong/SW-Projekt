@@ -451,20 +451,21 @@ class UserWithIdOperations(Resource):
 #         return cust
 
 
-# @worktimeapp.route('/users-by-name/<string:last_name>')
-# @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
-# @worktimeapp.param('last_name', 'Der Nachname des Benutzers')
-# class UsersByNameOperations(Resource):
-#     @worktimeapp.marshal_with(user)
-#     # #@secured
-#     def get(self, last_name):
-#         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
+@worktimeapp.route('/users-by-name/<string:last_name>')
+@worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@worktimeapp.param('last_name', 'Der Nachname des Benutzers')
+class UsersByNameOperations(Resource):
+    @worktimeapp.marshal_with(user)
+    # #@secured
+    def get(self, last_name):
+        """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
-#         Die auszulesenden Objekte werden durch ```last_name``` in dem URI bestimmt.
-#         """
-#         adm = Businesslogic()
-#         cust = adm.get_user_by_last_name(last_name)
-#         return cust
+        Die auszulesenden Objekte werden durch ```last_name``` in dem URI bestimmt.
+        """
+        adm = Businesslogic()
+        cust = adm.get_user_by_last_name(last_name)
+        return cust
+
 
 
 @worktimeapp.route('/usermail/<string:mail_adress>')

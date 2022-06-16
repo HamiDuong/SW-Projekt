@@ -30,6 +30,7 @@ class CreateProject extends Component {
       targetMember: [],
       selectedMember: null,
       projectId: '',
+      users: props.users,
 
     }
     this.baseState = this.state;
@@ -83,6 +84,7 @@ class CreateProject extends Component {
             {
             this.state.showPopupMember?
               <AddMember
+                users = {this.props.users}
                 projectId={this.props.value}
                 text='Close Me'
                 closePopupMembers={() => this.setState({ showPopupMember: false })}

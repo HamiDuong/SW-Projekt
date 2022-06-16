@@ -24,6 +24,7 @@ import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO";
 import UserBO from "./UserBO";
+import ProjectUserBO from "./ProjectUserBO";
 
 
 export default class WorkTimeAppAPI {
@@ -247,7 +248,7 @@ export default class WorkTimeAppAPI {
     #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
     #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
     #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
-    #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/customers-by-name/${userName}`;
+    #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/users-by-name/${userName}`;
     
     //ProjectUser
     // Author Esra Özkul
@@ -1517,15 +1518,27 @@ export default class WorkTimeAppAPI {
     searchUser(userName) {
         return this.#fetchAdvanced(this.#searchUserURL(userName)).then((responseJSON) => {
             let userBOs = UserBO.fromJSON(responseJSON);
-            // console.info(customerBOs);
+            console.info(userBOs);
             return new Promise(function (resolve) {
                 resolve(userBOs);
             })
         })
     }
 
-
+    //ProjectUser
+    addProjectUser(projectuserBO){
+        return this.#fetchAdvanced(this.#addProjectUserURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectuserBO)
+        }).then((responseJSON) => {
+            let responseProjectUserBO = ProjectUserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectUserBO);
+            })
+        })}
+    
 }
-
-
-

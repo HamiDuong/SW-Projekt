@@ -2143,11 +2143,11 @@ class Businesslogic():
 
     '''def get_user_by_first_name(self, first_name):
         with UserMapper() as mapper:
-            return mapper.find_by_first_name(first_name)
+            return mapper.find_by_first_name(first_name)'''
 
     def get_user_by_last_name(self, last_name):
         with UserMapper() as mapper:
-            return mapper.find_by_last_name(last_name)'''
+            return mapper.find_by_last_name(last_name)
 
     def get_user_by_mail_adress(self, mail_adress):
         with UserMapper() as mapper:
