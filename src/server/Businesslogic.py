@@ -1404,6 +1404,12 @@ class Businesslogic():
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_project_id(id)
 
+    def get_project_duration_interval(self, project_id):
+        duration = self.get_project_duration_by_project_id(project_id)
+        delta = duration.get_end() - duration.get_start()
+        delta_float = round((delta.total_seconds() /  86400), 2)
+        return delta_float
+
     """
     ProjectWork Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -2258,8 +2264,12 @@ class Businesslogic():
             mapper.delete(projectuser)
 
     def get_all_project_members(self, project_id):
-        with ProjectUserMapper() as mapper:
-            mapper.find_all_project_members(project_id)
+        liste = self.get_all_projectusers()
+        result = []
+        for elem in liste:
+            if elem.get_project_id() == project_id:
+                result.append(elem)
+        return result
 
     # Activity
 
@@ -2390,7 +2400,3 @@ class Businesslogic():
         sum = math.fsum(sum_time)/3600
         sum = round(sum,2)
         return sum
-
-'''
-ex = Businesslogic()
-print(ex.get_actual_working_time_for_user_by_activity_id(1,1))'''

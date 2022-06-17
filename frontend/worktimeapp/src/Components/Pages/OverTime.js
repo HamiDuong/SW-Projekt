@@ -5,6 +5,7 @@ import { TableContainer } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import CollapsibleTable from '../MyWorkTime';
 
 class OverTime extends Component {
     constructor(props) {
@@ -23,6 +24,10 @@ class OverTime extends Component {
 
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
+        console.log('prop: ', this.props.value)
+        console.log('acts:', this.state.activities)
+        console.log('curr_caps', this.state.current_capacity)
+        console.log('caps', this.state.capacity)
 
     }
 
@@ -31,7 +36,9 @@ class OverTime extends Component {
         WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
             this.setState({
                 activities: [...this.state.activities, activity],
-            }, this.checkActivities(activity)
+            }, this.getCapacities(activity),
+                this.getCurrentCapacities(activity),
+                this.getActivityNames(activity)
             ))
     }
 
@@ -49,7 +56,7 @@ class OverTime extends Component {
     getCapacities = (arr) => {
         const acti = this.state.activities
         let i = 0
-        while (i <= acti.length) {
+        while (i < acti.length) {
             this.setState({
                 capacity: [...this.state.capacity, arr[i].capacity]
             }, function () {
@@ -62,7 +69,7 @@ class OverTime extends Component {
     getCurrentCapacities = (arr) => {
         const acti = this.state.activities
         let i = 0
-        while (i <= acti.length) {
+        while (i < acti.length) {
             this.setState({
                 current_capacity: [...this.state.current_capacity, arr[i].current_capacity]
             }, function () {
@@ -75,7 +82,7 @@ class OverTime extends Component {
     getActivityNames = (arr) => {
         const acti = this.state.activities
         let i = 0
-        while (i <= acti.length) {
+        while (i < acti.length) {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].name]
             }, function () {
@@ -153,46 +160,14 @@ class OverTime extends Component {
                     justifyContent: 'center',
                 }}>
                     <Paper sx={{ width: '80%' }}>
-                        <TableContainer sx={{ maxHeight: 440 }}>
+                        <TableContainer>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
-                                    <TableRow>
-                                        <TableCell align="left" colSpan={0}>
-                                            {this.state.project}
-                                        </TableCell>
-                                        <TableCell align="left" colSpan={6}>
-                                            Details
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        {columns.map((column) => (
-                                            <TableCell
-                                                key={column.id}
-                                                align={column.align}
-                                                style={{ minWidth: column.minWidth }}
-                                            >
-                                                {column.label}
-                                            </TableCell>
-                                        ))}
-
+                                    <TableRow align={'center'}>
+                                        <h1>Overview</h1>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>
-                                    {rows.map((row) => {
-                                        return (
-                                            <TableRow hover  >
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell align={column.align}>
-                                                            {value}
-                                                        </TableCell>
-                                                    );
-                                                })}
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
+                                <CollapsibleTable row={rows} />
                             </Table>
                         </TableContainer>
                     </Paper>

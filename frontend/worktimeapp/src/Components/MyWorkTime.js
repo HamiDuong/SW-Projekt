@@ -6,91 +6,123 @@ import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-function createData(name, projects) {
-    return {
-        name,
-        projects: [
-            {
-                projectName: 'Project A',
-                activity: 'Use Case erstellen',
-                date: '2020-01-02',
-                plannedTime: 3,
-                bookedTime: 1,
-            },
-            {
-                projectName: 'Project A',
-                activity: 'Use Case erstellen',
-                date: '2020-01-02',
-                plannedTime: 14,
-                bookedTime: 5,
-            },
-        ],
-    };
-}
 
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
 
+    function columns() {
+        const columns = [
+            {
+                id: 'activity',
+                label: 'Activity',
+                minWidth: 170
+            },
+            {
+                id: 'capacity',
+                label: 'Capacity in (h)',
+                minWidth: 100
+            },
+            {
+                id: 'current_capacity',
+                label: 'Booked Time in (h)',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toLocaleString('de-DE'),
+            },
+            {
+                id: 'employee',
+                label: 'Employee',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toLocaleString('en-US'),
+            },
+            {
+                id: 'delta',
+                label: 'Delta (h)',
+                minWidth: 170,
+                align: 'right',
+                format: (value) => value.toFixed(2),
+            },
+        ];
+        return columns
+    }
 
+    function createData(activity, capacity, current_capacity) {
+        const delta = capacity - current_capacity;
+        return { activity, capacity, current_capacity, delta };
+    }
+
+    function smth() {
+        let newthingy = []
+        const activities = ['A', 'A', 'B', 'C', 'D']
+        const planedTimes = [1, 4, 2, 3]
+        const bookedTimes = [1, 1, 1]
+        const employees = []
+
+        for (var i = 0; i <= activities.length; i++) {
+            let new_data = createData(activities[i], planedTimes[i], bookedTimes[i])
+            newthingy.push(new_data)
+        }
+        return newthingy
+    }
+
+    const liste = [1]
     return (
         <React.Fragment>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
+                {liste.map((column) => {
+                    const value = row.activity;
+                    return (
+                        <TableCell align={column.align}>
+                            <IconButton
+                                aria-label="expand row"
+                                size="small"
+                                onClick={() => setOpen(!open)}
+                            > Für Infos zur Aktivität: {value}, bitte klicken
+                                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                            </IconButton>
+                        </TableCell>
+                    );
+                })}
+                <TableCell hover>
+
                 </TableCell>
-                <TableCell component="th" scope="row" >
-                    {row.name} X
-                </TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 0.5 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Detailed View
-                            </Typography>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Activity</TableCell>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell align="right">Planned time (h)</TableCell>
-                                        <TableCell align="right">Booked Time (h)</TableCell>
+                                        {columns().map((column) => (
+                                            <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                style={{ minWidth: column.minWidth }}
+                                            >
+                                                {column.label}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.projects.map((projectsRow) => (
-                                        <TableRow key={projectsRow}>
-                                            <TableCell>{projectsRow.activity}</TableCell>
-                                            <TableCell component="th" scope="row">
-                                                {projectsRow.date}
-                                            </TableCell>
-                                            <TableCell>{projectsRow.employee}</TableCell>
-                                            <TableCell align="right">{projectsRow.plannedTime}</TableCell>
-                                            <TableCell align="right">
-                                                {projectsRow.bookedTime}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    <TableRow hover  >
+                                        {columns().map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell align={column.align}
+                                                    key={row[column.id]}>
+                                                    {value}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
@@ -103,30 +135,55 @@ function Row(props) {
 
 
 
-const rows = [
-    createData('Project A', 'Use Case'),
-    createData('Project B'),
-    createData('Project C'),
-    createData('Project D'),
-    createData('Project E'),
-];
+function createData(activity, capacity, current_capacity) {
+    const delta = capacity - current_capacity;
+    return { activity, capacity, current_capacity, delta };
+}
 
-export default function CollapsibleTable() {
+function rows() {
+    let newthingy = []
+    const activities = ['A', 'B', 'A', 'C']
+    const planedTimes = [1, 2, 3, 4]
+    const bookedTimes = [1, 1, 1, 2]
+    const employees = []
+
+    for (var i = 0; i < activities.length; i++) {
+        let new_data = createData(activities[i], planedTimes[i], bookedTimes[i])
+        newthingy.push(new_data)
+    }
+
+    let liste = {}
+    newthingy.forEach((element, index) => {
+        for (var elem in liste) {
+            if (elem == element) {
+                liste[element] = elem.current_capacity + element.value
+            }
+            console.log('Hier dict: ', elem)
+            liste[element.activity] = element.current_capacity
+        }
+
+
+    }, console.log(liste),
+
+    )
+    return newthingy
+
+}
+
+function toFindDuplicates(arry) { arry.filter((item, index) => arry.indexOf(item) !== index) }
+const duplicateElementa = toFindDuplicates(rows());
+console.log('Hier sind die Duplikate: ', duplicateElementa)
+
+export default function CollapsibleTable(props) {
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>Project Overview</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.name} row={row} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+
+        <Table aria-label="collapsible table">
+            <TableBody>
+                {rows().map((row) => (
+                    <Row row={row} />
+                ))}
+            </TableBody>
+        </Table>
+
     );
 }

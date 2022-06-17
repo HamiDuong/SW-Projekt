@@ -150,7 +150,9 @@ project = api.inherit('Project', bo, {
 projectuser = api.inherit('ProjectUser', bo, {
     'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projektmitglieds'),
     'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer'),
-    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts')
+    'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
+'current_capacity': fields.Float(attribute='_current_capacity', description='Die Kapazität eines Projekts'),
+
 })
 
 '''Activity'''
@@ -843,6 +845,16 @@ class TimeOperations(Resource):
         time = adm.get_actual_working_time_for_user_by_activity_id(activity_id, user_id)
         return time
 
+@worktimeapp.route('/times/projectdurataion/<int:project_id>')
+class TimeOperations(Resource):
+    # #@secured
+    def get(self, project_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_project_duration_interval(project_id)
+        return time
+
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -912,6 +924,18 @@ class ProjectUserOperations(Resource):
         return projectuser
 
 
+@worktimeapp.route('/projectmembersbyprojectid/<int:id>')
+@worktimeapp.param('id', 'Die ID des Projekts')
+class ProjectWithIDOperations(Resource):
+    @worktimeapp.marshal_with(projectuser)
+    # @secured
+    def get(self,id):
+        adm = Businesslogic()
+        projectuser = adm.get_all_project_members(id)
+        return projectuser
+
+
+
 @worktimeapp.route('/projectuser/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -922,10 +946,7 @@ class ProjectWithIDOperations(Resource):
         projectuser = adm.get_projectuser_by_id(id)
         return projectuser
 
-    def get_project_members(self, project_id):
-        adm = Businesslogic()
-        projectuser = adm.get_all_project_members(project_id)
-        return projectuser
+
 
     @worktimeapp.marshal_with(projectuser)
     # @secured
@@ -2914,7 +2935,7 @@ class ProjectDurationOperations(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectduration/<int:id>')
+@worktimeapp.route('/projectduration/<int:id>')
 @worktimeapp.param('id', 'ID der ProjectDuration')
 class ProjecDurationWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -2968,14 +2989,14 @@ class FindProjectDurationByTimePeriod(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectdurationproject/<int:projectid>')
-@worktimeapp.param('id', 'Id von Project')
+@worktimeapp.route('/projectdurationproject/<int:projectid>')
+@worktimeapp.param('projectid', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
     @worktimeapp.marshal_with(projectduration)
     # @secured
-    def get(self, id):
+    def get(self, projectid):
         adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_project_id(id)
+        projectduration = adm.get_project_duration_by_project_id(projectid)
         return projectduration
 
 

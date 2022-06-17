@@ -23,6 +23,8 @@ import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO"
+import UserBO from './UserBO';
+import ProjectUserBO from './ProjectUserBO';
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -76,6 +78,7 @@ export default class WorkTimeAppAPI {
     #getProjectDurationByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectdurationdate/${date}`;
     #getProjectDurationByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/projectdurationperiod/${start}/${end}`;
     #getProjectDurationByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/projectdurationproject/${id}`;
+    #getPRojectDurationByProjectAsTime = (projectId) => `${this.#worktimeappServerBaseURL}/times/projectdurataion/${projectId}`;
 
     //ProjectWork
     #getProjectWorkURL = (id) => `${this.#worktimeappServerBaseURL}/projectwork/${id}`;
@@ -230,6 +233,7 @@ export default class WorkTimeAppAPI {
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
     #getProjectForAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/admin/${id}`;
     #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
+    #getProjectMembersByProjectId = (id) => `${this.#worktimeappServerBaseURL}/projectmembersbyprojectid/${id}`;
 
     //Activity
     // Author Khadidja Kebaili
@@ -242,6 +246,12 @@ export default class WorkTimeAppAPI {
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
 
+    //User
+    #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
+    #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
+    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
 
     static getAPI() {
         if (this.#api == null) {
@@ -1340,6 +1350,19 @@ export default class WorkTimeAppAPI {
             })
     }
 
+
+    getActivityById(ID) {
+        return this.#fetchAdvanced(this.#getActivityURL(ID))
+            .then((responseJSON) => {
+                let activityBOs = ActivityBO.fromJSON(responseJSON);
+                console.info(activityBOs);
+                return new Promise(function (resolve) {
+                    resolve(activityBOs);
+                })
+            })
+    }
+
+
     getAllActivities() {
         return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON);
@@ -1517,6 +1540,16 @@ export default class WorkTimeAppAPI {
         })
     }
 
+
+    getMembersByProjectId(id) {
+        return this.#fetchAdvanced(this.#getProjectMembersByProjectId(id)).then((responseJSON) => {
+            let responseProject = ProjectUserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
     addActivity(activity) {
         return this.#fetchAdvanced(this.#addActivityURL(), {
             method: 'POST',
@@ -1569,6 +1602,15 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getActivitiesByProjectForUser(project_id, user_id) {
+        return this.#fetchAdvanced(this.#getActivitiesByProjectIdAndUserIdURL(project_id, user_id)).then((responseJSON) => {
+            let responseActivity = ActivityBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
+    }
+
     getAllActivities() {
         return this.#fetchAdvanced(this.#getAllActivitiesURL()).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON);
@@ -1584,7 +1626,72 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getProjectDurationInDays(projectId) {
+        return this.#fetchAdvanced(this.#getPRojectDurationByProjectAsTime(projectId)).then((responseJSON) => {
+            return responseJSON
+        })
+    }
 
+    //User Methoden
+
+    getAllUsers() {
+        return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+
+    }
+    addUser(userBO) {
+        return this.#fetchAdvanced(this.#getAllUsersURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(userBO)
+        }).then((responseJSON) => {
+            let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+
+            return new Promise(function (resolve) {
+                resolve(responseUserBO);
+            })
+        })
+    }
+    getUserById(id) {
+        return this.#fetchAdvanced(this.#getUserByIdURL(id)).then((responseJSON) => {
+            let responseUserBO = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseUserBO)
+            })
+        })
+    }
+    deleteUser(user) {
+        return this.#fetchAdvanced(this.#deleteUserURL(user), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+    updateUser(user) {
+        return this.#fetchAdvanced(this.#updateUserURL(user), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }).then((responseJSON) => {
+            let responseUserBO = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUserBO)
+            })
+        })
+    }
 
 }
 

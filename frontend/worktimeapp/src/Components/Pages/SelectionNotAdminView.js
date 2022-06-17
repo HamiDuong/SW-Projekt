@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { InputLabel } from '@mui/material';
-import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import OverTimeIndi from './IndividualTimes';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import OverIndividualEntry from './OverIndividualEntries';
+
 
 class ProjectSelectionNotAdmin extends Component {
     constructor(props) {
@@ -17,6 +16,7 @@ class ProjectSelectionNotAdmin extends Component {
             projectName: '',
             selected: false,
             projectId: '',
+            user: ''
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -39,16 +39,17 @@ class ProjectSelectionNotAdmin extends Component {
     }
 
 
+
     componentDidMount() {
         this.getProjectsForUser(1)
+
     }
 
 
     showing() {
         const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverTimeIndi onChange={this.handleChange} value={this.state.temperature}
-                celsius={(temperature)} />
+            return <OverIndividualEntry onChange={this.handleChange} value={this.state.temperature} />
         } else {
             return <h1>You haven´t selected a project yet.</h1>
         }
@@ -56,7 +57,6 @@ class ProjectSelectionNotAdmin extends Component {
 
     render() {
         const projects = this.state.projects
-        const temperature = this.state.temperature
         const func = this.showing()
         return (
             <Box>
