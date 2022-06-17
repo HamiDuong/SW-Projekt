@@ -25,7 +25,7 @@ class CreateProjectMain extends Component {
         this.state = {
             projectName: null,
             commissioner: null,
-            userId: 0,
+            userId: 1,
             projectId: '',
             selected: false,
             projectNameValidationFailed: false,
@@ -45,6 +45,10 @@ class CreateProjectMain extends Component {
             projectdurationId: null,
             bookingId: null,
             projectduration: null,
+            workTimeAccountId: 1,
+            eventBookingId: 0,
+            timeintervalBookingId: 0,
+            
 
             
         }

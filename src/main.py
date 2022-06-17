@@ -298,7 +298,7 @@ flexday = api.inherit('FlexDay', bo, {
 })
 
 projectduration = api.inherit('ProjectDuration', bo, {
-    '_start': fields.String(attribute='_start', description='Startpunkt des Intervalls'),
+    'start': fields.String(attribute='start', description='Startpunkt des Intervalls'),
     '_end': fields.String(attribute='_end', description='Endpunkt des Intervalls'),
     '_start_event': fields.Integer(attribute='_start_event', description='Fremdschlüssel zum Startevent'),
     '_end_event': fields.Integer(attribute='_end_event', description='Fremdschlüssel zum Endevent'),
