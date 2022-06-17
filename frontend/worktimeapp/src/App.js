@@ -85,7 +85,7 @@ class App extends React.Component {
 			this.setState({
 				userId: userBO[0].getID()
 			}, function(){
-				console.log("UserId", this.state.userId)
+				console.log("UserId", userBO)
 			this.getWorkTimeAccountId(userBO[0].getID())
 		}
 			)

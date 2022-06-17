@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import CreateProject from '../CreateProjectEntry';
+import ProjectDurationBO from '../../API/ProjectDurationBO';
+import BookingBO from '../../API/BookingBO';
 
 class CreateProjectMain extends Component {
     constructor(props) {
@@ -29,6 +31,12 @@ class CreateProjectMain extends Component {
             filteredUsers: [],
             loadingInProgress: false,
             error: null,
+            start: null,
+            end: null,
+            startEvent: null,
+            endEvent: null,
+            type: 'ProjectDuration',
+            
         }
 
 
@@ -43,14 +51,14 @@ class CreateProjectMain extends Component {
 
 
     addProjects = () => {
-        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.props.userId);
+        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userId);
         console.log(newProject)
         console.log(this.props.userId)
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
             this.setState({
                 projectName: project.name,
                 commissioner: project.commissioner,
-                userId: project.userId,
+                userId: 1,
                 projectId: project.id,
             }, function () {
                 console.log('add project läuft')
@@ -78,6 +86,17 @@ class CreateProjectMain extends Component {
                 });
 
     }
+    addTimeIntervalBooking = () => {
+        if ((this.state.type) === "ProjectDuration"){
+            let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.props.projectId);
+            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(this.state.type)
+            console.log(newProjectDurationBO)
+            console.log(newBookingBO)}
+        }
+    
     componentDidMount(){
         this.getAllUsers();
 
@@ -114,6 +133,7 @@ class CreateProjectMain extends Component {
 
     handleClick() {
         this.addProjects();
+        this.addTimeIntervalBooking();
         this.setState({
             selected: true,
         });

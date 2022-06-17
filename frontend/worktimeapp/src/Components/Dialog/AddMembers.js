@@ -22,6 +22,7 @@ class AddMembers extends Component {
       userNotFound: false,
       selectedUser: null,
       currentCapacity: 0, 
+      capacityValidationFailed: false,
   }
   
      }
@@ -122,7 +123,7 @@ class AddMembers extends Component {
   state = {  }
   render() { 
     const users = this.props;
-    const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetusers, searchUser, selectedUser} = this.state;
+    const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetusers, searchUser, selectedUser, capacity,capacityValidationFailed} = this.state;
     return ( 
       <Box>
 
@@ -154,8 +155,13 @@ class AddMembers extends Component {
                       ))
                     }
                   </TextField>
+                  
               }
               </form>
+              <TextField type='text' required fullWidth margin='normal' id='capacity' label='capacity:' value={capacity}
+                onChange={this.textFieldValueChange} error={capacityValidationFailed}
+                helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
+                
               
               <Button disabled={!selectedUser} variant='contained' color='primary' onClick={this.addProjectUser}>
               add new member

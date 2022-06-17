@@ -1514,7 +1514,7 @@ export default class WorkTimeAppAPI {
             })
         })
     }
-
+    
     getUserById(userID) {
         return this.#fetchAdvanced(this.#getUserByIdURL(userID))
             .then((responseJSON) => {
