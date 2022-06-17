@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
+import MyProjectsEntry from './MyProjectsEntry';
 
 
 class MyActivitiesEntry extends Component {
@@ -8,7 +9,9 @@ class MyActivitiesEntry extends Component {
         super(props);
         this.state = {
             activity : props.activity,
-            showDialog: false
+            showDialog: false,
+            openPopup:false,
+            setOpenPopup:false
         }
     }
     showEdit = () => {
@@ -36,9 +39,15 @@ class MyActivitiesEntry extends Component {
 
         }
     }
+    // togglePopupActivities() {
+    //     this.setState({
+    //       showPopupAddActivities: !this.state.showPopupAddActivities,
+    //     });
+    //   }
 
-    state = {  }
+
     render() { 
+        const  {openPopup, setOpenPopup } =  this.state
         return (
             <>
                 <TableRow
@@ -47,9 +56,27 @@ class MyActivitiesEntry extends Component {
                 >
                     <TableCell>{this.state.activity.name}</TableCell>
                     <TableCell>{this.state.activity.capacity}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell><button className='openPopup' onClick={() => {
+                            setOpenPopup(true);
+                             } }>
+                             Öffnen
+                           </button>
+                       
+                         
+
+                        
+                    </TableCell>
+                    {/* <TableCell> {this.state.setOpenPopup(true)= ()=>{
+                       <button className='openPopup' onClick={() => {
+                            setOpenPopup(true);
+                       } }>
+                     Öffnen
+                           </button> 
+                    }}  
+                     {openPopup && <MyProjectsEntry closePopup={setOpenPopup}/>}</TableCell> */}
                 </TableRow>
-                <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity>
+                {/* <MyProjectsEntry show={this.state.showDialog} onClose={this.closeDialog}></MyProjectsEntry> */}
+            
             </>
         );
     }
