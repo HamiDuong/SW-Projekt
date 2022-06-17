@@ -19,7 +19,7 @@ class CreateProjectMain extends Component {
         this.state = {
             projectName: null,
             commissioner: null,
-            userid: 0,
+            userId: 0,
             projectId: '',
             selected: false,
             projectNameValidationFailed: false,
@@ -43,13 +43,14 @@ class CreateProjectMain extends Component {
 
 
     addProjects = () => {
-        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userid);
+        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.props.userId);
         console.log(newProject)
+        console.log(this.props.userId)
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
             this.setState({
                 projectName: project.name,
                 commissioner: project.commissioner,
-                userid: 0,
+                userId: project.userId,
                 projectId: project.id,
             }, function () {
                 console.log('add project läuft')

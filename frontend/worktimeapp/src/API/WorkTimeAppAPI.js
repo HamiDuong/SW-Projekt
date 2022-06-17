@@ -1463,14 +1463,14 @@ export default class WorkTimeAppAPI {
     }
 
     //User-Methoden
-    // getAllUsers() {
-    //     return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
-    //         let responseUser = UserBO.fromJSON(responseJSON);
-    //         return new Promise(function (resolve) {
-    //             resolve(responseUser)
-    //         })
-    //     })
-    // }
+    getAllUsers() {
+        return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
     getUserById(userID) {
         return this.#fetchAdvanced(this.#getUserByIdURL(userID))
             .then((responseJSON) => {
@@ -1793,26 +1793,6 @@ export default class WorkTimeAppAPI {
         })
     }
     
-    deleteUser(user) {
-        return this.#fetchAdvanced(this.#deleteUserURL(user), {
-            method: 'DELETE'
-        }).then((responseJSON) => {
-            let responseUser = UserBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseUser)
-            })
-        })
-    }
-    updateUser(user) {
-        return this.#fetchAdvanced(this.#updateUserURL(user), {
-            body: JSON.stringify(flexdaystart)
-        }).then((responseJSON) => {
-            let responseFlexDayStart = FlexDayStartBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseFlexDayStart)
-            })
-        })
-    }
 
     deleteFlexDayEnd(flexdayend) {
         return this.#fetchAdvanced(this.#deleteFlexDayEndURL(flexdayend), {
