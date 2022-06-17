@@ -9,6 +9,10 @@ import Grid from '@mui/material/Grid';
 import CreateProject from '../CreateProjectEntry';
 import ProjectDurationBO from '../../API/ProjectDurationBO';
 import BookingBO from '../../API/BookingBO';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { format } from "date-fns";
 
 class CreateProjectMain extends Component {
     constructor(props) {
@@ -31,11 +35,17 @@ class CreateProjectMain extends Component {
             filteredUsers: [],
             loadingInProgress: false,
             error: null,
-            start: null,
-            end: null,
+            start: Date,
+            end: Date,
             startEvent: null,
             endEvent: null,
             type: 'ProjectDuration',
+            workTimeAccountId:0,
+            event: Date,
+            projectdurationId: null,
+            bookingId: null,
+            projectduration: null,
+
             
         }
 
@@ -60,11 +70,42 @@ class CreateProjectMain extends Component {
                 commissioner: project.commissioner,
                 userId: 1,
                 projectId: project.id,
-            }, function () {
-                console.log('add project läuft')
-            })
+            }, this.addTimeIntervalBooking(),
+            )
         )
-    }
+        }
+
+    // addProjects = () => {
+    //     let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userId);
+    //     console.log(newProject)
+    //     console.log(this.props.userId)
+    //     WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
+    //         this.setState({
+    //             projectName: project.name,
+    //             commissioner: project.commissioner,
+    //             userId: 1,
+    //             projectId: project.id,
+    //         }, function () {
+    //             console.log('add project läuft')
+    //         }))
+    //         let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.projectId);
+    //         WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO).then(projectduration =>
+    //             this.setState({
+    //                 start : projectduration.start,
+    //                 end : projectduration.end,
+    //                 projectduration: projectduration,
+    //                 projectdurationId: projectduration.id
+
+    //             }))
+    //         let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+    //         WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
+    //             this.setState({
+    //                 workTimeAccountId: 1,
+    //                 userId : 1,
+    //                 bookingId: booking.id,
+    //             }))
+   
+    // }
     getAllUsers = () => {
         WorkTimeAppAPI.getAPI().getAllUsers()
         .then(userBOs =>
@@ -87,15 +128,29 @@ class CreateProjectMain extends Component {
 
     }
     addTimeIntervalBooking = () => {
-        if ((this.state.type) === "ProjectDuration"){
             let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.props.projectId);
-            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
+            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO).then(projectduration =>
+                this.setState({
+                    start : projectduration.start,
+                    end : projectduration.end,
+                    type: 'ProjectDuration',
+                    projectId: projectduration.id,
+
+                }))
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
+                this.setState({
+                    workTimeAccountId: 1,
+                    projectId: 1,
+                    userId : 1,
+                    type: 'PojectDuration',
+                }))
             console.log(this.state.type)
             console.log(newProjectDurationBO)
-            console.log(newBookingBO)}
+            console.log(newBookingBO)
+        
         }
+        
     
     componentDidMount(){
         this.getAllUsers();
@@ -133,7 +188,7 @@ class CreateProjectMain extends Component {
 
     handleClick() {
         this.addProjects();
-        this.addTimeIntervalBooking();
+        // this.addTimeIntervalBooking();
         this.setState({
             selected: true,
         });
@@ -145,7 +200,19 @@ class CreateProjectMain extends Component {
             selected: true,
         });
     }
-
+    
+    handleStartDateChange(newValue){
+        this.setState({
+            start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
+        })
+        console.log(this.state.start)
+    }
+    handleEndDateChange(newValue){
+        this.setState({
+            end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
+        })
+        console.log(this.state.end)
+    }
     render() {
         const { projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed } = this.state
         const func = this.showing()
@@ -167,27 +234,31 @@ class CreateProjectMain extends Component {
 
 
                 <br />
-                <TextField
-                    id="startfilter"
-                    label="Duration Start"
-                    variant="standard"
-                    format={'YYYY/MM/DD'}
-                    type="date"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    renderInput={(props) => <TextField {...props} />}
+                                    label="Start"
+                                    value={this.state.start}
+                                    onChange={(newValue) => {
+                                    this.handleStartDateChange(newValue);
+                                    }}
+                                    minDate={new Date('2022-01-01')}
+                                />
+                                
+                            </LocalizationProvider>  
                 <br />
-                <TextField
-                    id="startfilter"
-                    label="Duration Ende"
-                    variant="standard"
-                    format={'YYYY/MM/DD'}
-                    type="date"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    renderInput={(props) => <TextField {...props} />}
+                                    label="End"
+                                    value={this.state.end}
+                                    onChange={(newValue) => {
+                                    this.handleEndDateChange(newValue);
+                                    }}
+                                    minDate={new Date('2022-01-01')}
+                                />
+                                
+                            </LocalizationProvider>            
 
                 <Grid xs={12} item>
                     <Button
