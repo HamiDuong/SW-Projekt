@@ -114,6 +114,10 @@ venv.bak/
 .spyderproject
 .spyproject
 
+# production
+/frontend/worktimeapp/build
+/src/static/reactclient
+
 # Rope project settings
 .ropeproject
 

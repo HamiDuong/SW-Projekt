@@ -4,8 +4,10 @@ from server.bo import BusinessObject as bo
 @author Marco
 @co-author Ha Mi Duong (https://github.com/HamiDuong)
 """
+
+
 class UserBO (bo.BusinessObject):
-    
+
     def __init__(self):
         super().__init__()
         self._first_name = ""  # Der Vorname des Benutzers.
@@ -43,7 +45,7 @@ class UserBO (bo.BusinessObject):
 
     def set_google_user_id(self, value):
         """Setzen des Benutzernamens."""
-        self._google_user_id = value        
+        self._google_user_id = value
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
