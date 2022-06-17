@@ -84,13 +84,19 @@ class App extends React.Component {
 	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
 			this.setState({
 				userId: userBO[0].getID()
-			}, this.getWorkTimeAccountId(userBO[0].getID()))
+			}, function(){
+				console.log("UserId", this.state.userId)
+			this.getWorkTimeAccountId(userBO[0].getID())
+		}
+			)
 			})}
 
   getWorkTimeAccountId = (id) =>{
 	WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(id).then(accountBO =>{
 		this.setState({
 			workTimeAccountId: accountBO[0].getID()
+		}, function(){
+			console.log("WorktimeAccountId", this.state.workTimeAccountId)
 		})
 		})}
 
