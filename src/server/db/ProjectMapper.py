@@ -25,7 +25,6 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
             result.append(projectobj)
 
         self._cnx.commit()
@@ -52,7 +51,6 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()
@@ -177,7 +175,6 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()

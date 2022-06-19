@@ -87,16 +87,16 @@ class EditBooking extends Component {
 
     }
 
-    // saveChanges = () => {
-    //     let starthold = document.getElementById("startdate");
-    //     let endhold = document.getElementById("enddate");
-    //     this.setState({
-    //         startdate: starthold.value,
-    //         enddate: endhold.value,
-    //     }, function(){
-    //         console.log("State für neue Werte");
-    //     });
-    // }
+    saveChanges = () => {
+        let starthold = document.getElementById("startdate");
+        let endhold = document.getElementById("enddate");
+        this.setState({
+            startdate: starthold.value,
+            enddate: endhold.value,
+        }, function(){
+            console.log("State für neue Werte");
+        });
+    }
 
     updateBooking = () => {
         let starthold = document.getElementById("start");

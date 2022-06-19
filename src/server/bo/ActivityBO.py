@@ -11,7 +11,7 @@ class ActivityBO(bo.BusinessObject):
         self._name = None
         self._capacity = None
         self._project_id = None
-        self._duration = None
+        # self._duration = None
         self._current_capacity = None
 
     def get_name(self):
@@ -38,11 +38,11 @@ class ActivityBO(bo.BusinessObject):
         """Setzen der Projekt ID"""
         self._project_id = project_id
 
-    def get_duration(self):
-        return self._duration
+    # def get_duration(self):
+    #     return self._duration
 
-    def set_duration(self, value):
-        self._duration = value
+    # def set_duration(self, value):
+    #     self._duration = value
 
     def get_current_capacity(self):
         return self._current_capacity
@@ -54,7 +54,7 @@ class ActivityBO(bo.BusinessObject):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 
         Diese besteht aus der ID der Superklasse ergänzt durch die Aktivitaeten eines Projekts."""
-        return "Customer: {}, {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_duration(), self.get_current_capacity())
+        return "Customer: {}, {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_current_capacity())
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -64,6 +64,7 @@ class ActivityBO(bo.BusinessObject):
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])
         obj.set_name(dictionary["name"])
         obj.set_capacity(dictionary["capacity"])
-        obj.set_project_id(dictionary)["projectId"]
+        obj.set_project_id(dictionary["projectId"])
+        # obj.set_duration(dictionary["duration"])
         obj.set_current_capacity(dictionary["currentCapacity"])
         return obj

@@ -1,12 +1,12 @@
 import React from 'react';
 import MyBookings from './Components/Pages/MyBookings';
-import { ThemeProvider} from  '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Theme from './Theme';
 import { CssBaseline } from '@mui/material';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './Components/NavBar';
 import MyProfile from './Components/MyProfile';
-import CreateProject from './Components/CreateProject';
+import CreateProject from './Components/Pages/CreateProjectMain';
 import MyWorkTime from './Components/MyWorkTime';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
@@ -85,7 +85,7 @@ class App extends React.Component {
 			this.setState({
 				userId: userBO[0].getID()
 			}, function(){
-				console.log("UserId", this.state.userId)
+				console.log("UserId", userBO)
 			this.getWorkTimeAccountId(userBO[0].getID())
 		}
 			)
@@ -121,7 +121,7 @@ class App extends React.Component {
           <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
-          <Route path='/createproject' exact element={<CreateProject userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/createprojectmain' exact element={<CreateProject userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myprojectstest' exact element={<MyProjectsTest userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
         </Routes>
@@ -134,6 +134,6 @@ class App extends React.Component {
    ) 
  }
 }
- 
+
 export default App;
 
