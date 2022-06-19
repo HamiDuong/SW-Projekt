@@ -95,7 +95,7 @@ class WorkTimeAccountMapper(Mapper):
         return result
 
     def find_by_user_id(self, key):
-        result = []
+        result = None
 
         cursor = self._cnx.cursor()
         command = "SELECT id, dateOfLastChange, userId, contractTime, overTime FROM worktimeapp.worktimeaccounts WHERE userId={}".format(
@@ -110,7 +110,7 @@ class WorkTimeAccountMapper(Mapper):
             account.set_user_id(userId)
             account.set_contract_time(contractTime)
             account.set_overtime(overTime)
-            result.append(account)
+            result = account
 
         self._cnx.commit()
         cursor.close()

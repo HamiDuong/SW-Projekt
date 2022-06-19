@@ -24,7 +24,7 @@ class FlexDayBO (ti.TimeIntervalBO):
 
     def __init__(self):
         super().__init__()
-        self.set_type("Flex Day")
+        self.set_type("FlexDay")
 
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 

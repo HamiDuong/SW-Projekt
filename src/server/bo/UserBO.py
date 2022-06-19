@@ -4,8 +4,10 @@ from server.bo import BusinessObject as bo
 @author Marco
 @co-author Ha Mi Duong (https://github.com/HamiDuong)
 """
+
+
 class UserBO (bo.BusinessObject):
-    
+
     def __init__(self):
         super().__init__()
         self._first_name = ""  # Der Vorname des Benutzers.
@@ -43,7 +45,7 @@ class UserBO (bo.BusinessObject):
 
     def set_google_user_id(self, value):
         """Setzen des Benutzernamens."""
-        self._google_user_id = value        
+        self._google_user_id = value
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
@@ -54,9 +56,9 @@ class UserBO (bo.BusinessObject):
         """Umwandeln eines Python dict() in einen User()."""
         obj = UserBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
-        obj.set_date_of_last_change(dictionary["date_of_last_change"])
-        obj.set_first_name(dictionary["first_name"])
-        obj.set_last_name(dictionary["last_name"])
-        obj.set_mail_adress(dictionary["mail_adress"])
-        obj.set_google_user_id(dictionary["google_user_id"])        
+        obj.set_date_of_last_change(dictionary["dateOfLastChange"])
+        obj.set_first_name(dictionary["firstName"])
+        obj.set_last_name(dictionary["lastName"])
+        obj.set_mail_adress(dictionary["mailAdress"])
+        obj.set_google_user_id(dictionary["googleUserId"])
         return obj
