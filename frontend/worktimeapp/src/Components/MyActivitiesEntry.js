@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
+import MyProjectsEntry from './MyProjectsEntry';
 
 
 class MyActivitiesEntry extends Component {
     constructor(props) {
         super(props);
+        this.togglePopupMyProjectsEntry = this.togglePopupMyProjectsEntry.bind(this);
         this.state = {
             activity : props.activity,
-            showDialog: false
+            showDialog: false,
+            showPopupMyProjectEntry: false
         }
     }
     showEdit = () => {
@@ -18,6 +21,11 @@ class MyActivitiesEntry extends Component {
             console.log("EditWindow öffnen per OnClick")
         })
     }
+    togglePopupMyProjectsEntry() {
+        this.setState({
+          showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
+        });
+      }
 
     closeDialog = (booking) => {
         if(booking){
@@ -37,8 +45,9 @@ class MyActivitiesEntry extends Component {
         }
     }
 
-    state = {  }
+    
     render() { 
+        
         return (
             <>
                 <TableRow
@@ -47,8 +56,19 @@ class MyActivitiesEntry extends Component {
                 >
                     <TableCell>{this.state.activity.name}</TableCell>
                     <TableCell>{this.state.activity.capacity}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                    
+                    </TableCell>
+                    
                 </TableRow>
+                <button onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</button>
+                    {this.state.showPopupMyProjectEntry ? 
+                    <MyProjectsEntry
+                    text='Close'
+                    closePopup={this.togglePopupMyProjectsEntry.bind(this)}
+                    />
+                    : null
+                    }
                 <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity>
             </>
         );

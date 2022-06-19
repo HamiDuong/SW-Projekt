@@ -37,12 +37,6 @@ function MyProjectsEntry({closePopup}) {
                 <button onClick={() => closePopup(false)}>X</button>
             </div>
             <div className='title'>
-                <h1>
-                    Aktivität: 
-                </h1>
-                <p>
-                    Hier kommen die Aktivitäten!
-                </p>
             </div>
             <div className='body'>
              {/* Hier kommt der Timer! */}   
@@ -57,26 +51,27 @@ function MyProjectsEntry({closePopup}) {
             <div className='footer'>
                 {/* Start Button: */}
                  {!timerOn && time === 0 && ( 
-                <button onClick={() => setTimerOn(true)}>Arbeit starten</button>
+                <button onClick={() => setTimerOn(true)}>Start activity</button>
                 )}
                 
 
                 {/* Ende Button */}
                 {timerOn > 0 &&
-                <button onClick={() => closePopup(false)}>Arbeit beenden</button>
+                <button onClick={() => closePopup(false)}>end Activity</button>
                 }
                 
                 {/* Pause Button:
                   Dazu gehört Start Pause und Ende Pause */}
                 {timerOn && 
-                  <button onClick={() => setTimerOn(false)}>Pause starten</button>}
+                  <button onClick={() => setTimerOn(false)}>Start break</button>}
                  
                 {!timerOn && time > 0 && (
-                <button onClick={() => setTimerOn(true)}>Pause beenden</button>
+                <button onClick={() => setTimerOn(true)}>End break</button>
                 )}
 
                 {/* <button onClick={() => closePopup(false)} id='saveBtn'>Speichern</button> */}
-                <button onClick={() => closePopup(false)} id='cancelBtn'>Abbrechen</button>
+                <button onClick={() => closePopup(false)} id='cancelBtn'>Cancel</button>
+                {/* <button onClick={this.closePopup} id='cancelBtn'>close me</button> */}
             </div>
         </div>
     </div>
