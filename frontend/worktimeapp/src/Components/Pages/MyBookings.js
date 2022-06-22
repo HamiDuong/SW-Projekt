@@ -24,6 +24,7 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import EditBooking from '../Dialog/EditBooking';
 import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
+import CreateWorkTimeSheet from '../Dialog/CreateWorkTimeSheet';
 
 const header = [
     {
@@ -124,6 +125,8 @@ class MyBookings extends Component {
     constructor(props){
         super(props);
         this.state = {
+            userId : this.props.userId,
+
             intervalbookings: [],
             eventbookings: [],
 
@@ -131,6 +134,8 @@ class MyBookings extends Component {
             filteredeventbookings: [],
 
             renderedbookings: [],
+
+            workbookings: [],
 
             bookingtype: 'all',
             typefilter: null,
@@ -141,36 +146,80 @@ class MyBookings extends Component {
             showResetButton: true,
             error: null,
 
+            dialogWorkTimeSheet: false,
             showEditWindow: false
         }
     }
 
     componentDidMount(){
+        console.log('ComponentDidMount')
         this.getBookings();
-        console.log("userid bookings", this.props.userId)
+        console.log("userid bookings", this.props.userId);
+        //this.getWorkBookings();
     }
 
-    componentDidUpdate(prevProps){
-        if ((this.props.show) && (this.props.show !== prevProps.show)) {
-            this.getBookings();
-          }        
-    }
+    // componentDidUpdate(prevProps){
+    //     if ((this.props.show) && (this.props.show !== prevProps.show)) {
+    //         this.getBookings();
+    //       }        
+    // }
 
     handleChange = ev => {
         this.setState({ [ev.target.name] : ev.target.value });
     };
 
     getBookings = () => {
-        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
-        // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
+        // WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
+        // // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
+        //     this.setState({
+        //         intervalbookings: responseJSON.timeintervals,
+        //         eventbookings: responseJSON.events,
+        //         filteredintervalbookings: responseJSON.timeintervals,
+        //         filteredeventbookings: responseJSON.events            
+        //     },function(){
+        //         console.log("getBookings")
+        //     }))
+
+            // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
+                
             this.setState({
-                intervalbookings: responseJSON.timeintervals,
-                eventbookings: responseJSON.events,
-                filteredintervalbookings: responseJSON.timeintervals,
-                filteredeventbookings: responseJSON.events            
-            },function(){
-                console.log("getBookings")
-            }))
+                    intervalbookings: fakebackend.timeintervals,
+                    eventbookings: fakebackend.events,
+                    filteredintervalbookings: fakebackend.timeintervals,
+                    filteredeventbookings: fakebackend.events            
+                },function(){
+                    console.log("getBookings")
+                })
+
+                //von den Bookings nur die Work Intervalle rausfiltern
+                let res = [];
+                let bookings = this.state.intervalbookings;
+                bookings.forEach(elem => {
+                    if(elem.type == "Work"){
+                        res.push(elem);
+                    }
+                });
+                this.setState({
+                    workbookings: res
+                }, function(){
+                    console.log("Workbookings wurden ausgefiltert")
+                })
+    }
+
+    getWorkBookings = () => {
+        let res = [];
+        let bookings = this.state.intervalbookings;
+        bookings.forEach(elem => {
+            if(elem.type == "Work"){
+                res.push(elem);
+                console.log(elem.type)
+            }
+        });
+        this.setState({
+            workbookings: res
+        }, function(){
+            console.log("Workbookings wurden ausgefiltert")
+        })
     }
 
     resetFilter = () => {
@@ -179,9 +228,11 @@ class MyBookings extends Component {
             typefilter: '',
             startfilter: null,
             endfilter: null,
-            showResetButton: true
+            showResetButton: true,
+            filteredintervalbookings: this.state.intervalbookings,
+            filteredeventbookings: this.state.eventbookings
         }, function(){
-            console.log(this.state.startfilter)
+            console.log("State wurde zurückgesetzt")
         })
     }
 
@@ -189,36 +240,63 @@ class MyBookings extends Component {
 
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
+        let type = this.state.typefilter
+
         this.setState({
             startfilter: starthold.value,
             endfilter: endhold.value,
             showResetButton: false
         }, function(){
-            console.log(this.state.startfilter);
+            console.log("Zeitfilter wurden gesetzt");
         });
 
         let intervalbookings = this.state.intervalbookings;
-        let eventbookings = this.state.eventbookings;
         let ires = [];
+        let eventbookings = this.state.eventbookings;
         let eres = [];
 
-        //Intervalbookings nach Type filtern
+        //Buchungen nach Type filtern
+        //Intervallbuchungen nach Type filtern
         intervalbookings.forEach(function(elem){
-            if(this.state.typefilter == elem.type){
+            let elemtype = elem.type
+            console.log(elemtype)
+            if(type == elemtype){
                 ires.push(elem)
-            }else if(this.state.typefilter == elem.type){
-                ires.push(elem)
+                console.log('Elemt gehört in den Filter')
+                console.log()
             }else{
                 console.log('Element gehört nicht in das Filter')
             }
 
+        })
+
+        this.setState({
+            filteredintervalbookings: ires
         }, function(){
-            this.setState({
-                intervalbookings: ires
-            }, function(){
-                console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung")
-            })
-        });
+            console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung")
+        })
+
+        //Eventbuchungen nach Type filtern
+        eventbookings.forEach(function(elem){
+            let elemtype = elem.type
+            console.log(elemtype)
+            if(type == elemtype){
+                eres.push(elem)
+                console.log('Elemt gehört in den Filter')
+            }else{
+                console.log('Element gehört nicht in das Filter')
+            }
+
+        })
+
+        this.setState({
+            filteredeventbookings: eres
+        }, function(){
+            console.log("State wurde gesetzt für EventBuchungen nach TypeFilterung")
+        })
+
+
+        console.log(this.state.filteredintervalbookings)
 
         if(this.state.bookingtype == "timeinterval"){
             this.setState({
@@ -233,46 +311,7 @@ class MyBookings extends Component {
                 console.log("Nur Eventbuchungen")
             })
         }
-
-        // intervalbookings.forEach(function(elem){
-        //     if(elem.start >= this.state.startfilter && elem.end <= this.state.endfilter){
-        //         console.log(elem)
-        //     }
-        // })
-        // console.log(ires);
     }
-
-    // renderIntervalBookings = () => {
-    //     return(
-    //         <TableBody>
-    //             {this.state.filteredintervalbookings.map(row =>
-    //                 <TableRow>
-    //                     <TableCell>Interval</TableCell>
-    //                     <TableCell>{row.type}</TableCell>
-    //                     <TableCell>{row.start}</TableCell>
-    //                     <TableCell>{row.end}</TableCell>
-    //                     <TableCell>Remark</TableCell>
-    //                 </TableRow>
-    //             )}
-    //         </TableBody>           
-    //     )
-    // }
-
-    // renderEventBookings = () => {
-    //     return(
-    //         <TableBody>
-    //             {this.state.filteredeventbookings.map(row =>
-    //                 <TableRow>
-    //                     <TableCell>Event</TableCell>
-    //                     <TableCell>{row.type}</TableCell>
-    //                     <TableCell>{row.time}</TableCell>
-    //                     <TableCell>-</TableCell>
-    //                     <TableCell>Remark</TableCell>
-    //                 </TableRow>    
-    //             )}
-    //         </TableBody>            
-    //     )
-    // }
     
     editRow = (event) => {
         event.stopPropagation();
@@ -287,7 +326,7 @@ class MyBookings extends Component {
         return(
             <TableBody>
                 {
-                    this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
+                    this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row} userId={this.props.userId}/>)
                 }
             </TableBody>
         )
@@ -297,7 +336,7 @@ class MyBookings extends Component {
         return(
             <TableBody>
                 {
-                    this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row}/>)
+                    this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row} userId={this.props.userId}/>)
                 }
             </TableBody>
         )
@@ -313,9 +352,35 @@ class MyBookings extends Component {
         console.log(this.state.showEditWindow);
     }
 
+    openCreateWorkTimeSheet = () => {
+        this.setState({
+            dialogWorkTimeSheet: true
+        },function(){
+            console.log("Open Create WorkTimeSheet Window")
+        })
+    }
+
+    //TODO
+    closeDialog = () => {
+        if(true){
+            this.setState({
+                dialogWorkTimeSheet: false
+            }, function(){
+                console.log("Editwindow wird geschlossen")
+            })
+        }else{
+            this.setState({
+                showDialog: false
+            },function(){
+                console.log("Editwindow wird geschlossen ohne Update")
+            })
+
+        }
+    }
+
     render(){
         return(
-            <div>
+            <>
                 {/* <h1>My Bookings</h1> */}
                 <div>
                     <h2>Filter Settings</h2>
@@ -395,6 +460,11 @@ class MyBookings extends Component {
                     >
                         Print State
                     </Button>
+                    <Button
+                        onClick={this.openCreateWorkTimeSheet}
+                    >
+                        Create Work Time Sheet
+                    </Button>
                 </Box>
                 <Box sx={{width: '100%'}}>
                     <h2>My Bookings</h2>
@@ -415,49 +485,14 @@ class MyBookings extends Component {
                                         ))}
                                     </TableRow>
                                 </TableHead>
-                                <this.mapIntervalBookings>
-                                    
-                                </this.mapIntervalBookings>
-                                {/* <TableBody>
-                                    {
-                                        this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
-                                    } */}
-
-                                    {/* {this.state.filteredintervalbookings.map(row =>
-                                        <TableRow
-                                            hover
-                                            onClick = {() => console.log("Click")}
-                                        >
-                                            <TableCell>Interval</TableCell>
-                                            <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.start}</TableCell>
-                                            <TableCell>{row.end}</TableCell>
-                                            <TableCell>Remark</TableCell>
-                                        </TableRow>
-                                    )} */}
-                                {/* </TableBody> */}
-                                <this.mapEventBookings>
-
-                                </this.mapEventBookings>
-                                {/* <TableBody>
-                                    {
-                                        this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row}/>)
-                                    } */}
-                                    {/* {this.state.filteredeventbookings.map(row =>
-                                        <TableRow>
-                                            <TableCell>Event</TableCell>
-                                            <TableCell>{row.type}</TableCell>
-                                            <TableCell>{row.time}</TableCell>
-                                            <TableCell>-</TableCell>
-                                            <TableCell>Remark</TableCell>
-                                        </TableRow>    
-                                    )} */}
-                                {/* </TableBody> */}
+                                <this.mapIntervalBookings></this.mapIntervalBookings>
+                                <this.mapEventBookings></this.mapEventBookings>
                             </Table>
                         </TableContainer>
                     </Paper>
                 </Box>
-            </div>
+                <CreateWorkTimeSheet show = {this.state.dialogWorkTimeSheet} workbookings = {this.state.filteredintervalbookings} onClose={this.closeDialog}></CreateWorkTimeSheet>
+            </>
         );
     }
 }
