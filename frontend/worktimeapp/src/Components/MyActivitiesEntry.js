@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
 import MyProjectsEntry from './MyProjectsEntry';
+import Button from '@mui/material/Button';
 
 
 class MyActivitiesEntry extends Component {
@@ -61,7 +62,7 @@ class MyActivitiesEntry extends Component {
                     </TableCell>
                     
                 </TableRow>
-                <button onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</button>
+                <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
                     {this.state.showPopupMyProjectEntry ? 
                     <MyProjectsEntry
                     text='Close'
