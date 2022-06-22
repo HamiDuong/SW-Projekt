@@ -145,10 +145,6 @@ class MyBookings extends Component {
         }
     }
 
-    handleChange = ev => {
-        this.setState({ [ev.target.name] : ev.target.value });
-    };
-
     componentDidMount(){
         this.getBookings();
     }
@@ -158,6 +154,10 @@ class MyBookings extends Component {
             this.getBookings();
           }        
     }
+
+    handleChange = ev => {
+        this.setState({ [ev.target.name] : ev.target.value });
+    };
 
     getBookings = () => {
         // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
@@ -181,16 +181,6 @@ class MyBookings extends Component {
         }, function(){
             console.log(this.state.startfilter)
         })
-    }
-
-    printState = () => {
-        console.log(this.state.intervalbookings);
-        console.log(this.state.eventbookings);
-        console.log(this.state.bookingtype);
-        console.log(this.state.typefilter);
-        console.log(this.state.startfilter);
-        console.log(this.state.endfilter);
-        console.log(this.state.showEditWindow);
     }
 
     filterBookings = () => {
@@ -311,11 +301,22 @@ class MyBookings extends Component {
         )
     }
 
+    printState = () => {
+        console.log(this.state.intervalbookings);
+        console.log(this.state.eventbookings);
+        console.log(this.state.bookingtype);
+        console.log(this.state.typefilter);
+        console.log(this.state.startfilter);
+        console.log(this.state.endfilter);
+        console.log(this.state.showEditWindow);
+    }
+
     render(){
         return(
             <div>
-                <h1>My Bookings</h1>
+                {/* <h1>My Bookings</h1> */}
                 <div>
+                    <h2>Filter Settings</h2>
                     <FormControl>
                         <FormLabel id="viewfilter"></FormLabel>
                         <RadioGroup
@@ -394,6 +395,7 @@ class MyBookings extends Component {
                     </Button>
                 </Box>
                 <Box sx={{width: '100%'}}>
+                    <h2>My Bookings</h2>
                     <Paper sx={{width: '100%', mb: 2}}>
                         <TableContainer>
                             <Table>
