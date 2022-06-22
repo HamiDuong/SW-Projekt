@@ -12,9 +12,19 @@ class Mapper (AbstractContextManager, ABC):
 
     def __enter__(self):
 
-        self._cnx = connector.connect(user='root', password='hdmsw201920',
-                                      host='localhost',
-                                      database='worktimeapp')
+        if os.getenv('GAE_ENV', '').startswith('standard'):
+            """Landen wir in diesem Zweig, so haben wir festgestellt, dass der Code in der Cloud abläuft.
+            Die App befindet sich somit im **Production Mode** und zwar im *Standard Environment*.
+            Hierbei handelt es sich also um die Verbindung zwischen Google App Engine und Cloud SQL."""
+
+            self._cnx = connector.connect(user='root', password='hdmsw201920',
+                                          unix_socket='/cloudsql/sigma-sector-353411:europe-west3:worktimeapp-db',
+                                          database='worktimeapp')
+        else:
+
+            self._cnx = connector.connect(user='root', password='hdmsw201920',
+                                          host='localhost',
+                                          database='worktimeapp')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
