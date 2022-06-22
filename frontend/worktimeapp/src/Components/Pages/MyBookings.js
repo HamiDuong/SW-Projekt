@@ -151,6 +151,7 @@ class MyBookings extends Component {
 
     componentDidMount(){
         this.getBookings();
+        console.log("userid bookings", this.props.userId)
     }
 
     componentDidUpdate(prevProps){
@@ -160,15 +161,16 @@ class MyBookings extends Component {
     }
 
     getBookings = () => {
+        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
         // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
-        this.setState({
-            intervalbookings: fakebackend.timeintervals,
-            eventbookings: fakebackend.events,
-            filteredintervalbookings: fakebackend.timeintervals,
-            filteredeventbookings: fakebackend.events            
-        },function(){
-            console.log("getBookings")
-        })
+            this.setState({
+                intervalbookings: responseJSON.timeintervals,
+                eventbookings: responseJSON.events,
+                filteredintervalbookings: responseJSON.timeintervals,
+                filteredeventbookings: responseJSON.events            
+            },function(){
+                console.log("getBookings")
+            }))
     }
 
     resetFilter = () => {
