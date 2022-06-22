@@ -12,8 +12,9 @@ class MyBookingsEventEntry extends Component {
         super(props);
         this.state = {
             booking: props.booking,
-            showDialog: false,
+            userId: props.userId,
 
+            showDialog: false,
             loadingInProgress: false,
             error: null,
         }
@@ -41,7 +42,6 @@ class MyBookingsEventEntry extends Component {
             },function(){
                 console.log("Editwindow wird geschlossen ohne Update")
             })
-
         }
     }
 
@@ -66,7 +66,7 @@ class MyBookingsEventEntry extends Component {
                     <TableCell>-</TableCell>
 
                 </TableRow>
-                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}></EditBookingEvent>
+                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking} user={this.props.userId}></EditBookingEvent>
             </>
         );
     }

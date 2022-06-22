@@ -13,8 +13,9 @@ class MyBookingsIntervalEntry extends Component {
         super(props);
         this.state = {
             booking: props.booking,
-            showDialog: false,
+            userId: props.userId,
 
+            showDialog: false,
             loadingInProgress: false,
             error: null,
         }

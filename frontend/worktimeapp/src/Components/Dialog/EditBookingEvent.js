@@ -4,7 +4,8 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    Button
+    Button,
+    Stack
 } from '@mui/material';
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
@@ -27,6 +28,8 @@ class EditBookingEvent extends Component {
         super(props);
         this.state = {
             booking: props.booking,
+            userId: props.userId,
+
             time: props.booking.time,
             type: props.booking.type
         };
@@ -36,86 +39,6 @@ class EditBookingEvent extends Component {
     handleClose = () => {
         this.props.onClose(null)
     }
-    
-    deleteBooking = () => {
-        console.log("Booking löschen");
-        const { booking } = this.props;
-
-        switch(this.state.type){
-            case "BreakStart":
-                WorkTimeAppAPI.getAPI().deleteBreakStart(booking.getId()).then(booking =>{
-                    console.log("Delete BreakStart");
-                    console.log(booking);
-                });
-            
-            case "BreakEnd":
-                WorkTimeAppAPI.getAPI().deleteBreakEnd(booking.getId()).then(booking =>{
-                    console.log("Delete BreakEnd");
-                    console.log(booking);
-                });
-
-            case "Coming":
-                WorkTimeAppAPI.getAPI().deleteComing(booking.getId()).then(booking =>{
-                    console.log("Delete Coming");
-                    console.log(booking);
-                });
-
-            case "Going":
-                WorkTimeAppAPI.getAPI().deleteGoing(booking.getId()).then(booking =>{
-                    console.log("Delete Going");
-                    console.log(booking);
-                });
-
-            case "FlexDayEnd":
-                WorkTimeAppAPI.getAPI().deleteFlexDayEnd(booking.getId()).then(booking =>{
-                    console.log("Delete FlexDayEnd");
-                    console.log(booking);
-                });
-
-            case "FlexDayStart":
-                WorkTimeAppAPI.getAPI().deleteFlexDayStart(booking.getId()).then(booking =>{
-                    console.log("Delete FlexDayStart");
-                    console.log(booking);
-                });
-
-            case "IllnessStart":
-                WorkTimeAppAPI.getAPI().deleteIllnessStart(booking.getId()).then(booking =>{
-                    console.log("Delete IllnessStart");
-                    console.log(booking);
-                });
-
-            case "IllnessEnd":
-                WorkTimeAppAPI.getAPI().deleteIllnessEnd(booking.getId()).then(booking =>{
-                    console.log("Delete IllnessEnd");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkStart":
-                WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking =>{
-                    console.log("Delete ProjectWorkStart");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkEnd":
-                WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking =>{
-                    console.log("Delete ProjectWorkEnd");
-                    console.log(booking);
-                });
-
-            case "VacationStart":
-                WorkTimeAppAPI.getAPI().deleteVacationStart(this.state.booking).then(booking =>{
-                    console.log("Delete VacationStart");
-                    console.log(booking);
-                });
-
-            case "VacationEnd":
-                WorkTimeAppAPI.getAPI().deleteVacationEnd(this.state.booking).then(booking =>{
-                    console.log("Delete VacationEnd");
-                    console.log(booking);
-                });                    
-        }
-
-    }
 
     saveChanges = () => {
         let timehold = document.getElementById("time");
@@ -124,6 +47,87 @@ class EditBookingEvent extends Component {
         }, function(){
             console.log("State für neue Werte");
         });
+    }
+    
+    deleteBooking = () => {
+        console.log("Booking löschen");
+        const { booking } = this.props;
+
+        switch(this.state.type){
+            case "breakbegin":
+                WorkTimeAppAPI.getAPI().deleteBreakStart(booking.id).then(booking =>{
+                    console.log("Delete BreakStart");
+                    console.log(booking);
+                });
+            
+            case "breakend":
+                WorkTimeAppAPI.getAPI().deleteBreakEnd(booking.id).then(booking =>{
+                    console.log("Delete BreakEnd");
+                    console.log(booking);
+                });
+
+            case "coming":
+                WorkTimeAppAPI.getAPI().deleteComing(booking.id).then(booking =>{
+                    console.log("Delete Coming");
+                    console.log(booking);
+                });
+
+            case "going":
+                WorkTimeAppAPI.getAPI().deleteGoing(booking.id).then(booking =>{
+                    console.log("Delete Going");
+                    console.log(booking);
+                });
+
+            case "flexdayend":
+                WorkTimeAppAPI.getAPI().deleteFlexDayEnd(booking.id).then(booking =>{
+                    console.log("Delete FlexDayEnd");
+                    console.log(booking);
+                });
+
+            case "flexdaystart":
+                WorkTimeAppAPI.getAPI().deleteFlexDayStart(booking.id).then(booking =>{
+                    console.log("Delete FlexDayStart");
+                    console.log(booking);
+                });
+
+            case "illnessbegin":
+                WorkTimeAppAPI.getAPI().deleteIllnessStart(booking.id).then(booking =>{
+                    console.log("Delete IllnessStart");
+                    console.log(booking);
+                });
+
+            case "illnessend":
+                WorkTimeAppAPI.getAPI().deleteIllnessEnd(booking.id).then(booking =>{
+                    console.log("Delete IllnessEnd");
+                    console.log(booking);
+                });
+
+            case "projectworkbegin":
+                WorkTimeAppAPI.getAPI().deleteProjectWorkStart(booking.id).then(booking =>{
+                    console.log("Delete ProjectWorkStart");
+                    console.log(booking);
+                });
+
+            case "projectworkend":
+                WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(booking.id).then(booking =>{
+                    console.log("Delete ProjectWorkEnd");
+                    console.log(booking);
+                });
+
+            case "vacationbegin":
+                WorkTimeAppAPI.getAPI().deleteVacationStart(booking.id).then(booking =>{
+                    console.log("Delete VacationStart");
+                    console.log(booking);
+                });
+
+            case "vacationend":
+                WorkTimeAppAPI.getAPI().deleteVacationEnd(booking.id).then(booking =>{
+                    console.log("Delete VacationEnd");
+                    console.log(booking);
+                });                    
+        }
+        this.handleClose()
+
     }
 
     updateBooking = () => {
@@ -225,6 +229,7 @@ class EditBookingEvent extends Component {
                     console.log(booking);
                 });
         }
+        this.handleClose()
     }
 
     render() { 
@@ -236,27 +241,27 @@ class EditBookingEvent extends Component {
                     <DialogTitle>
                         <h2>Edit the Event-Booking</h2>
                     </DialogTitle>
-                        <TextField
-                            id = "type"
-                            label = "Type"
-                            variant = 'standard'
-                            defaultValue={this.state.booking.type}       
-                            InputLabelProps={{
-                                readOnly: true
-                            }}                                             
-                        >
-                        </TextField>
-                        <div>
+                    <Stack spacing={1}>
+                            <TextField
+                                id = "type"
+                                label = "Type"
+                                variant = 'standard'
+                                defaultValue={this.state.type}       
+                                InputLabelProps={{
+                                    readOnly: true
+                                }}        
+                            >
+                            </TextField>                            
+                        </Stack>
                             <TextField
                                 id = "time"
                                 label="Date"
                                 variant = "standard"
-                                defaultValue={this.state.booking.time}
+                                defaultValue={this.state.time}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                             />
-                        </div>
                 </DialogContent>
                 <DialogActions>
                     <Button
