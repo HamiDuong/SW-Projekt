@@ -210,7 +210,10 @@ class MyProjects extends Component {
           time: Date,
 
           showEditWindow: false,
-          showEditActicity: false
+          showEditActicity: false,
+
+          workTimeAccountId:0,
+          userId: 1,
       }
 
         //get Projects of current User
@@ -333,7 +336,7 @@ class MyProjects extends Component {
                         </TableHead>
                         <TableBody>
                           {activities.map((activity) => (
-                            <MyActivitiesEntry activity={activity}></MyActivitiesEntry>
+                            <MyActivitiesEntry activity={activity} user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}></MyActivitiesEntry>
                           ))}
 
                         </TableBody>

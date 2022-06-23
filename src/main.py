@@ -158,8 +158,8 @@ projectuser = api.inherit('ProjectUser', bo, {
 activity = api.inherit('Activity', bo, {
     'name': fields.String(attribute='_name', description='Der Name des Projekts'),
     'capacity': fields.Float(attribute='_capacity', description='Die Kapazität eines Projekts'),
-    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projekts')
-
+    'project_id': fields.Integer(attribute='_project_id', description='Die ID eines Projekts'),
+    'current_capacity': fields.Float(attribute='_current_capacity', description='Die Kapazität eines Projekts')
 })
 
 '''Event'''
@@ -2947,7 +2947,7 @@ ProjectWork
 class ProjectWorkOperations(Resource):
     @worktimeapp.marshal_with(projectwork)
     @worktimeapp.expect(projectwork)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectWorkBO.from_dict(api.payload)
@@ -3421,7 +3421,7 @@ class TimeIntervalBookingOperationsWithParam(Resource):
 class TimeintervalBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
     @worktimeapp.expect(booking)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)

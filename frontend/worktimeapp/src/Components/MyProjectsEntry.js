@@ -2,8 +2,10 @@ import React, {Component} from 'react'
 import './MyProjectsEntry.css';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-
-
+import { format } from "date-fns";
+import ProjectWorkBO from '../API/ProjectWorkBO';
+import WorkTimeAppAPI  from '../API/WorkTimeAppAPI';
+import BookingBO from '../API/BookingBO';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
@@ -207,7 +209,27 @@ class MyProjectEntry extends Component {
     this.state={
       start:0,
       startButton: false,
+      startActivity: 0,
+      endActivity: 0,
+      startBreak:0,
+      endBreak:0,
+      activityId: 1,
+      type: "projectwork",
+      startEvent: null,
+      endEvent: null,
+      eventBookingId: 0,
+      timeintervalBookingId: 0,
+      userId: 1,
+      workTimeAccountId:0,
     };
+}
+addProjektWork(){
+  let newProjectWorkBO = new ProjectWorkBO(this.state.startActivity, this.state.endActivity, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
+            WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newProjectWorkBO)
+            console.log(newBookingBO)
 }
 
 togglePopups() {
@@ -216,35 +238,105 @@ togglePopups() {
   });
 }
 onStart=()=>{
-   this.setState({start:this.state.start+1});
+   this.setState({
+    start:this.state.start+1,
+    
+  });
 }
-timer=()=>{
+// showEdit = () => {
+//   this.setState({
+//       showDialog: true
+//   }, function(){
+//       console.log("EditWindow öffnen per OnClick")
+//   })
+// }
+startProjektWork=()=>{
   this.f=setInterval(this.onStart,1000);
   document.getElementById('btn');
+  this.setState({
+    startActivity: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+          },function(){
+            console.log('START',this.state.startActivity)
+})
 }
-onPause=()=>{
+// sleep time expects milliseconds
+sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+
+
+endProjektWork=()=>{
+  clearInterval(this.f);
+  this.setState({
+    start: this.state.start,
+    endActivity: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+          },// Usage!
+          this.sleep(200).then(() => {this.addProjektWork()
+    // Do something after the sleep!
+})
+          
+          )}
+
+breakStart=()=>{
     clearInterval(this.f);
+    this.setState({
+      startBreak: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+            },function(){
+              console.log('START BREAK',this.state.startBreak)
+  })
+
 }
+breakEnd=()=>{
+  this.f=setInterval(this.onStart,1000);
+  this.setState({
+    endBreak: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+          },function(){
+            console.log('END BREAK',this.state.endBreak)
+})
+
+}
+
 onReset=()=>{
     clearInterval(this.f);
     document.getElementById('btn');
     this.setState({start:0})
 }
+
+// startProjektTime(newValue){
+//   this.setState({
+//       startActivity: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
+//             })
+//                 console.log(this.startActivity)
+                    
+//                 }
+
+
 showing() {
   if (this.state.startButton) {
       console.log('showing läuft')
-      return <div><Button onClick={this.onPause}>End Activity</Button>
-                  <Button onClick={this.onReset}>Reset</Button></div>
+      return <div><Button onClick={this.endProjektWork}>End Activity</Button>
+                  <Button onClick={this.breakStart}>Start Break</Button>
+                  <Button onClick={this.breakEnd}>End Break</Button>
+                  <Button onClick={this.onReset}>Reset</Button>
+
+                  </div>
+
       
   } else {
       return <h3>You didn't start the project</h3>
   }
 }
 
+// endhandleClick(){
+//   this.endProjektWork()
+ 
+// }
+
 handleClick() {
   //Hier kommt die AddProjectWorkBO
   // this.addTimeIntervalBooking();
-  this.timer();
+  this.startProjektWork();
   this.setState({
       startButton: true,
   });
@@ -258,7 +350,11 @@ render(){
           <h1>{this.state.start}</h1>
             <Grid xs={12} item>
                     <Button
-                        onClick={this.handleClick}>
+                        value={this.state.startActivity}
+                        onClick={this.handleClick}
+                        onChange={(newValue) => {
+                                    this.startProjektTime(newValue);
+                                    }}>
                         Start Activity
                     </Button>
                 </Grid>

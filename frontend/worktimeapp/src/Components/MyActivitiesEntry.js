@@ -67,6 +67,7 @@ class MyActivitiesEntry extends Component {
                     <MyProjectsEntry
                     text='Close'
                     closePopup={this.togglePopupMyProjectsEntry.bind(this)}
+                    user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}
                     />
                     : null
                     }
