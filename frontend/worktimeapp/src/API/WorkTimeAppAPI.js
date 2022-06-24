@@ -110,8 +110,9 @@ export default class WorkTimeAppAPI {
     #getWorkByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/workperiod/${start}/${end}`;
 
     //Booking URLS
-    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
-    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
+    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`;
+    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`;
+    #getAllBookingsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/${id}`;
     #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
 
     //Project URLs
@@ -949,6 +950,13 @@ export default class WorkTimeAppAPI {
     //Booking Methoden author Mihriban Dogan
 
     //TimeintervalBookingMethoden
+
+    getAllBookingsForUser(id) {
+    return this.#fetchAdvanced(this.#getAllBookingsForUserURL(id)).then((responseJSON) => {
+            return responseJSON
+            console.log(responseJSON)
+        })
+    }
 
     addVacationBooking(vacationBO) {
         return this.#fetchAdvanced(this.#addVacationURL(), {
