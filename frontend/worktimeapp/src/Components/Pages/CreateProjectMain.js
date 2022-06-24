@@ -26,7 +26,7 @@ class CreateProjectMain extends Component {
             projectName: null,
             commissioner: null,
             userId: 1,
-            projectId: '',
+            projectId: 1,
             selected: false,
             projectNameValidationFailed: false,
             projectNameEdited: false,
@@ -74,7 +74,7 @@ class CreateProjectMain extends Component {
                 commissioner: project.commissioner,
                 userId: 1,
                 projectId: project.id,
-            }, this.addTimeIntervalBooking(),
+            }, this.addProjectDurationBooking(),
             )
         )
         }
@@ -131,16 +131,11 @@ class CreateProjectMain extends Component {
                 });
 
     }
-    addTimeIntervalBooking = () => {
-            let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.props.projectId);
-            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO).then(projectduration =>
-                this.setState({
-                    start : projectduration.start,
-                    end : projectduration.end,
-                    type: 'ProjectDuration',
-                    projectId: projectduration.id,
-
-                }))
+    addProjectDurationBooking = () => {
+            let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.projectId);
+           console.log(newProjectDurationBO)
+            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
+               
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
                 this.setState({

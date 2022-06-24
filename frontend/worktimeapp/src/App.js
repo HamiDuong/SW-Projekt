@@ -44,51 +44,52 @@ class App extends React.Component {
   }
 
   handleAuthStateChange = user => {
-		if (user) {
-			
-			// The user is signed in
-			user.getIdToken().then(token => {
-				// Add the token to the browser's cookies. The server will then be
-				// able to verify the token against the API.
-				// SECURITY NOTE: As cookies can easily be modified, only put the
-				// token (which is verified server-side) in a cookie; do not add other
-				// user information.
-				document.cookie = `token=${token};path=/`;
-				const uid = user.uid;
-				console.log('IM HEEERRREEE')
-				console.log(uid)
-				// Set the user not before the token arrived
-				this.setState({
-					currentUser: user,
-					authError: null,
-				}, this.getUserId(user.uid)
-				);
-			}).catch(e => {
-				this.setState({
-					authError: e,
-				});
-			});
-		} else {
-			// User has logged out, so clear the id token
-			document.cookie = 'token=;path=/';
-
-			// Set the logged out user to null
+	if (user) {
+		
+		// The user is signed in
+		user.getIdToken().then(token => {
+			// Add the token to the browser's cookies. The server will then be
+			// able to verify the token against the API.
+			// SECURITY NOTE: As cookies can easily be modified, only put the
+			// token (which is verified server-side) in a cookie; do not add other
+			// user information.
+			document.cookie = `token=${token};path=/`;
+			const uid = user.uid;
+			console.log('IM HEEERRREEE')
+			console.log(uid)
+			// Set the user not before the token arrived
 			this.setState({
-				currentUser: null,
+				currentUser: user,
+				authError: null,
+			}, this.getUserId(user.uid)
+			);
+		}).catch(e => {
+			this.setState({
+				authError: e,
 			});
-		}
+		});
+	} else {
+		// User has logged out, so clear the id token
+		document.cookie = 'token=;path=/';
+
+		// Set the logged out user to null
+		this.setState({
+			currentUser: null,
+		});
 	}
+}
 
-  getUserId = (id) =>{
-	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
-			this.setState({
-				userId: userBO[0].getID()
-			}, function(){
-				console.log("UserId", userBO)
-			this.getWorkTimeAccountId(userBO[0].getID())
-		}
-			)
-			})}
+getUserId = (id) =>{
+ WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
+		this.setState({
+			userId: userBO[0].getID()
+		}, function(){
+			console.log("UserId", this.state.userId)
+		this.getWorkTimeAccountId(userBO[0].getID())
+	}
+		)
+		})}
+
 
   getWorkTimeAccountId = (id) =>{
 	WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(id).then(accountBO =>{

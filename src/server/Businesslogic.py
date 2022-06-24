@@ -1941,7 +1941,8 @@ class Businesslogic():
                             res_ti_e.append(event)
                             res_ti.append(res)
                 if type == 'flexday':
-                    res = self.get_flex_day_by_id(timeintervals.get_flex_day_id())
+                    res = self.get_flex_day_by_id(
+                        timeintervals.get_flex_day_id())
                     if (res.get_start_event() and res.get_end_event) == None:
                         res_ti.append(res)
                     elif not ((res.get_start_event() and res.get_end_event()) == None):
@@ -2282,6 +2283,10 @@ class Businesslogic():
     def get_project_by_id(self, id):
         with ProjectMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_last_project_entry(self):
+        with ProjectMapper() as mapper:
+            return mapper.find_last_entry()
 
     def get_all_projects(self):
         with ProjectMapper() as mapper:

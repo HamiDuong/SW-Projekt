@@ -251,7 +251,7 @@ export default class WorkTimeAppAPI {
     #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/users-by-name/${userName}`;
-    #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id};`
+    #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id}`;
 
     //ProjectUser
     // Author Esra Özkul
