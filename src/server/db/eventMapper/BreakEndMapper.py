@@ -44,6 +44,12 @@ class BreakEndMapper(Mapper):
         return break_end
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle BreakEndBO aus der Datenbank zurück
+        return: Liste mit BreakEndBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -65,6 +71,14 @@ class BreakEndMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das BreakEndBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem ComingBO
+        return: BreakEndBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -92,6 +106,14 @@ class BreakEndMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das BreakEndBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem ComingBO
+        return: BreakEndBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

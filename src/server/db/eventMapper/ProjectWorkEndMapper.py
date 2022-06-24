@@ -46,6 +46,12 @@ class ProjectWorkEndMapper(Mapper):
         return project_work_end
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle ProjectWorkEndBO aus der Datenbank zurück
+        return: Liste mit ProjectWorkEndBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -67,6 +73,14 @@ class ProjectWorkEndMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ProjectWorkEndBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem ProjectWorkEndBO
+        return: ProjectWorkEndBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -95,6 +109,14 @@ class ProjectWorkEndMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ProjectWorkEndBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem ProjectWorkEndBO
+        return: ProjectWorkEndBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

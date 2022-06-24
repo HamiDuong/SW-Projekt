@@ -44,6 +44,12 @@ class ComingMapper(Mapper):
         return coming
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle ComingBO aus der Datenbank zurück
+        return: Liste mit ComingBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -65,6 +71,14 @@ class ComingMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ComingBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem ComingBO
+        return: ComingBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -92,6 +106,14 @@ class ComingMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ComingBO mit dem angegebenen Datumzurück
+        param: key (int) - Id vom gesuchtem ComingBO
+        return: ComingBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

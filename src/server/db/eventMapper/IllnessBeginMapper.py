@@ -45,6 +45,12 @@ class IllnessBeginMapper(Mapper):
         return illness_begin
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle IllnessBeginBO aus der Datenbank zurück
+        return: Liste mit IllnessBeginBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -66,6 +72,14 @@ class IllnessBeginMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das IllnessBeginBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem IllnessBeginBO
+        return: IllnessBeginBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -94,6 +108,14 @@ class IllnessBeginMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das IllnessBeginBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem IllnessBeginBO
+        return: IllnessBeginBO mit dem angegebenen Datum Id
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

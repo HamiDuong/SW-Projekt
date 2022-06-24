@@ -44,6 +44,12 @@ class BreakBeginMapper(Mapper):
         return break_begin
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle BreakBeginBO aus der Datenbank zurück
+        return: Liste mit BreakBeginBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -65,6 +71,14 @@ class BreakBeginMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das BreakBeginBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem BreakBeginBO
+        return: BreakBeginBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -92,6 +106,14 @@ class BreakBeginMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das BreakBeginBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem BreakBeginBO
+        return: BreakBeginBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()
@@ -106,7 +128,7 @@ class BreakBeginMapper(Mapper):
             break_begin.set_date_of_last_change(dateoflastchange)
             break_begin.set_time(date)
             break_begin.set_type(type)
-            result.appbegin(break_begin)
+            result.append(break_begin)
 
         self._cnx.commit()
         cursor.close()
@@ -114,6 +136,12 @@ class BreakBeginMapper(Mapper):
         return result
 
     def update(self, break_begin):
+        """
+        Aktualisiert die Attribute eines BreakBeginBOs, dass in der Datenbank ist.
+        param: break_begin (ActivityBO) - ActivityBO mit aktualisierten Daten
+        return: None
+        """
+
         datestamp = datetime.today()
         cursor = self._cnx.cursor()
         break_begin.set_date_of_last_change(datestamp)

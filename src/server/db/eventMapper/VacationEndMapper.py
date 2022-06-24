@@ -45,6 +45,12 @@ class VacationEndMapper(Mapper):
         return vacation_end
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle VacationEndBO aus der Datenbank zurück
+        return: Liste mit VacationEndBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -66,6 +72,14 @@ class VacationEndMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das VacationEndBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem VacationEndBO
+        return: VacationEndBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -94,6 +108,14 @@ class VacationEndMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das VacationEndBO mit den gegebener Id zurück
+        param: key (int) - Datum des gesuchten VacationEndBO
+        return: VacationEndBO mit dem eingegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

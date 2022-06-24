@@ -8,6 +8,14 @@ class EventMapper(Mapper):
         super().__init__()
 
     def insert(self, event):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein EventBO in die Datenbank ein
+        param: event (EventBO)
+        return: event
+        """
+
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.event ")
         tuples = cursor.fetchall()
@@ -45,7 +53,6 @@ class EventMapper(Mapper):
             event.get_vacation_end_id(),
             event.get_flex_day_start_id(),
             event.get_flex_day_end_id()
-
         )
 
         cursor.execute(command, data)
@@ -55,6 +62,12 @@ class EventMapper(Mapper):
         return event
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle EventBO aus der Datenbank zurück
+        return: Liste mit EventBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -91,6 +104,13 @@ class EventMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das EventBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem EventBO
+        return: EventBO mit der eingegebenen Id
+        """
         result = None
 
         cursor = self._cnx.cursor()
