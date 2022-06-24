@@ -62,6 +62,7 @@ class MyActivitiesEntry extends Component {
                     </TableCell>
                     
                 </TableRow>
+                
                 <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
                     {this.state.showPopupMyProjectEntry ? 
                     <MyProjectsEntry

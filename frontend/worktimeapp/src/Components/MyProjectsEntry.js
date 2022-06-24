@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import ProjectWorkBO from '../API/ProjectWorkBO';
 import WorkTimeAppAPI  from '../API/WorkTimeAppAPI';
 import BookingBO from '../API/BookingBO';
+import BreakBO from '../API/BreakBO';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
@@ -214,19 +215,31 @@ class MyProjectEntry extends Component {
       startBreak:0,
       endBreak:0,
       activityId: 1,
-      type: "projectwork",
+      typeProjectWork: "projectwork",
+      typeBreak: "break",
       startEvent: null,
       endEvent: null,
       eventBookingId: 0,
       timeintervalBookingId: 0,
       userId: 1,
       workTimeAccountId:0,
+      trigger: false,
     };
 }
-addProjektWork(){
-  let newProjectWorkBO = new ProjectWorkBO(this.state.startActivity, this.state.endActivity, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
+
+addBreak(){
+let newBreakBO = new BreakBO(this.state.startBreak, this.state.endBreak, this.state.startEvent, this.state.endEvent, this.state.typeBreak);
+            WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.typeBreak, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
+            console.log(newBreakBO)
+            console.log(newBookingBO)
+}
+
+addProjectWork(){
+  let newProjectWorkBO = new ProjectWorkBO(this.state.startActivity, this.state.endActivity, this.state.startEvent, this.state.endEvent, this.state.typeProjectWork, this.state.activityId);
             WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.typeProjectWork, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newProjectWorkBO)
             console.log(newBookingBO)
@@ -251,36 +264,53 @@ onStart=()=>{
 //   })
 // }
 startProjektWork=()=>{
-  this.f=setInterval(this.onStart,1000);
+  if(this.state.trigger){
+    console.log('Pause wurde gestartet.');
+    alert("Please end your break first!");
+  }else{
+    this.f=setInterval(this.onStart,1000);
   document.getElementById('btn');
   this.setState({
     startActivity: format(new Date(), "yyyy-MM-dd HH:mm:ss")
           },function(){
             console.log('START',this.state.startActivity)
 })
+
+  }
+  
 }
 // sleep time expects milliseconds
 sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-
-
 endProjektWork=()=>{
   clearInterval(this.f);
+  document.getElementById('btn');
   this.setState({
-    start: this.state.start,
+    start:0,
+    // start: this.state.start,
     endActivity: format(new Date(), "yyyy-MM-dd HH:mm:ss")
-          },// Usage!
-          this.sleep(200).then(() => {this.addProjektWork()
-    // Do something after the sleep!
-})
+          },
+          function(){
+              this.addProjectWork()
+            } 
+            )
           
-          )}
+}
+
+wait = (ms) => {
+  const start = Date.now();
+  let now = start;
+  while (now - start < ms) {
+    now = Date.now();
+  }
+}         
 
 breakStart=()=>{
     clearInterval(this.f);
     this.setState({
+      trigger: true,
       startBreak: format(new Date(), "yyyy-MM-dd HH:mm:ss")
             },function(){
               console.log('START BREAK',this.state.startBreak)
@@ -290,10 +320,12 @@ breakStart=()=>{
 breakEnd=()=>{
   this.f=setInterval(this.onStart,1000);
   this.setState({
+    trigger: false,
     endBreak: format(new Date(), "yyyy-MM-dd HH:mm:ss")
           },function(){
-            console.log('END BREAK',this.state.endBreak)
-})
+            this.addBreak()
+          } 
+)
 
 }
 
@@ -315,16 +347,16 @@ onReset=()=>{
 showing() {
   if (this.state.startButton) {
       console.log('showing läuft')
-      return <div><Button onClick={this.endProjektWork}>End Activity</Button>
+      return <Grid><Button onClick={this.endProjektWork}>End Activity</Button>
                   <Button onClick={this.breakStart}>Start Break</Button>
                   <Button onClick={this.breakEnd}>End Break</Button>
                   <Button onClick={this.onReset}>Reset</Button>
 
-                  </div>
+                  </Grid>
 
       
   } else {
-      return <h3>You didn't start the project</h3>
+      return <h3></h3>
   }
 }
 

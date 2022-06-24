@@ -1920,7 +1920,7 @@ class BreakBeginListOperations(Resource):
     @worktimeapp.marshal_with(break_begin, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(break_begin)
-    @secured
+    ##@secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -2023,7 +2023,7 @@ class BreakEndListOperations(Resource):
     @worktimeapp.marshal_with(break_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(break_end)
-    @secured
+    ##@secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
