@@ -62,7 +62,7 @@ class MyActivitiesEntry extends Component {
                     </TableCell>
                     
                 </TableRow>
-                
+                {/* Button für das starten von Timer  */}
                 <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
                     {this.state.showPopupMyProjectEntry ? 
                     <MyProjectsEntry
