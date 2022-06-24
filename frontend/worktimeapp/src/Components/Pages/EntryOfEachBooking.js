@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-import Work from '@mui/icons-material/Work';
-import { TableContainer } from '@mui/material';
 import Paper from '@mui/material/Paper';
 
 
@@ -62,17 +55,14 @@ class ActivityBookingEntry extends Component {
 
     render() {
         return (
-            <Box sx={{ margin: 1.5, justifyContent: 'space-evenly' }}>
+            <Box>
                 <Paper sx={{ width: '100%' }}>
-                    <Table>
-                        <TableBody>
-                            <TableCell width='90'>{this.state.time}</TableCell>
-                            <TableCell width='90'>{this.state.userName}</TableCell>
-                            <TableCell width='90'>{this.props.current_c}</TableCell>
-                            <TableCell width='90'>{this.props.capacity}</TableCell>
-                            <TableCell width='90'>{this.state.projectDuration}</TableCell>
-                        </TableBody>
-                    </Table>
+                    <TableCell width={150}></TableCell>
+                    <TableCell width={300}>{this.state.time}</TableCell>
+                    <TableCell width={350}>{this.state.userName}</TableCell>
+                    <TableCell width={350}>{this.props.current_c}</TableCell>
+                    <TableCell width={350}>{this.props.capacity}</TableCell>
+                    <TableCell width={200}>{this.state.projectDuration}</TableCell>
                 </Paper>
             </Box>
 

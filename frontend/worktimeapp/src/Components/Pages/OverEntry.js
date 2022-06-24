@@ -1,9 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { Box } from '@mui/system';
-import { TableContainer } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import Entry from './Entry';
 

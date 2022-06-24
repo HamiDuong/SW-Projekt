@@ -49,9 +49,6 @@ class OverIndividualEntry extends Component {
         try {
             this.getCapacities(element);
             this.getActivityNames(element);
-
-
-
         } catch (e) {
             console.log(e);
         }
@@ -78,7 +75,7 @@ class OverIndividualEntry extends Component {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].name]
             }, function () {
-                console.log('AN', this.state.activity_names)
+                console.log(this.state.activity_names)
             })
             i = i + 1
         }
@@ -89,11 +86,7 @@ class OverIndividualEntry extends Component {
             <div>
                 {this.state.activities.map((element, index) => {
                     const value = element[index].id
-                    return (
-                        <div>
-                            <IndividualEntry value={value} />
-                        </div>
-                    )
+                    return <IndividualEntry value={value} />
                 })}
             </div>
         );

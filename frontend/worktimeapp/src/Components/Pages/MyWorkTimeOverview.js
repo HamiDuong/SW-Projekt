@@ -6,24 +6,25 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import OverIndividualEntry from './OverIndividualEntries';
 
 
-class ProjectSelectionNotAdmin extends Component {
+class MyWorkTimeOverview extends Component {
     constructor(props) {
         super(props);
         this.state = {
             project: this.props.id,
             projects: [],
-            temperature: '',
+            projectId: '',
             projectName: '',
             selected: false,
-            projectId: '',
-            user: ''
+            user: '',
+            userId: 1,
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
         this.setState({
-            temperature: e.target.value,
+            projectId: e.target.value,
+            name: e.target.value,
             selected: true
         });
     }
@@ -39,17 +40,16 @@ class ProjectSelectionNotAdmin extends Component {
     }
 
 
-
     componentDidMount() {
-        this.getProjectsForUser(1)
-
+        this.getProjectsForUser(this.state.userId)
     }
 
 
     showing() {
-        const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverIndividualEntry onChange={this.handleChange} value={this.state.temperature} />
+            return <div>
+                <OverIndividualEntry onChange={this.handleChange} value={this.state.projectId} />
+            </div>
         } else {
             return <h1>You haven´t selected a project yet.</h1>
         }
@@ -71,4 +71,4 @@ class ProjectSelectionNotAdmin extends Component {
     }
 }
 
-export default ProjectSelectionNotAdmin;
+export default MyWorkTimeOverview;

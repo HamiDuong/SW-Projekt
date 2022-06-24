@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-import Work from '@mui/icons-material/Work';
-import { TableContainer } from '@mui/material';
 import Paper from '@mui/material/Paper';
 
 
@@ -50,7 +43,6 @@ class IndividualEntriesOfEachBooking extends Component {
 
     render() {
         return (<Paper>
-
             <Box
                 sx={{
                     width: '100%',
@@ -58,7 +50,6 @@ class IndividualEntriesOfEachBooking extends Component {
                     alignItems: 'center',
                     justifyContent: 'space-around',
                     border: (theme) => `1px solid ${theme.palette.divider}`,
-
                     bgcolor: 'background.paper',
                     color: 'text.secondary',
                     '& svg': {

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Collapse from '@mui/material/Collapse';
@@ -10,7 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import { Grid, TableContainer } from '@mui/material';
+import { TableContainer } from '@mui/material';
 import IndividualEntriesOfEachBooking from './IndividualEntryOfEachBooking';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
@@ -31,7 +30,6 @@ class IndividualEntry extends Component {
             members: '',
             userId: 1,
             open: false,
-
         })
     }
 
@@ -43,7 +41,7 @@ class IndividualEntry extends Component {
                 capacity: activityBO[0].capacity,
                 current_capacity: activityBO[0].current_capacity
             }, function () {
-                console.log('??', this.state.name)
+                console.log(this.state.name)
             }))
     }
 
@@ -51,7 +49,6 @@ class IndividualEntry extends Component {
         this.getActivity(this.props.value)
         this.getUser(this.state.userId)
     }
-
 
 
     getUser(id) {
@@ -72,7 +69,6 @@ class IndividualEntry extends Component {
 
     render() {
         const open = this.state.open
-        const setOpen = this.state.setOpen
         return (
             <div>
                 <Box>
@@ -92,19 +88,21 @@ class IndividualEntry extends Component {
                                             justifyContent: 'left'
                                         }}>
 
-                                        <IconButton aria-label="expand row"
+                                        <IconButton
+                                            aria-label="expand row"
                                             size="small"
                                             onClick={this.handleClick}>
-                                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                            {open ?
+                                                <KeyboardArrowUpIcon />
+                                                :
+                                                <KeyboardArrowDownIcon />}
                                         </IconButton>
                                         <TableRow>{this.state.name}</TableRow>
                                     </Box>
                                 </TableBody>
                             </Table>
                         </TableContainer>
-
                     </Box>
-
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <TableContainer style={{
                             display: 'flex',
@@ -112,7 +110,6 @@ class IndividualEntry extends Component {
                         }}>
                             <Table sx={{ width: '70%' }}  >
                                 <TableHead>
-
                                     <Box
                                         sx={{
                                             width: '100%',
@@ -120,7 +117,6 @@ class IndividualEntry extends Component {
                                             alignItems: 'center',
                                             justifyContent: 'space-evenly',
                                             border: (theme) => `1px solid ${theme.palette.divider}`,
-
                                             bgcolor: 'background.paper',
                                             color: 'text.secondary',
                                             '& svg': {
@@ -129,7 +125,6 @@ class IndividualEntry extends Component {
                                             '& hr': {
                                                 mx: 1,
                                             },
-
                                         }}
                                     >
                                         <TaskAltIcon />
@@ -142,15 +137,9 @@ class IndividualEntry extends Component {
                                         <TableRow>Current capacity</TableRow>
                                     </Box>
                                 </TableHead>
-
                                 <TableBody>
-
                                     <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.current_capacity} />
                                 </TableBody>
-
-
-
-
                             </Table>
                         </TableContainer>
                     </Collapse>

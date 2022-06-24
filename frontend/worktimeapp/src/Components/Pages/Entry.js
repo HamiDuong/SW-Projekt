@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Collapse from '@mui/material/Collapse';
@@ -15,7 +14,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { Grid, TableContainer } from '@mui/material';
+import { TableContainer } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
@@ -143,10 +142,10 @@ class Entry extends Component {
                                         <TableRow >Booked times</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <ScheduleIcon size={'small'} />
-                                        <TableRow>Planed project capacity</TableRow>
+                                        <TableRow>Current capacity</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <MoreTimeIcon />
-                                        <TableRow>Current capacity</TableRow>
+                                        <TableRow>Project duration</TableRow>
                                     </Box>
                                 </TableHead>
 

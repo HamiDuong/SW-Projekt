@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Table, TableHead, TableRow } from '@mui/material';
 import { Box } from '@mui/system';
 import { TableContainer } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import CollapsibleTable from '../MyWorkTime';
 
 class OverTime extends Component {
     constructor(props) {
@@ -167,7 +165,6 @@ class OverTime extends Component {
                                         <h1>Overview</h1>
                                     </TableRow>
                                 </TableHead>
-                                <CollapsibleTable row={rows} />
                             </Table>
                         </TableContainer>
                     </Paper>
