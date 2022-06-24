@@ -8,6 +8,13 @@ class FlexDayEndMapper(Mapper):
         super().__init__()
 
     def insert(self, flex_day_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein FlexDayBeginBO in die Datenbank ein
+        param: flex_day_end (FlexDayEndBO)
+        return: flex_day_end
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.flexdayend ")

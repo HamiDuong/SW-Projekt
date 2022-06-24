@@ -8,6 +8,13 @@ class ComingMapper(Mapper):
         super().__init__()
 
     def insert(self, coming):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein ComingBO in die Datenbank ein
+        param: coming (ComingBO)
+        return: coming
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.coming ")

@@ -8,6 +8,14 @@ class ProjectWorkEndMapper(Mapper):
         super().__init__()
 
     def insert(self, project_work_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein ProjectWorkEndBO in die Datenbank ein
+        param: project_work_end (ProjectWorkEndBO)
+        return: project_work_end
+        """
+
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(

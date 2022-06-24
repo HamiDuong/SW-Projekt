@@ -8,6 +8,13 @@ class BreakEndMapper(Mapper):
         super().__init__()
 
     def insert(self, break_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein BreakEndBO in die Datenbank ein
+        param: break_end (BreakEndBO)
+        return: break_end
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.breakend ")

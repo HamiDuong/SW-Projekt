@@ -8,6 +8,13 @@ class IllnessEndMapper(Mapper):
         super().__init__()
 
     def insert(self, illness_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein IllnessEndBO in die Datenbank ein
+        param: illness_end (IllnessEndBO)
+        return: illness_end
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.illnessend ")

@@ -8,6 +8,14 @@ class VacationEndMapper(Mapper):
         super().__init__()
 
     def insert(self, vacation_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein VacationEndBO in die Datenbank ein
+        param: vacation_end (VacationEndBO)
+        return: vacation_end
+        """
+
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.vacationend ")

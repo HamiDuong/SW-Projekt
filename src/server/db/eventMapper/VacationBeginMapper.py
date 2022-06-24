@@ -8,6 +8,14 @@ class VacationBeginMapper(Mapper):
         super().__init__()
 
     def insert(self, vacation_begin):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein VacationBeginBO in die Datenbank ein
+        param: vacation_begin (VacationBeginBO)
+        return: vacation_begin
+        """
+
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(

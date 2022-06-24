@@ -8,6 +8,13 @@ class BreakBeginMapper(Mapper):
         super().__init__()
 
     def insert(self, break_begin):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein BreakBeginBO in die Datenbank ein
+        param: break_begin (BreakBeginBO)
+        return: break_begin
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.breakbegin ")

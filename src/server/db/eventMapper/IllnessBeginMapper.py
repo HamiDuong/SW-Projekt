@@ -8,6 +8,13 @@ class IllnessBeginMapper(Mapper):
         super().__init__()
 
     def insert(self, illness_begin):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein IllnessBeginBO in die Datenbank ein
+        param: illness_begin (IllnessBeginBO)
+        return: illness_begin
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(
