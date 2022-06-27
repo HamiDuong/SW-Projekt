@@ -1886,5 +1886,16 @@ export default class WorkTimeAppAPI {
                 })
             })
     }
+
+    getProject(id) {
+        return this.#fetchAdvanced(this.#getProjectURL(id)).then((responseJSON) => {
+            let responseProjcet = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjcet)
+            })
+        })
+
+    }
+
 }
 
