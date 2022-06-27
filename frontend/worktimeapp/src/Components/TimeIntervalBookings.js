@@ -195,18 +195,17 @@ Speichert den Input des end feldes im state
         })
         console.log(this.state.end)
     }
-
+/* 
+Öffnen des Selects für das StartEvent
+*/
     handleClickOpen = () => {
         this.setState({
             showSelectEventDialog: true
         })
       }
-    handleEndClickOpen = () => {
-        this.setState({
-            showSelectEndEventDialog: true
-        })
-      }
-    
+/* 
+Schließen des Selects für das StartEvent
+*/
     handleClose = (newEvent) =>{
         if (newEvent) {
             this.setState({
@@ -221,6 +220,19 @@ Speichert den Input des end feldes im state
         })}
       }
 
+
+    /* 
+    Öffnen des Selects für das EndEvent
+    */
+    handleEndClickOpen = () => {
+        this.setState({
+            showSelectEndEventDialog: true
+        })
+      }
+
+    /* 
+    Schließen des Selects für das EndEvent
+    */
     handleEndClose = (newEvent) =>{
         if (newEvent) {
             this.setState({
@@ -275,8 +287,7 @@ Speichert den Input des end feldes im state
                             </Select>
                         </FormControl>
                     </Grid>
-                   {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    
+                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}                    
                         {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                             <Grid item xs={12} sm={9} >
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -304,9 +315,6 @@ Speichert den Input des end feldes im state
                                  this.handleStartDateChange(newValue);
                                  }}
                                  minDate={new Date('2022-01-01')}
-                                 minTime={new Date(0, 0, 0, 12)}
-                                 maxTime={new Date(0, 0, 0, 12, 1)
-                                }
                              />
                          </LocalizationProvider>
                         
@@ -316,7 +324,7 @@ Speichert den Input des end feldes im state
                         <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
                     </Grid>:
                     null}
-                     {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                     {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}
                     
                     {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                         <Grid xs={12} sm={9} item >
@@ -343,10 +351,6 @@ Speichert den Input des end feldes im state
                                 this.handleEndDateChange(newValue);
                                 }}
                                 minDate={new Date('2022-01-01')}
-                                minTime={new Date(0, 0, 0, 12, 0)}
-                                maxTime={new Date(0, 0, 0, 12, 1)
-                                }
-                                
                             />
                         </LocalizationProvider>
                     </Grid>}
