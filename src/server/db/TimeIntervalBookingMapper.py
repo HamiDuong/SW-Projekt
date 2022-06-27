@@ -19,13 +19,13 @@ class TimeIntervalBookingMapper (Mapper):
             "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, timeintervalId) in tuples:
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
+        for (id, date_of_last_change, time_interval_id) in tuples:
+            time_interval_booking = TimeIntervalBookingBO()
+            time_interval_booking.set_id(id)
+            time_interval_booking.set_timeinterval_id(time_interval_id)
+            time_interval_booking.set_date_of_last_change(date_of_last_change)
 
-            result.append(timeintervalbooking)
+            result.append(time_interval_booking)
 
         self._cnx.commit()
         cursor.close()
@@ -43,12 +43,12 @@ class TimeIntervalBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, timeintervalId) = tuples[0]
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            result = timeintervalbooking
+            (id, date_of_last_change, time_interval_id) = tuples[0]
+            time_interval_booking = TimeIntervalBookingBO()
+            time_interval_booking.set_id(id)
+            time_interval_booking.set_date_of_last_change(date_of_last_change)
+            time_interval_booking.set_timeinterval_id(time_interval_id)
+            result = time_interval_booking
         except IndexError:
             result = None
 
@@ -57,54 +57,54 @@ class TimeIntervalBookingMapper (Mapper):
 
         return result
 
-    def insert(self, timeintervalbooking):
+    def insert(self, time_interval_booking):
         """Einfügen eines Timeintervalbooking-Objekts in die Datenbank.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM timeintervalbookings")
         tuples = cursor.fetchall()
-        timestamp = datetime.today()
-        timeintervalbooking.set_date_of_last_change(timestamp)
+        time_stamp = datetime.today()
+        time_interval_booking.set_date_of_last_change(time_stamp)
 
         for (maxid) in tuples:
             if maxid[0] == None:
-                timeintervalbooking.set_id(1)
+                time_interval_booking.set_id(1)
             else:
-                timeintervalbooking.set_id(maxid[0]+1)
+                time_interval_booking.set_id(maxid[0]+1)
 
         command = "INSERT INTO timeintervalbookings (id, dateOfLastChange, timeintervalId) VALUES (%s,%s,%s)"
-        data = (timeintervalbooking.get_id(), timeintervalbooking.get_date_of_last_change(
-        ), timeintervalbooking.get_timeinterval_id())
+        data = (time_interval_booking.get_id(), time_interval_booking.get_date_of_last_change(
+        ), time_interval_booking.get_timeinterval_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
-        return timeintervalbooking
+        return time_interval_booking
 
-    def update(self, timeintervalbooking):
+    def update(self, time_interval_booking):
         """Wiederholtes Schreiben eines TimeintervalBooking Objekts in die Datenbank.
         """
-        timestamp = datetime.today()
-        timeintervalbooking.set_date_of_last_change(timestamp)
+        time_stamp = datetime.today()
+        time_interval_booking.set_date_of_last_change(time_stamp)
         cursor = self._cnx.cursor()
 
         command = "UPDATE timeintervalbookings " + \
             "SET dateOfLastChange=%s WHERE id=%s"
-        data = (timeintervalbooking.get_date_of_last_change(),
-                timeintervalbooking.get_id())
+        data = (time_interval_booking.get_date_of_last_change(),
+                time_interval_booking.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, timeintervalbooking):
+    def delete(self, time_interval_booking):
         """Löschen der Daten eines TimeintervalBooking-Objekts aus der Datenbank.
         """
 
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM timeintervalbookings WHERE id={}".format(
-            timeintervalbooking.get_id())
+            time_interval_booking.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -122,12 +122,12 @@ class TimeIntervalBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, timeintervalId) = tuples[0]
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            result = timeintervalbooking
+            (id, date_of_last_change, time_interval_id) = tuples[0]
+            time_interval_booking = TimeIntervalBookingBO()
+            time_interval_booking.set_id(id)
+            time_interval_booking.set_date_of_last_change(date_of_last_change)
+            time_interval_booking.set_timeinterval_id(time_interval_id)
+            result = time_interval_booking
         except IndexError:
             result = None
 
@@ -147,12 +147,12 @@ class TimeIntervalBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, timeintervalId) = tuples[0]
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            result = timeintervalbooking
+            (id, date_of_last_change, time_interval_id) = tuples[0]
+            time_interval_booking = TimeIntervalBookingBO()
+            time_interval_booking.set_id(id)
+            time_interval_booking.set_date_of_last_change(date_of_last_change)
+            time_interval_booking.set_timeinterval_id(time_interval_id)
+            result = time_interval_booking
         except IndexError:
             result = None
 
