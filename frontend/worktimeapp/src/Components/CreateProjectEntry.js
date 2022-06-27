@@ -31,6 +31,7 @@ class CreateProject extends Component {
       selectedMember: null,
       projectId: '',
       users: props.users,
+      showAddProjectMember: false,
 
     }
     this.baseState = this.state;
@@ -61,12 +62,18 @@ class CreateProject extends Component {
     console.log(this.props.selected)
   }
 
+  // addProjectMemberClosed(){
+  //   this.setState({
+  //     showAddProjectMember: true,
+  //   })
+  // }
+
   showing() {
     if (this.props.selected) {
       return (
         <div>
           <Grid xs={12} item>
-            <Button variant="contained" onClick={() => this.setState({ showPopupActivity: true })}>Add Activity</Button>
+            <Button onClick={() => this.setState({ showPopupActivity: true })}>Add Activity</Button>
           </Grid>
 
           {
@@ -77,9 +84,9 @@ class CreateProject extends Component {
                 closePopupActivities={() => this.setState({ showPopupActivity: false })}
               />
               : null}
-              
+            
             <Grid xs={12} item>
-            <Button variant="contained" onClick={() => this.setState({ showPopupMember: true })}>Add Members</Button>
+            <Button onClick={() => this.setState({ showPopupMember: true })}>Add Members</Button>
             </Grid>
             {
             this.state.showPopupMember?
@@ -88,6 +95,9 @@ class CreateProject extends Component {
                 projectId={this.props.value}
                 text='Close Me'
                 closePopupMembers={() => this.setState({ showPopupMember: false })}
+                // onClose={() => this.setState({
+                //   showAddProjectMember: true
+                // })}
               />
               : null}
 

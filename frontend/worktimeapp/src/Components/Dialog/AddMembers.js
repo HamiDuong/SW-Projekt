@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import Select from '@mui/material/Select';
 import { Button, IconButton, Dialog, DialogContent, DialogTitle, TextField, Typography, InputAdornment, MenuItem, DialogActions, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import Card from '@mui/material/Card';
 
 class AddMembers extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class AddMembers extends Component {
       selectedUser: null,
       currentCapacity: 0, 
       capacityValidationFailed: false,
+      open: false,
   }
   
      }
@@ -55,7 +57,8 @@ class AddMembers extends Component {
         targetusers: users,
         selectedUser: selectedUser,
         loadingInProgress: false,
-        userNameSearchError: null
+        userNameSearchError: null,
+
       }, function(){
         console.log("State", this.state.targetusers)
       });
@@ -72,12 +75,12 @@ class AddMembers extends Component {
     /** Handles value changes of the customer select textfield */
   userSelectionChange = (event) => {
     let users = event.target.value;
+    
 
     this.setState({
       selectedUser: users,
     });
   }
-
   
     /** Handles value changes of the forms textfields and validates the transferAmout field */
   textFieldValueChange = (event) => {
@@ -102,7 +105,7 @@ class AddMembers extends Component {
        } 
 
        addProjectUser = () => { 
-        let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.userId, this.state.capacity, this.state.currentCapacity);
+        let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.selectedUser.getID(), this.state.capacity, this.state.currentCapacity);
         console.log(newProjectUser)
         WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser => 
          this.setState({
@@ -115,9 +118,9 @@ class AddMembers extends Component {
           console.log('Here', projectuser, this.state.projectId, this.state.capacity)
          }))
       }
-      /** Handles the close / cancel button click event */
-      handleClose = () => {
-        this.props.onClose(null);
+  /** Handles the close / cancel button click event */
+    handleClose = () => {
+      this.props.closePopupMembers();
       }
 
   state = {  }
@@ -125,13 +128,14 @@ class AddMembers extends Component {
     const users = this.props;
     const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetusers, searchUser, selectedUser, capacity,capacityValidationFailed} = this.state;
     return ( 
+      <Card sx={{ m:1, p:3, minwidth: 700}}>
       <Box>
 
             <form noValidate autoComplete='off'>
               {
                 // show a search text field if there are no searchedCustomer yet
                 (targetusers.length === 0) ? 
-                  <TextField autoFocus fullWidth margin='normal' type='text' required id='userName' label='User name:'
+                  <TextField autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
                     onChange={this.textFieldValueChange}
                     onBlur={this.searchUserNamesForProject}
                     InputProps={{
@@ -143,7 +147,7 @@ class AddMembers extends Component {
                     }} />
                   :
                   // Show a selection of targetCustomers, if there are any. Provide no search button. 
-                  <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='Customer name:'
+                  <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
                     value={selectedUser}
                     onChange={this.userSelectionChange}>
                     {
@@ -163,9 +167,12 @@ class AddMembers extends Component {
                 helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
                 
               
-              <Button disabled={!selectedUser} variant='contained' color='primary' onClick={this.addProjectUser}>
+              <Button disabled={!selectedUser} variant='contained' onClick={this.addProjectUser} color='secondary'>
               add new member
               </Button>
+              <Button onClick={this.handleClose} color='secondary'>
+              Cancel
+            </Button>
                 {/* <Select onChange={this.handleChange}>
                     {users.map(project =>
                         users.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
@@ -173,6 +180,7 @@ class AddMembers extends Component {
                 </Select> */}
                 
             </Box>
+            </Card>
      );
   }
 }

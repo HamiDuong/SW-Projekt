@@ -13,6 +13,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { format } from "date-fns";
+import Card from '@mui/material/Card';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import Typography from '@mui/material/Typography';
+
 
 class CreateProjectMain extends Component {
     constructor(props) {
@@ -74,7 +78,7 @@ class CreateProjectMain extends Component {
                 commissioner: project.commissioner,
                 userId: 1,
                 projectId: project.id,
-            }, this.addProjectDurationBooking(),
+            }, this.addProjectDurationBooking(this.state.projectId),
             )
         )
         }
@@ -137,13 +141,7 @@ class CreateProjectMain extends Component {
             WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
                
             let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
-                this.setState({
-                    workTimeAccountId: 1,
-                    projectId: 1,
-                    userId : 1,
-                    type: 'PojectDuration',
-                }))
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(this.state.type)
             console.log(newProjectDurationBO)
             console.log(newBookingBO)
@@ -181,7 +179,7 @@ class CreateProjectMain extends Component {
             user={this.users}  /> 
             
         } else {
-            return <h1>You haven´t selected a project yet.</h1>
+            return <h3>You haven´t selected a project yet.</h3>
         }
     }
 
@@ -216,7 +214,23 @@ class CreateProjectMain extends Component {
         const { projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed } = this.state
         const func = this.showing()
         return (
-            <Box
+            <Card sx={{ m:5, p:2, minwidth: 500}}>
+                <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
+                        <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
+                            <Grid item >
+                                <DeveloperBoardIcon/>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={4} sx={{pb:1}}>
+                            <Typography variant="h5" component="div">
+                            Create Your Project.
+                            </Typography>
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            Please fill out all relevant information. 
+                            </Typography>
+                        </Grid>
+                </Grid>
+                <Box
                 component="form"
                 sx={{
                     '& > :not(style)': { m: 1, width: '25ch' },
@@ -232,9 +246,11 @@ class CreateProjectMain extends Component {
                     helperText={commissionerValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
 
 
-                <br />
+                
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
+                                    style="margin-left:-1px"
+                                    required fullWidth margin='normal'
                                     renderInput={(props) => <TextField {...props} />}
                                     label="Start"
                                     value={this.state.start}
@@ -245,9 +261,11 @@ class CreateProjectMain extends Component {
                                 />
                                 
                             </LocalizationProvider>  
-                <br />
+                
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
+                                    style="margin-left:-2px"
+                                    margin='normal'
                                     renderInput={(props) => <TextField {...props} />}
                                     label="End"
                                     value={this.state.end}
@@ -271,8 +289,8 @@ class CreateProjectMain extends Component {
 
 
 
-
             </Box>
+            </Card>
 
         );
     }

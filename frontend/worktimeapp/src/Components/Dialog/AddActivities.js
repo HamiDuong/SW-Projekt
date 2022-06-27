@@ -7,6 +7,7 @@ import ActivityBO from '../../API/ActivityBO';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import Card from '@mui/material/Card';
 
 
 
@@ -59,11 +60,12 @@ class AddActivities extends Component {
     render() { 
         const {activityName, activityNameValidationFailed, capacity, capacityValidationFailed} = this.state 
         return ( 
+            <Card sx={{ m:1, p:3, minwidth: 700}}>
            <Box
             component="form"
-             sx={{
-             '& > :not(style)': { m: 1, width: '25ch' },
-                }}
+            //  sx={{
+            //  '& > :not(style)': { m: 1, width: '25ch' },
+            //     }}
             noValidate
             autoComplete="off">
             <div className='popup'>
@@ -80,7 +82,8 @@ class AddActivities extends Component {
                     
                     <Button 
                     variant="contained" 
-                    onClick={this.addActivity}>
+                    onClick={this.addActivity}
+                    color='secondary'>
                       Create Activity
                       </Button>
                     
@@ -88,12 +91,13 @@ class AddActivities extends Component {
                 <br/>
 
                     <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.props.closePopupActivities}>Close</Button>
+                    <Button onClick={this.props.closePopupActivities} color='secondary'>Cancel</Button>
                 </Grid>
                 </div>
                
             </div>
             </Box>
+            </Card>
          );
     }
 }
