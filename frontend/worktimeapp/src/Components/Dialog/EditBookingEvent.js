@@ -23,6 +23,12 @@ import ProjectWorkStartBO from '../../API/EventBOs/ProjectWorkStartBO';
 import VacationEndBO from '../../API/EventBOs/VacationEndBO';
 import VacationStartBO from '../../API/EventBOs/VacationStartBO';
 
+
+/**
+ * Bearbeitungsfenster für Eventbuchungen
+ * 
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ */
 class EditBookingEvent extends Component {
     constructor(props) {
         super(props);

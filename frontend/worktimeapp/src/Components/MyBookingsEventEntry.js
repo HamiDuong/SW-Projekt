@@ -7,6 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBookingEvent from './Dialog/EditBookingEvent';
 
+/**
+ * Eintrag von MyBookings für Eventbuchungen
+ * 
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ */
 class MyBookingsEventEntry extends Component {
     constructor(props) {
         super(props);

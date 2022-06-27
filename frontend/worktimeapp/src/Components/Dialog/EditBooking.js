@@ -18,6 +18,11 @@ import ProjectWorkBO from '../../API/ProjectWorkBO';
 import VacationBO from '../../API/VacationBO';
 import WorkBO from '../../API/WorkBO';
 
+/**
+ * Bearbeitungsfensterfür Intervallbuchungen
+ * 
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ */
 class EditBooking extends Component {
     constructor(props) {
         super(props);

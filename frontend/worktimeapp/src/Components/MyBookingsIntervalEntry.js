@@ -7,7 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBooking from './Dialog/EditBooking'
 
-//Erstellung eines Eintrags in der Tabelle
+/**
+ * Eintrag von MyBookings für Intervallbuchungen
+ * 
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ */
 class MyBookingsIntervalEntry extends Component {
     constructor(props) {
         super(props);
