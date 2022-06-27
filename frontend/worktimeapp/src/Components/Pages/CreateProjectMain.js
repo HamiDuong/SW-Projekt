@@ -65,7 +65,7 @@ class CreateProjectMain extends Component {
 
 
     addProjects = () => {
-        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userId);
+        let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.props.userId);
         console.log(newProject)
         console.log(this.props.userId)
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
@@ -136,7 +136,7 @@ class CreateProjectMain extends Component {
            console.log(newProjectDurationBO)
             WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
                
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
                 this.setState({
                     workTimeAccountId: 1,
