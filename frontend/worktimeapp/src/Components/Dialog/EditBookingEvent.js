@@ -43,7 +43,7 @@ class EditBookingEvent extends Component {
     }
 
     handleClose = () => {
-        this.props.onClose(null)
+        this.props.onClose(null);
     }
 
     saveChanges = () => {
@@ -132,7 +132,7 @@ class EditBookingEvent extends Component {
                     console.log(booking);
                 });                    
         }
-        this.handleClose()
+        this.handleClose();
 
     }
 
@@ -235,7 +235,7 @@ class EditBookingEvent extends Component {
                     console.log(booking);
                 });
         }
-        this.handleClose()
+        this.handleClose();
     }
 
     render() { 

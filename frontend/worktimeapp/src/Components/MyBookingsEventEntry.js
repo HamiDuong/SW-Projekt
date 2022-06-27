@@ -29,29 +29,29 @@ class MyBookingsEventEntry extends Component {
         this.setState({
             showDialog: true
         }, function(){
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
     closeDialog = (booking) => {
         if(booking){
-            this.updateBooking(booking)
+            this.updateBooking(booking);
             this.setState({
                 showDialog: false
             }, function(){
-                console.log("Editwindow wird geschlossen")
+                console.log("Editwindow wird geschlossen");
             })
         }else{
             this.setState({
                 showDialog: false
             },function(){
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
         }
     }
 
     componentDidMount(){
-        console.log(this.state.booking)
+        console.log(this.state.booking);
     }
 
     handleChange = ev => {

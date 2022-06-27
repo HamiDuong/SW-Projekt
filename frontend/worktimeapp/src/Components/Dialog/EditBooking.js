@@ -38,11 +38,11 @@ class EditBooking extends Component {
     }
 
     handleClose = () => {
-        this.props.onClose(null)
+        this.props.onClose(null);
     }
     
     deleteBooking = (obj) => {
-        console.log("Booking löschen")
+        console.log("Booking löschen");
 
         const { booking } = this.props;
 

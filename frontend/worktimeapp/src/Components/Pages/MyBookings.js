@@ -133,8 +133,6 @@ class MyBookings extends Component {
             filteredintervalbookings: [],
             filteredeventbookings: [],
 
-            renderedbookings: [],
-
             workbookings: [],
 
             bookingtype: 'all',
@@ -153,7 +151,7 @@ class MyBookings extends Component {
     }
 
     componentDidMount(){
-        console.log('ComponentDidMount')
+        console.log('ComponentDidMount');
         this.getBookings();
         console.log("userid bookings", this.props.userId);
         //this.getWorkBookings();
@@ -169,19 +167,17 @@ class MyBookings extends Component {
         this.setState({ [ev.target.name] : ev.target.value });
     };
 
+    //gets all booked bookings of the current user
     getBookings = () => {
         // WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
-        // // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
         //     this.setState({
         //         intervalbookings: responseJSON.timeintervals,
         //         eventbookings: responseJSON.events,
         //         filteredintervalbookings: responseJSON.timeintervals,
         //         filteredeventbookings: responseJSON.events            
         //     },function(){
-        //         console.log("getBookings")
+        //         console.log("getBookings");
         //     }))
-
-            // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
                 
             this.setState({
                     intervalbookings: fakebackend.timeintervals,
@@ -189,10 +185,10 @@ class MyBookings extends Component {
                     filteredintervalbookings: fakebackend.timeintervals,
                     filteredeventbookings: fakebackend.events            
                 },function(){
-                    console.log("getBookings")
-                })
+                    console.log("getBookings");
+                });
 
-            //von den Bookings nur die Work Intervalle rausfiltern
+            //filtert intervalbookings with the type 'Work'
             let res = [];
             let bookings = fakebackend.timeintervals;
             bookings.forEach(elem => {
@@ -204,23 +200,24 @@ class MyBookings extends Component {
                 workbookings: res
             }, function(){
                 console.log("Workbookings wurden ausgefiltert")
-            })
+            });
     }
 
+    //filtert intervalbookings with the type 'Work'
     getWorkBookings = () => {
         let res = [];
         let bookings = this.state.intervalbookings;
         bookings.forEach(elem => {
             if(elem.type == "Work"){
                 res.push(elem);
-                console.log(elem.type)
+                console.log(elem.type);
             }
         });
         this.setState({
             workbookings: res
         }, function(){
-            console.log("Workbookings wurden ausgefiltert")
-        })
+            console.log("Workbookings wurden ausgefiltert");
+        });
     }
 
     //reset the filter to default
@@ -235,7 +232,7 @@ class MyBookings extends Component {
             filteredintervalbookings: this.state.intervalbookings,
             filteredeventbookings: this.state.eventbookings
         }, function(){
-            console.log("State wurde zurückgesetzt")
+            console.log("State wurde zurückgesetzt");
         })
     }
 
@@ -243,7 +240,7 @@ class MyBookings extends Component {
     filterBookings = () => {
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
-        let type = this.state.typefilter
+        let type = this.state.typefilter;
 
         this.setState({
             startfilter: starthold.value,
@@ -259,33 +256,33 @@ class MyBookings extends Component {
         let eres = [];
 
         //Filter bookings by type
-        //Filter interval bookings by type
+        //Filter event bookings by type
         if(type == null || type == ""){
             console.log("Keine Typefilterung")
         }else{
             this.state.filteredintervalbookings.forEach(function(elem){
-                let elemtype = elem.type
+                let elemtype = elem.type;
 
                 // Event types
                 if(elemtype == "breakbegin" || elemtype == "breakend"){
-                    elemtype = "Break"
+                    elemtype = "Break";
                 }else if(elemtype == "coming" || elemtype == "going"){
-                    elemtype = "Work"
+                    elemtype = "Work";
                 }else if(elemtype == "flexdayend" || elemtype == "flexdaystart"){
-                    elemtype = "Flex Day"
+                    elemtype = "Flex Day";
                 }else if(elemtype == "illnessbegin" || elemtype == "illnessend"){
-                    elemtype = "Illness"
+                    elemtype = "Illness";
                 }else if(elemtype == "projectworkbegin" || elemtype == "projectworkend"){
-                    elemtype = "Project Work"
+                    elemtype = "Project Work";
                 }else if(elemtype == "vacationbegin" || elemtype == "vacationend"){
-                    elemtype = "Vacation"
+                    elemtype = "Vacation";
                 }
 
                 if(type == elemtype){
-                    ires.push(elem)
-                    console.log('Element gehört in den Filter')
+                    ires.push(elem);
+                    console.log('Element gehört in den Filter');
                 }else{
-                    console.log('Element gehört nicht in das Filter')
+                    console.log('Element gehört nicht in das Filter');
                 }
 
             })
@@ -293,35 +290,34 @@ class MyBookings extends Component {
             this.setState({
                 filteredintervalbookings: ires
             }, function(){
-                console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung")
-            })
+                console.log("State wurde gesetzt für IntervalBuchungen nach TypeFilterung");
+            });
         }
 
-        //Filter event bookings by type
+        //Filter interval bookings by type
         if(type == null || type == ""){
-            console.log("Keine Typfilterung")
+            console.log("Keine Typfilterung");
         }else{
             this.state.filteredeventbookings.forEach(function(elem){
-                let elemtype = elem.type
-                console.log(elemtype)
+                let elemtype = elem.type;
+                console.log(elemtype);
                 if(type == elemtype){
-                    eres.push(elem)
-                    console.log('Elemt gehört in den Filter')
+                    eres.push(elem);
+                    console.log('Elemt gehört in den Filter');
                 }else{
-                    console.log('Element gehört nicht in das Filter')
+                    console.log('Element gehört nicht in das Filter');
                 }
-            })
+            });
             this.setState({
                 filteredeventbookings: eres
             }, function(){
-                console.log("State wurde gesetzt für EventBuchungen nach TypeFilterung")
+                console.log("State wurde gesetzt für EventBuchungen nach TypeFilterung");
             })
         }
 
         //Sort Interval by Date
         ires = [];
 
-        //Startfilter Value in Date umwandeln
         let starttime = starthold.value;
         let endtime = endhold.value;
         if(starttime == "" && endtime == ""){
@@ -333,7 +329,7 @@ class MyBookings extends Component {
             this.state.filteredintervalbookings.forEach(function(elem){
                 let elemstarttime = new Date(elem.start);
                 if(elemstarttime >= startdate){
-                    ires.push(elem)
+                    ires.push(elem);
                 }
             })
             this.setState({
@@ -348,7 +344,7 @@ class MyBookings extends Component {
             this.state.filteredintervalbookings.forEach(function(elem){
                 let elemendtime = new Date(elem.end);
                 if(elemendtime <= enddate){
-                    ires.push(elem)
+                    ires.push(elem);
                 }
             })
             this.setState({
@@ -386,32 +382,32 @@ class MyBookings extends Component {
             this.state.filteredeventbookings.forEach(function(elem){
                 let eventtime = new Date(elem.time);
                 if(eventtime >= etime){
-                    eres.push(elem)
+                    eres.push(elem);
                 }
             })
             this.setState({
                 filteredeventbookings: eres
             }, function(){
-                console.log("Event sorted by start date")
+                console.log("Event sorted by start date");
             })
         }
 
-        let bookingtype = this.state.bookingtype
-        let timeinterval = 'timeinterval'
-        let event = 'event'
+        let bookingtype = this.state.bookingtype;
+        let timeinterval = 'timeinterval';
+        let event = 'event';
 
-        console.log('Vergleich von Buchungsart')
+        console.log('Vergleich von Buchungsart');
         if(bookingtype == timeinterval){
             this.setState({
                 filteredeventbookings: []
             },function(){
-                console.log("Nur Timeintervalbuchungen")
+                console.log("Nur Timeintervalbuchungen");
             })
         }else if(bookingtype == event){
             this.setState({
                 filteredintervalbookings: []
             }, function(){
-                console.log("Nur Eventbuchungen")
+                console.log("Nur Eventbuchungen");
             })
         }
     }
@@ -421,8 +417,8 @@ class MyBookings extends Component {
         this.setState({
             showEditWindow: true
         },function(){
-            console.log("Editwindow wird geöffnet")
-        })
+            console.log("Editwindow wird geöffnet");
+        });
     }
 
     mapIntervalBookings = () => {
@@ -460,7 +456,7 @@ class MyBookings extends Component {
         this.setState({
             dialogWorkTimeSheet: true
         },function(){
-            console.log("Open Create WorkTimeSheet Window")
+            console.log("Open Create WorkTimeSheet Window");
         })
     }
 
@@ -469,7 +465,7 @@ class MyBookings extends Component {
         this.setState({
             dialogWorkTimeSheet: false
         }, function(){
-            console.log("Editwindow wird geschlossen")
+            console.log("Editwindow wird geschlossen");
         })
     }
 
