@@ -3399,7 +3399,7 @@ class EventBookingsForUser(Resource):
 
 '''Booking Routes @author Mihriban Dogan (https://github.com/mihriban-dogan)'''
 
-
+#Alle Buchungen für einen User auslesen
 @worktimeapp.route('/booking/timeintervalbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class TimeIntervalBookingOperationsWithParam(Resource):
@@ -3416,7 +3416,7 @@ class TimeIntervalBookingOperationsWithParam(Resource):
                 user)
             return timeintervalbookings
 
-
+#TimeIntervalBookings in Booking Tabelle anlegen
 @worktimeapp.route('/booking/timeintervalbooking')
 class TimeintervalBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
@@ -3447,7 +3447,7 @@ class TimeintervalBookingOperations(Resource):
         else:
             return ''
 
-
+#EventBookings in Booking Tabelle anlegen
 @worktimeapp.route('/booking/eventbooking')
 class EventBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
@@ -3469,7 +3469,7 @@ class EventBookingOperations(Resource):
         else:
             return ''
 
-
+#Alle Eventbookings auslesen
 @worktimeapp.route('/booking/eventbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
@@ -3485,7 +3485,7 @@ class EventBookingOperationsWithParam(Resource):
             eventbookings = adm.get_all_event_bookings_for_user(user)
             return eventbookings
 
-
+#Event und Vacation Bookings auslesen
 @worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):

@@ -62,7 +62,7 @@ class BookingMapper (Mapper):
         return result
 
     def find_timeinterval_bookings_by_user_id(self, userId):
-        """Auslesen aller Bookings eines bestimmten Zeitkontos.
+        """Auslesen aller Timeinterval Bookings eines bestimmten Users.
         """
         result = []
         cursor = self._cnx.cursor()
@@ -88,7 +88,7 @@ class BookingMapper (Mapper):
         return result
 
     def find_event_bookings_by_user_id(self, userId):
-        """Auslesen aller Bookings eines bestimmten Zeitkontos.
+        """Auslesen aller Event Bookings eines bestimmten Users.
         """
         result = []
         cursor = self._cnx.cursor()
@@ -166,7 +166,7 @@ class BookingMapper (Mapper):
         return booking
 
     def update(self, booking):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
+        """Wiederholtes Schreiben eines Booking Objekts in die Datenbank.
         """
         timestamp = datetime.today()
         booking.set_date_of_last_change(timestamp)
@@ -191,7 +191,8 @@ class BookingMapper (Mapper):
         cursor.close()
 
     def find_by_key(self, key):
-
+        """Suchen eines Booking Objekts nach der ID.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -221,7 +222,8 @@ class BookingMapper (Mapper):
         return result
 
     def find_booking_by_booking_subclass(self, foreignkey, key, type):
-
+        """Suchen eines Bookings nach Typ und Fremdschlüssel.
+        """
         result = None
 
         cursor = self._cnx.cursor()

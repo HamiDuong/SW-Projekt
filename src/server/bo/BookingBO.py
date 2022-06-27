@@ -56,19 +56,19 @@ class BookingBO (bo.BusinessObject):
         self._type = value
 
     def get_time_interval_booking_id(self):
-        """Auslesen des Buchungstyp."""
+        """Auslesen des Fremdschlüssels TimeintervalBookingId."""
         return self._time_interval_booking_id
 
     def set_time_interval_booking_id(self, value):
-        """Setzen des Buchungstyp."""
+        """Setzen des Fremdschlüssels TimeintervalBookingId."""
         self._time_interval_booking_id = value
 
     def get_event_booking_id(self):
-        """Auslesen des Buchungstyp."""
+        """Auslesen des Fremdschlüssels EventBookingId."""
         return self._event_booking_id
 
     def set_event_booking_id(self, value):
-        """Setzen des Buchungstyp."""
+        """Setzen des Fremdschlüssels EventBookingId."""
         self._event_booking_id = value
 
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'

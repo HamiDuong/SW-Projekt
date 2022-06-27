@@ -33,7 +33,8 @@ class EventBookingMapper (Mapper):
         return result
 
     def find_last_entry(self):
-
+        """Auslesen des letzten Eintrags in der EventBooking Tabelle.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -50,29 +51,6 @@ class EventBookingMapper (Mapper):
             result = eventbooking
         except IndexError:
             result = None
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_event_id(self, eventId):
-        """ Auslesen aller Bookings nach eventsIds. 
-        """
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, eventId from eventbookings WHERE eventId={} ORDER BY id".format(
-            eventId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, dateOfLastChange, eventId) in tuples:
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
-
-            result.append(eventbooking)
 
         self._cnx.commit()
         cursor.close()
@@ -104,7 +82,7 @@ class EventBookingMapper (Mapper):
         return eventbooking
 
     def update(self, eventbooking):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
+        """Wiederholtes Schreiben eines EventBooking Objekts in die Datenbank.
         """
         timestamp = datetime.today()
         eventbooking.set_date_of_last_change(timestamp)
@@ -119,7 +97,7 @@ class EventBookingMapper (Mapper):
         cursor.close()
 
     def delete(self, eventbooking):
-        """Löschen der Daten eines Booking-Objekts aus der Datenbank.
+        """Löschen der Daten eines EventBooking-Objekts aus der Datenbank.
         """
         cursor = self._cnx.cursor()
 
@@ -131,7 +109,8 @@ class EventBookingMapper (Mapper):
         cursor.close()
 
     def find_by_key(self, key):
-
+        """Suchen eines EventBooking Objekts nach der ID.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -156,7 +135,7 @@ class EventBookingMapper (Mapper):
         return result
 
     def find_by_event_id(self, key):
-
+        """Auslesen eines EventBooking Objekts nach der EventId"""
         result = None
 
         cursor = self._cnx.cursor()

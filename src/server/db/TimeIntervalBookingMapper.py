@@ -11,7 +11,7 @@ class TimeIntervalBookingMapper (Mapper):
         super().__init__()
 
     def find_all(self):
-        """Auslesen aller Event Bookings.
+        """Auslesen aller Timeinterval Bookings.
         """
         result = []
         cursor = self._cnx.cursor()
@@ -33,7 +33,8 @@ class TimeIntervalBookingMapper (Mapper):
         return result
 
     def find_last_entry(self):
-
+        """Auslesen des letzten Eintrags in der TimeintervalBooking Tabelle.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -56,31 +57,8 @@ class TimeIntervalBookingMapper (Mapper):
 
         return result
 
-    def find_by_timeinterval_id(self, timeintervalId):
-        """ Auslesen aller Bookings nach eventsIds. 
-        """
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings WHERE timeintervalId={} ORDER BY id".format(
-            timeintervalId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, dateOfLastChange, timeintervalId) in tuples:
-            timeintervalbooking = TimeIntervalBookingBO()
-            timeintervalbooking.set_id(id)
-            timeintervalbooking.set_timeinterval_id(timeintervalId)
-            timeintervalbooking.set_date_of_last_change(dateOfLastChange)
-
-            result.append(timeintervalbooking)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
     def insert(self, timeintervalbooking):
-        """Einfügen eines timeintervalbooking-Objekts in die Datenbank.
+        """Einfügen eines Timeintervalbooking-Objekts in die Datenbank.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM timeintervalbookings")
@@ -104,7 +82,7 @@ class TimeIntervalBookingMapper (Mapper):
         return timeintervalbooking
 
     def update(self, timeintervalbooking):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
+        """Wiederholtes Schreiben eines TimeintervalBooking Objekts in die Datenbank.
         """
         timestamp = datetime.today()
         timeintervalbooking.set_date_of_last_change(timestamp)
@@ -120,7 +98,7 @@ class TimeIntervalBookingMapper (Mapper):
         cursor.close()
 
     def delete(self, timeintervalbooking):
-        """Löschen der Daten eines Booking-Objekts aus der Datenbank.
+        """Löschen der Daten eines TimeintervalBooking-Objekts aus der Datenbank.
         """
 
         cursor = self._cnx.cursor()
@@ -133,7 +111,8 @@ class TimeIntervalBookingMapper (Mapper):
         cursor.close()
 
     def find_by_key(self, key):
-
+        """Suchen eines TimeIntervalBooking Objekts nach der ID.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -158,7 +137,7 @@ class TimeIntervalBookingMapper (Mapper):
         return result
 
     def find_by_timeinterval_id(self, key):
-
+        """Auslesen eines TimeIntervalBooking Objekts nach der TimeintervalId"""
         result = None
 
         cursor = self._cnx.cursor()

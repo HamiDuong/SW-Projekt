@@ -1529,130 +1529,23 @@ class Businesslogic():
     """
     Booking Methoden @author Mihriban Dogan (https://github.com/mihriban-dogan)
     """
+    # Ein TimeIntervalBooking anhand der ID aus der Datenbank holen
 
     def get_timeinterval_booking_by_id(self, id):
         with TimeIntervalBookingMapper as mapper:
             return mapper.find_by_key(id)
 
-    def get_booking_by_id(self, id):
-        with BookingMapper as mapper:
-            return mapper.find_by_key(id)
-
+    # Ein EventBooking anhand der ID aus der Datenbank holen
     def get_event_booking_by_id(self, id):
         with EventBookingMapper as mapper:
             return mapper.find_by_key(id)
 
-    def add_delta(self, tbooking):
-        timeintervalbookingid = tbooking.get_time_interval_booking_id()
-        with TimeIntervalBookingMapper() as mapper:
-            timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
-        with TimeIntervalMapper() as mapper:
-            timeinterval = mapper.find_by_key(timeintervalbooking.get_id())
-        if timeinterval.get_type() == "break":
-            with BreakMapper() as mapper:
-                breaks = mapper.find_by_key(
-                    timeinterval.get_break_id())
-                delta = breaks.get_end() - breaks.get_start()
-                delta_float = round(((delta.total_seconds()/60)/60), 2)
-                self.calculate_delta_break_flexdays(tbooking, delta_float)
-        if timeinterval.get_type() == "work":
-            with WorkMapper() as mapper:
-                work = mapper.find_by_key(
-                    timeinterval.get_work_id())
-            delta = work.get_end() - work.get_start()
-            delta_float = round(((delta.total_seconds()/60)/60), 2)
-            print("Gearbeitete Zeit", delta_float)
-            self.calculate_delta_work(tbooking, delta_float)
-        if timeinterval.get_type() == "flexday":
-            with FlexDayMapper() as mapper:
-                flexdays = mapper.find_by_key(
-                    timeinterval.get_flex_day_id())
-            delta = flexdays.get_end() - flexdays.get_start()
-            delta_float = round(((delta.total_seconds()/60)/60), 2)
-            self.calculate_delta_break_flexdays(tbooking, delta_float)
+    # Ein Booking anhand der ID aus der Datenbank holen
+    def get_booking_by_id(self, id):
+        with BookingMapper as mapper:
+            return mapper.find_by_key(id)
 
-    def add_delta_for_project_work(self, tbooking):
-        timeintervalbookingid = tbooking.get_time_interval_booking_id()
-        with TimeIntervalBookingMapper() as mapper:
-            timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
-        with TimeIntervalMapper() as mapper:
-            timeinterval = mapper.find_by_key(timeintervalbooking.get_id())
-        with ProjectWorkMapper() as mapper:
-            projectwork = mapper.find_by_key(
-                timeinterval.get_project_work_id())
-
-        delta = projectwork.get_end() - projectwork.get_start()
-        delta_float = round(((delta.total_seconds()/60)/60), 2)
-        activityid = projectwork.get_activity_id()
-
-        self.calculate_delta_for_project_work(
-            tbooking, delta_float, activityid)
-
-    def calculate_delta_for_project_work(self, tbooking, delta_float, activityid):
-        print(delta_float)
-        with ProjectUserMapper() as mapper:
-            projectuser = mapper.find_by_key(tbooking.get_user_id())
-            capacity = projectuser.get_capacity()
-
-        if (projectuser.get_current_capacity() == None) or (projectuser.get_current_capacity() == 0):
-            current_capacity = round((capacity - delta_float), 2)
-            projectuser.set_current_capacity(current_capacity)
-            with ProjectUserMapper() as mapper:
-                mapper.update(projectuser)
-
-        else:
-            new_current_capacity = round(
-                (projectuser.get_current_capacity() - delta_float), 2)
-            projectuser.set_current_capacity(new_current_capacity)
-            with ProjectUserMapper() as mapper:
-                mapper.update(projectuser)
-
-        with ActivityMapper() as mapper:
-            activity = mapper.find_by_key(activityid)
-
-        if (activity.get_current_capacity() == None) or (activity.get_current_capacity() == 0):
-            activity.set_current_capacity(delta_float)
-            with ActivityMapper() as mapper:
-                mapper.update(activity)
-        else:
-            new_current_capacity_a = round(
-                (activity.get_current_capacity() + delta_float), 2)
-            activity.set_current_capacity(new_current_capacity_a)
-            with ActivityMapper() as mapper:
-                mapper.update(activity)
-
-    def calculate_delta_work(self, tbooking, delta_float):
-        with WorkTimeAccountMapper() as mapper:
-            account = mapper.find_by_user_id(tbooking.get_user_id())
-            print(account)
-            contracttime = account.get_contract_time()
-            print("Gearbeitete Zeit", delta_float)
-        if delta_float < contracttime:
-            deficit = delta_float - contracttime
-            new_overtime = account.get_overtime() + deficit
-            print("Neue Overtime", new_overtime)
-            account.set_overtime(new_overtime)
-            with WorkTimeAccountMapper() as mapper:
-                return mapper.update(account)
-        elif delta_float > contracttime:
-            overtime = delta_float - contracttime
-            new_overtime = account.get_overtime() + overtime
-            print("Neue Overtime", new_overtime)
-            account.set_overtime(new_overtime)
-            with WorkTimeAccountMapper() as mapper:
-                return mapper.update(account)
-        elif delta_float == contracttime:
-            pass
-
-    def calculate_delta_break_flexdays(self, tbooking, delta_float):
-        with WorkTimeAccountMapper() as mapper:
-            account = mapper.find_by_user_id(tbooking.get_user_id())
-
-        new_overtime = round((account.get_overtime() - delta_float), 2)
-        account.set_overtime(new_overtime)
-        with WorkTimeAccountMapper() as mapper:
-            return mapper.update(account)
-
+    # Ein TimeIntervalBooking in die TimeIntervalBooking Tabelle einfügen
     def create_timeinterval_booking(self, timeintervalId):
         """Ein Timeinterval Booking anlegen"""
 
@@ -1662,6 +1555,17 @@ class Businesslogic():
         with TimeIntervalBookingMapper() as mapper:
             return mapper.insert(timeintervalbooking)
 
+     # Ein EventBooking in die EventBooking Tabelle einfügen
+    def create_event_booking(self, eventbookingId):
+        """Ein Event Booking anlegen"""
+
+        eventbooking = EventBookingBO()
+        eventbooking.set_event_id(eventbookingId)
+
+        with EventBookingMapper() as mapper:
+            return mapper.insert(eventbooking)
+
+    # Ein Booking für ein TimeIntervalBooking anlegen
     def create_booking_for_timeinterval(self, userId, worktimeAccountId, type, eventbookingId):
         with TimeIntervalBookingMapper() as mapper:
             last_entry = mapper.find_last_entry()
@@ -1677,14 +1581,7 @@ class Businesslogic():
         with BookingMapper() as mapper:
             return mapper.insert(booking)
 
-    def create_event_booking(self, eventbookingId):
-        """Ein Event Booking anlegen"""
-
-        eventbooking = EventBookingBO()
-        eventbooking.set_event_id(eventbookingId)
-
-        with EventBookingMapper() as mapper:
-            return mapper.insert(eventbooking)
+    # Ein Booking für ein EventBooking anlegen
 
     def create_booking_for_event(self, userId, worktimeAccountId, type, timeintervalbookingId):
         with EventBookingMapper() as mapper:
@@ -1701,100 +1598,7 @@ class Businesslogic():
         with BookingMapper() as mapper:
             return mapper.insert(booking)
 
-    def get_timeinterval_booking_for_delta(self, tbooking):
-        booking_types = ["timeintervals", "events"]
-        res_ti = []
-        res_ti_e = []
-        res_final = []
-
-        for elem in tbooking:
-            timeintervalbookingid = elem.get_time_interval_booking_id()
-            with TimeIntervalBookingMapper() as mapper:
-                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
-                id = timeintervalbooking.get_timeinterval_id()
-            with TimeIntervalMapper() as mapper:
-                timeintervals = mapper.find_by_key(id)
-                type = timeintervals.get_type()
-                if type == 'break':
-                    res = self.get_break_by_id(timeintervals.get_break_id())
-                    if (res.get_start_event() and res.get_end_event) == None:
-                        res_ti.append(res)
-                    elif not ((res.get_start_event() and res.get_end_event()) == None):
-                        with BreakBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                res.get_start_event())
-                        with BreakEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                res.get_start_event())
-                        res_ti_e.append(start_event)
-                        res_ti_e.append(end_event)
-                        res_ti.append(res)
-                    elif not (res.get_start_event() is None):
-                        with BreakBeginMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                    elif not (res.get_end_event() is None):
-                        with BreakEndMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-
-                if type == 'projectWork':
-                    res = self.get_project_work_by_id(
-                        timeintervals.get_project_work_id())
-                    if (res.get_start_event() and res.get_end_event) == None:
-                        res_ti.append(res)
-                    elif not ((res.get_start_event() and res.get_end_event()) == None):
-                        with ProjectWorkBeginMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                res.get_start_event())
-                        with ProjectWorkEndMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                res.get_start_event())
-                        res_ti_e.append(start_event)
-                        res_ti_e.append(end_event)
-                        res_ti.append(res)
-                    elif not (res.get_start_event() is None):
-                        with ProjectWorkBeginMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                    elif not (res.get_end_event() is None):
-                        with ProjectWorkEndMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-
-                if type == 'work':
-                    res = self.get_work_by_id(timeintervals.get_work_id())
-                    if (res.get_start_event() and res.get_end_event) == None:
-                        res_ti.append(res)
-                    elif not ((res.get_start_event() and res.get_end_event()) == None):
-                        with ComingMapper() as mapper:
-                            start_event = mapper.find_by_key(
-                                res.get_start_event())
-                        with GoingMapper() as mapper:
-                            end_event = mapper.find_by_key(
-                                res.get_start_event())
-                        res_ti_e.append(start_event)
-                        res_ti_e.append(end_event)
-                        res_ti.append(res)
-                    elif not (res.get_start_event() is None):
-                        with ComingMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-                    elif not (res.get_end_event() is None):
-                        with GoingMapper() as mapper:
-                            event = mapper.find_by_key(res.get_start_event())
-                            res_ti_e.append(event)
-                            res_ti.append(res)
-        res_final = [res_ti, res_ti_e]
-        res_final_dict = dict(zip(booking_types, res_final))
-        print(res_final_dict)
-        return res_final_dict
-
+    # Alle TimeIntervalBookings für einen User holen
     def get_all_timeinterval_bookings_for_user(self, user):
         booking_types = ["timeintervals", "events"]
         res_ti = []
@@ -1941,7 +1745,8 @@ class Businesslogic():
                             res_ti_e.append(event)
                             res_ti.append(res)
                 if type == 'flexday':
-                    res = self.get_flex_day_by_id(timeintervals.get_flex_day_id())
+                    res = self.get_flex_day_by_id(
+                        timeintervals.get_flex_day_id())
                     if (res.get_start_event() and res.get_end_event) == None:
                         res_ti.append(res)
                     elif not ((res.get_start_event() and res.get_end_event()) == None):
@@ -1969,6 +1774,7 @@ class Businesslogic():
         print(res_final_dict)
         return res_final_dict
 
+    # Alle EventBookings für einen User holen
     def get_all_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
         und dieser wird dann in der Tabelle Eventbooking eingefügt 
@@ -2025,6 +1831,7 @@ class Businesslogic():
         print(res_e)
         return res_e
 
+    # Alle Vacation/Illness Bookings für einen User holen
     def get_all_vacation_illness_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
         und dieser wird dann in der Tabelle Eventbooking eingefügt 
@@ -2061,6 +1868,7 @@ class Businesslogic():
         print(res_e)
         return res_e
 
+    # TimeintervalBookings updaten
     def save_time_interval_booking(self, timeinterval):
         with TimeIntervalBookingMapper() as mapper:
             timeintervalbooking = mapper.find_by_key(timeinterval.get_id())
@@ -2070,15 +1878,7 @@ class Businesslogic():
                 "timeIntervalBookingId", timeintervalbooking.get_id(), "T")
             mapper.update(booking)
 
-    def delete_time_interval_booking(self, timeinterval):
-        with TimeIntervalBookingMapper() as mapper:
-            timeintervalbooking = mapper.find_by_key(timeinterval.get_id())
-            mapper.delete(timeintervalbooking)
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "timeIntervalBookingId", timeintervalbooking.get_id(), "T")
-            mapper.delete(booking)
-
+    # EventBookings updaten
     def save_event_booking(self, event):
         with EventBookingMapper() as mapper:
             eventbooking = mapper.find_by_key(event.get_id())
@@ -2090,6 +1890,18 @@ class Businesslogic():
                 mapper.update(booking)
             else:
                 pass
+
+    # TimeintervalBookings löschen
+    def delete_time_interval_booking(self, timeinterval):
+        with TimeIntervalBookingMapper() as mapper:
+            timeintervalbooking = mapper.find_by_key(timeinterval.get_id())
+            mapper.delete(timeintervalbooking)
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "timeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            mapper.delete(booking)
+
+    # EventBookings löschen
 
     def delete_event_booking(self, event):
         with EventBookingMapper() as mapper:
@@ -2103,53 +1915,125 @@ class Businesslogic():
             else:
                 pass
 
-    def delete_timeinterval_booking(self, bookingid):
+    """
+    Arbeitszeiten für Buchungen berechnen @author Mihriban Dogan (https://github.com/mihriban-dogan)
+    """
 
-        with BookingMapper() as mapper:
-            booking = mapper.find_by_key(bookingid)
-            timeintervalbookingid = booking.get_time_interval_booking_id()
-            mapper.delete(booking)
-
+    # Die Arbeitszeit für Break, Work und Flexday Buchungen berechnen
+    def add_delta(self, tbooking):
+        timeintervalbookingid = tbooking.get_time_interval_booking_id()
         with TimeIntervalBookingMapper() as mapper:
             timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
-            mapper.delete(timeintervalbooking)
+        with TimeIntervalMapper() as mapper:
+            timeinterval = mapper.find_by_key(timeintervalbooking.get_id())
+        if timeinterval.get_type() == "break":
+            with BreakMapper() as mapper:
+                breaks = mapper.find_by_key(
+                    timeinterval.get_break_id())
+                delta = breaks.get_end() - breaks.get_start()
+                delta_float = round(((delta.total_seconds()/60)/60), 2)
+                self.calculate_delta_break_flexdays(tbooking, delta_float)
+        if timeinterval.get_type() == "work":
+            with WorkMapper() as mapper:
+                work = mapper.find_by_key(
+                    timeinterval.get_work_id())
+            delta = work.get_end() - work.get_start()
+            delta_float = round(((delta.total_seconds()/60)/60), 2)
+            print("Gearbeitete Zeit", delta_float)
+            self.calculate_delta_work(tbooking, delta_float)
+        if timeinterval.get_type() == "flexday":
+            with FlexDayMapper() as mapper:
+                flexdays = mapper.find_by_key(
+                    timeinterval.get_flex_day_id())
+            delta = flexdays.get_end() - flexdays.get_start()
+            delta_float = round(((delta.total_seconds()/60)/60), 2)
+            self.calculate_delta_break_flexdays(tbooking, delta_float)
 
-        # # Nach Absprache mit Hami fertig machen
-        # # with TimeintervalMapper() as mapper:
-        #     # mapper.delete(timeintervalid)
-
-    def delete_event_booking(self, bookingid):
-
-        with BookingMapper() as mapper:
-            booking = mapper.find_by_key(bookingid)
-            eventbookingid = booking.get_event_booking_id()
-            mapper.delete(booking)
-
-        with EventBookingMapper() as mapper:
-            eventbooking = mapper.find_by_key(eventbookingid)
-            mapper.delete(eventbooking)
-
-        # Nach Absprache mit Khadi auskommentieren
-        # with EventMapper() as mapper:
-            # mapper.delete(eventid)
-
-    def update_timeinterval_booking(self, booking):
-       # Dateoflastchange wird in der Tabelle Bookings geändert
-        with BookingMapper() as mapper:
-            mapper.update(booking)
-
-        # Dateoflastchange wird in der Tabelle Timeintervalbookings geändert
+    # Die Arbeitszeit für ProjectWork Buchungen berechnen
+    def add_delta_for_project_work(self, tbooking):
+        timeintervalbookingid = tbooking.get_time_interval_booking_id()
         with TimeIntervalBookingMapper() as mapper:
-            return mapper.update(booking)
+            timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+        with TimeIntervalMapper() as mapper:
+            timeinterval = mapper.find_by_key(timeintervalbooking.get_id())
+        with ProjectWorkMapper() as mapper:
+            projectwork = mapper.find_by_key(
+                timeinterval.get_project_work_id())
 
-    def update_event_booking(self, booking):
-        # Dateoflastchange wird in der Tabelle Bookings geändert
-        with BookingMapper() as mapper:
-            mapper.update(booking)
+        delta = projectwork.get_end() - projectwork.get_start()
+        delta_float = round(((delta.total_seconds()/60)/60), 2)
+        activityid = projectwork.get_activity_id()
 
-        # Dateoflastchange wird in der Tabelle Eventbookings geändert
-        with EventBookingMapper() as mapper:
-            return mapper.update(booking)
+        self.calculate_delta_for_project_work(
+            tbooking, delta_float, activityid)
+
+    # Die Arbeitszeit von der ProjectWork Buchung in die ProjectUser und Activity Tabelle einfügen
+    def calculate_delta_for_project_work(self, tbooking, delta_float, activityid):
+        print(delta_float)
+        with ProjectUserMapper() as mapper:
+            projectuser = mapper.find_by_key(tbooking.get_user_id())
+            capacity = projectuser.get_capacity()
+
+        if (projectuser.get_current_capacity() == None) or (projectuser.get_current_capacity() == 0):
+            current_capacity = round((capacity - delta_float), 2)
+            projectuser.set_current_capacity(current_capacity)
+            with ProjectUserMapper() as mapper:
+                mapper.update(projectuser)
+
+        else:
+            new_current_capacity = round(
+                (projectuser.get_current_capacity() - delta_float), 2)
+            projectuser.set_current_capacity(new_current_capacity)
+            with ProjectUserMapper() as mapper:
+                mapper.update(projectuser)
+
+        with ActivityMapper() as mapper:
+            activity = mapper.find_by_key(activityid)
+
+        if (activity.get_current_capacity() == None) or (activity.get_current_capacity() == 0):
+            activity.set_current_capacity(delta_float)
+            with ActivityMapper() as mapper:
+                mapper.update(activity)
+        else:
+            new_current_capacity_a = round(
+                (activity.get_current_capacity() + delta_float), 2)
+            activity.set_current_capacity(new_current_capacity_a)
+            with ActivityMapper() as mapper:
+                mapper.update(activity)
+
+    # Die Arbeitszeit für Work Buchungen in die WorkTimeAccount Tabelle einfügen
+    def calculate_delta_work(self, tbooking, delta_float):
+        with WorkTimeAccountMapper() as mapper:
+            account = mapper.find_by_user_id(tbooking.get_user_id())
+            print(account)
+            contracttime = account.get_contract_time()
+            print("Gearbeitete Zeit", delta_float)
+        if delta_float < contracttime:
+            deficit = delta_float - contracttime
+            new_overtime = account.get_overtime() + deficit
+            print("Neue Overtime", new_overtime)
+            account.set_overtime(new_overtime)
+            with WorkTimeAccountMapper() as mapper:
+                return mapper.update(account)
+        elif delta_float > contracttime:
+            overtime = delta_float - contracttime
+            new_overtime = account.get_overtime() + overtime
+            print("Neue Overtime", new_overtime)
+            account.set_overtime(new_overtime)
+            with WorkTimeAccountMapper() as mapper:
+                return mapper.update(account)
+        elif delta_float == contracttime:
+            pass
+
+    # Die Arbeitszeit für Flexdays in die WorkTimeAccount Tabelle einfügen
+    def calculate_delta_break_flexdays(self, tbooking, delta_float):
+        with WorkTimeAccountMapper() as mapper:
+            account = mapper.find_by_user_id(tbooking.get_user_id())
+
+        new_overtime = round((account.get_overtime() - delta_float), 2)
+        account.set_overtime(new_overtime)
+        with WorkTimeAccountMapper() as mapper:
+            return mapper.update(account)
 
     """
     User Methoden
