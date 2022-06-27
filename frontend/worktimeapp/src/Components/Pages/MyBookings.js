@@ -61,12 +61,12 @@ const fakebackend = {
     "timeintervals": [
         {
             "start": "2022-05-30 08:00:00",
-            "end":"2022-05-30 18:00:00",
+            "end":"2022-05-30 18:30:00",
             "start_event": 1,
             "end_event": 2,
             "type": "Work",
             "id": 19,
-            "date_of_last_change":"2022-05-30 18:00:00"
+            "date_of_last_change":"2022-05-30 18:30:00"
         },
         {
             "start":"2022-05-30 12:00:00",
@@ -125,7 +125,7 @@ class MyBookings extends Component {
     constructor(props){
         super(props);
         this.state = {
-            userId : this.props.userId,
+            userId : props.userId,
 
             intervalbookings: [],
             eventbookings: [],
@@ -223,6 +223,7 @@ class MyBookings extends Component {
         })
     }
 
+    //reset the filter to default
     resetFilter = () => {
         this.setState({
             bookingtype: 'all',
@@ -238,6 +239,7 @@ class MyBookings extends Component {
         })
     }
 
+    //sortes through all bookings according to the set filters
     filterBookings = () => {
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
@@ -585,7 +587,7 @@ class MyBookings extends Component {
                         </TableContainer>
                     </Paper>
                 </Box>
-                <CreateWorkTimeSheet show = {this.state.dialogWorkTimeSheet} workbookings = {this.state.workbookings} onClose={this.closeDialog}></CreateWorkTimeSheet>
+                <CreateWorkTimeSheet show = {this.state.dialogWorkTimeSheet} workbookings = {this.state.workbookings} onClose={this.closeDialog} userId = {this.state.userId}></CreateWorkTimeSheet>
             </>
         );
     }
