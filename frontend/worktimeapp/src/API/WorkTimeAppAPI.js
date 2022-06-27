@@ -25,6 +25,7 @@ import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO";
 import UserBO from './UserBO';
 import WorkTimeAccountBO from './WorkTimeAccountBO'
+import ProjectUserBO from './ProjectUserBO'
 
 
 export default class WorkTimeAppAPI {
@@ -116,6 +117,9 @@ export default class WorkTimeAppAPI {
 
     //Project URLs
     #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/user/${id}`
+
+    //ProjectUser URLs
+    #getProjectUserForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/user/${id}`
 
     //Beginn aller Event-BOs
 
@@ -1872,5 +1876,15 @@ export default class WorkTimeAppAPI {
 
     }
 
+    getProjectUserByUserId(id) {
+        return this.#fetchAdvanced(this.#getProjectUserForUserURL(id))
+            .then((responseJSON) => {
+                let projectuserBO = ProjectUserBO.fromJSON(responseJSON);
+                console.info(projectuserBO);
+                return new Promise(function (resolve) {
+                    resolve(projectuserBO);
+                })
+            })
+    }
 }
 
