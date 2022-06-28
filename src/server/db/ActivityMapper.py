@@ -1,4 +1,3 @@
-from unicodedata import name
 from server.db.Mapper import Mapper
 from server.bo.ActivityBO import ActivityBO
 from datetime import datetime
@@ -24,7 +23,6 @@ class ActivityMapper(Mapper):
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(projectId)
-            # activityobj.set_duration(duration)
             activityobj.set_current_capacity(currentCapacity)
             result.append(activityobj)
 
@@ -51,7 +49,6 @@ class ActivityMapper(Mapper):
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(projectId)
-            # activityobj.set_duration(duration)
             activityobj.set_current_capacity(currentCapacity)
             result = activityobj
 
@@ -79,7 +76,7 @@ class ActivityMapper(Mapper):
             else:
                 activity_obj.set_id(maxid[0]+1)
 
-        command = "INSERT INTO activities (id, dateOfLastChange, name, capacity, projectId,currentCapacity) VALUES (%s, %s, %s, %s, %s, %s)"
+        command = "INSERT INTO activities (id, dateOfLastChange, name, capacity, projectId, currentCapacity) VALUES (%s, %s, %s, %s, %s, %s)"
         data = (activity_obj.get_id(), activity_obj.get_date_of_last_change(), activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_project_id(), activity_obj.get_current_capacity())
         cursor.execute(command, data)
 
@@ -133,14 +130,13 @@ class ActivityMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            (id, dateOfLastChange, name, capacity, projectId,currentCapacity) = tuples[0]
+            (id, dateOfLastChange, name, capacity, projectId, currentCapacity) = tuples[0]
             activityobj = ActivityBO()
             activityobj.set_id(id)
             activityobj.set_date_of_last_change(dateOfLastChange)
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(projectId)
-            # activityobj.set_duration(duration)
             activityobj.set_current_capacity(currentCapacity)
             result = activityobj
 
@@ -167,7 +163,6 @@ class ActivityMapper(Mapper):
             activityobj.set_name(name)
             activityobj.set_capacity(capacity)
             activityobj.set_project_id(projectId)
-            # activityobj.set_duration(duration)
             activityobj.set_current_capacity(currentCapacity)
             result.append(activityobj)
 

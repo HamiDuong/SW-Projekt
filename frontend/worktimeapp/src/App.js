@@ -11,7 +11,6 @@ import MyWorkTime from './Components/MyWorkTime';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
 import MyProjects from './Components/MyProjects';
-import MyProjectsTest from './Components/MyProjectsTest';
 import Login from './Components/Login';
 import {GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } from "firebase/auth";
 import {auth} from './firebaseConfig.js';
@@ -117,7 +116,6 @@ class App extends React.Component {
           <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
-          <Route path='/myprojectstest' exact element={<MyProjectsTest userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
         </Routes>
       </Router>
       :

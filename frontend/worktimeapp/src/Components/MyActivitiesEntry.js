@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Dialog, TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
+import MyProjectsEntry from './MyProjectsEntry';
+import Button from '@mui/material/Button';
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 
 const activities = [
@@ -27,7 +29,11 @@ const activities = [
 class MyActivitiesEntry extends Component {
     constructor(props) {
         super(props);
+        this.togglePopupMyProjectsEntry = this.togglePopupMyProjectsEntry.bind(this);
         this.state = {
+            activity : props.activity,
+            showDialog: false,
+            showPopupMyProjectEntry: false,
             projectId : props.projectId,
             activity : null,
             showWorkDialog: false
@@ -51,6 +57,11 @@ class MyActivitiesEntry extends Component {
             console.log("EditWindow öffnen per OnClick")
         })
     }
+    togglePopupMyProjectsEntry() {
+        this.setState({
+          showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
+        });
+      }
 
     closeDialog = () => {
         this.setState({
@@ -60,10 +71,33 @@ class MyActivitiesEntry extends Component {
         })
     }
 
-    state = {  }
+    
     render() { 
+        
         return (
             <>
+                <TableRow
+                    hover
+                    onClick = {this.showEdit}
+                >
+                    <TableCell>{this.state.activity.name}</TableCell>
+                    <TableCell>{this.state.activity.capacity}</TableCell>
+                    <TableCell>
+                    
+                    </TableCell>
+                    
+                </TableRow>
+                {/* Button für das starten von Timer  */}
+                <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
+                    {this.state.showPopupMyProjectEntry ? 
+                    <MyProjectsEntry
+                    text='Close'
+                    closePopup={this.togglePopupMyProjectsEntry.bind(this)}
+                    user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}
+                    />
+                    : null
+                    }
+                <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity>
                 {
                     // this.state.activity.map((elem) => (
                     //     <TableRow
