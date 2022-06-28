@@ -210,16 +210,24 @@ class MyProjects extends Component {
   }
 
   openAddActivityWindow = (item) => {
-    if(item.userId == this.state.userId){
+    // if(item.userId == this.state.userId){
+    //   this.setState({
+    //     showAddActivity: true
+    //   }, function(){
+    //     console.log('Add Activity Window öffnen')
+    //   })  
+    //   console.log(this.state.showEditProject)
+    // }else{
+    //   console.log('Hallo')
+    // }
+
       this.setState({
         showAddActivity: true
       }, function(){
         console.log('Add Activity Window öffnen')
       })  
       console.log(this.state.showEditProject)
-    }else{
-      alert('No authorization')
-    }
+    
   }
 
   closeAddActivityWindow = () => {
