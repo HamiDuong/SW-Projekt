@@ -18,14 +18,12 @@ import {
     TableHead,
     TableRow,
     TableBody,
-    paperClasses
 } from '@mui/material';
-import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import EditBooking from '../Dialog/EditBooking';
 import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
 import CreateTimeWorkSheet from '../Dialog/CreateTimeWorkSheet';
 
+// header cells for booking table
 const header = [
     {
         id: 'bookingtype',
@@ -57,6 +55,7 @@ const header = [
     }
 ]
 
+// fakebackend for bookings
 const fakebackend = {
     "timeintervals": [
         {
@@ -116,9 +115,9 @@ const fakebackend = {
 }
 
 /**
- * Auflistung aller Buchungen des aktiven Users
+ * Table of all bookings of the current user
  * 
- * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)Böblingen
  */
 
 class MyBookings extends Component {
@@ -150,6 +149,7 @@ class MyBookings extends Component {
         }
     }
 
+    // After component mounted following function will be executed: the booked bookings of the user and the work bookings will be saved in state
     componentDidMount(){
         console.log('ComponentDidMount');
         this.getBookings();
@@ -164,12 +164,16 @@ class MyBookings extends Component {
     //       }        
     // }
 
+    // Save changes buttons and textfields into state
     handleChange = ev => {
         this.setState({ [ev.target.name] : ev.target.value });
     };
 
-    //gets all booked bookings of the current user
+    // Gets all booked bookings of the current user
     getBookings = () => {
+
+        // !--Hier umstellen vor Deployment--!
+
         // WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
         //     this.setState({
         //         intervalbookings: responseJSON.timeintervals,
@@ -189,7 +193,7 @@ class MyBookings extends Component {
                     console.log("getBookings");
                 });
 
-            //filtert intervalbookings with the type 'Work'
+            // Filter intervalbookings with the type 'Work'
             let res = [];
             let bookings = fakebackend.timeintervals;
             bookings.forEach(elem => {
@@ -204,7 +208,7 @@ class MyBookings extends Component {
             });
     }
 
-    //filtert intervalbookings with the type 'Work'
+    // Filter intervalbookings with the type 'Work'
     getWorkBookings = () => {
         let res = [];
         let bookings = this.state.intervalbookings;
@@ -221,7 +225,7 @@ class MyBookings extends Component {
         });
     }
 
-    //reset the filter to default
+    // Reset the filter to default
     resetFilter = () => {
         this.setState({
             bookingtype: 'all',
@@ -237,7 +241,7 @@ class MyBookings extends Component {
         })
     }
 
-    //sortes through all bookings according to the set filters
+    // Sortes through all bookings according to the set filters
     filterBookings = () => {
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
@@ -252,12 +256,11 @@ class MyBookings extends Component {
             console.log("Zeitfilter wurden gesetzt");
         });
 
-        //Holder for result of filter
+        // Holder for result of filter
         let ires = [];
         let eres = [];
 
-        //Filter bookings by type
-        //Filter event bookings by type
+        // Filter event bookings by type
         if(type == null || type == ""){
             console.log("Keine Typefilterung")
         }else{
@@ -288,6 +291,7 @@ class MyBookings extends Component {
 
             })
 
+            // Set filtered interval bookings in the state
             this.setState({
                 filteredintervalbookings: ires
             }, function(){
@@ -295,7 +299,7 @@ class MyBookings extends Component {
             });
         }
 
-        //Filter interval bookings by type
+        // Filter interval bookings by type
         if(type == null || type == ""){
             console.log("Keine Typfilterung");
         }else{
@@ -309,6 +313,8 @@ class MyBookings extends Component {
                     console.log('Element gehört nicht in das Filter');
                 }
             });
+
+            // Set filtered event bookings in state
             this.setState({
                 filteredeventbookings: eres
             }, function(){
@@ -316,7 +322,7 @@ class MyBookings extends Component {
             })
         }
 
-        //Sort Interval by Date
+        // Sort interval bookings by date
         ires = [];
 
         let starttime = starthold.value;
@@ -372,7 +378,7 @@ class MyBookings extends Component {
             
         }
 
-        //Sort events by time
+        // Sort event bookings by time
         eres = [];
         if(starttime == ""){
             console.log("No start time filter");
@@ -397,6 +403,7 @@ class MyBookings extends Component {
         let timeinterval = 'timeinterval';
         let event = 'event';
 
+        // Filter by booking type
         console.log('Vergleich von Buchungsart');
         if(bookingtype == timeinterval){
             this.setState({
@@ -413,6 +420,7 @@ class MyBookings extends Component {
         }
     }
     
+    // Edit a given booking
     editRow = (event) => {
         event.stopPropagation();
         this.setState({
@@ -422,6 +430,7 @@ class MyBookings extends Component {
         });
     }
 
+    // Map table rows for interval bookigns
     mapIntervalBookings = () => {
         return(
             <TableBody>
@@ -432,6 +441,7 @@ class MyBookings extends Component {
         )
     }
 
+    // Map table rows for event bookings
     mapEventBookings = () => {
         return(
             <TableBody>
@@ -442,7 +452,7 @@ class MyBookings extends Component {
         )
     }
 
-    //Check state of component
+    // Check state of component (for debuggin)
     printState = () => {
         console.log(this.state.intervalbookings);
         console.log(this.state.eventbookings);
@@ -453,6 +463,7 @@ class MyBookings extends Component {
         console.log(this.state.showEditWindow);
     }
 
+    // open the dialog window for work time sheet
     openCreateWorkTimeSheet = () => {
         this.setState({
             dialogWorkTimeSheet: true
@@ -461,7 +472,7 @@ class MyBookings extends Component {
         })
     }
 
-    //TODO
+    // close the dialog window for work time sheet
     closeDialog = () => {
         this.setState({
             dialogWorkTimeSheet: false
@@ -470,6 +481,7 @@ class MyBookings extends Component {
         })
     }
 
+    // render the component
     render(){
         return(
             <>
