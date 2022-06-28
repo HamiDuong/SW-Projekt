@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
-import { TableCell, TableRow } from "@mui/material";
+import { Button, Dialog, TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
-import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import WorkTimeAPI from '../API/WorkTimeAppAPI';
+
+const activities = [
+    {
+        name: "Use Case erstellen",
+        capacity: "45h"
+    },
+    {
+        name: "ERM Diagram",
+        capacity: "10h"
+    },
+    {
+        name: "Blabla",
+        capacity: "5h"
+    },
+]
 
 /**
  * Activity-Eintrag für Projekte von MyProject
@@ -15,12 +30,12 @@ class MyActivitiesEntry extends Component {
         this.state = {
             projectId : props.projectId,
             activity : null,
-            showDialog: false
+            showWorkDialog: false
         }
     }
 
     getActivities = () => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.projectId).then( activities =>
+        WorkTimeAPI.getAPI().getActivitiesByProject(this.state.projectId).then( activities =>
             this.setState({
                 activity : activities
             }, function(){
@@ -31,43 +46,54 @@ class MyActivitiesEntry extends Component {
 
     showEdit = () => {
         this.setState({
-            showDialog: true
+            showWorkDialog: true
         }, function(){
             console.log("EditWindow öffnen per OnClick")
         })
     }
 
-    closeDialog = (booking) => {
-        if(booking){
-            this.updateBooking(booking)
-            this.setState({
-                showDialog: false
-            }, function(){
-                console.log("Editwindow wird geschlossen")
-            })
-        }else{
-            this.setState({
-                showDialog: false
-            },function(){
-                console.log("Editwindow wird geschlossen ohne Update")
-            })
-
-        }
+    closeDialog = () => {
+        this.setState({
+            showWorkDialog: false
+        }, function(){
+            console.log("Editwindow wird geschlossen")
+        })
     }
 
     state = {  }
     render() { 
         return (
             <>
-                <TableRow
-                    hover
-                    onClick = {this.showEdit}
-                >
-                    <TableCell>{}</TableCell>
-                    <TableCell>{}</TableCell>
-                    {/* <TableCell></TableCell> */}
-                </TableRow>
-                {/* <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity> */}
+                {
+                    // this.state.activity.map((elem) => (
+                    //     <TableRow
+                    //     hover
+                    //     onClick = {this.showEdit}
+                    //     >
+                    //         <TableCell>{}</TableCell>
+                    //         <TableCell>{}</TableCell>
+                    //         {/* <TableCell></TableCell> */}
+                    //     </TableRow>
+                    // ))
+
+                    activities.map((elem) => (
+                        <>
+                            <TableRow
+                            hover
+                            onClick = {this.showEdit}
+                            >
+                                <TableCell>{elem.name}</TableCell>
+                                <TableCell>{elem.capacity}</TableCell>
+                                <TableCell>
+                                    <Button>
+                                        Start Work
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+
+                        </>
+                    ))
+                }
             </>
         );
     }

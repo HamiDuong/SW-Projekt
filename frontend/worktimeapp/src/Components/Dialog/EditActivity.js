@@ -35,7 +35,7 @@ class EditActivity extends Component {
             <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
                 <DialogContent>
                     <DialogTitle>
-                        <h2>Activity Overview</h2>
+                        <h2>Edit Activity</h2>
                     </DialogTitle>
                         <TextField
                             id = "startdate"
