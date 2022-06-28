@@ -1,52 +1,38 @@
 import BusinessObject from "./BusinessObject";
 
-/**
- * Businessobject von ProjectUser
- * 
- * @author [Vi Nam Le] (https://github.com/vinamle)
- */
 export default class ProjectUser extends BusinessObject{
-    constructor(projectId, userId, capacity, currentCapacity){
+    constructor(projectId, userId, capacity ){
         super();
         this.projectId = projectId;
         this.userId = userId;
         this.capacity = capacity;
-        this.currentCapacity = currentCapacity;
     }
 
     //Getter und Setter
 
-    setProjectId(id){
+    SetProjectId(id){
         this.projectId = id;
     }
 
-    getProjectId(){
+    GetProjectId(){
         return this.projectId;
     }
 
 
-    setUserId(userId){
+    SetUserId(userId){
         this.userId = userId;
     }
 
-    getUserId(){
+    GetUserId(){
         return this.userId;
     }
 
-    setCapacity(capacity){
+    SetCapacity(capacity){
         this.capacity = capacity;
     }
 
-    getCapacity(){
-        return this.capacity;
-    }
-
-    setCurrentCapacity(capacity){
-        this.currentCapacity = capacity;
-    }
-
-    getCurrentCapacity(){
-        return this.currentCapacity;
+    GetCapacity(){
+        return this.capacity
     }
 
 

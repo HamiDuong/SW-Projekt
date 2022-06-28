@@ -25,6 +25,7 @@ import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO";
 import UserBO from './UserBO';
 import WorkTimeAccountBO from './WorkTimeAccountBO'
+import ProjectUserBO from './ProjectUserBO'
 
 
 export default class WorkTimeAppAPI {
@@ -109,12 +110,16 @@ export default class WorkTimeAppAPI {
     #getWorkByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/workperiod/${start}/${end}`;
 
     //Booking URLS
-    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
-    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
+    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`;
+    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`;
+    #getAllBookingsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/${id}`;
     #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
 
     //Project URLs
     #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/user/${id}`
+
+    //ProjectUser URLs
+    #getProjectUserForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/user/${id}`
 
     //Beginn aller Event-BOs
 
@@ -940,6 +945,13 @@ export default class WorkTimeAppAPI {
     //Booking Methoden author Mihriban Dogan
 
     //TimeintervalBookingMethoden
+
+    getAllBookingsForUser(id) {
+    return this.#fetchAdvanced(this.#getAllBookingsForUserURL(id)).then((responseJSON) => {
+            return responseJSON
+            console.log(responseJSON)
+        })
+    }
 
     addVacationBooking(vacationBO) {
         return this.#fetchAdvanced(this.#addVacationURL(), {
@@ -1861,6 +1873,27 @@ export default class WorkTimeAppAPI {
                     resolve(workTimeAccountBO);
                 })
             })
+
+    }
+
+    getProjectUserByUserId(id) {
+        return this.#fetchAdvanced(this.#getProjectUserForUserURL(id))
+            .then((responseJSON) => {
+                let projectuserBO = ProjectUserBO.fromJSON(responseJSON);
+                console.info(projectuserBO);
+                return new Promise(function (resolve) {
+                    resolve(projectuserBO);
+                })
+            })
+    }
+
+    getProject(id) {
+        return this.#fetchAdvanced(this.#getProjectURL(id)).then((responseJSON) => {
+            let responseProjcet = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjcet)
+            })
+        })
 
     }
 

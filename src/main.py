@@ -913,6 +913,16 @@ class ProjectWithIDOperations(Resource):
         else:
             return '', 500
 
+@worktimeapp.route('/projectuser/user/<int:id>')
+@worktimeapp.param('id', 'id des Users')
+class ProjectWithIDOperations(Resource):
+    @worktimeapp.marshal_with(projectuser)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projectuser = adm.get_project_user_by_user_id(id)
+        return projectuser
+
 # Activity
 
 

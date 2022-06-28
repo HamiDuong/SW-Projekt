@@ -7,13 +7,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBookingEvent from './Dialog/EditBookingEvent';
 
+/**
+ * Eintrag von MyBookings für Eventbuchungen
+ * 
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
+ */
 class MyBookingsEventEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
             booking: props.booking,
-            showDialog: false,
+            userId: props.userId,
 
+            showDialog: false,
             loadingInProgress: false,
             error: null,
         }
@@ -23,30 +29,29 @@ class MyBookingsEventEntry extends Component {
         this.setState({
             showDialog: true
         }, function(){
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
     closeDialog = (booking) => {
         if(booking){
-            this.updateBooking(booking)
+            this.updateBooking(booking);
             this.setState({
                 showDialog: false
             }, function(){
-                console.log("Editwindow wird geschlossen")
+                console.log("Editwindow wird geschlossen");
             })
         }else{
             this.setState({
                 showDialog: false
             },function(){
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
-
         }
     }
 
     componentDidMount(){
-        console.log(this.state.booking)
+        console.log(this.state.booking);
     }
 
     handleChange = ev => {
@@ -66,7 +71,7 @@ class MyBookingsEventEntry extends Component {
                     <TableCell>-</TableCell>
 
                 </TableRow>
-                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}></EditBookingEvent>
+                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking} user={this.props.userId}></EditBookingEvent>
             </>
         );
     }

@@ -7,39 +7,39 @@ export default class Project extends BusinessObject{
         this.commissioner = commissioner;
         this.userId = userId;
         this.projectId = projectId;
-
+        
     }
 
     //Getter und Setter
-    setName(name){
+    SetName(name){
         this.name = name;
     }
 
-    getName(){
+    GetName(){
         return this.name;
     }
 
-    setCommissioner(commissioner){
+    SetCommissioner(commissioner){
         this.commissioner = commissioner;
     }
 
-    getCommissioner(){
+    GetCommissioner(){
         return this.commissioner;
     }
 
-    setUserId(userId){
+    SetUserId(userId){
         this.userId = userId;
     }
 
-    getUserId(){
+    GetUserId(){
         return this.userId;
     }
 
-    setProjectId(id){
+    SetProjectId(id){
         this.projectId = id;
     }
 
-    getProjectId(){
+    GetProjectId(){
         return this.projectId;
     }
 
