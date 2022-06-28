@@ -227,14 +227,6 @@ class MyProjects extends Component {
       })
   }
 
-  updateProject = (project) => {
-    
-  }
-
-  // componentDidMount(){
-  //   this.getProjects()
-  // }
-
   render(){
     return(
       <Card sx={{ m:5, p:2, minwidth: 500}}>

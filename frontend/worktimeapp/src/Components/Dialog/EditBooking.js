@@ -4,8 +4,7 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    Button,
-    Stack
+    Button
 } from '@mui/material';
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
@@ -18,17 +17,11 @@ import ProjectWorkBO from '../../API/ProjectWorkBO';
 import VacationBO from '../../API/VacationBO';
 import WorkBO from '../../API/WorkBO';
 
-/**
- * Bearbeitungsfensterfür Intervallbuchungen
- * 
- * @author [Ha Mi Duong] (https://github.com/HamiDuong)
- */
 class EditBooking extends Component {
     constructor(props) {
         super(props);
         this.state = {
             booking: props.booking,
-            userId: props.userId,
 
             startdate: props.booking.start,
             enddate:props.booking.end,
@@ -38,53 +31,53 @@ class EditBooking extends Component {
     }
 
     handleClose = () => {
-        this.props.onClose(null);
+        this.props.onClose(null)
     }
     
     deleteBooking = (obj) => {
-        console.log("Booking löschen");
+        console.log("Booking löschen")
 
         const { booking } = this.props;
 
         switch(this.state.type){
             case "Break":
-                WorkTimeAppAPI.getAPI().deleteBreak(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteBreak(booking.getId()).then(booking =>{
                     console.log("Delete Break");
                     console.log(booking);
                 });
             
             case "Flex Day":
-                WorkTimeAppAPI.getAPI().deleteFlexDay(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteFlexDay(booking.getId()).then(booking =>{
                     console.log("Delete Flex Day");
                     console.log(booking);
                 });
 
             case "Illness":
-                WorkTimeAppAPI.getAPI().deleteIllness(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteIllness(booking.getId()).then(booking =>{
                     console.log("Delete Illness");
                     console.log(booking);
                 });
 
             case "Project Duration":
-                WorkTimeAppAPI.getAPI().deleteProjectDuration(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteProjectDuration(booking.getId()).then(booking =>{
                     console.log("Delete Project Duration");
                     console.log(booking);
                 });
 
             case "Projekt Work":
-                WorkTimeAppAPI.getAPI().deleteProjectWork(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteProjectWork(booking.getId()).then(booking =>{
                     console.log("Delete Project Work");
                     console.log(booking);
                 });
 
             case "Vacation":
-                WorkTimeAppAPI.getAPI().deleteVacation(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteVacation(booking.getId()).then(booking =>{
                     console.log("Delete Vacation");
                     console.log(booking);
                 });
 
             case "Work":
-                WorkTimeAppAPI.getAPI().deleteWork(booking.id).then(booking =>{
+                WorkTimeAppAPI.getAPI().deleteWork(booking.getId()).then(booking =>{
                     console.log("Delete Work");
                     console.log(booking);
                 });
@@ -193,18 +186,17 @@ class EditBooking extends Component {
                     <DialogTitle>
                         <h2>Edit the Interval-Booking</h2>
                     </DialogTitle>
-                        {/* <Stack spacing={2}>
-                            <TextField
-                                id = "type"
-                                label = "Type"
-                                variant = 'standard'
-                                defaultValue={this.state.booking.type}       
-                                disabled={false}   
-                                spacing={2}                                        
-                            >
-                            </TextField>                            
-                        </Stack> */}
-                        <Stack spacing={2} direction="row">
+                        <TextField
+                            id = "type"
+                            label = "Type"
+                            variant = 'standard'
+                            defaultValue={this.state.booking.type}       
+                            InputLabelProps={{
+                                readOnly: true
+                            }}                                             
+                        >
+                        </TextField>
+                        <div>
                             <TextField
                                 id = "startdate"
                                 label="Start Date"
@@ -213,7 +205,6 @@ class EditBooking extends Component {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                spacing={2}
                             />
                             <TextField
                                 id = "enddate"
@@ -223,9 +214,8 @@ class EditBooking extends Component {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                spacing={2}
                             />
-                        </Stack>
+                        </div>
                 </DialogContent>
                 <DialogActions>
                     <Button

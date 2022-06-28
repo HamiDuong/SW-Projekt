@@ -57,6 +57,7 @@ class App extends React.Component {
 				const uid = user.uid;
 				console.log('IM HEEERRREEE')
 				console.log(uid)
+        console.log(this.state.currentUser)
 				// Set the user not before the token arrived
 				this.setState({
 					currentUser: user,
@@ -83,19 +84,13 @@ class App extends React.Component {
 	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
 			this.setState({
 				userId: userBO[0].getID()
-			}, function(){
-				console.log("UserId", this.state.userId)
-			this.getWorkTimeAccountId(userBO[0].getID())
-		}
-			)
+			}, this.getWorkTimeAccountId(userBO[0].getID()))
 			})}
 
   getWorkTimeAccountId = (id) =>{
 	WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(id).then(accountBO =>{
 		this.setState({
 			workTimeAccountId: accountBO[0].getID()
-		}, function(){
-			console.log("WorktimeAccountId", this.state.workTimeAccountId)
 		})
 		})}
 
@@ -108,7 +103,7 @@ class App extends React.Component {
     <ThemeProvider theme={Theme}>
       <CssBaseline/>
       <div>
-        { this.state.currentUser && this.state.userId?
+        { this.state.currentUser?
         
       <Router>
         {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.
