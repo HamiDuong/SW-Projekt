@@ -13,6 +13,8 @@ import {
     TableCell
 } from '@mui/material';
 import React, { Component } from 'react';
+import WorkTimeUser from '../WorkTimeUser';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
 
 class CreateWorkTimeSheet extends Component {
@@ -22,10 +24,20 @@ class CreateWorkTimeSheet extends Component {
             workbookings: props.workbookings,
             showTable: false, 
 
-            workTimeSheetWindow: false
+            workTimeSheetWindow: false,
+            userId: props.userId,
+            contracttime: null
 
         };
-        this.basestate = this.state;
+    }
+
+    getContracttimeOfCurrentUser = () => {
+        WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(this.state.userId).then( worktimeaccount =>
+            this.setState({
+                contracttime : worktimeaccount.getContractTime()
+            })
+
+        )
     }
 
     handleClose = () => {
@@ -33,6 +45,7 @@ class CreateWorkTimeSheet extends Component {
     }
 
     componentDidMount(){
+        console.log(this.state.workbookings)
         //get Contract Time of current User
         //get Worktimeaccount by user id
         //get contract time
@@ -62,7 +75,7 @@ class CreateWorkTimeSheet extends Component {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {
+                    {/* {
                         this.state.workbookings.map( row =>
                             <TableRow>
                                 <TableCell>
@@ -80,6 +93,11 @@ class CreateWorkTimeSheet extends Component {
 
                             </TableRow>
                         )
+                    } */}
+                    {
+                        this.state.workbookings.map( row =>
+                            <WorkTimeUser userId = {this.state.userId} start = {row.start} end = {row.end}></WorkTimeUser>    
+                        )
                     }
                 </TableBody>
             </Table>
@@ -94,10 +112,10 @@ class CreateWorkTimeSheet extends Component {
             <Dialog open={show} onClose={this.handleClose} maxWidth='s'>
                 <DialogContent>
                     <DialogTitle>
-                        <h2>Create your Work Time Sheet</h2>
+                        <h2>Your Work Time Sheet</h2>
                     </DialogTitle>
 
-                    <h3>Input the path where you want to save the file:</h3>
+                    {/* <h3>Input the path where you want to save the file:</h3>
 
                     <TextField
                         id = "path"
@@ -107,25 +125,73 @@ class CreateWorkTimeSheet extends Component {
                         shrink: true,
                         }}
                     >
-                    </TextField>
+                    </TextField> */}
                     <>
-                    {/* <TableContainer>
-                        <this.createTimeSheet></this.createTimeSheet>
-                    </TableContainer> */}
-                        
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell
+                                        key = 'date'
+                                    >Date</TableCell>
+                                    <TableCell
+                                        key = 'coming'
+                                    >Coming</TableCell>
+                                    <TableCell
+                                        key = 'going'
+                                    >Going</TableCell>
+                                    <TableCell
+                                        key = 'workedTime'
+                                    >Worked Time</TableCell>
+                                    <TableCell
+                                        key = 'contractTime'
+                                    >Contract Time</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {/* {
+                                    this.state.workbookings.map( row =>
+                                        <WorkTimeUser userId = {this.state.userId} start = {row.start} end = {row.end}></WorkTimeUser>    
+                                    )
+                                } */}
+                                {
+                                    this.state.workbookings.map( row =>
+                                        <TableRow>
+                                            <TableCell>
+                                                {new Date(row.start).getDate() + '-' + (new Date(row.start).getMonth()+1) + '-' + new Date(row.start).getFullYear()}
+                                            </TableCell>
+                                            <TableCell>
+                                                {new Date(row.start).toLocaleTimeString()}
+                                            </TableCell>
+                                            <TableCell>
+                                                {new Date(row.end).toLocaleTimeString()}
+                                            </TableCell>
+                                            <TableCell>
+                                                {(new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60)) + '' + 'h'}
+                                            </TableCell>
+                                            <TableCell>
+                                                {this.state.contracttime}
+                                            </TableCell>                                           
+                                        </TableRow>                                            
+                                    )
+                                }
+                            
+                            </TableBody>
+                        </Table>
+                    </TableContainer>                        
                     </>
                 </DialogContent>
                 <DialogActions>
                     <Button
                         onClick={this.handleClose}
                     >
-                        Cancel
+                        Close
                     </Button>
-                    <Button
+                    {/* <Button
                         onClick={this.handleClose}
                     >
                         Create Work Time Sheet
-                    </Button>
+                    </Button> */}
                 </DialogActions>
             </Dialog>
             : null
