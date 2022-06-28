@@ -17,7 +17,7 @@ import WorkTimeUser from '../WorkTimeUser';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
 
-class CreateWorkTimeSheet extends Component {
+class CreateTimeWorkSheet extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -199,4 +199,4 @@ class CreateWorkTimeSheet extends Component {
     }
 }
  
-export default CreateWorkTimeSheet;
+export default CreateTimeWorkSheet;
