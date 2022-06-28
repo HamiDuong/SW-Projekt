@@ -47,6 +47,7 @@ class EditProject extends Component {
                 this.baseState.commissioner = this.state.commissioner;
             }
         )
+        this.handleClose();
     }
 
     getActivities = () => {
@@ -99,7 +100,7 @@ class EditProject extends Component {
                             Cancel
                         </Button>
                         <Button
-                            onClick={this.handleClose}
+                            onClick={this.updateProject}
                         >
                             Save
                         </Button>

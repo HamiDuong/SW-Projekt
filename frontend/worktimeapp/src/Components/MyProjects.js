@@ -209,7 +209,7 @@ class MyProjects extends Component {
       })
   }
 
-  openAddActivityWindow = (item) => {
+  openAddActivityWindow = () => {
     // if(item.userId == this.state.userId){
     //   this.setState({
     //     showAddActivity: true
@@ -276,8 +276,8 @@ class MyProjects extends Component {
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
-              <Button onClick={this.openEditProjectWindow}>Edit Project</Button>
-              <Button onClick={this.openAddActivityWindow(item)}>Add Activity</Button>
+              <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
+              <Button id = 'addActivity' onClick = {this.openAddActivityWindow} project = {item}>Add Activity</Button>
             </AccordionDetails>
             <EditProject show={this.state.showEditProject} project = {item} onClose={this.closeEditProjectWindow}></EditProject>
             <AddActivity show = {this.state.showAddActivity} project = {item} onClose = {this.closeAddActivityWindow}></AddActivity>
