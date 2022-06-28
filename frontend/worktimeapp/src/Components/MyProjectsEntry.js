@@ -24,7 +24,7 @@ class MyProjectEntry extends Component {
       endActivity: 0,
       startBreak:0,
       endBreak:0,
-      activityId: 1,
+      activityId: props.activity.id,
       typeProjectWork: "projectwork",
       typeBreak: "break",
       startEvent: null,

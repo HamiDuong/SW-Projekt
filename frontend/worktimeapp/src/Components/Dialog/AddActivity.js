@@ -7,7 +7,7 @@ class AddActivity extends Component {
     constructor(props){
         super(props);
         this.state = {
-            project : '',
+            project : props.project,
 
             name : '',
             capacity : '',
@@ -75,7 +75,7 @@ class AddActivity extends Component {
                         Cancel
                     </Button>
                     <Button
-                        onClick={this.addActivity}
+                        onClick={this.handleClose}
                     >
                         Add activity
                     </Button>

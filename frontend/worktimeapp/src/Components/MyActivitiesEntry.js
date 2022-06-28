@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Dialog, TableCell, TableRow } from "@mui/material";
+import { Button, Dialog, TableCell, TableRow, DialogContent } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
-import MyProjectsEntry from './MyProjectsEntry';
+import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 
 const activities = [
@@ -75,19 +75,20 @@ class MyActivitiesEntry extends Component {
         
         return (
             <>
-                <TableRow
+                {/* <TableRow
                     hover
                     onClick = {this.showEdit}
                 >
-                    <TableCell>{this.state.activity.name}</TableCell>
-                    <TableCell>{this.state.activity.capacity}</TableCell>
+                    <TableCell>{this.state.activity}</TableCell>
+                    <TableCell>{this.state.activity}</TableCell>
                     <TableCell>
                     
                     </TableCell>
                     
-                </TableRow>
+                </TableRow> */}
                 {/* Button für das starten von Timer  */}
-                <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
+
+                {/* <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
                     {this.state.showPopupMyProjectEntry ? 
                     <MyProjectsEntry
                     text='Close'
@@ -95,8 +96,9 @@ class MyActivitiesEntry extends Component {
                     user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}
                     />
                     : null
-                    }
-                <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity>
+                    } */}
+                
+                
                 {
                     // this.state.activity.map((elem) => (
                     //     <TableRow
@@ -118,15 +120,22 @@ class MyActivitiesEntry extends Component {
                                 <TableCell>{elem.name}</TableCell>
                                 <TableCell>{elem.capacity}</TableCell>
                                 <TableCell>
-                                    <Button>
-                                        Start Work
-                                    </Button>
+                                    <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
+                                    {this.state.showPopupMyProjectEntry ? 
+                                    <MyProjectsEntry
+                                    text='Close'
+                                    closePopup={this.togglePopupMyProjectsEntry.bind(this)}
+                                    user={this.state.currentUser} workTimeAccount = {this.state.workTimeAccountId} activity = {elem}
+                                    />
+                                    : null
+                                    }
                                 </TableCell>
                             </TableRow>
-
+                            {/* <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity> */}
                         </>
                     ))
                 }
+
             </>
         );
     }
