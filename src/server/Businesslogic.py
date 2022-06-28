@@ -168,6 +168,21 @@ class Businesslogic():
 
     # Methode um ein ComingBO aus der Datenbank zu entfernen
     def delete_coming(self, coming):
+        with EventMapper() as mapper:
+            startevent = mapper.find_by_foreign_key_and_type(
+                "coming_id", coming.get_id(), coming.get_type())
+        with EventBookingMapper() as mapper:
+            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", starteventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(starteventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(startevent)
         with ComingMapper() as mapper:
             mapper.delete(coming)
 
@@ -200,6 +215,21 @@ class Businesslogic():
     # Methode um ein GoingBO aus der Datenbank zu entfernen
 
     def delete_going(self, going):
+        with EventMapper() as mapper:
+            endevent = mapper.find_by_foreign_key_and_type(
+                "going_id", going.get_id(), going.get_type())
+        with EventBookingMapper() as mapper:
+            endeventbooking = mapper.find_by_event_id(endevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", endeventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(endeventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(endevent)
         with GoingMapper() as mapper:
             mapper.delete(going)
 
@@ -233,6 +263,21 @@ class Businesslogic():
 
     # Methode um ein ProjectWorkBeginBO aus der Datenbank zu entfernen
     def delete_project_work_begin(self, project_work_begin):
+        with EventMapper() as mapper:
+            startevent = mapper.find_by_foreign_key_and_type(
+                "project_work_begin_id", project_work_begin.get_id(), project_work_begin.get_type())
+        with EventBookingMapper() as mapper:
+            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", starteventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(starteventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(startevent)
         with ProjectWorkBeginMapper() as mapper:
             mapper.delete(project_work_begin)
 
@@ -267,7 +312,22 @@ class Businesslogic():
 
     # Methode um ein ProjectWorkEndBO aus der Datenbank zu entfernen
     def delete_project_work_end(self, project_work_end):
-        with ProjectWorkEndMapper() as mapper:
+        with EventMapper() as mapper:
+            endevent = mapper.find_by_foreign_key_and_type(
+                "project_work_end_id", project_work_end.get_id(), project_work_end.get_type())
+        with EventBookingMapper() as mapper:
+            endeventbooking = mapper.find_by_event_id(endevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", endeventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(endeventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(endevent)
+        with VacationBeginMapper() as mapper:
             mapper.delete(project_work_end)
 
     # Erstellung eines VacationBeginBOs, also wenn ein Mitarbeiter seinen Urlaub antritt
@@ -441,20 +501,20 @@ class Businesslogic():
     # Methode um ein IllnessEndBO aus der Datenbank zu entfernen
     def delete_illness_end(self, illness_end):
         with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
+            endevent = mapper.find_by_foreign_key_and_type(
                 "illness_end_id", illness_end.get_id(), illness_end.get_type())
         with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+            endeventbooking = mapper.find_by_event_id(endevent.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
+                "eventBookingId", endeventbooking.get_id(), "E")
 
         with BookingMapper() as mapper:
             mapper.delete(booking)
         with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
+            mapper.delete(endeventbooking)
         with EventMapper() as mapper:
-            mapper.delete(startevent)
+            mapper.delete(endevent)
         with IllnessEndMapper() as mapper:
             mapper.delete(illness_end)
         # Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
@@ -491,7 +551,22 @@ class Businesslogic():
 
     # Methode um ein FlexDayStartBO aus der Datenbank zu entfernen
     def delete_flex_day_start(self, flex_day_start):
-        with FlexDayStartMapper() as mapper:
+        with EventMapper() as mapper:
+            startevent = mapper.find_by_foreign_key_and_type(
+                "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type())
+        with EventBookingMapper() as mapper:
+            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", starteventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(starteventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(startevent)
+        with FlexDayMapper() as mapper:
             mapper.delete(flex_day_start)
 
     # Erstellung eines FlexDayEndBOs, also das Ende der Gleittage eines Mitarbeiters
@@ -524,6 +599,21 @@ class Businesslogic():
 
     # Methode um ein FlexDayEndBO aus der Datenbank zu entfernen
     def delete_flex_day_end(self, flex_day_end):
+        with EventMapper() as mapper:
+            endevent = mapper.find_by_foreign_key_and_type(
+                "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type())
+        with EventBookingMapper() as mapper:
+            endeventbooking = mapper.find_by_event_id(endevent.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", endeventbooking.get_id(), "E")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with EventBookingMapper() as mapper:
+            mapper.delete(endeventbooking)
+        with EventMapper() as mapper:
+            mapper.delete(endevent)
         with FlexDayEndMapper() as mapper:
             mapper.delete(flex_day_end)
         # Erstellung eines BreakEndBOs, also das Ende der Gleittage eines Mitarbeiters
@@ -2199,8 +2289,11 @@ class Businesslogic():
             mapper.update(user_obj)
 
     def delete_user(self, user_obj):
-        projectuser = self.get_project_user_by_user_id(user_obj.get_id())
+        projectuserlist = self.get_project_user_by_user_id(user_obj.get_id())
         bookings = self.get_all_timeinterval_bookings_for_user(user_obj)
+        eventbookinglist = self.get_all_vacation_illness_event_bookings_for_user(
+            user_obj)
+        print("Eventbookinglist", eventbookinglist)
         if bookings is not None:
             for key, values in bookings.items():
                 if key == "timeintervals":
@@ -2225,15 +2318,40 @@ class Businesslogic():
                             self.delete_break_begin(elem)
                         if elem.get_type() == "breakend":
                             self.delete_breakEnd(elem)
-                        if elem.get_type() == "vacationbegin":
-                            self.delete_vacation_begin(elem)
-                        if elem.get_type() == "vacationend":
-                            self.delete_vacation_end(elem)
-                    if projectuser is not None:
-                        with ProjectUserMapper() as mapper:
-                            mapper.delete(projectuser)
+                        if elem.get_type() == "coming":
+                            self.delete_coming(elem)
+                        if elem.get_type() == "going":
+                            self.delete_going(elem)
+                        if elem.get_type() == "flexdaystart":
+                            self.delete_flex_day_start(elem)
+                        if elem.get_type() == "flexdayend":
+                            self.delete_flex_day_end(elem)
+                        if elem.get_type() == "projectworkbegin":
+                            self.delete_project_work_begin(elem)
+                        if elem.get_type() == "projectworkend":
+                            self.delete_project_work_end(elem)
+
+            if not projectuserlist:
+                for projectuser in projectuserlist:
+                    with ProjectUserMapper() as mapper:
+                        mapper.delete(projectuser)
+            if not eventbookinglist:
+                with UserMapper() as mapper:
+                    mapper.delete(user_obj)
+            else:
+                for eventbooking in eventbookinglist:
+                    if eventbooking.get_type() == "illnessbegin":
+                        self.delete_illness_begin(eventbooking)
+                    if eventbooking.get_type() == "illnessend":
+                        self.delete_illness_end(eventbooking)
+                    if eventbooking.get_type() == "vacationbegin":
+                        self.delete_vacation_begin(elem)
+                    if eventbooking.get_type() == "vacationend":
+                        self.delete_vacation_end(elem)
                     with UserMapper() as mapper:
                         mapper.delete(user_obj)
+                with UserMapper() as mapper:
+                    mapper.delete(user_obj)
 
     """
     WorkTimeAccount Methoden
