@@ -34,11 +34,11 @@ export default class Activity extends BusinessObject {
         return this.projectId;
     }
 
-    SetCurrentCapacity(id) {
-        this.currentCapacity = id;
+    SetCurrentCapacity(currentCapacity) {
+        this.currentCapacity = currentCapacity
     }
 
-    GetProjectId() {
+    GetCurrentCapacity() {
         return this.currentCapacity;
     }
 

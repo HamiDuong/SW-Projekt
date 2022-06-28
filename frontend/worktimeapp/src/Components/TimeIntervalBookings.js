@@ -26,9 +26,9 @@ import { format } from "date-fns";
 
 
 {/* 
-@author Mihriban Dogan 
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
 TimeIntervalBooking stellt die Form für Zeitintervall Buchungen dar
-"""*/}
+*/}
 
 
 class TimeIntervalBookings extends Component {
@@ -57,11 +57,17 @@ class TimeIntervalBookings extends Component {
          }
     }
 
+
+/* 
+Hier werden die Zeitintervall Objekte erstellt und die entsprechenden API Funktionen aufgerufen. 
+Dabei wird je nach Typ des Zeitintervalls eine andere Funktion aufgerufen, die ebenfalls einen anderen Endpunkt aufruft.
+*/
+
     addTimeIntervalBooking = () => {
         if ((this.state.type) === "vacation"){
             let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(this.state.type)
             console.log(newVacationBO)
@@ -69,7 +75,7 @@ class TimeIntervalBookings extends Component {
         else if ((this.state.type) === "work"){
             let newWorkBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newWorkBO)
             console.log(newBookingBO)
@@ -77,7 +83,7 @@ class TimeIntervalBookings extends Component {
         else if ((this.state.type) === "illness"){
             let newIllnessBO = new IllnessBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newIllnessBO)
             console.log(newBookingBO)
@@ -85,7 +91,7 @@ class TimeIntervalBookings extends Component {
         else if ((this.state.type) === "projectwork"){
             let newProjectWorkBO = new ProjectWorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
             WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newProjectWorkBO)
             console.log(newBookingBO)
@@ -93,7 +99,7 @@ class TimeIntervalBookings extends Component {
         else if ((this.state.type) === "break"){
             let newBreakBO = new BreakBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newBreakBO)
             console.log(newBookingBO)
@@ -101,7 +107,7 @@ class TimeIntervalBookings extends Component {
         else if ((this.state.type) === "flexday"){
             let newFlexDayBO = new FlexDayBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
             WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newFlexDayBO)
             console.log(newBookingBO)
@@ -109,6 +115,9 @@ class TimeIntervalBookings extends Component {
         
        }
 
+/* 
+Hier werden die Event Objekte geholt und in der Liste vacationIllnessEvents gespeichert. 
+*/
     getEventBookings = () => {
         WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(1).then(vacationBOs =>
             this.setState({  
@@ -117,6 +126,11 @@ class TimeIntervalBookings extends Component {
                 console.log(this.state.vacationIllnessEvents)
             }))
     }
+
+
+/* 
+Hier werden die Projekt Objekte geholt und in der Liste projects gespeichert. 
+*/
 
     getProjects = () => {
         WorkTimeAppAPI.getAPI().getProjectsForUser(1).then(projectBOs =>
@@ -127,6 +141,9 @@ class TimeIntervalBookings extends Component {
             }))
     }
 
+/* 
+Hier werden die Activity Objekte geholt und in der Liste activities gespeichert. 
+*/
     getActivities = () => {
         if (this.state.project != null){
             WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.project).then(activityBOs =>
@@ -137,12 +154,17 @@ class TimeIntervalBookings extends Component {
                 }))}
     }
 
-
+/* 
+Sobald die Komponenten geladen hat sollen die Events, Projekte und Aktivitäten geholt werden.
+*/
     componentDidMount() {
     this.getEventBookings();
     this.getProjects();
     this.getActivities()}
 
+/* 
+Speichert den Input der Felder im state
+*/
 
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value }
@@ -154,30 +176,36 @@ class TimeIntervalBookings extends Component {
                 console.log("Menuitem",this.state.activityId)
             });}
     
+/* 
+Speichert den Input des start feldes im state
+*/
     handleStartDateChange(newValue){
         this.setState({
             start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         console.log(this.state.start)
     }
+
+/* 
+Speichert den Input des end feldes im state
+*/
     handleEndDateChange(newValue){
         this.setState({
             end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         console.log(this.state.end)
     }
-
+/* 
+Öffnen des Selects für das StartEvent
+*/
     handleClickOpen = () => {
         this.setState({
             showSelectEventDialog: true
         })
       }
-    handleEndClickOpen = () => {
-        this.setState({
-            showSelectEndEventDialog: true
-        })
-      }
-    
+/* 
+Schließen des Selects für das StartEvent
+*/
     handleClose = (newEvent) =>{
         if (newEvent) {
             this.setState({
@@ -192,6 +220,19 @@ class TimeIntervalBookings extends Component {
         })}
       }
 
+
+    /* 
+    Öffnen des Selects für das EndEvent
+    */
+    handleEndClickOpen = () => {
+        this.setState({
+            showSelectEndEventDialog: true
+        })
+      }
+
+    /* 
+    Schließen des Selects für das EndEvent
+    */
     handleEndClose = (newEvent) =>{
         if (newEvent) {
             this.setState({
@@ -246,8 +287,7 @@ class TimeIntervalBookings extends Component {
                             </Select>
                         </FormControl>
                     </Grid>
-                   {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
-                    
+                    {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}                    
                         {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                             <Grid item xs={12} sm={9} >
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -275,9 +315,6 @@ class TimeIntervalBookings extends Component {
                                  this.handleStartDateChange(newValue);
                                  }}
                                  minDate={new Date('2022-01-01')}
-                                 minTime={new Date(0, 0, 0, 12)}
-                                 maxTime={new Date(0, 0, 0, 12, 1)
-                                }
                              />
                          </LocalizationProvider>
                         
@@ -287,7 +324,7 @@ class TimeIntervalBookings extends Component {
                         <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
                     </Grid>:
                     null}
-                     {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll die Zeit frei wählbar sein, sonst soll die Zeit auf 24 Uhr festgelegt sein*/}
+                     {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}
                     
                     {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork"|| this.state.type === "break" || this.state.type === "flexday")?
                         <Grid xs={12} sm={9} item >
@@ -314,10 +351,6 @@ class TimeIntervalBookings extends Component {
                                 this.handleEndDateChange(newValue);
                                 }}
                                 minDate={new Date('2022-01-01')}
-                                minTime={new Date(0, 0, 0, 12, 0)}
-                                maxTime={new Date(0, 0, 0, 12, 1)
-                                }
-                                
                             />
                         </LocalizationProvider>
                     </Grid>}

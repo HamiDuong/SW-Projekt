@@ -8,7 +8,6 @@ import ProjectWorkBO from './ProjectWorkBO';
 import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
-import TimeIntervalBookingBO from './TimeIntervalBookingBO';
 import BreakStartBO from './EventBOs/BreakStartBO';
 import BreakEndBO from './EventBOs/BreakEndBO';
 import VacationStartBO from './EventBOs/VacationStartBO';
@@ -23,13 +22,15 @@ import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
 import ActivityBO from "./ActivityBO"
-import UserBO from './UserBO';
-import ProjectUserBO from './ProjectUserBO';
+import UserBO from "./UserBO";
+import ProjectUserBO from "./ProjectUserBO";
+import WorkTimeAccountBO from './WorkTimeAccountBO'
+
 
 export default class WorkTimeAppAPI {
     static #api = null
 
-    #worktimeappServerBaseURL = 'http://127.0.0.1:5000/worktimeapp';
+    #worktimeappServerBaseURL = '/worktimeapp';
 
     //Hier alle URL Zuweisungen
     // # = () => `${this.#worktimeappServerBaseURL}/`;
@@ -246,12 +247,27 @@ export default class WorkTimeAppAPI {
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
 
-    //User
+
+    //Author Esra Özkul
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
     #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
-    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
-    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/user/${id}`;
+    #deleteUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #updateUserURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
+    #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/users-by-name/${userName}`;
+    #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id}`;
+
+    //ProjectUser
+    // Author Esra Özkul
+    #addProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
+    #getAllProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
+    #getProjectUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+    #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+    updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+
+    //Account
+    #getWorkTimeAccountByUserIdURL = (id) => `${this.#worktimeappServerBaseURL}/worktimeaccountuser/${id}`;
+
 
     static getAPI() {
         if (this.#api == null) {
@@ -299,7 +315,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(timeinterval)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseTimeInterval = TimeIntervalBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseTimeInterval)
@@ -371,7 +387,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(br)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseBreak = BreakBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseBreak)
@@ -534,7 +550,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(illness)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseIllness = IllnessBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseIllness)
@@ -616,7 +632,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(projectduration)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseProjectDuration = ProjectDurationBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProjectDuration)
@@ -707,7 +723,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(projectwork)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseProjectWork = ProjectWorkBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProjectWork)
@@ -798,7 +814,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(vacation)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseVacation = VacationBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseVacation)
@@ -875,12 +891,14 @@ export default class WorkTimeAppAPI {
     addWork(work) {
         return this.#fetchAdvanced(this.#addWorkURL(), {
             method: 'POST',
+            withCredentials: "true",
+            credentials: 'include',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(work)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseWork = WorkBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseWork)
@@ -1299,20 +1317,21 @@ export default class WorkTimeAppAPI {
             })
         })
     }
+    //Projekt-Methoden
 
 
-    addProject(project) {
+    addProject(projectBO) {
         return this.#fetchAdvanced(this.#addProjectURL(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-type': 'application/json',
             },
-            body: JSON.stringify(project)
-        }).them((responseJSON) => {
-            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
+            body: JSON.stringify(projectBO)
+        }).then((responseJSON) => {
+            let responseProjectBO = ProjectBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
-                resolve(responseProject)
+                resolve(responseProjectBO);
             })
         })
     }
@@ -1380,7 +1399,7 @@ export default class WorkTimeAppAPI {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(activity)
-        }).them((responseJSON) => {
+        }).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseActivity)
@@ -1415,22 +1434,6 @@ export default class WorkTimeAppAPI {
         })
     }
 
-
-    addProject(project) {
-        return this.#fetchAdvanced(this.#addProjectURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(project)
-        }).them((responseJSON) => {
-            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseProject)
-            })
-        })
-    }
 
     deleteProject(project) {
         return this.#fetchAdvanced(this.#deleteProjectURL(project), {
@@ -1693,6 +1696,450 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    //User-Methoden
+    getAllUsers() {
+        return this.#fetchAdvanced(this.#getAllUsersURL()).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+
+    getUserById(userID) {
+        return this.#fetchAdvanced(this.#getUserByIdURL(userID))
+            .then((responseJSON) => {
+                let userBOs = UserBO.fromJSON(responseJSON);
+                console.info(userBOs);
+                return new Promise(function (resolve) {
+                    resolve(userBOs);
+                })
+            })
+    }
+
+    //delete und update von EventSubklassen- Author: ViNam Le
+    deleteBreakStart(breakstart) {
+        return this.#fetchAdvanced(this.#deleteBreakStartURL(breakstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseBreakStart = BreakStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakStart)
+            })
+        })
+    }
+
+    updateBreakStart(breakstart) {
+        return this.#fetchAdvanced(this.#updateBreakStartURL(breakstart), {
+            body: JSON.stringify(breakstart)
+        }).then((responseJSON) => {
+            let responseBreakStart = BreakStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakStart)
+            })
+        })
+    }
+
+    getUserByGoogleUserId(id) {
+        return this.#fetchAdvanced(this.#getUserByGoogleUserId(id)).then((responseJSON) => {
+            let responseProject = UserBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    getUserById(userID) {
+        return this.#fetchAdvanced(this.#getUserByIdURL(userID))
+            .then((responseJSON) => {
+                let userBOs = UserBO.fromJSON(responseJSON);
+                console.info(userBOs);
+                return new Promise(function (resolve) {
+                    resolve(userBOs);
+                })
+            })
+    }
+
+    addUser(user) {
+        return this.#fetchAdvanced(this.#addUserURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }).them((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+
+    deleteUser(user) {
+        return this.#fetchAdvanced(this.#deleteUserURL(user.getID()), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+
+    updateUser(user) {
+        return this.#fetchAdvanced(this.#updateUserURL(user.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }).then((responseJSON) => {
+            let responseUser = UserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseUser)
+            })
+        })
+    }
+
+    deleteBreakEnd(breakend) {
+        return this.#fetchAdvanced(this.#deleteBreakEndURL(breakend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseBreakEnd = BreakEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakEnd)
+            })
+        })
+    }
+
+    searchUser(userName) {
+        return this.#fetchAdvanced(this.#searchUserURL(userName)).then((responseJSON) => {
+            let userBOs = UserBO.fromJSON(responseJSON);
+            // console.info(customerBOs);
+            return new Promise(function (resolve) {
+                resolve(userBOs);
+            })
+        })
+    }
+
+    updateBreakEnd(breakend) {
+        return this.#fetchAdvanced(this.#updateBreakEndURL(breakend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(breakend)
+        }).then((responseJSON) => {
+            let responseBreakEnd = BreakEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseBreakEnd)
+            })
+        })
+    }
+
+    deleteIllnessStart(illnessstart) {
+        return this.#fetchAdvanced(this.#deleteIllnessStartURL(illnessstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseIllnessStart = IllnessStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessStart)
+            })
+        })
+    }
+
+    updateIllnessStart(illnessstart) {
+        return this.#fetchAdvanced(this.#updateIllnessStartURL(illnessstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessstart)
+        }).then((responseJSON) => {
+            let responseIllnessStart = IllnessStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessStart)
+            })
+        })
+    }
+
+    deleteIllnessEnd(illnessend) {
+        return this.#fetchAdvanced(this.#deleteIllnessEndURL(illnessend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseIllnessEnd = IllnessEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessEnd)
+            })
+        })
+    }
+
+    updateIllnessEnd(illnessend) {
+        return this.#fetchAdvanced(this.#updateIllnessEndURL(illnessend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(illnessend)
+        }).then((responseJSON) => {
+            let responseIllnessEnd = IllnessEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseIllnessEnd)
+            })
+        })
+    }
+
+    deleteProjectWorkStart(projectworkstart) {
+        return this.#fetchAdvanced(this.#deleteProjectWorkStartURL(projectworkstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProjectWorkStart = ProjectWorkStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkStart)
+            })
+        })
+    }
+
+    updateProjectWorkStart(projectworkstart) {
+        return this.#fetchAdvanced(this.#updateProjectWorkStartURL(projectworkstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectworkstart)
+        }).then((responseJSON) => {
+            let responseProjectWorkStart = ProjectWorkStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkStart)
+            })
+        })
+    }
+
+    deleteProjectWorkEnd(projectworkend) {
+        return this.#fetchAdvanced(this.#deleteProjectWorkEndURL(projectworkend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProjectWorkEnd = ProjectWorkEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkEnd)
+            })
+        })
+    }
+
+    updateProjectWorkEnd(projectworkend) {
+        return this.#fetchAdvanced(this.#updateProjectWorkEndURL(projectworkend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectworkend)
+        }).then((responseJSON) => {
+            let responseProjectWorkEnd = ProjectWorkEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectWorkEnd)
+            })
+        })
+    }
+
+    deleteVacationStart(vacationstart) {
+        return this.#fetchAdvanced(this.#deleteVacationStartURL(vacationstart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseVacationStart = VacationStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationStart)
+            })
+        })
+    }
+
+    updateVacationStart(vacationstart) {
+        return this.#fetchAdvanced(this.#updateVacationStartURL(vacationstart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationstart)
+        }).then((responseJSON) => {
+            let responseVacationStart = VacationStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationStart)
+            })
+        })
+    }
+
+    deleteVacationEnd(vacationend) {
+        return this.#fetchAdvanced(this.#deleteVacationEndURL(vacationend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseVacationEnd = VacationEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationEnd)
+            })
+        })
+    }
+
+    updateVacationEnd(vacationend) {
+        return this.#fetchAdvanced(this.#updateVacationEndURL(vacationend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(vacationend)
+        }).then((responseJSON) => {
+            let responseVacationEnd = VacationEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseVacationEnd)
+            })
+        })
+    }
+
+    deleteFlexDayStart(flexdaystart) {
+        return this.#fetchAdvanced(this.#deleteFlexDayStartURL(flexdaystart), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseFlexDayStart = FlexDayStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayStart)
+            })
+        })
+    }
+
+    updateFlexDayStart(flexdaystart) {
+        return this.#fetchAdvanced(this.#updateFlexDayStartURL(flexdaystart), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexdaystart)
+        }).then((responseJSON) => {
+            let responseFlexDayStart = FlexDayStartBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayStart)
+            })
+        })
+    }
+
+
+    deleteFlexDayEnd(flexdayend) {
+        return this.#fetchAdvanced(this.#deleteFlexDayEndURL(flexdayend), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseFlexDayEnd = FlexDayEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayEnd)
+            })
+        })
+    }
+
+    updateFlexDayEnd(flexdayend) {
+        return this.#fetchAdvanced(this.#updateFlexDayEndURL(flexdayend), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(flexdayend)
+        }).then((responseJSON) => {
+            let responseFlexDayEnd = FlexDayEndBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseFlexDayEnd)
+            })
+        })
+    }
+
+
+    deleteComing(coming) {
+        return this.#fetchAdvanced(this.#deleteComingURL(coming), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseComing = ComingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseComing)
+            })
+        })
+    }
+
+    updateComing(coming) {
+        return this.#fetchAdvanced(this.#updateComingURL(coming), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(coming)
+        }).then((responseJSON) => {
+            let responseComing = ComingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseComing)
+            })
+        })
+    }
+
+    deleteGoing(going) {
+        return this.#fetchAdvanced(this.#deleteGoingURL(going), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseGoing = GoingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGoing)
+            })
+        })
+    }
+
+    updateGoing(going) {
+        return this.#fetchAdvanced(this.#updateGoingURL(going), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(going)
+        }).then((responseJSON) => {
+            let responseGoing = GoingBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseGoing)
+            })
+        })
+    }
+
+    getWorkTimeAccountByUserId(id) {
+        return this.#fetchAdvanced(this.#getWorkTimeAccountByUserIdURL(id))
+            .then((responseJSON) => {
+                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
+                console.info(workTimeAccountBO);
+                return new Promise(function (resolve) {
+                    resolve(workTimeAccountBO);
+                })
+            })
+
+    }
+
+
+    //ProjectUser
+    addProjectUser(projectuserBO) {
+        return this.#fetchAdvanced(this.#addProjectUserURL(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectuserBO)
+        }).then((responseJSON) => {
+            let responseProjectUserBO = ProjectUserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectUserBO);
+            })
+        })
+    }
+
 }
-
-

@@ -42,8 +42,8 @@ export const SideBarData = [
         className: 'nav-text'
     },
     {
-        title: 'CreateProjects',
-        path: '/createprojects',
+        title: 'CreateProject',
+        path: '/createprojectmain',
         icon: <TaskIcon />,
         className: 'nav-text'
     },
@@ -66,11 +66,5 @@ export const SideBarData = [
         icon: <AccessTimeFilledIcon />,
         className: 'nav-text'
     },
-    {
-        title: 'MyProjectsTEST',
-        path: '/myprojectstest',
-        icon: <AssignmentIcon />,
-        className: 'nav-text'
-    }
 
 ]

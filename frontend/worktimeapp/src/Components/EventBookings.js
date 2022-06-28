@@ -20,9 +20,10 @@ import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import BookingBO from '../API/BookingBO';
 import { format } from "date-fns";
 
-
-
-
+{/* 
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+EventBooking stellt die Form für Event Buchungen dar
+*/}
 
 class EventBookings extends Component {
     constructor(props) {
@@ -37,6 +38,11 @@ class EventBookings extends Component {
             timeintervalBookingId: 0,
         }
     }
+
+    /* 
+Hier werden die Event Objekte erstellt und die entsprechenden API Funktionen aufgerufen. 
+Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls einen anderen Endpunkt aufruft.
+*/
 
     addEventBooking = () => {
         if ((this.state.type) === "vacationBegin"){
@@ -77,7 +83,9 @@ class EventBookings extends Component {
         
        }
 
-
+    /* 
+    Speichert den Input der Felder im state
+    */
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
 

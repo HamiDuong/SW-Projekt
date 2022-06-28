@@ -22,11 +22,11 @@ class EventBookingBO (book.BookingBO):
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 
     def get_event_id(self):
-        """Auslesen des Buchungstyp."""
+        """Auslesen der EventId."""
         return self._event_id
 
     def set_event_id(self, value):
-        """Setzen des Buchungstyp."""
+        """Setzen der EventId."""
         self._event_id = value
 
     def __str__(self):

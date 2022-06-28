@@ -1,72 +1,62 @@
-import BusinessObject from './BusinessObject';
+import BusinessObject from './BusinessObject'
 
 export default class UserBO extends BusinessObject {
-
-
-    constructor(first_name, lastname, mailadress, username) {
+    constructor(firstName, lastName, mailAdress, googleUserId) {
         super();
-        this.first_name = first_name
-        this.last_name = lastname
-        this.mail_adress = mailadress
-        this.user_name = username
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mailAdress = mailAdress;
+        this.googleUserId = googleUserId
+
     }
 
-
-    setfirstname(firstname) {
-        this.firstname = firstname
+    //Getter und Setter
+    setFirstName(firstName) {
+        this.firstName = firstName;
     }
 
-
-    getfirstname() {
-        return this.firstname
+    getFirstName() {
+        return this.firstName;
     }
 
-
-    setlastname(lastname) {
-        this.lastname = lastname;
+    setLastName(lastName) {
+        this.lastName = lastName;
     }
 
-
-    getlastname() {
-        return this.lastname;
+    getLastName() {
+        return this.lastName;
     }
 
-
-    getmailadress() {
-        return this.mailadress;
+    setMailAdress(mailAdress) {
+        this.mailAdress = mailAdress;
     }
 
-    setmailadress(mailadress) {
-        this.mailadress = mailadress;
+    getMailAdress() {
+        return this.mailAdress;
     }
 
-
-    getusername() {
-        return this.username;
+    setGoogleUserId(googleUserId) {
+        this.googleUserId = googleUserId;
     }
 
-    setusername(username) {
-        this.username = username;
+    getGoogleUserId() {
+        return this.googleUserId;
     }
 
 
 
-
-    static fromJSON(bookings) {
-        let result = [];
-
-        if (Array.isArray(bookings)) {
-            bookings.forEach((b) => {
-                Object.setPrototypeOf(b, UserBO.prototype);
-                result.push(b);
+    static fromJSON(userBO) {
+        let res = [];
+        if (Array.isArray(userBO)) {
+            userBO.forEach((elem) => {
+                Object.setPrototypeOf(elem, UserBO.prototype);
+                res.push(elem)
             })
         } else {
-            // Es handelt sich offenbar um ein singuläres Objekt
-            let b = bookings;
-            Object.setPrototypeOf(b, UserBO.prototype);
-            result.push(b);
+            let elem = userBO;
+            Object.setPrototypeOf(elem, UserBO.prototype);
+            res.push(elem)
         }
-
-        return result;
+        return res;
     }
 }

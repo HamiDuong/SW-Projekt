@@ -16,26 +16,35 @@ import Select from '@mui/material/Select';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 
+/* 
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+SelectEventDialog stellt stellt den Dialog für die Auswahl von End Events dar.
+*/
+
 
 class SelectEndEventDialog extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            timeframestart: Date,
-            timeframeend: Date,
+            
             endevent: Date
 
 
         }
     }
-
+/* 
+Speichert den Input des start feldes im state
+*/
     handleStartDateChange(newValue){
         this.setState({
             timeframestart: new Date(newValue)
         })
         console.log(this.state.start)
     }
+/* 
+Speichert den Input des end feldes im state
+*/
     handleEndDateChange(newValue){
         this.setState({
             timeframeend: new Date(newValue)
@@ -64,36 +73,13 @@ class SelectEndEventDialog extends Component {
                 <DialogTitle>Select Event</DialogTitle>
                 <DialogContent>
                 <DialogContentText sx={{mb:2}}>
-                    To select an event, please give in your desired time frame and choose an event from the drop-down list.
+                Please select a desired event.
                 </DialogContentText>
                     <Grid container spacing={2}>
                         <Grid xs={12} sm={6} item>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe Start"
-                        value={this.state.timeframestart}
-                        onChange={(newValue) => {
-                        this.handleStartDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
 
                     <Grid xs={12} sm={6} sx={{mb:2}} item>
-
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe End"
-                        value={this.state.timeframeend}
-                        onChange={(newValue) => {
-                        this.handleEndDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
 
                     <Grid  xs={12} item>
