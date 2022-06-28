@@ -1,7 +1,7 @@
 import BusinessObject from "./BusinessObject";
 
 export default class Project extends BusinessObject{
-    constructor(name, commissioner, userId, projectId){
+    constructor(name, commissioner, userId){
         super();
         this.name = name;
         this.commissioner = commissioner;
@@ -43,6 +43,9 @@ export default class Project extends BusinessObject{
         return this.projectId;
     }
 
+    // GetProjectId(){
+    //     return this.projectId;
+    // }
 
     static fromJSON(project){
         let res = [];

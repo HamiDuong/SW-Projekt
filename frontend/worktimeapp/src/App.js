@@ -106,7 +106,7 @@ class App extends React.Component {
         { this.state.currentUser?
         
       <Router>
-        {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.
+        {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgefÃ¼hrt.
          */}
         <NavBar user = {this.state.currentUser}/>
         <Routes>
@@ -115,7 +115,7 @@ class App extends React.Component {
           <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
-          <Route path='/createproject' exact element={<CreateProject userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myprojectstest' exact element={<MyProjectsTest userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
         </Routes>
@@ -130,4 +130,3 @@ class App extends React.Component {
 }
  
 export default App;
-
