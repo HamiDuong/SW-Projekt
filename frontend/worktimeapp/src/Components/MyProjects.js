@@ -1,110 +1,6 @@
-// import React, { Component } from 'react';
-// import InputLabel from '@mui/material/InputLabel';
-// import MenuItem from '@mui/material/MenuItem';
-// import Select from '@mui/material/Select';
-// import Grid from '@mui/material/Grid'
-// import Card from '@mui/material/Card';
-// import Typography from '@mui/material/Typography';
-// import AssignmentIcon from '@mui/icons-material/Assignment';
-// import FormControl from '@mui/material/FormControl';
-// import Paper from '@mui/material/Paper';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TablePagination from '@mui/material/TablePagination';
-// import TableRow from '@mui/material/TableRow';
-
-
-
-// class MyProjects extends Component {
-    
-//     constructor(props) {
-//         super(props);
-
-//         this.state = {
-//           projectType: "",
-//           time: Date
-//       }
-//   }
-//   handleChange = (e) =>{
-//       this.setState({ [e.target.name] : e.target.value });}
-
-//   handleDateChange(newValue){
-//       this.setState({
-//           time: new Date(newValue)
-//       })
-//     }
-
-//     render() { 
-//         return (
-          
-//           <Card sx={{ m:5, p:2, minwidth: 500}}>
-//             <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
-//                   <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
-//                     <Grid item >
-//                       <AssignmentIcon></AssignmentIcon>
-//                    </Grid>
-//                   </Grid>
-//                     <Grid item xs={12} sm={4} sx={{pb:1}}>
-//                         <Typography variant="h5" component="div">
-//                          My Projects
-//                         </Typography>
-//                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-//                         Your projects and tasks at the moment. 
-//                         </Typography>
-//                         </Grid>
-//                 </Grid>
-//                 <Grid container spacing={2}  alignItems="center">
-//                   <Grid item xs={12} sm={12}>
-//                        <FormControl sx={{ minWidth: 258}}>
-//                           <InputLabel>Project 1</InputLabel>
-//                           <Select
-//                             name="projectType"
-//                             value={this.state.projectType}
-//                             label="Type"
-//                             onChange={this.handleChange}
-//                           >
-//                             <MenuItem value={"task1"}>Task 1</MenuItem>
-//                             <MenuItem value={"task2"}>Task 2</MenuItem>
-//                           </Select>
-//                         </FormControl>   
-//                         <Grid container spacing={200}  alignItems="center">
-//                     <Grid item xs={12} sm={12}>
-//                        <FormControl sx={{ minWidth: 258}}>
-//                           <InputLabel>Project 2</InputLabel>
-//                           <Select
-//                             name="projectType"
-//                             value={this.state.projectType}
-//                             label="Type"
-//                             onChange={this.handleChange}
-//                           >
-//                             <MenuItem value={"task 1"}>Task 1</MenuItem>
-//                             <MenuItem value={"task 2"}>Task 2</MenuItem>
-//                           </Select>
-//                         </FormControl>                   
-//                      </Grid>
-//                  </Grid>                
-//               </Grid>
-//             </Grid>
-//           </Card>
-          
-        
-//         );
-//     }
-// }
- 
-// export default MyProjects;
 import React, { Component } from 'react';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
 import {withStyles,
     Typography,
     Accordion,
@@ -137,7 +33,10 @@ import {withStyles,
 
 import { MyProjectpopup } from './MyProjectpopup';
 import EditActivity from './Dialog/EditActivity';
-import MyActivitiesEntry from './MyActivitiesEntry';
+import MyActivitiesEntry from './MyActivitiesEntry'
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import EditProject from './Dialog/EditProject';
+import AddActivity from './Dialog/AddActivity';
 
 const header = [
   {
@@ -200,105 +99,158 @@ const activities = [
     },
 ]
 
+/**
+ * Projekte und Activities vom aktuellen User
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
+
 class MyProjects extends Component {
     
     constructor(props) {
         super(props);
 
         this.state = {
-          projectType: "",
-          time: Date,
+          userId : props.userId,
+          projects : null,
+          projectuser: null,
 
           showEditWindow: false,
-          showEditActicity: false
+          showEditActicity: false,
+
+          workTimeAccountId:0,
+          userId: 1,
+          showEditProject: false,
+
+          showAddActivity: false
       }
+  }
 
-        //get Projects of current User
-        //get Activities of these Projects
-        /**
-         * mögliche Form die Acticity Objekte zu holen:
-         * {project id: [Liste der ActivityBOs]}
-         */
+  // editWindow = () => {
+  //   this.setState({
+  //     showEditWindow: true
+  //   }, function(){
+  //     console.log('Edit Window öffnen')
+  //   })
+  // }
+
+  // closeDialog = (project) => {
+  //   this.setState({
+  //     showEditWindow:false
+  //   }, function(){
+  //     console.log('Edit Window schließen')
+  //   })
+    
+  // }
+
+  // editWindowActivity = () => {
+  //   this.setState({
+  //     showEditActicity: true
+  //   }, function(){
+  //     console.log('Edit Window')
+  //   })
+  // }
+
+  // closeDialogActivity = (activity) => {
+  //   if(activity){
+  //     this.updateProject(activity)
+  //     this.setState({
+  //       showEditActicity: false
+  //     }, function(){
+  //       console.log('Edit Window')
+  //     })
+  //   }else{
+  //     this.setState({
+  //       showEditWindow:false
+  //     }, function(){
+  //       console.log('Edit Window')
+  //     })
+  //   }
+  // }
+
+  //ProjectUser BOs von User holen -> damit Projekte holen
+  getProjects = () => {
+    WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
+      this.setState({
+        projectuser : projectuser
+      }, function(){
+        console.log("API ProjectUser")
+      })  
+    )
+    
+    let resproject = []
+
+    this.state.projectuser.forEach(elem => {
+      WorkTimeAppAPI.getAPI().getProject(elem.getProjectId()).then(project =>
+        resproject.append(project)
+      )
+    });
 
   }
 
-  editWindow = () => {
+  // updateProject = (project) => {
+  // }
+
+  openEditProjectWindow = () => {
     this.setState({
-      showEditWindow: true
+      showEditProject: true
     }, function(){
-      console.log('Edit Window')
+      console.log('Edit Window Projekt öffnen')
     })
+
+    console.log(this.state.showEditProject)
   }
 
-  closeDialog = (project) => {
-    if(project){
-      this.updateProject(project)
+  closeEditProjectWindow = () => {
       this.setState({
-        showEditWindow: false
+        showEditProject:false
       }, function(){
-        console.log('Edit Window')
+        console.log('Edit Window Projekt schließen')
       })
+  }
+
+  openAddActivityWindow = (item) => {
+    if(item.userId == this.state.userId){
+      this.setState({
+        showAddActivity: true
+      }, function(){
+        console.log('Add Activity Window öffnen')
+      })  
+      console.log(this.state.showEditProject)
     }else{
-      this.setState({
-        showEditWindow:false
-      }, function(){
-        console.log('Edit Window')
-      })
+      alert('No authorization')
     }
   }
 
-  editWindowActivity = () => {
-    this.setState({
-      showEditActicity: true
-    }, function(){
-      console.log('Edit Window')
-    })
-  }
-
-  closeDialogActivity = (activity) => {
-    if(activity){
-      this.updateProject(activity)
+  closeAddActivityWindow = () => {
       this.setState({
-        showEditActicity: false
+        showAddActivity:false
       }, function(){
-        console.log('Edit Window')
+        console.log('Add Activity Window schließen')
       })
-    }else{
-      this.setState({
-        showEditWindow:false
-      }, function(){
-        console.log('Edit Window')
-      })
-    }
-  }
-
-  updateProject = (project) => {
-    //API Call für ProjectUpdate
   }
 
   render(){
-      return(
-        <Card sx={{ m:5, p:2, minwidth: 500}}>
-          <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
-              <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
-                <Grid item >
-                    <AssignmentIcon></AssignmentIcon>
-                </Grid>
-              </Grid>
-          <Grid item xs={12} sm={4} sx={{pb:1}}>
-          <Typography variant="h5" component="div">
-            My Projects
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Your projects and activities at the moment. 
-          </Typography>
-            <TableHead>
+    return(
+      <Card sx={{ m:5, p:2, minwidth: 500}}>
+        <Typography variant="h5" component="div">
+          <AssignmentIcon></AssignmentIcon>
+          My Projects
+        </Typography>
+        <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+          Your projects and activities at the moment. 
+        </Typography>
+
+        {data.map((item) => (
+          <Accordion>
+            <AccordionSummary>
               <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">User</TableCell>
-                <TableCell align="right">Commissioner</TableCell>
-                <TableCell align="right">Duration</TableCell>
+                <TableCell>
+                  {"Project name: "+item.name}
+                </TableCell>
+                <TableCell align="right">
+                  {"Commisioner: "+item.commissioner}
+                </TableCell>
               </TableRow>
             </TableHead>
             <Typography>
@@ -333,7 +285,7 @@ class MyProjects extends Component {
                         </TableHead>
                         <TableBody>
                           {activities.map((activity) => (
-                            <MyActivitiesEntry activity={activity}></MyActivitiesEntry>
+                            <MyActivitiesEntry activity={activity} user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}></MyActivitiesEntry>
                           ))}
 
                         </TableBody>
@@ -358,12 +310,31 @@ class MyProjects extends Component {
                     <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup>
                 </AccordionDetails>
             </Accordion>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Activities</TableCell>
+                    <TableCell align="left">Capacity</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
+                </TableBody>
+              </Table>
+              {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
+              <Button onClick={this.openEditProjectWindow}>Edit Project</Button>
+              <Button onClick={this.openAddActivityWindow(item)}>Add Activity</Button>
+            </AccordionDetails>
+            <EditProject show={this.state.showEditProject} project = {item} onClose={this.closeEditProjectWindow}></EditProject>
+            <AddActivity show = {this.state.showAddActivity} project = {item} onClose = {this.closeAddActivityWindow}></AddActivity>
+          </Accordion>
         ))}
-
-    </Grid>
-    </Grid>
-  </Card>
-      )
+      </Card>
+    )
   }
 }
 export default MyProjects

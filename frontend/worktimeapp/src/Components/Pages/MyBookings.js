@@ -151,26 +151,18 @@ class MyBookings extends Component {
 
     componentDidMount(){
         this.getBookings();
-        console.log("userid bookings", this.props.userId)
-    }
-
-    componentDidUpdate(prevProps){
-        if ((this.props.show) && (this.props.show !== prevProps.show)) {
-            this.getBookings();
-          }        
     }
 
     getBookings = () => {
-        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
         // hier muss Mihris Booking Methode rein um alle Buchungen eines Users zu holen
-            this.setState({
-                intervalbookings: responseJSON.timeintervals,
-                eventbookings: responseJSON.events,
-                filteredintervalbookings: responseJSON.timeintervals,
-                filteredeventbookings: responseJSON.events            
-            },function(){
-                console.log("getBookings")
-            }))
+        this.setState({
+            intervalbookings: fakebackend.timeintervals,
+            eventbookings: fakebackend.events,
+            filteredintervalbookings: fakebackend.timeintervals,
+            filteredeventbookings: fakebackend.events            
+        },function(){
+            console.log("getBookings")
+        })
     }
 
     resetFilter = () => {
@@ -252,38 +244,57 @@ class MyBookings extends Component {
         // console.log(ires);
     }
 
-    // renderIntervalBookings = () => {
-    //     return(
-    //         <TableBody>
-    //             {this.state.filteredintervalbookings.map(row =>
-    //                 <TableRow>
-    //                     <TableCell>Interval</TableCell>
-    //                     <TableCell>{row.type}</TableCell>
-    //                     <TableCell>{row.start}</TableCell>
-    //                     <TableCell>{row.end}</TableCell>
-    //                     <TableCell>Remark</TableCell>
-    //                 </TableRow>
-    //             )}
-    //         </TableBody>           
-    //     )
+    renderIntervalBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredintervalbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Interval</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.start}</TableCell>
+                        <TableCell>{row.end}</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>           
+        )
+    }
+
+    renderEventBookings = () => {
+        return(
+            <TableBody>
+                {this.state.filteredeventbookings.map(row =>
+                    <TableRow>
+                        <TableCell>Event</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.time}</TableCell>
+                        <TableCell>-</TableCell>
+                        <TableCell>Remark</TableCell>
+                    </TableRow>    
+                )}
+            </TableBody>            
+        )
+    }
+    
+    // filterBookings = () => {
+    //     let start = this.state.startfilter;
+    //     let end = this.state.endfilter;
+
+    //     let holder = this.state.bookings;
+    //     let res = [];
+
+    //     holder.forEach(function(elem){
+    //         console.log(elem);
+    //         if(this.state.startfilter != null){
+
+    //         }
+    //     });
+
+    //     this.setState({
+    //         filteredbookings: res
+    //     })
     // }
 
-    // renderEventBookings = () => {
-    //     return(
-    //         <TableBody>
-    //             {this.state.filteredeventbookings.map(row =>
-    //                 <TableRow>
-    //                     <TableCell>Event</TableCell>
-    //                     <TableCell>{row.type}</TableCell>
-    //                     <TableCell>{row.time}</TableCell>
-    //                     <TableCell>-</TableCell>
-    //                     <TableCell>Remark</TableCell>
-    //                 </TableRow>    
-    //             )}
-    //         </TableBody>            
-    //     )
-    // }
-    
     editRow = (event) => {
         event.stopPropagation();
         this.setState({
@@ -291,26 +302,6 @@ class MyBookings extends Component {
         },function(){
             console.log("Editwindow wird geöffnet")
         })
-    }
-
-    mapIntervalBookings = () => {
-        return(
-            <TableBody>
-                {
-                    this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
-                }
-            </TableBody>
-        )
-    }
-
-    mapEventBookings = () => {
-        return(
-            <TableBody>
-                {
-                    this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row}/>)
-                }
-            </TableBody>
-        )
     }
 
     render(){
@@ -413,13 +404,10 @@ class MyBookings extends Component {
                                         ))}
                                     </TableRow>
                                 </TableHead>
-                                <this.mapIntervalBookings>
-                                    
-                                </this.mapIntervalBookings>
-                                {/* <TableBody>
+                                <TableBody>
                                     {
                                         this.state.filteredintervalbookings.map( row => <MyBookingsIntervalEntry booking={row}/>)
-                                    } */}
+                                    }
 
                                     {/* {this.state.filteredintervalbookings.map(row =>
                                         <TableRow
@@ -433,14 +421,11 @@ class MyBookings extends Component {
                                             <TableCell>Remark</TableCell>
                                         </TableRow>
                                     )} */}
-                                {/* </TableBody> */}
-                                <this.mapEventBookings>
-
-                                </this.mapEventBookings>
-                                {/* <TableBody>
+                                </TableBody>
+                                <TableBody>
                                     {
                                         this.state.filteredeventbookings.map( row => <MyBookingsEventEntry booking={row}/>)
-                                    } */}
+                                    }
                                     {/* {this.state.filteredeventbookings.map(row =>
                                         <TableRow>
                                             <TableCell>Event</TableCell>
@@ -450,7 +435,7 @@ class MyBookings extends Component {
                                             <TableCell>Remark</TableCell>
                                         </TableRow>    
                                     )} */}
-                                {/* </TableBody> */}
+                                </TableBody>
                             </Table>
                         </TableContainer>
                     </Paper>

@@ -2039,11 +2039,11 @@ class Businesslogic():
     User Methoden
     """
 
-    def create_user(self, first_name, last_name, mail_adress, googleId):
+    def create_user(self, firstName, lastName, mailAdress, googleId):
         user_obj = UserBO()
-        user_obj.set_first_name(first_name)
-        user_obj.set_last_name(last_name)
-        user_obj.set_mail_adress(mail_adress)
+        user_obj.set_first_name(firstName)
+        user_obj.set_last_name(lastName)
+        user_obj.set_mail_adress(mailAdress)
         user_obj.set_google_user_id(googleId)
 
         with UserMapper() as mapper:
@@ -2051,11 +2051,11 @@ class Businesslogic():
 
     '''def get_user_by_first_name(self, first_name):
         with UserMapper() as mapper:
-            return mapper.find_by_first_name(first_name)
+            return mapper.find_by_first_name(first_name)'''
 
     def get_user_by_last_name(self, last_name):
         with UserMapper() as mapper:
-            return mapper.find_by_last_name(last_name)'''
+            return mapper.find_by_last_name(last_name)
 
     def get_user_by_mail_adress(self, mail_adress):
         with UserMapper() as mapper:
@@ -2155,18 +2155,21 @@ class Businesslogic():
     Project
     """
 
-    def create_project(self, name, commissioner, user_id, duration):
+    def create_project(self, name, commissioner, user_id):
         project = ProjectBO()
         project.set_name(name)
         project.set_commissioner(commissioner)
         project.set_user_id(user_id)
-        project.set_duration(duration)
         with ProjectMapper() as mapper:
             return mapper.insert(project)
 
     def get_project_by_id(self, id):
         with ProjectMapper() as mapper:
             return mapper.find_by_key(id)
+
+    def get_last_project_entry(self):
+        with ProjectMapper() as mapper:
+            return mapper.find_last_entry()
 
     def get_all_projects(self):
         with ProjectMapper() as mapper:
@@ -2187,10 +2190,6 @@ class Businesslogic():
     def get_by_project_name(self, name):
         with ProjectMapper() as mapper:
             mapper.find_by_project_name(name)
-
-    # def get_project_duration_by_project_id(self, id):
-    #     with ProjectMapper() as mapper:
-    #         return mapper.find_by_project_id(id)
 
     """
     Projectuser
@@ -2231,11 +2230,13 @@ class Businesslogic():
 
     # Activity
 
-    def create_activity(self, name, capacity, project_id):
+    def create_activity(self, name, capacity, project_id, current_capacity):
         activity = ActivityBO()
         activity.set_name(name)
         activity.set_capacity(capacity)
         activity.set_project_id(project_id)
+        activity.set_current_capacity(current_capacity)
+
         with ActivityMapper() as mapper:
             return mapper.insert(activity)
 

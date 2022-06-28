@@ -1,48 +1,51 @@
 import BusinessObject from "./BusinessObject";
 
 export default class Project extends BusinessObject{
-    constructor(name, commissioner, userId, projectId){
+    constructor(name, commissioner, userId){
         super();
         this.name = name;
         this.commissioner = commissioner;
         this.userId = userId;
         this.projectId = projectId;
-        
+
     }
 
     //Getter und Setter
-    SetName(name){
+    setName(name){
         this.name = name;
     }
 
-    GetName(){
+    getName(){
         return this.name;
     }
 
-    SetCommissioner(commissioner){
+    setCommissioner(commissioner){
         this.commissioner = commissioner;
     }
 
-    GetCommissioner(){
+    getCommissioner(){
         return this.commissioner;
     }
 
-    SetUserId(userId){
+    setUserId(userId){
         this.userId = userId;
     }
 
-    GetUserId(){
+    getUserId(){
         return this.userId;
     }
 
-    SetProjectId(id){
+    setProjectId(id){
         this.projectId = id;
     }
 
-    GetProjectId(){
+    getProjectId(){
         return this.projectId;
     }
 
+    // GetProjectId(){
+    //     return this.projectId;
+    // }
 
     static fromJSON(project){
         let res = [];

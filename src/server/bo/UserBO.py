@@ -60,5 +60,5 @@ class UserBO (bo.BusinessObject):
         obj.set_first_name(dictionary["firstName"])
         obj.set_last_name(dictionary["lastName"])
         obj.set_mail_adress(dictionary["mailAdress"])
-        obj.set_google_user_id(dictionary["googleUserId"])
+        obj.set_google_user_id(dictionary["googleUserId"])        
         return obj
