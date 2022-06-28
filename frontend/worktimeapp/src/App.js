@@ -83,19 +83,13 @@ class App extends React.Component {
 	 WorkTimeAppAPI.getAPI().getUserByGoogleUserId(id).then(userBO =>{
 			this.setState({
 				userId: userBO[0].getID()
-			}, function(){
-				console.log("UserId", this.state.userId)
-			this.getWorkTimeAccountId(userBO[0].getID())
-		}
-			)
+			}, this.getWorkTimeAccountId(userBO[0].getID()))
 			})}
 
   getWorkTimeAccountId = (id) =>{
 	WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(id).then(accountBO =>{
 		this.setState({
 			workTimeAccountId: accountBO[0].getID()
-		}, function(){
-			console.log("WorktimeAccountId", this.state.workTimeAccountId)
 		})
 		})}
 
@@ -111,7 +105,7 @@ class App extends React.Component {
         { this.state.currentUser?
         
       <Router>
-        {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.
+        {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgefÃ¼hrt.
          */}
         <NavBar user = {this.state.currentUser}/>
         <Routes>
@@ -120,7 +114,7 @@ class App extends React.Component {
           <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
-          <Route path='/createproject' exact element={<CreateProject userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
+          <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
           <Route path='/myworktime' exact element={<MyWorkTime userId={this.state.userId} workTimeAccountId ={this.state.workTimeAccountId}/>}/>
         </Routes>
       </Router>
@@ -134,4 +128,3 @@ class App extends React.Component {
 }
  
 export default App;
-

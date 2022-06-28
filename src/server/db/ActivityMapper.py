@@ -96,8 +96,8 @@ class ActivityMapper(Mapper):
         timestamp = datetime.today()
         activity_obj.set_date_of_last_change(timestamp)
 
-        command = "UPDATE activities " + "SET name=%s, capacity=%s, dateOfLastChange=%s,  currentCapacity=%s WHERE id=%s"
-        data = (activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_date_of_last_change(), activity_obj.get_current_capacity(),activity_obj.get_id())
+        command = "UPDATE activities " + "SET name=%s, capacity=%s, dateOfLastChange=%s, currentCapacity=%s,projectId=%s WHERE id=%s"
+        data = (activity_obj.get_name(), activity_obj.get_capacity(), activity_obj.get_date_of_last_change(), activity_obj.get_current_capacity(), activity_obj.get_project_id(), activity_obj.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

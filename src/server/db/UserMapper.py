@@ -93,28 +93,29 @@ class UserMapper(Mapper):
 
         return result
 
-    '''    def find_by_name(self, key):
+    def find_by_last_name(self, key):
         result = []
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, last_name, mail_adress, user_name FROM users WHERE name={}".format(
+        command = "SELECT * FROM worktimeapp.users WHERE lastName='{}'".format(
             key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, last_name, mail_adress, user_name) in tuples:
+        for (id, dateOfLastChange, firstName, lastName, mailAdress, googleUserId) in tuples:
             user = UserBO()
             user.set_id(id)
-            user.set_first_name(first_name)
-            user.set_last_name(last_name)
-            user.set_mail_adress(mail_adress)
-            user.set_user_name(user_name)
+            user.set_date_of_last_change(dateOfLastChange)
+            user.set_first_name(firstName)
+            user.set_last_name(lastName)
+            user.set_mail_adress(mailAdress)
+            user.set_google_user_id(googleUserId)
             result.append(user)
 
         self._cnx.commit()
         cursor.close()
 
-        return result'''
+        return result
 
     def find_by_googleuserid(self, key):
         result = None

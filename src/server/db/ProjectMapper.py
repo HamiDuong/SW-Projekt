@@ -25,7 +25,6 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
             result.append(projectobj)
 
         self._cnx.commit()
@@ -52,7 +51,6 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
             result = projectobj
 
         self._cnx.commit()
@@ -177,7 +175,30 @@ class ProjectMapper(Mapper):
             projectobj.set_name(name)
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
-            # projectobj.set_duration(duration)
+            result = projectobj
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_last_entry(self):
+
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projects ORDER BY id DESC LIMIT 1"
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples[0] is not None:
+            (id, dateOfLastChange, name, commissioner, userId) = tuples[0]
+            projectobj = ProjectBO()
+            projectobj.set_id(id)
+            projectobj.set_date_of_last_change(dateOfLastChange)
+            projectobj.set_name(name)
+            projectobj.set_commissioner(commissioner)
+            projectobj.set_user_id(userId)
             result = projectobj
 
         self._cnx.commit()
