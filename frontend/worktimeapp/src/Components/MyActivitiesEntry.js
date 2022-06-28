@@ -1,19 +1,34 @@
 import React, { Component } from 'react';
 import { TableCell, TableRow } from "@mui/material";
 import EditActivity from './Dialog/EditActivity';
-import MyProjectsEntry from './MyProjectsEntry';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
+/**
+ * Activity-Eintrag für Projekte von MyProject
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
 
 class MyActivitiesEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activity : props.activity,
-            showDialog: false,
-            openPopup:false,
-            setOpenPopup:false
+            projectId : props.projectId,
+            activity : null,
+            showDialog: false
         }
     }
+
+    getActivities = () => {
+        WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.projectId).then( activities =>
+            this.setState({
+                activity : activities
+            }, function(){
+                console.log("Activities aus Backend")
+            })
+        )
+    }
+
     showEdit = () => {
         this.setState({
             showDialog: true
@@ -39,44 +54,20 @@ class MyActivitiesEntry extends Component {
 
         }
     }
-    // togglePopupActivities() {
-    //     this.setState({
-    //       showPopupAddActivities: !this.state.showPopupAddActivities,
-    //     });
-    //   }
 
-
+    state = {  }
     render() { 
-        const  {openPopup, setOpenPopup } =  this.state
         return (
             <>
                 <TableRow
                     hover
                     onClick = {this.showEdit}
                 >
-                    <TableCell>{this.state.activity.name}</TableCell>
-                    <TableCell>{this.state.activity.capacity}</TableCell>
-                    <TableCell><button className='openPopup' onClick={() => {
-                            setOpenPopup(true);
-                             } }>
-                             Öffnen
-                           </button>
-                       
-                         
-
-                        
-                    </TableCell>
-                    {/* <TableCell> {this.state.setOpenPopup(true)= ()=>{
-                       <button className='openPopup' onClick={() => {
-                            setOpenPopup(true);
-                       } }>
-                     Öffnen
-                           </button> 
-                    }}  
-                     {openPopup && <MyProjectsEntry closePopup={setOpenPopup}/>}</TableCell> */}
+                    <TableCell>{}</TableCell>
+                    <TableCell>{}</TableCell>
+                    {/* <TableCell></TableCell> */}
                 </TableRow>
-                {/* <MyProjectsEntry show={this.state.showDialog} onClose={this.closeDialog}></MyProjectsEntry> */}
-            
+                {/* <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity> */}
             </>
         );
     }
