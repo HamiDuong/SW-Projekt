@@ -19,13 +19,13 @@ class EventBookingMapper (Mapper):
             "SELECT id, dateOfLastChange, eventId from eventbookings")
         tuples = cursor.fetchall()
 
-        for (id, dateOfLastChange, eventId) in tuples:
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
+        for (id, date_of_last_change, event_id) in tuples:
+            event_booking = EventBookingBO()
+            event_booking.set_id(id)
+            event_booking.set_event_id(event_id)
+            event_booking.set_date_of_last_change(date_of_last_change)
 
-            result.append(eventbooking)
+            result.append(event_booking)
 
         self._cnx.commit()
         cursor.close()
@@ -33,7 +33,8 @@ class EventBookingMapper (Mapper):
         return result
 
     def find_last_entry(self):
-
+        """Auslesen des letzten Eintrags in der EventBooking Tabelle.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -42,12 +43,12 @@ class EventBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, eventId) = tuples[0]
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
-            eventbooking.set_event_id(eventId)
-            result = eventbooking
+            (id, date_of_last_change, event_id) = tuples[0]
+            event_booking = EventBookingBO()
+            event_booking.set_id(id)
+            event_booking.set_date_of_last_change(date_of_last_change)
+            event_booking.set_event_id(event_id)
+            result = event_booking
         except IndexError:
             result = None
 
@@ -56,82 +57,60 @@ class EventBookingMapper (Mapper):
 
         return result
 
-    def find_by_event_id(self, eventId):
-        """ Auslesen aller Bookings nach eventsIds. 
-        """
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, eventId from eventbookings WHERE eventId={} ORDER BY id".format(
-            eventId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, dateOfLastChange, eventId) in tuples:
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_event_id(eventId)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
-
-            result.append(eventbooking)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def insert(self, eventbooking):
+    def insert(self, event_booking):
         """Einfügen eines EventBooking-Objekts in die Datenbank.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM eventbookings")
         tuples = cursor.fetchall()
-        timestamp = datetime.today()
-        eventbooking.set_date_of_last_change(timestamp)
+        time_stamp = datetime.today()
+        event_booking.set_date_of_last_change(time_stamp)
 
         for (maxid) in tuples:
             if maxid[0] == None:
-                eventbooking.set_id(1)
+                event_booking.set_id(1)
             else:
-                eventbooking.set_id(maxid[0]+1)
+                event_booking.set_id(maxid[0]+1)
 
         command = "INSERT INTO eventbookings (id, dateOfLastChange, eventId) VALUES (%s,%s,%s)"
-        data = (eventbooking.get_id(), eventbooking.get_date_of_last_change(
-        ), eventbooking.get_event_id())
+        data = (event_booking.get_id(), event_booking.get_date_of_last_change(
+        ), event_booking.get_event_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
-        return eventbooking
+        return event_booking
 
-    def update(self, eventbooking):
-        """Wiederholtes Schreiben eines Objekts in die Datenbank.
+    def update(self, event_booking):
+        """Wiederholtes Schreiben eines EventBooking Objekts in die Datenbank.
         """
-        timestamp = datetime.today()
-        eventbooking.set_date_of_last_change(timestamp)
+        time_stamp = datetime.today()
+        event_booking.set_date_of_last_change(time_stamp)
         cursor = self._cnx.cursor()
 
         command = "UPDATE eventbookings " + "SET dateOfLastChange=%s WHERE id=%s"
-        data = (eventbooking.get_date_of_last_change(),
-                eventbooking.get_id())
+        data = (event_booking.get_date_of_last_change(),
+                event_booking.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, eventbooking):
-        """Löschen der Daten eines Booking-Objekts aus der Datenbank.
+    def delete(self, event_booking):
+        """Löschen der Daten eines EventBooking-Objekts aus der Datenbank.
         """
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM eventbookings WHERE id={}".format(
-            eventbooking.get_id())
+            event_booking.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
         cursor.close()
 
     def find_by_key(self, key):
-
+        """Suchen eines EventBooking Objekts nach der ID.
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -141,12 +120,12 @@ class EventBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, eventId) = tuples[0]
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
-            eventbooking.set_event_id(eventId)
-            result = eventbooking
+            (id, date_of_last_change, event_id) = tuples[0]
+            event_booking = EventBookingBO()
+            event_booking.set_id(id)
+            event_booking.set_date_of_last_change(date_of_last_change)
+            event_booking.set_event_id(event_id)
+            result = event_booking
         except IndexError:
             result = None
 
@@ -156,7 +135,7 @@ class EventBookingMapper (Mapper):
         return result
 
     def find_by_event_id(self, key):
-
+        """Auslesen eines EventBooking Objekts nach der EventId"""
         result = None
 
         cursor = self._cnx.cursor()
@@ -166,12 +145,12 @@ class EventBookingMapper (Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, eventId) = tuples[0]
-            eventbooking = EventBookingBO()
-            eventbooking.set_id(id)
-            eventbooking.set_date_of_last_change(dateOfLastChange)
-            eventbooking.set_event_id(eventId)
-            result = eventbooking
+            (id, date_of_last_change, event_id) = tuples[0]
+            event_booking = EventBookingBO()
+            event_booking.set_id(id)
+            event_booking.set_date_of_last_change(date_of_last_change)
+            event_booking.set_event_id(event_id)
+            result = event_booking
         except IndexError:
             result = None
 

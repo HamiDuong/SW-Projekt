@@ -83,7 +83,9 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
         
        }
 
-
+    /* 
+    Speichert den Input der Felder im state
+    */
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value });}
 
