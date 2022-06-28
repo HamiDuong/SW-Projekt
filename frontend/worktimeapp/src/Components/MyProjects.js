@@ -15,7 +15,7 @@
 // import TableHead from '@mui/material/TableHead';
 // import TablePagination from '@mui/material/TablePagination';
 // import TableRow from '@mui/material/TableRow';
-//TestCommit
+
 
 
 // class MyProjects extends Component {
@@ -138,6 +138,7 @@ import {withStyles,
 import { MyProjectpopup } from './MyProjectpopup';
 import EditActivity from './Dialog/EditActivity';
 import MyActivitiesEntry from './MyActivitiesEntry';
+import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
 const header = [
   {
@@ -200,14 +201,23 @@ const activities = [
     },
 ]
 
+/**
+ * Projekte und Activities vom aktuellen User
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
+
 class MyProjects extends Component {
     
     constructor(props) {
         super(props);
 
         this.state = {
-          projectType: "",
-          time: Date,
+          userId : props.userId,
+          projects : null,
+
+          // projectType: "",
+          // time: Date,
 
           showEditWindow: false,
           showEditActicity: false
@@ -226,7 +236,7 @@ class MyProjects extends Component {
     this.setState({
       showEditWindow: true
     }, function(){
-      console.log('Edit Window')
+      console.log('Edit Window öffnen')
     })
   }
 
@@ -236,13 +246,13 @@ class MyProjects extends Component {
       this.setState({
         showEditWindow: false
       }, function(){
-        console.log('Edit Window')
+        console.log('Edit Window schließen')
       })
     }else{
       this.setState({
         showEditWindow:false
       }, function(){
-        console.log('Edit Window')
+        console.log('Edit Window schließen')
       })
     }
   }
@@ -272,38 +282,40 @@ class MyProjects extends Component {
     }
   }
 
+  getProjects = () => {
+    WorkTimeAppAPI.getAPI().getProjectsForUser(this.state.userId).then(projects =>
+      this.setState({
+        projects : projects
+      })         
+    )
+  }
+
   updateProject = (project) => {
-    //API Call für ProjectUpdate
+    
+  }
+
+  componentDidMount(){
+    this.getProjects()
   }
 
   render(){
       return(
         <Card sx={{ m:5, p:2, minwidth: 500}}>
-          <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
-              <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
-                <Grid item >
-                    <AssignmentIcon></AssignmentIcon>
-                </Grid>
+          {/* <Grid container spacing={2} sx={{mb:2}} direction="row" alignItems="center">
+            <Grid item  sx={{border: 1, borderRadius: 4, ml:2, p:2}}>
+              <Grid item >
+                <AssignmentIcon></AssignmentIcon>
               </Grid>
-          <Grid item xs={12} sm={4} sx={{pb:1}}>
+            </Grid>
+          <Grid item xs={12} sm={4} sx={{pb:1}}> */}
           <Typography variant="h5" component="div">
+            <AssignmentIcon></AssignmentIcon>
             My Projects
           </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
             Your projects and activities at the moment. 
           </Typography>
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">User</TableCell>
-                <TableCell align="right">Commissioner</TableCell>
-                <TableCell align="right">Duration</TableCell>
-              </TableRow>
-            </TableHead>
-            <Typography>
-              {"Id \t Name \t User \t Commissioner \t Duration"}
-            </Typography>
+
             {data.map((item) => (
                 <Accordion>
                     <AccordionSummary>
@@ -313,12 +325,12 @@ class MyProjects extends Component {
                           <TableRow
                           >
                             <TableCell>
-                              {"Id:" +item.id+" "+item.name}
+                              {"Project name: "+item.name}
                             </TableCell>
-                            <TableCell align="right">{item.user}
-                            </TableCell>
-                            <TableCell align="right">{item.commissioner}</TableCell>
-                            <TableCell align="right">{item.duration}</TableCell>
+                            {/* <TableCell align="right">{item.user}
+                            </TableCell> */}
+                            <TableCell align="right">{"Commisioner: "+item.commissioner}</TableCell>
+                            {/* <TableCell align="right">{item.duration}</TableCell> */}
                           </TableRow>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -327,15 +339,15 @@ class MyProjects extends Component {
                         <TableHead>
                           <TableRow>
                             <TableCell>Activities</TableCell>
-                            <TableCell align="right">Capacity</TableCell>
+                            <TableCell align="left">Capacity</TableCell>
                             <TableCell></TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {activities.map((activity) => (
-                            <MyActivitiesEntry activity={activity}></MyActivitiesEntry>
-                          ))}
-
+                          <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
+                          {/* {activities.map((activity) => (
+                            <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
+                          ))} */}
                         </TableBody>
                         {/* {activities.map((elem) => (
                           <TableRow
@@ -360,8 +372,8 @@ class MyProjects extends Component {
             </Accordion>
         ))}
 
-    </Grid>
-    </Grid>
+    {/* </Grid>
+    </Grid> */}
   </Card>
       )
   }
