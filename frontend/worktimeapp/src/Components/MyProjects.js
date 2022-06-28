@@ -35,6 +35,8 @@ import { MyProjectpopup } from './MyProjectpopup';
 import EditActivity from './Dialog/EditActivity';
 import MyActivitiesEntry from './MyActivitiesEntry'
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import EditProject from './Dialog/EditProject';
+import AddActivity from './Dialog/AddActivity';
 
 const header = [
   {
@@ -113,72 +115,57 @@ class MyProjects extends Component {
           projects : null,
           projectuser: null,
 
-          // projectType: "",
-          // time: Date,
-
           showEditWindow: false,
-          showEditActicity: false
+          showEditActicity: false,
+          showEditProject: false,
+
+          showAddActivity: false
       }
-
-        //get Projects of current User
-        //get Activities of these Projects
-        /**
-         * mögliche Form die Acticity Objekte zu holen:
-         * {project id: [Liste der ActivityBOs]}
-         */
-
   }
 
-  editWindow = () => {
-    this.setState({
-      showEditWindow: true
-    }, function(){
-      console.log('Edit Window öffnen')
-    })
-  }
+  // editWindow = () => {
+  //   this.setState({
+  //     showEditWindow: true
+  //   }, function(){
+  //     console.log('Edit Window öffnen')
+  //   })
+  // }
 
-  closeDialog = (project) => {
-    if(project){
-      this.updateProject(project)
-      this.setState({
-        showEditWindow: false
-      }, function(){
-        console.log('Edit Window schließen')
-      })
-    }else{
-      this.setState({
-        showEditWindow:false
-      }, function(){
-        console.log('Edit Window schließen')
-      })
-    }
-  }
+  // closeDialog = (project) => {
+  //   this.setState({
+  //     showEditWindow:false
+  //   }, function(){
+  //     console.log('Edit Window schließen')
+  //   })
+    
+  // }
 
-  editWindowActivity = () => {
-    this.setState({
-      showEditActicity: true
-    }, function(){
-      console.log('Edit Window')
-    })
-  }
+  // editWindowActivity = () => {
+  //   this.setState({
+  //     showEditActicity: true
+  //   }, function(){
+  //     console.log('Edit Window')
+  //   })
+  // }
 
-  closeDialogActivity = (activity) => {
-    if(activity){
-      this.updateProject(activity)
-      this.setState({
-        showEditActicity: false
-      }, function(){
-        console.log('Edit Window')
-      })
-    }else{
-      this.setState({
-        showEditWindow:false
-      }, function(){
-        console.log('Edit Window')
-      })
-    }
-  }
+  // closeDialogActivity = (activity) => {
+  //   if(activity){
+  //     this.updateProject(activity)
+  //     this.setState({
+  //       showEditActicity: false
+  //     }, function(){
+  //       console.log('Edit Window')
+  //     })
+  //   }else{
+  //     this.setState({
+  //       showEditWindow:false
+  //     }, function(){
+  //       console.log('Edit Window')
+  //     })
+  //   }
+  // }
 
+  //ProjectUser BOs von User holen -> damit Projekte holen
   getProjects = () => {
     WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
       this.setState({
@@ -196,6 +183,48 @@ class MyProjects extends Component {
       )
     });
 
+  }
+
+  // updateProject = (project) => {
+  // }
+
+  openEditProjectWindow = () => {
+    this.setState({
+      showEditProject: true
+    }, function(){
+      console.log('Edit Window Projekt öffnen')
+    })
+
+    console.log(this.state.showEditProject)
+  }
+
+  closeEditProjectWindow = () => {
+      this.setState({
+        showEditProject:false
+      }, function(){
+        console.log('Edit Window Projekt schließen')
+      })
+  }
+
+  openAddActivityWindow = (item) => {
+    if(item.userId == this.state.userId){
+      this.setState({
+        showAddActivity: true
+      }, function(){
+        console.log('Add Activity Window öffnen')
+      })  
+      console.log(this.state.showEditProject)
+    }else{
+      alert('No authorization')
+    }
+  }
+
+  closeAddActivityWindow = () => {
+      this.setState({
+        showAddActivity:false
+      }, function(){
+        console.log('Add Activity Window schließen')
+      })
   }
 
   updateProject = (project) => {
@@ -236,14 +265,19 @@ class MyProjects extends Component {
                     <TableCell>Activities</TableCell>
                     <TableCell align="left">Capacity</TableCell>
                     <TableCell></TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
                 </TableBody>
               </Table>
-              <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup>
+              {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
+              <Button onClick={this.openEditProjectWindow}>Edit Project</Button>
+              <Button onClick={this.openAddActivityWindow(item)}>Add Activity</Button>
             </AccordionDetails>
+            <EditProject show={this.state.showEditProject} project = {item} onClose={this.closeEditProjectWindow}></EditProject>
+            <AddActivity show = {this.state.showAddActivity} project = {item} onClose = {this.closeAddActivityWindow}></AddActivity>
           </Accordion>
         ))}
       </Card>
