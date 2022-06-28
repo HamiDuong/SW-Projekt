@@ -252,64 +252,6 @@ class MyProjects extends Component {
                   {"Commisioner: "+item.commissioner}
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <Typography>
-              {"Id \t Name \t User \t Commissioner \t Duration"}
-            </Typography>
-            {data.map((item) => (
-                <Accordion>
-                    <AccordionSummary>
-                      {/* <Typography>
-                        {item.id +"\t"+ item.name +"\t" }
-                      </Typography> */}
-                          <TableRow
-                          >
-                            <TableCell>
-                              {"Id:" +item.id+" "+item.name}
-                            </TableCell>
-                            <TableCell align="right">{item.user}
-                            </TableCell>
-                            <TableCell align="right">{item.commissioner}</TableCell>
-                            <TableCell align="right">{item.duration}</TableCell>
-                          </TableRow>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <List>
-                        <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Activities</TableCell>
-                            <TableCell align="right">Capacity</TableCell>
-                            <TableCell></TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {activities.map((activity) => (
-                            <MyActivitiesEntry activity={activity} user={this.state.currentUser} workTimeAccount ={this.state.workTimeAccountId}></MyActivitiesEntry>
-                          ))}
-
-                        </TableBody>
-                        {/* {activities.map((elem) => (
-                          <TableRow
-                            hover
-                            onClick = {this.editWindowActicity}
-                          >
-                            <TableCell>
-                                {elem.name}
-                            </TableCell>
-                            <TableCell>
-                                {elem.capacity}
-                            </TableCell>
-                            <EditActivity show={this.state.showEditActicity} onClose={this.closeDialogActivity}></EditActivity>
-                          </TableRow>
-                          
-                        
-                        ))} */}
-                        </Table>
-                    </List>
-                    <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup>
-                </AccordionDetails>
-            </Accordion>
             </AccordionSummary>
             <AccordionDetails>
               <Table>
