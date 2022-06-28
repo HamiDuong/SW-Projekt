@@ -9,8 +9,9 @@ import MyProfile from './Components/MyProfile';
 import CreateProject from './Components/CreateProject';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
-import ProjectSelection from './Components/Pages/ProjectSelections';
 import MyWorkTimeOverview from './Components/Pages/MyWorkTimeOverview';
+import AdminView from './Components/Pages/ProjectSelections';
+import ProjectSelection from './Components/Dialogue/Selection';
 
 
 class App extends React.Component {
@@ -24,7 +25,7 @@ class App extends React.Component {
          */}
             <NavBar />
             <Routes>
-              <Route path='/myprofile' exact element={<MyProfile />} />
+              <Route path='/myprofile' exact element={<AdminView />} />
               <Route path='/mybookings' exact element={<MyBookings />} />
               <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings />} />
               <Route path='/eventbookings' exact element={<EventBookings />} />

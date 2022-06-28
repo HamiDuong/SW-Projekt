@@ -44,24 +44,24 @@ class Entry extends Component {
                 capacity: activityBO[0].capacity,
                 current_capacity: activityBO[0].current_capacity
             }, function () {
-                console.log('??', this.state.name)
+                console.log(this.state.name)
             }))
     }
 
     componentDidMount() {
         this.getActivity(this.props.value)
-        this.getProjectUser(1)
+        this.getProjectUser(this.props.projectId)
     }
 
 
 
     getProjectUser(projectId) {
-        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) =>
+        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member, index) =>
             this.setState({
                 members: [...this.state.members, member[this.state.members.length]],
                 userIds: [...this.state.userIds, member[this.state.members.length].user_id]
             }, function () {
-                for (var i = 0; i < this.state.members.length; i++) {
+                for (var i = 0; i < this.state.members.length + 1; i++) {
                     console.log('!!', this.state.userIds)
                 }
             }))

@@ -4,35 +4,32 @@ import MenuItem from '@mui/material/MenuItem';
 import { InputLabel } from '@mui/material';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import OverTime from './OverTime';
+import OverTime from '../Pages/OverTime';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverEntry from './OverEntry';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
-
+import OverEntry from '../Pages/OverEntry';
 
 class ProjectSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            project: '',
+            project: this.props.id,
             projects: [],
             temperature: '',
             projectName: '',
             selected: false,
             projectId: '',
-            userId: 1,
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
         this.setState({
-            projectId: e.target.value,
+            temperature: e.target.value,
             selected: true,
-        }, function () {
-            console.log('????!!!!', this.state.projectId);
-        })
+            projectId: e.target.value,
+
+        },
+            console.log(this.state.projectId));
     }
 
 
@@ -47,27 +44,27 @@ class ProjectSelection extends Component {
 
 
     componentDidMount() {
-        this.getProjectsForAdmin(this.state.userId)
+        this.getProjectsForAdmin(1)
     }
 
 
     showing() {
-        const projectId = this.state.projectId
+        const temperature = this.state.temperature
         if (this.state.selected) {
-            return <OverEntry value={projectId} onChange={this.handleChange} />
+            return <OverEntry value={1} onChange={this.handleChange}
+                projectId={(temperature)} />
         } else {
-            return (
-                <div>
-                    <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
-                </div>)
+            return <h1>You haven´t selected a project yet.</h1>
         }
     }
 
     render() {
         const projects = this.state.projects
+        const temperature = this.state.temperature
         const func = this.showing()
         return (
             <Box>
+
                 <h1>Admin-Sicht</h1>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>

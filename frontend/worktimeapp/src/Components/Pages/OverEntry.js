@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import Entry from './Entry';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 
 class OverEntry extends Component {
@@ -12,14 +14,17 @@ class OverEntry extends Component {
             capacity: [],
             current_capacity: [],
             activity_names: [],
-            userId: 1
+            userId: 1,
+            activities_vorhanden: false,
         })
     }
 
-
-    componentDidMount() {
-        this.getActivitiesForProject(this.props.value)
-
+    getActivitiesForProject = (project) => {
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
+            this.setState({
+                activities: [...this.state.activities, activity],
+            }, this.checkActivities(activity)
+            ))
     }
 
 
@@ -33,27 +38,6 @@ class OverEntry extends Component {
             ))
     }
 
-
-    getActivitiesForProject = (project) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
-            this.setState({
-                activities: [...this.state.activities, activity],
-            }, this.checkActivities(activity),
-                this.getCapacityofUserForProject(activity[0].id, this.state.userId)
-            ))
-    }
-
-    checkActivities = (element) => {
-        try {
-            this.getCapacities(element);
-            this.getActivityNames(element);
-
-
-
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     getCapacities = (arr) => {
         const acti = this.state.activities
@@ -82,16 +66,67 @@ class OverEntry extends Component {
         }
     }
 
+    checkActivities = (element) => {
+        try {
+            this.getCapacityofUserForProject(element[0].id, this.state.userId);
+            this.getCapacities(element);
+            this.getActivityNames(element);
+            this.setState({ activities_vorhanden: true })
+
+        } catch (e) {
+            console.log(e);
+            this.setState({
+                activities_vorhanden: false,
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.getActivitiesForProject(this.props.value)
+        console.log('this.props.value')
+
+    }
+
+
+    funcy() {
+        let len = this.state.activities.length
+        let liste = this.state.activities[0]
+        console.log(liste, 'hier ist wahrscheinlich was falsch...')
+        if (this.state.activities_vorhanden == true) {
+            for (let i = 0; i <= len; i++) {
+                return (
+                    <div>
+                        {liste.map((element, index) => {
+                            console.log('Was ist hier?', element, index)
+                            const value = element.id
+                            return (
+                                <Entry projectId={this.state.projectId
+                                } value={value} />
+                            )
+                        })}
+                    </div>
+                )
+
+            }
+        } else {
+            return (
+                <div> Keine Aktivitäten vorhanden</div>
+            )
+        }
+
+    }
+
+
     render() {
         return (
             <div>
-                {this.state.activities.map((element, index) => {
-                    const value = element[index].id
-                    return (
-                        <Entry projectId={this.state.projectId
-                        } value={value} />
-                    )
-                })}
+                {
+                    this.state.activities_vorhanden ?
+                        this.funcy()
+                        : <div>
+                            <Alert sx={{ margin: 3 }} variant='outlined' severity="info">There are no activities for your project yet.</Alert>
+                        </div>
+                }
             </div>
         );
     }
