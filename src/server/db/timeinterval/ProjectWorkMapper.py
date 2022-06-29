@@ -16,12 +16,7 @@ startEvent (FK)             Zuordnung zu ProjectWorkBegin
 endEvent (FK)               Zuordnung zu ProjectWorkEnd
 type                        Art des Intervalls (siehe Subklassen)                       
 activityId (FK)             Zuordnung zu Activity
-
-verworfen
-timeintervalBookingId (FK)  Zuordnung zu TimeIntervalBooking   
 """
-
-
 class ProjectWorkMapper(TimeIntervalMapper):
 
     def __init__(self):
@@ -31,7 +26,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     Gibt alle ProjectWorkBO aus der Datenbank zurück
     return: Liste mit ProjectWorkBO (list) - alle ProjectWorkBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -48,7 +42,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
             projectwork_obj.set_end_event(endEvent)
             projectwork_obj.set_type(type)
             projectwork_obj.set_activity_id(activityId)
-            # projectwork_obj.set_time_interval_booking_id(timeIntervalBookingId)
             result.append(projectwork_obj)
 
         self._cnx.commit()
@@ -59,7 +52,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     param: key (int) - Id vom gesuchtem ProjectWorkBO
     return: ProjectWorkBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -80,7 +72,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
             projectwork_obj.set_end_event(endEvent)
             projectwork_obj.set_type(type)
             projectwork_obj.set_activity_id(activityId)
-            # projectwork_obj.set_timeinterval_booking_id(timeIntervalBookingId)
             result = projectwork_obj
 
         self._cnx.commit()
@@ -93,7 +84,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     param: projectwork_obj (ProjectWorkBO) - ProjectWorkBO welches eingefügt werden soll
     return: projectwork_obj
     """
-
     def insert(self, projectwork_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.projectworks")
@@ -123,7 +113,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     param: projectwork_obj (ProjectWorkBO) - ProjectWorkBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, projectwork_obj):
         cursor = self._cnx.cursor()
 
@@ -141,7 +130,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     param: projectwork_obj (ProjectWorkBO) - ProjectWorkBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-
     def delete(self, projectwork_obj):
         cursor = self._cnx.cursor()
 
@@ -157,7 +145,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
     param: date (datetime) - Id vom gesuchtem ProjectWorkBO
     return: ProjectWorkBO mit start = date
     """
-
     def find_by_date(self, date):
         result = None
         cursor = self._cnx.cursor()
@@ -167,14 +154,12 @@ class ProjectWorkMapper(TimeIntervalMapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            # for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) in tuples:
             for (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) in tuples:
                 projectwork_obj = ProjectWorkBO()
                 projectwork_obj.set_id(id)
                 projectwork_obj.set_date_of_last_change(dateOfLastChange)
                 projectwork_obj.set_start(start)
                 projectwork_obj.set_end(end)
-                # projectduration_obj.set_time_interval_id(timeIntervalId)
                 projectwork_obj.set_start_event(startEvent)
                 projectwork_obj.set_end_event(endEvent)
                 projectwork_obj.set_type(type)
@@ -190,7 +175,6 @@ class ProjectWorkMapper(TimeIntervalMapper):
            end_date (date) - Ende des Zeitintervalls
     return: result - alle ProjectWorkBO im angegebenen Zeitraum
     """
-
     def find_by_time_period(self, start_date, end_date):
         result = []
         cursor = self._cnx.cursor()
@@ -200,14 +184,12 @@ class ProjectWorkMapper(TimeIntervalMapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            # for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) in tuples:
             for (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) in tuples:
                 projectwork_obj = ProjectWorkBO()
                 projectwork_obj.set_id(id)
                 projectwork_obj.set_date_of_last_change(dateOfLastChange)
                 projectwork_obj.set_start(start)
                 projectwork_obj.set_end(end)
-                # projectduration_obj.set_time_interval_id(timeIntervalId)
                 projectwork_obj.set_start_event(startEvent)
                 projectwork_obj.set_end_event(endEvent)
                 projectwork_obj.set_type(type)
@@ -218,40 +200,10 @@ class ProjectWorkMapper(TimeIntervalMapper):
         return result
 
     """
-    Gibt das ProjectWorkBO mit gegebener booking_id zurück
-    param: bookingId - Fremdschlüssel von BookingBO
-    return: result - ProjectWorkBO
-    """
-    # def find_by_time_interval_booking_id(self, bookingId):
-    #     result = None
-    #     cursor = self._cnx.cursor()
-    #     command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId FROM worktimeapp.projectworks WHERE timeIntervalBookingId={}".format(bookingId)
-    #     cursor.execute(command)
-    #     tuples = cursor.fetchall()
-
-    #     if tuples[0] is not None:
-    #         (id, dateOfLastChange, start, end, startEvent, endEvent, activityId, timeIntervalBookingId) = tuples[0]
-    #         projectwork_obj = ProjectWorkBO()
-    #         projectwork_obj.set_id(id)
-    #         projectwork_obj.set_date_of_last_change(dateOfLastChange)
-    #         projectwork_obj.set_start(start)
-    #         projectwork_obj.set_end(end)
-    #         projectwork_obj.set_start_event(startEvent)
-    #         projectwork_obj.set_end_event(endEvent)
-    #         projectwork_obj.set_activity_id(activityId)
-    #         projectwork_obj.set_timeinterval_booking_id(timeIntervalBookingId)
-    #         result = projectwork_obj
-
-    #     self._cnx.commit()
-    #     cursor.close()
-    #     return result
-
-    """
     Gibt alle ProjectWorkBO mit gegebener activity_id aus der Datenbank zurück
     param: activityId
     return: Liste mit ProjectWorkBO (list) - alle ProjectWorkBO in der Datenbank
     """
-
     def find_all_by_activity_id(self, acId):
         result = []
         cursor = self._cnx.cursor()
@@ -260,14 +212,12 @@ class ProjectWorkMapper(TimeIntervalMapper):
         tuples = cursor.fetchall()
 
         if tuples[0] is not None:
-            # for (id, dateOfLastChange, start, end, timeIntervalId, startEvent, endEvent, type, projectId) in tuples:
             for (id, dateOfLastChange, start, end, startEvent, endEvent, type, activityId) in tuples:
                 projectwork_obj = ProjectWorkBO()
                 projectwork_obj.set_id(id)
                 projectwork_obj.set_date_of_last_change(dateOfLastChange)
                 projectwork_obj.set_start(start)
                 projectwork_obj.set_end(end)
-                # projectduration_obj.set_time_interval_id(timeIntervalId)
                 projectwork_obj.set_start_event(startEvent)
                 projectwork_obj.set_end_event(endEvent)
                 projectwork_obj.set_type(type)

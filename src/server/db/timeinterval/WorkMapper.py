@@ -14,12 +14,7 @@ end                         Endzeitpunkt der Pause
 startEvent (FK)             Zuordnung zu workBegin
 endEvent (FK)               Zuordnung zu workEnd
 type                        Art des Intervalls
-
-verworfen
-timeIntervalId (FK)         Zuordnung zu TimeInterval  
 """
-
-
 class WorkMapper(TimeIntervalMapper):
 
     def __init__(self):
@@ -29,12 +24,10 @@ class WorkMapper(TimeIntervalMapper):
     Gibt alle WorkBO aus der Datenbank zurück
     return: Liste mit WorkBO (list) - alle WorkBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute(
-            "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.works")
+        cursor.execute("SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type from worktimeapp.works")
         tuples = cursor.fetchall()
 
         for (id, dateOfLastChange, start, end, startEvent, endEvent, type) in tuples:
@@ -57,7 +50,6 @@ class WorkMapper(TimeIntervalMapper):
     param: key (int) - Id vom gesuchtem WorkBO
     return: WorkBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -90,7 +82,6 @@ class WorkMapper(TimeIntervalMapper):
     param: work (WorkBO) - WorkBO welches eingefügt werden soll
     return: work
     """
-
     def insert(self, work):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.works")
@@ -120,7 +111,6 @@ class WorkMapper(TimeIntervalMapper):
     param: work (WorkBO) - WorkBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, work):
         cursor = self._cnx.cursor()
 
@@ -143,7 +133,6 @@ class WorkMapper(TimeIntervalMapper):
     param: work (WorkBO) - WorkBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-
     def delete(self, work):
         cursor = self._cnx.cursor()
 
@@ -159,7 +148,6 @@ class WorkMapper(TimeIntervalMapper):
     param: date (datetime) - Id vom gesuchtem WorkBO
     return: Liste von WorkBO mit start = date
     """
-
     def find_by_date(self, date):
         result = None
         cursor = self._cnx.cursor()
@@ -189,7 +177,6 @@ class WorkMapper(TimeIntervalMapper):
            end_date (date) - Ende des Zeitintervalls
     return: result - alle WorkBO im angegebenen Zeitraum
     """
-
     def find_by_time_period(self, start_date, end_date):
         result = []
         cursor = self._cnx.cursor()
@@ -211,36 +198,4 @@ class WorkMapper(TimeIntervalMapper):
             result.append(work)
 
         self._cnx.commit()
-        return result
-
-    """
-    Gibt das WorkBO mit gegebener booking_id zurück
-    param: bookingId - Fremdschlüssel von BookingBO
-    return: result - WorkBO
-    """
-
-    def find_by_time_interval_id(self, bookingId):
-        result = None
-        cursor = self._cnx.cursor()
-        command = "SELECT id, dateOfLastChange, start, end, startEvent, endEvent, type FROM worktimeapp.works WHERE timeIntervalId={}".format(
-            bookingId)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        if tuples[0] is not None:
-            (id, dateOfLastChange, start, end,
-             startEvent, endEvent, type) = tuples[0]
-            work = WorkBO()
-            work.set_id(id)
-            work.set_date_of_last_change(dateOfLastChange)
-            work.set_start(start)
-            work.set_end(end)
-            # work.set_time_interval_id(timeIntervalId)
-            work.set_start_event(startEvent)
-            work.set_end_event(endEvent)
-            work.set_type(type)
-            result = work
-
-        self._cnx.commit()
-        cursor.close()
         return result
