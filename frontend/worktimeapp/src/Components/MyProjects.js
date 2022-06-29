@@ -123,7 +123,8 @@ class MyProjects extends Component {
           // userId: 1,
           showEditProject: false,
 
-          showAddActivity: false
+          showAddActivity: false,
+          selectedProjectId: null,
       }
   }
 
@@ -238,9 +239,10 @@ class MyProjects extends Component {
     // }else{
     //   console.log('Hallo')
     // }
-
+    
       this.setState({
-        showAddActivity: true
+        showAddActivity: true,
+      
       }, function(){
         console.log('Add Activity Window öffnen')
       })  

@@ -7,20 +7,29 @@ class AddActivity extends Component {
     constructor(props){
         super(props);
         this.state = {
-            project : props.project,
+            project : this.props.project,
 
             name : '',
             capacity : '',
-            projectId : props.project.id,
+            projectId : this.props.project,
             currentCapacity: 0
         }
     }
 
-    handleChange = ev => {
+    handleChange = (event) => {
+        const value = event.target.value;
+    
+        let error = false;
+        if (value.trim().length === 0) {
+          error = true;
+        }
+    
         this.setState({
-            [ev.target.name] : ev.target.value
+          [event.target.id]: event.target.value,
+          [event.target.id + 'ValidationFailed']: error,
+          [event.target.id + 'Edited']: true
         });
-    }
+        }
 
     //speichert Änderungen in den Textfeldern in State
     handleClose = () => {
@@ -38,10 +47,12 @@ class AddActivity extends Component {
         WorkTimeAPI.getAPI().addActivity(activity).then(
             console.log(activity)
         );
+        this.handleClose();
     }
 
     render() { 
         const { classes, show } = this.props
+        const { name, capacity} = this.state
         return (
             show ?
             <Dialog open = {show} onClose = {this.handleClose}>
@@ -53,7 +64,8 @@ class AddActivity extends Component {
                         id="name"
                         label="Name"
                         variant="standard"
-                        
+                        type = 'text'
+                        value = {name}
                         onChange = {this.handleChange}
                         InputLabelProps={{
                             shrink: true,
@@ -63,7 +75,8 @@ class AddActivity extends Component {
                         id="capacity"
                         label="Capacity"
                         variant="standard"
-                        
+                        type = 'text'
+                        value = {capacity}
                         onChange = {this.handleChange}
                         InputLabelProps={{
                             shrink: true,
