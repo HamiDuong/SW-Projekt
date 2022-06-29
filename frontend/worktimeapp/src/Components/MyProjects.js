@@ -37,6 +37,7 @@ import MyActivitiesEntry from './MyActivitiesEntry'
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import EditProject from './Dialog/EditProject';
 import AddActivity from './Dialog/AddActivity';
+import { isThursday } from 'date-fns';
 
 const header = [
   {
@@ -186,6 +187,12 @@ class MyProjects extends Component {
       )
     });
 
+    this.setState({
+      projects : resproject
+    }, function(){
+      console.log('Got the new projects')
+    })
+
   }
 
   // updateProject = (project) => {
@@ -238,6 +245,10 @@ class MyProjects extends Component {
       })
   }
 
+  componentDidMount(){
+    this.getProjects();
+  }
+
   render(){
     return(
       <Card sx={{ m:5, p:2, minwidth: 500}}>
@@ -249,7 +260,7 @@ class MyProjects extends Component {
           Your projects and activities at the moment. 
         </Typography>
 
-        {data.map((item) => (
+        {this.state.projects.map((item) => (
           <Accordion>
             <AccordionSummary>
               <TableRow>
