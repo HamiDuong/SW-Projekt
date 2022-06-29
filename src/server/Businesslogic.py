@@ -2420,9 +2420,10 @@ class Businesslogic():
 
         # In diesem Schritt werden von den PrjWrkBOs diejenigen selektiert, die der User bearbeitet hat
         for elem in all_bookings:
+            print('bookings:', elem.get_user_id())
             if elem.get_user_id() == user_id:
                 bookings_of_user.append(elem)
-        if len(bookings_of_user) < 1:
+        if len(bookings_of_user) >= 1:
             for elem in bookings_of_user:
                 print('in bookins_of_user: ', elem)
                 ti_b_id = elem.get_time_interval_booking_id()

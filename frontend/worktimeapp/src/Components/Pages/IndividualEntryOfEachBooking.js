@@ -14,10 +14,12 @@ class IndividualEntriesOfEachBooking extends Component {
             time: '',
             user: '',
             userName: '',
+            projectDuration: '',
+            show_info: false,
         })
     }
 
-    getBookedTimeForUserOfAnActivity = (act_id, us_id) => {
+    getBookedTimeByActivityIdAndProjectId = (act_id, us_id) => {
         WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(time =>
             this.setState({
                 time: time
@@ -26,47 +28,36 @@ class IndividualEntriesOfEachBooking extends Component {
             }))
     }
 
-    componentDidMount() {
-        this.getBookedTimeForUserOfAnActivity(this.props.act_id, this.props.us_id)
+    componentDidMount = () => {
+        console.log('Was passiert hier?', this.props.us_id, this.props.act_id)
+        this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
         this.getUserById(this.props.us_id)
+
     }
+
 
     getUserById(id) {
         WorkTimeAppAPI.getAPI().getUserById(id).then(userBO =>
             this.setState({
-                user: userBO,
-                userName: userBO[0].first_name
+                user: userBO[0],
+                userName: userBO[0].getFirstName()
             }, function () {
                 console.log('Hier ist der User: ', this.state.user)
             }))
     }
 
+
     render() {
-        return (<Paper>
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    bgcolor: 'background.paper',
-                    color: 'text.secondary',
-                    '& svg': {
-                        m: 1.5,
-                    },
-                    '& hr': {
-                        mx: 5,
-                    },
-
-                }}
-            >
-
-                <TableCell >{this.state.time}</TableCell>
-                <TableCell >{this.props.capacity}</TableCell>
-                <TableCell >{this.props.current_c}</TableCell>
+        return (
+            <Box>
+                <Paper
+                    sx={{ width: '100%', margin: 'auto' }}
+                    style={{ display: 'inline-flex', justifyContent: 'space-around' }}
+                >
+                    <TableCell>{this.state.time}</TableCell>
+                    <TableCell>{this.props.user_capa}</TableCell>
+                </Paper>
             </Box>
-        </Paper>
         );
     }
 }
