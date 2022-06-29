@@ -21,11 +21,11 @@ class TimeIntervalBookingBO (book.BookingBO):
         self._timeinterval_id = None  # Fremdschlüsselbeziehung
 
     def get_timeinterval_id(self):
-        """Auslesen des Buchungstyp."""
+        """Auslesen der TimeintervalId."""
         return self._timeinterval_id
 
     def set_timeinterval_id(self, value):
-        """Setzen des Buchungstyp."""
+        """Setzen der TimeintervalId."""
         self._timeinterval_id = value
 
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
@@ -33,7 +33,7 @@ class TimeIntervalBookingBO (book.BookingBO):
     def __str__(self):
         return "Das TimeIntervalBooking mit der ID {}: Hat die timeintervalid {}".format(self._id, self._timeinterval_id)
 
-    'wandelt ein Python dict() in ein EventBookingBO'
+    'wandelt ein Python dict() in ein TimeIntervalBookingBO'
     def from_dict(dictionary=dict()):
         obj = TimeIntervalBookingBO()
         obj.set_id(dictionary["id"])

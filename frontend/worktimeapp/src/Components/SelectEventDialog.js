@@ -68,36 +68,12 @@ class SelectEventDialog extends Component {
                 <DialogTitle>Select Event</DialogTitle>
                 <DialogContent>
                 <DialogContentText sx={{mb:2}}>
-                    To select an event, please give in your desired time frame and choose an event from the drop-down list.
+                    Please select a desired event.
                 </DialogContentText>
                     <Grid container spacing={2}>
                         <Grid xs={12} sm={6} item>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe Start"
-                        value={this.state.timeframestart}
-                        onChange={(newValue) => {
-                        this.handleStartDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
-
                     <Grid xs={12} sm={6} sx={{mb:2}} item>
-
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe End"
-                        value={this.state.timeframeend}
-                        onChange={(newValue) => {
-                        this.handleEndDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
 
                     <Grid  xs={12} item>

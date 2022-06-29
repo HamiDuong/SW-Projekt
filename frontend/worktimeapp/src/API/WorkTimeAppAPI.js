@@ -8,7 +8,6 @@ import ProjectWorkBO from './ProjectWorkBO';
 import VacationBO from './VacationBO';
 import WorkBO from './WorkBO';
 import BookingBO from './BookingBO';
-import TimeIntervalBookingBO from './TimeIntervalBookingBO';
 import BreakStartBO from './EventBOs/BreakStartBO';
 import BreakEndBO from './EventBOs/BreakEndBO';
 import VacationStartBO from './EventBOs/VacationStartBO';

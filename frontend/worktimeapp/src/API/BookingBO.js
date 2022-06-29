@@ -13,6 +13,9 @@ export default class BookingBO extends BusinessObject {
   }
 
 
+  /*
+  Hier sind die Getter und Setter definiert
+  */ 
   setWorkTimeAccountId(workTimeAccountId) {
     this.workTimeAccountId = workTimeAccountId
   }
