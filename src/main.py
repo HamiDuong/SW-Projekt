@@ -999,7 +999,7 @@ class ProjectWithIDOperations(Resource):
 class ActivityOperations(Resource):
     @worktimeapp.marshal_with(activity)
     @worktimeapp.expect(activity)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ActivityBO.from_dict(api.payload)
@@ -3614,12 +3614,12 @@ class ProjectsOfUser(Resource):
 
 @worktimeapp.route('/activitiesproject/<int:id>')
 @worktimeapp.param('id', 'Die Projekt ID')
-class ProjectsOfUser(Resource):
+class ActivityProjectId(Resource):
     @worktimeapp.marshal_with(activity)
     # @secured
     def get(self, id):
         adm = Businesslogic()
-        projects = adm.get_all_by_project_id(id)
+        projects = adm.get_activities_by_project_id(id)
         return projects
 
 

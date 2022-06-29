@@ -10,6 +10,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
+
 //Hier werden die Inhalte der Menüleiste erstellt.
 //Title: Wie der Button heißen soll
 //path: Damit wird der Pfand initialisieren

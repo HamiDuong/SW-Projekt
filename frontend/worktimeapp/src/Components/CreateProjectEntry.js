@@ -11,6 +11,10 @@ import AddMember from './Dialog/AddMembers';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
+
 class CreateProject extends Component {
   constructor(props) {
     super(props);

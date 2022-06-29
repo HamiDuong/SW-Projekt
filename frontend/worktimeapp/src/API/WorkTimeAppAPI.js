@@ -2163,15 +2163,15 @@ export default class WorkTimeAppAPI {
     getProjectsByProjectUser(id) {
         return this.#fetchAdvanced(this.#getProjectsByProjectUserURL(id))
             .then((responseJSON) => {
-                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
-                console.info(workTimeAccountBO);
+                let projectBO = ProjectBO.fromJSON(responseJSON);
+                console.info(projectBO);
                 return new Promise(function (resolve) {
-                    resolve(workTimeAccountBO);
+                    resolve(projectBO);
                 })
             })
     }
 
-    getActByProjekt(id) {
+    getActByProject(id){
         return this.#fetchAdvanced(this.#getActByProjectURL(id))
             .then((responseJSON) => {
                 let responseActivity = ActivityBO.fromJSON(responseJSON);
@@ -2180,6 +2180,22 @@ export default class WorkTimeAppAPI {
                     resolve(responseActivity);
                 })
             })
+    }
+
+    updateProject(project) {
+        return this.#fetchAdvanced(this.#updateProjectURL(project), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(project)
+        }).then((responseJSON) => {
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
     }
 
 }

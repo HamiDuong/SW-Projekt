@@ -8,7 +8,7 @@ import {
     Table,
     TextField } from '@mui/material';
 import React, { Component } from 'react';
-import ProjectWorkBO from '../../API/ProjectWorkBO';
+import ProjectBO from '../../API/ProjectBO';
 import WorkTimeAPI from '../../API/WorkTimeAppAPI'
 
 class EditProject extends Component {
@@ -35,9 +35,9 @@ class EditProject extends Component {
     }
 
     updateProject = () => {
-        let updatedProject = Object.assign(new ProjectWorkBO(), this.state.project);
+        let updatedProject = Object.assign(new ProjectBO(), this.state.project);
         updatedProject.setName(this.state.projectname);
-        updatedProject.setCommisioner(this.state.commissioner);
+        updatedProject.setCommissioner(this.state.commissioner);
 
         WorkTimeAPI.getAPI().updateProject(updatedProject).then(
             console.log(updatedProject)

@@ -111,7 +111,7 @@ class App extends React.Component {
                 <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
-                <Route path='/createprojectmain' exact element={<CreateProject userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
+                <Route path='/createprojectmain' exact element={<CreateProject userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} user={this.state.currentUser}/>} />
                 <Route path='/selectionProjects' exact element={<ProjectSelection userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/individualEntry' exact element={<IndividualEntry userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
               </Routes>
