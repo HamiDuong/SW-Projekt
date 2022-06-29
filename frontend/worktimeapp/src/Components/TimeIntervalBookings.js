@@ -374,7 +374,7 @@ Schließen des Selects für das StartEvent
                             >
                                  {this.state.projects.map(projectBOs =>
                                 <MenuItem key={projectBOs.getID()} value={projectBOs.getID()}>
-                                     {projectBOs.GetName()}
+                                     {projectBOs.getName()}
                                    
                                 </MenuItem>
                                 )}

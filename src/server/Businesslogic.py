@@ -173,12 +173,7 @@ class Businesslogic():
                 "coming_id", coming.get_id(), coming.get_type())
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(starteventbooking)
         with EventMapper() as mapper:
@@ -220,12 +215,7 @@ class Businesslogic():
                 "going_id", going.get_id(), going.get_type())
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", endeventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(endeventbooking)
         with EventMapper() as mapper:
@@ -268,12 +258,7 @@ class Businesslogic():
                 "project_work_begin_id", project_work_begin.get_id(), project_work_begin.get_type())
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(starteventbooking)
         with EventMapper() as mapper:
@@ -317,12 +302,7 @@ class Businesslogic():
                 "project_work_end_id", project_work_end.get_id(), project_work_end.get_type())
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", endeventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(endeventbooking)
         with EventMapper() as mapper:
@@ -556,12 +536,7 @@ class Businesslogic():
                 "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type())
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(starteventbooking)
         with EventMapper() as mapper:
@@ -604,12 +579,7 @@ class Businesslogic():
                 "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type())
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", endeventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
         with EventBookingMapper() as mapper:
             mapper.delete(endeventbooking)
         with EventMapper() as mapper:
@@ -1497,7 +1467,23 @@ class Businesslogic():
             mapper.update(project_duration_obj)
 
     def delete_project_duration(self, project_duration_obj):
-        with ProjectDurationMapper as mapper:
+        with TimeIntervalMapper() as mapper:
+            timeinterval = mapper.find_by_foreign_key_and_type(
+                "projectDurationId", project_duration_obj.get_id(), project_duration_obj.get_type())
+        with TimeIntervalBookingMapper() as mapper:
+            timeintervalbooking = mapper.find_by_timeinterval_id(
+                timeinterval.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+
+        with BookingMapper() as mapper:
+            mapper.delete(booking)
+        with TimeIntervalBookingMapper() as mapper:
+            mapper.delete(timeintervalbooking)
+        with TimeIntervalMapper() as mapper:
+            mapper.delete(timeinterval)
+        with ProjectDurationMapper() as mapper:
             mapper.delete(project_duration_obj)
 
     def get_project_durations_by_date(self, date):
@@ -1756,11 +1742,11 @@ class Businesslogic():
                             event = mapper.find_by_key(res.get_start_event())
                             res_ti_e.append(event)
                             res_ti.append(res)
-                if type == 'projectDuration':
+                if type == 'ProjectDuration':
                     res = self.get_project_duration_by_id(
                         timeintervals.get_project_duration_id())
                     res_ti.append(res)
-                if type == 'projectWork':
+                if type == 'ProjectWork':
                     res = self.get_project_work_by_id(
                         timeintervals.get_project_work_id())
                     if (res.get_start_event() and res.get_end_event) == None:
@@ -2191,30 +2177,32 @@ class Businesslogic():
                             self.delete_illness(elem)
                         if elem.get_type() == "ProjectDuration":
                             self.delete_project_duration(elem)
-                        if elem.get_type() == "Projectwork":
+                        if elem.get_type() == "ProjectWork":
                             self.delete_project_work(elem)
                         if elem.get_type() == "Vacation":
                             self.delete_vacation(elem)
-                if key == "events":
-                    for elem in values:
-                        if elem.get_type() == "breakbegin":
-                            self.delete_break_begin(elem)
-                        if elem.get_type() == "breakend":
-                            self.delete_breakEnd(elem)
-                        if elem.get_type() == "coming":
-                            self.delete_coming(elem)
-                        if elem.get_type() == "going":
-                            self.delete_going(elem)
-                        if elem.get_type() == "flexdaystart":
-                            self.delete_flex_day_start(elem)
-                        if elem.get_type() == "flexdayend":
-                            self.delete_flex_day_end(elem)
-                        if elem.get_type() == "projectworkbegin":
-                            self.delete_project_work_begin(elem)
-                        if elem.get_type() == "projectworkend":
-                            self.delete_project_work_end(elem)
+                # if key == "events":
+                #     for elem in values:
+                #         if elem.get_type() == "breakbegin":
+                #             self.delete_break_begin(elem)
+                #         if elem.get_type() == "breakend":
+                #             self.delete_breakEnd(elem)
+                #         if elem.get_type() == "coming":
+                #             self.delete_coming(elem)
+                #         if elem.get_type() == "going":
+                #             self.delete_going(elem)
+                #         if elem.get_type() == "flexdaystart":
+                #             self.delete_flex_day_start(elem)
+                #         if elem.get_type() == "flexdayend":
+                #             self.delete_flex_day_end(elem)
+                #         if elem.get_type() == "projectworkbegin":
+                #             self.delete_project_work_begin(elem)
+                #         if elem.get_type() == "projectworkend":
+                #             self.delete_project_work_end(elem)
 
             if not projectuserlist:
+                pass
+            else:
                 for projectuser in projectuserlist:
                     with ProjectUserMapper() as mapper:
                         mapper.delete(projectuser)
@@ -2228,9 +2216,9 @@ class Businesslogic():
                     if eventbooking.get_type() == "illnessend":
                         self.delete_illness_end(eventbooking)
                     if eventbooking.get_type() == "vacationbegin":
-                        self.delete_vacation_begin(elem)
+                        self.delete_vacation_begin(eventbooking)
                     if eventbooking.get_type() == "vacationend":
-                        self.delete_vacation_end(elem)
+                        self.delete_vacation_end(eventbooking)
                     with UserMapper() as mapper:
                         mapper.delete(user_obj)
                 with UserMapper() as mapper:
@@ -2389,6 +2377,3 @@ class Businesslogic():
                 return elem
 
 
-# adm = Businesslogic()
-# user2 = adm.get_user_by_id(1)
-# adm.delete_user(user2)
