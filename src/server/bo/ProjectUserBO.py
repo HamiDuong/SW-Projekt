@@ -47,7 +47,9 @@ class ProjectUserBO(bo.BusinessObject):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
-        return "Customer: {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_project_id(), self.get_user_id(), self.get_capacity(), self.get_current_capacity())
+        return "Customer: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(),
+                                                         self.get_project_id(), self.get_user_id(),
+                                                         self.get_capacity(), self.get_current_capacity())
 
     @staticmethod
     def from_dict(dictionary=dict()):

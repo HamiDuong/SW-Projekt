@@ -3,6 +3,8 @@ from server.bo.eventBOs import EventBO
 
 class VacationEndBO(EventBO.EventBO):
     """
+    @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
     Klasse VacationEnd.
     Ein VacationEndBO stellt das Ereignis "Urlaubsende" dar.
     """
@@ -13,12 +15,19 @@ class VacationEndBO(EventBO.EventBO):
         self._type = 'vacationend'
 
     def set_time(self, time):
+        """Methode um die Zeit des Urlaubsende eines Mitarbeiters einzustellen."""
         self._time = time
 
     def get_time(self):
+        """Methode um die Zeit des Urlaubsende eines Mitarbeiters zurückzubekommen."""
         return self._time
 
+    def set_type(self, type):
+        """Methode um den Eventtyp zu setzen."""
+        self._type = type
+
     def get_type(self):
+        """Methode um den Eventtyp zurückzubekommen."""
         return self._type
 
     def __str__(self):
@@ -39,8 +48,11 @@ class VacationEndBO(EventBO.EventBO):
         obj.set_time(dictionary["time"])
         return obj
 
+
+
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
+        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
         obj = VacationEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

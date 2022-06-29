@@ -4,6 +4,8 @@ from datetime import datetime
 
 class GoingBO(EventBO.EventBO):
     """
+    @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
     Klasse Going.
     Ein GoingBO stellt das Ereignis "Gehen" dar bzw. wenn ein Mitarbeiter sich ausstempelt und enthält einen Zeitpunkt.
     """
@@ -14,10 +16,20 @@ class GoingBO(EventBO.EventBO):
         self._type = 'going'
 
     def set_time(self, time):
+        """Methode um die Zeit des Gehens eines Mitarbeiters, sprich wenn er sich austrägt, einzustellen."""
         self._time = time
 
     def get_time(self):
+        """Methode um die Zeit des Gehens eines Mitarbeiters, sprich wenn er sich austrägt, zurückzubekommen."""
         return self._time
+
+    def set_type(self, type):
+        """Methode um den Eventtyp zu setzen."""
+        self._type = type
+
+    def get_type(self):
+        """Methode um den Eventtyp zurückzubekommen."""
+        return self._type
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
@@ -39,6 +51,7 @@ class GoingBO(EventBO.EventBO):
 
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
+        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
         obj = GoingBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

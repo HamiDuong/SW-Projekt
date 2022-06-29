@@ -808,6 +808,63 @@ class ProjectWithUserIDOperations(Resource):
         return project
 
 
+@worktimeapp.route('/projects/admin/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectAdminOperations(Resource):
+    @worktimeapp.marshal_list_with(project)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects = adm.get_projects_for_admin(id)
+        return projects
+
+
+@worktimeapp.route('/projects/for/user/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectUserOperationsII(Resource):
+    @worktimeapp.marshal_list_with(project)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects = adm.get_projects_for_user(id)
+        return projects
+
+
+@worktimeapp.route('/actvities/for/user/<int:project_id>/<int:user_id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ActivitiyOperationsII(Resource):
+    @worktimeapp.marshal_list_with(activity)
+    # @secured
+    def get(self, project_id, user_id):
+        adm = Businesslogic()
+        projects = adm.get_activities_by_project_id_and_user_id(
+            project_id, user_id)
+        return projects
+
+
+@worktimeapp.route('/times/<int:activity_id>/<int:user_id>')
+class TimeOperations(Resource):
+    # #@secured
+    def get(self, activity_id, user_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_actual_working_time_for_user_by_activity_id(
+            activity_id, user_id)
+        return time
+
+
+@worktimeapp.route('/times/projectdurataion/<int:project_id>')
+class TimeOperations(Resource):
+    # #@secured
+    def get(self, project_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_project_duration_interval(project_id)
+        return time
+
+
 @worktimeapp.route('/project/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -848,7 +905,7 @@ class ProjectWithSTRINGOperations(Resource):
     @secured
     def get(self, name):
         adm = Businesslogic()
-        project = adm.get_project_by_name(project)
+        project = adm.get_project_by_name(name)
         return project
 
 
@@ -878,6 +935,17 @@ class ProjectUserOperations(Resource):
         return projectuser
 
 
+@worktimeapp.route('/projectmembersbyprojectid/<int:id>')
+@worktimeapp.param('id', 'Die ID des Projekts')
+class ProjectWithIDOperations(Resource):
+    @worktimeapp.marshal_with(projectuser)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projectuser = adm.get_all_project_members(id)
+        return projectuser
+
+
 @worktimeapp.route('/projectuser/<int:id>')
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
@@ -886,11 +954,6 @@ class ProjectWithIDOperations(Resource):
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_projectuser_by_id(id)
-        return projectuser
-
-    def get_project_members(self, project_id):
-        adm = Businesslogic()
-        projectuser = adm.get_all_project_members(project_id)
         return projectuser
 
     @worktimeapp.marshal_with(projectuser)
@@ -943,6 +1006,16 @@ class ActivityOperations(Resource):
         return activity
 
 
+@worktimeapp.route('/activitybyproject/<int:id>')
+@worktimeapp.param('id', 'Die ID der Aktivitaet')
+class ActivityWithProjectIdperations(Resource):
+    @worktimeapp.marshal_list_with(activity)
+    def get(self, id):
+        adm = Businesslogic()
+        activity = adm.get_activities_by_project_id(id)
+        return activity
+
+
 @worktimeapp.route('/activity/<int:id>')
 @worktimeapp.param('id', 'Die ID der Aktivitaet')
 class ActivityWithIDOperations(Resource):
@@ -951,11 +1024,6 @@ class ActivityWithIDOperations(Resource):
     def get(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
-        return activity
-
-    def get_project_id(self, id):
-        adm = Businesslogic()
-        activity = adm.get_all_by_project_id(id)
         return activity
 
     @worktimeapp.marshal_with(activity)
@@ -2879,7 +2947,7 @@ class ProjectDurationOperations(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectduration/<int:id>')
+@worktimeapp.route('/projectduration/<int:id>')
 @worktimeapp.param('id', 'ID der ProjectDuration')
 class ProjecDurationWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectduration)
@@ -2933,14 +3001,14 @@ class FindProjectDurationByTimePeriod(Resource):
         return projectduration
 
 
-@worktimeapp.route('projectdurationproject/<int:projectid>')
-@worktimeapp.param('id', 'Id von Project')
+@worktimeapp.route('/projectdurationproject/<int:projectid>')
+@worktimeapp.param('projectid', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
     @worktimeapp.marshal_with(projectduration)
     @secured
     def get(self, id):
         adm = Businesslogic()
-        projectduration = adm.get_project_duration_by_project_id(id)
+        projectduration = adm.get_project_duration_by_project_id(projectid)
         return projectduration
 
 
@@ -3405,7 +3473,9 @@ class EventBookingsForUser(Resource):
 
 '''Booking Routes @author Mihriban Dogan (https://github.com/mihriban-dogan)'''
 
-#Alle Buchungen für einen User auslesen
+# Alle Buchungen für einen User auslesen
+
+
 @worktimeapp.route('/booking/timeintervalbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class TimeIntervalBookingOperationsWithParam(Resource):
@@ -3422,7 +3492,9 @@ class TimeIntervalBookingOperationsWithParam(Resource):
                 user)
             return timeintervalbookings
 
-#TimeIntervalBookings in Booking Tabelle anlegen
+# TimeIntervalBookings in Booking Tabelle anlegen
+
+
 @worktimeapp.route('/booking/timeintervalbooking')
 class TimeintervalBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
@@ -3433,7 +3505,7 @@ class TimeintervalBookingOperations(Resource):
         proposal = BookingBO.from_dict(api.payload)
         if proposal is not None:
             t = 2
-            time.sleep(t)
+            time.sleep(2)
             b = adm.create_booking_for_timeinterval(
                 proposal.get_user_id(),
                 proposal.get_work_time_account_id(),
@@ -3453,7 +3525,9 @@ class TimeintervalBookingOperations(Resource):
         else:
             return ''
 
-#EventBookings in Booking Tabelle anlegen
+# EventBookings in Booking Tabelle anlegen
+
+
 @worktimeapp.route('/booking/eventbooking')
 class EventBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
@@ -3475,7 +3549,9 @@ class EventBookingOperations(Resource):
         else:
             return ''
 
-#Alle Eventbookings auslesen
+# Alle Eventbookings auslesen
+
+
 @worktimeapp.route('/booking/eventbooking/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
@@ -3491,7 +3567,9 @@ class EventBookingOperationsWithParam(Resource):
             eventbookings = adm.get_all_event_bookings_for_user(user)
             return eventbookings
 
-#Event und Vacation Bookings auslesen
+# Event und Vacation Bookings auslesen
+
+
 @worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):

@@ -5,7 +5,7 @@ from datetime import datetime
 '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
 
 
-class TimeIntervalBookingMapper (Mapper):
+class TimeIntervalBookingMapper(Mapper):
 
     def __init__(self):
         super().__init__()
@@ -16,7 +16,7 @@ class TimeIntervalBookingMapper (Mapper):
         result = []
         cursor = self._cnx.cursor()
         cursor.execute(
-            "SELECT id, dateOfLastChange, timeintervalId from timeintervalbookings")
+            "SELECT * from worktimeapp.timeintervalbookings")
         tuples = cursor.fetchall()
 
         for (id, date_of_last_change, time_interval_id) in tuples:
