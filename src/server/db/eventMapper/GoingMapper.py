@@ -8,6 +8,14 @@ class GoingMapper(Mapper):
         super().__init__()
 
     def insert(self, going):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein GoingBO in die Datenbank ein
+        param: going (GoingBO)
+        return: going
+        """
+
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.going ")
@@ -36,6 +44,12 @@ class GoingMapper(Mapper):
         return going
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle GoingBO aus der Datenbank zurück
+        return: Liste mit GoingBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -57,6 +71,14 @@ class GoingMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das GoingBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem GoingBO
+        return: GoingBO mit dem angegebenen Datum
+        """
+
         result = None
 
         cursor = self._cnx.cursor()

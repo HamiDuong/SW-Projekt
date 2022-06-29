@@ -8,6 +8,14 @@ class VacationBeginMapper(Mapper):
         super().__init__()
 
     def insert(self, vacation_begin):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein VacationBeginBO in die Datenbank ein
+        param: vacation_begin (VacationBeginBO)
+        return: vacation_begin
+        """
+
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(
@@ -38,6 +46,12 @@ class VacationBeginMapper(Mapper):
         return vacation_begin
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle VacationBeginBO aus der Datenbank zurück
+        return: Liste mit VacationBeginBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -59,6 +73,14 @@ class VacationBeginMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das VacationBeginBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem VacationBeginBO
+        return: VacationBeginBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -86,6 +108,14 @@ class VacationBeginMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das VacationBeginBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem VacationBeginBO
+        return: VacationBeginBO mit mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

@@ -3,6 +3,8 @@ from server.bo.eventBOs import EventBO
 
 class ProjectWorkEndBO(EventBO.EventBO):
     """
+    @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
     Klasse ProjectWorkEnd.
     Ein ProjectWorkEndBO stellt das Ereignis "Ende der Projektarbeit" dar bzw. wenn ein Mitarbeiter die tatsächliche Projektarbeit beendet.
     """
@@ -13,10 +15,20 @@ class ProjectWorkEndBO(EventBO.EventBO):
         self._type = 'projectworkend'
 
     def set_time(self, time):
+        """Methode um den Endzeitpunkt einer Projektarbeit einzustellen."""
         self._time = time
 
     def get_time(self):
+        """Methode um den Endzeitpunkt einer Projektarbeit zurückzubekommen."""
         return self._time
+
+    def set_type(self, type):
+        """Methode um den Eventtyp zu setzen."""
+        self._type = type
+
+    def get_type(self):
+        """Methode um den Eventtyp zurückzubekommen."""
+        return self._type
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
@@ -38,6 +50,7 @@ class ProjectWorkEndBO(EventBO.EventBO):
 
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
+        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
         obj = ProjectWorkEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

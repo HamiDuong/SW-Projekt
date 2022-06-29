@@ -28,6 +28,7 @@ class ProjectMapper(Mapper):
             result.append(projectobj)
 
         self._cnx.commit()
+        cursor.close()
         return result
 
     """
@@ -163,11 +164,12 @@ class ProjectMapper(Mapper):
     def find_by_project_name(self, name):
         result = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM projects WHERE name='{}'".format(name)
+        command = "SELECT id, dateOfLastChange, name, commissioner, userId FROM projects WHERE name='{}'".format(
+            name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
+        try:
             (id, dateOfLastChange, name, commissioner, userId) = tuples[0]
             projectobj = ProjectBO()
             projectobj.set_id(id)
@@ -176,6 +178,8 @@ class ProjectMapper(Mapper):
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
             result = projectobj
+        except IndexError:
+            result = None
 
         self._cnx.commit()
         cursor.close()
@@ -200,6 +204,8 @@ class ProjectMapper(Mapper):
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
             result = projectobj
+        else:
+            result = None
 
         self._cnx.commit()
         cursor.close()

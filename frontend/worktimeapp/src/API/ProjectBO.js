@@ -1,7 +1,7 @@
 import BusinessObject from "./BusinessObject";
 
-export default class Project extends BusinessObject{
-    constructor(name, commissioner, userId, projectId){
+export default class Project extends BusinessObject {
+    constructor(name, commissioner, userId, projectId) {
         super();
         this.name = name;
         this.commissioner = commissioner;
@@ -11,35 +11,35 @@ export default class Project extends BusinessObject{
     }
 
     //Getter und Setter
-    setName(name){
+    setName(name) {
         this.name = name;
     }
 
-    getName(){
+    getName() {
         return this.name;
     }
 
-    setCommissioner(commissioner){
+    setCommissioner(commissioner) {
         this.commissioner = commissioner;
     }
 
-    getCommissioner(){
+    getCommissioner() {
         return this.commissioner;
     }
 
-    setUserId(userId){
+    setUserId(userId) {
         this.userId = userId;
     }
 
-    getUserId(){
+    getUserId() {
         return this.userId;
     }
 
-    setProjectId(id){
+    setProjectId(id) {
         this.projectId = id;
     }
 
-    getProjectId(){
+    getProjectId() {
         return this.projectId;
     }
 
@@ -47,14 +47,14 @@ export default class Project extends BusinessObject{
     //     return this.projectId;
     // }
 
-    static fromJSON(project){
+    static fromJSON(project) {
         let res = [];
-        if(Array.isArray(project)){
+        if (Array.isArray(project)) {
             project.forEach((elem) => {
                 Object.setPrototypeOf(elem, Project.prototype);
                 res.push(elem)
             })
-        }else{
+        } else {
             let elem = project;
             Object.setPrototypeOf(elem, Project.prototype);
             res.push(elem)

@@ -45,7 +45,7 @@ class ProjectUserMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
+        try:
             (id, dateOfLastChange, projectId, userId,
              capacity, currentCapacity) = tuples[0]
             projectuserobj = ProjectUserBO()
@@ -56,6 +56,8 @@ class ProjectUserMapper(Mapper):
             projectuserobj.set_capacity(capacity)
             projectuserobj.set_current_capacity(currentCapacity)
             result = projectuserobj
+        except IndexError:
+            result = None
 
         self._cnx.commit()
         cursor.close()

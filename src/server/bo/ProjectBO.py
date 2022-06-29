@@ -48,8 +48,7 @@ class ProjectBO(bo.BusinessObject):
         obj = ProjectBO()
         obj.set_id(dictionary["id"])
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])
-        obj.set_name(dictionary["name"])  
+        obj.set_name(dictionary["name"])
         obj.set_commissioner(dictionary["commissioner"])
         obj.set_user_id(dictionary["userId"])
         return obj
-

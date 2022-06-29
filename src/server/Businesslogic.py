@@ -1,85 +1,63 @@
-from .bo.eventBOs.EventBO import EventBO
-from .db.eventMapper.EventMapper import EventMapper
-from .bo.eventBOs.ComingBO import ComingBO
-from .db.eventMapper.ComingMapper import ComingMapper
-from .bo.eventBOs.GoingBO import GoingBO
-from .db.eventMapper.GoingMapper import GoingMapper
-from .bo.eventBOs.VacationBeginBO import VacationBeginBO
-from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from .bo.eventBOs.VacationEndBO import VacationEndBO
-from .db.eventMapper.VacationEndMapper import VacationEndMapper
-from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from .bo.eventBOs.IllnessEndBO import IllnessEndBO
-from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from .bo.eventBOs.BreakBeginBO import BreakBeginBO
-from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
-from .bo.eventBOs.BreakEndBO import BreakEndBO
-from .db.eventMapper.BreakEndMapper import BreakEndMapper
-from .bo.eventBOs.EventBO import EventBO
-from .db.eventMapper.EventMapper import EventMapper
-from .bo.eventBOs.ComingBO import ComingBO
-from .db.eventMapper.ComingMapper import ComingMapper
-from .bo.eventBOs.GoingBO import GoingBO
-from .db.eventMapper.GoingMapper import GoingMapper
-from .bo.eventBOs.VacationBeginBO import VacationBeginBO
-from .db.eventMapper.VacationBeginMapper import VacationBeginMapper
-from .bo.eventBOs.VacationEndBO import VacationEndBO
-from .db.eventMapper.VacationEndMapper import VacationEndMapper
-from .bo.eventBOs.IllnessBeginBO import IllnessBeginBO
-from .db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
-from .bo.eventBOs.IllnessEndBO import IllnessEndBO
-from .db.eventMapper.IllnessEndMapper import IllnessEndMapper
-from .bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
-from .db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
-from .bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
-from .db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
-from .bo.eventBOs.BreakBeginBO import BreakBeginBO
-from .db.eventMapper.BreakBeginMapper import BreakBeginMapper
-from .bo.eventBOs.BreakEndBO import BreakEndBO
-from .db.eventMapper.BreakEndMapper import BreakEndMapper
-from .bo.eventBOs.FlexDayStart import FlexDayStartBO
-from .db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
-from .bo.eventBOs.FlexDayEndBO import FlexDayEndBO
-from .db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
-
-from .bo.BookingBO import BookingBO
-from .db.BookingMapper import BookingMapper
-from .bo.EventBookingBO import EventBookingBO
-from .db.EventBookingMapper import EventBookingMapper
-from .bo.TimeIntervalBookingBO import TimeIntervalBookingBO
-from .db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
-from .bo.timeinterval.TimeIntervalBO import TimeIntervalBO
-from .db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
-from .bo.timeinterval.BreakBO import BreakBO
-from .db.timeinterval.BreakMapper import BreakMapper
-from .bo.timeinterval.IllnessBO import IllnessBO
-from .db.timeinterval.IllnessMapper import IllnessMapper
-from .bo.timeinterval.ProjectDurationBO import ProjectDurationBO
-from .db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
-from .bo.timeinterval.ProjectWorkBO import ProjectWorkBO
-from .db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
-from .bo.timeinterval.VacationBO import VacationBO
-from .db.timeinterval.VacationMapper import VacationMapper
-from .bo.timeinterval.WorkBO import WorkBO
-from .db.timeinterval.WorkMapper import WorkMapper
-from .bo.timeinterval.FlexDayBO import FlexDayBO
-from .db.timeinterval.FlexDayMapper import FlexDayMapper
+from server.bo.eventBOs.EventBO import EventBO
+from server.db.eventMapper.EventMapper import EventMapper
+from server.bo.eventBOs.ComingBO import ComingBO
+from server.db.eventMapper.ComingMapper import ComingMapper
+from server.bo.eventBOs.GoingBO import GoingBO
+from server.db.eventMapper.GoingMapper import GoingMapper
+from server.bo.eventBOs.VacationBeginBO import VacationBeginBO
+from server.db.eventMapper.VacationBeginMapper import VacationBeginMapper
+from server.bo.eventBOs.VacationEndBO import VacationEndBO
+from server.db.eventMapper.VacationEndMapper import VacationEndMapper
+from server.bo.eventBOs.IllnessBeginBO import IllnessBeginBO
+from server.db.eventMapper.IllnessBeginMapper import IllnessBeginMapper
+from server.bo.eventBOs.IllnessEndBO import IllnessEndBO
+from server.db.eventMapper.IllnessEndMapper import IllnessEndMapper
+from server.bo.eventBOs.ProjectWorkBegin import ProjectWorkBeginBO
+from server.db.eventMapper.ProjectWorkBeginMapper import ProjectWorkBeginMapper
+from server.bo.eventBOs.ProjectWorkEnd import ProjectWorkEndBO
+from server.db.eventMapper.ProjectWorkEndMapper import ProjectWorkEndMapper
+from server.bo.eventBOs.BreakBeginBO import BreakBeginBO
+from server.db.eventMapper.BreakBeginMapper import BreakBeginMapper
+from server.bo.eventBOs.BreakEndBO import BreakEndBO
+from server.db.eventMapper.BreakEndMapper import BreakEndMapper
+from server.bo.eventBOs.FlexDayStart import FlexDayStartBO
+from server.db.eventMapper.FlexDayStartMapper import FlexDayStartMapper
+from server.bo.eventBOs.FlexDayEndBO import FlexDayEndBO
+from server.db.eventMapper.FlexDayEndMapper import FlexDayEndMapper
+from server.bo.BookingBO import BookingBO
+from server.db.BookingMapper import BookingMapper
+from server.bo.EventBookingBO import EventBookingBO
+from server.db.EventBookingMapper import EventBookingMapper
+from server.bo.TimeIntervalBookingBO import TimeIntervalBookingBO
+from server.db.TimeIntervalBookingMapper import TimeIntervalBookingMapper
+from server.bo.timeinterval.TimeIntervalBO import TimeIntervalBO
+from server.db.timeinterval.TimeIntervalMapper import TimeIntervalMapper
+from server.bo.timeinterval.BreakBO import BreakBO
+from server.db.timeinterval.BreakMapper import BreakMapper
+from server.bo.timeinterval.IllnessBO import IllnessBO
+from server.db.timeinterval.IllnessMapper import IllnessMapper
+from server.bo.timeinterval.ProjectDurationBO import ProjectDurationBO
+from server.db.timeinterval.ProjectDurationMapper import ProjectDurationMapper
+from server.bo.timeinterval.ProjectWorkBO import ProjectWorkBO
+from server.db.timeinterval.ProjectWorkMapper import ProjectWorkMapper
+from server.bo.timeinterval.VacationBO import VacationBO
+from server.db.timeinterval.VacationMapper import VacationMapper
+from server.bo.timeinterval.WorkBO import WorkBO
+from server.db.timeinterval.WorkMapper import WorkMapper
+from server.bo.timeinterval.FlexDayBO import FlexDayBO
+from server.db.timeinterval.FlexDayMapper import FlexDayMapper
 from datetime import datetime
-from .bo.UserBO import UserBO
-from .db.UserMapper import UserMapper
-from .bo.WorkTimeAccountBO import WorkTimeAccountBO
-from .db.WorkTimeAccountMapper import WorkTimeAccountMapper
-from .bo.ProjectBO import ProjectBO
-from .db.ProjectMapper import ProjectMapper
-from .bo.ProjectUserBO import ProjectUserBO
-from .db.ProjectUserMapper import ProjectUserMapper
-from .bo.ActivityBO import ActivityBO
-from .db.ActivityMapper import ActivityMapper
+from server.bo.UserBO import UserBO
+from server.db.UserMapper import UserMapper
+from server.bo.WorkTimeAccountBO import WorkTimeAccountBO
+from server.db.WorkTimeAccountMapper import WorkTimeAccountMapper
+from server.bo.ProjectBO import ProjectBO
+from server.db.ProjectMapper import ProjectMapper
+from server.bo.ProjectUserBO import ProjectUserBO
+from server.db.ProjectUserMapper import ProjectUserMapper
+from server.bo.ActivityBO import ActivityBO
+from server.db.ActivityMapper import ActivityMapper
+import math
 
 
 class Businesslogic():
@@ -1502,6 +1480,12 @@ class Businesslogic():
         with ProjectDurationMapper() as mapper:
             return mapper.find_by_project_id(id)
 
+    def get_project_duration_interval(self, project_id):
+        duration = self.get_project_duration_by_project_id(project_id)
+        delta = duration.get_end() - duration.get_start()
+        delta_float = round((delta.total_seconds() / 86400), 2)
+        return delta_float
+
     """
     ProjectWork Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -1608,7 +1592,7 @@ class Businesslogic():
     # Ein TimeIntervalBooking anhand der ID aus der Datenbank holen
 
     def get_timeinterval_booking_by_id(self, id):
-        with TimeIntervalBookingMapper as mapper:
+        with TimeIntervalBookingMapper() as mapper:
             return mapper.find_by_key(id)
 
     # Ein EventBooking anhand der ID aus der Datenbank holen
@@ -1646,7 +1630,6 @@ class Businesslogic():
         with TimeIntervalBookingMapper() as mapper:
             last_entry = mapper.find_last_entry()
             id = last_entry.get_id()
-
         booking = BookingBO()
         booking.set_user_id(userId)
         booking.set_work_time_account_id(worktimeAccountId)
@@ -2331,8 +2314,12 @@ class Businesslogic():
             mapper.delete(projectuser)
 
     def get_all_project_members(self, project_id):
-        with ProjectUserMapper() as mapper:
-            mapper.find_all_project_members(project_id)
+        liste = self.get_all_projectusers()
+        result = []
+        for elem in liste:
+            if elem.get_project_id() == project_id:
+                result.append(elem)
+        return result
 
     # Activity
 
@@ -2366,9 +2353,17 @@ class Businesslogic():
         with ActivityMapper() as mapper:
             return mapper.find_by_name(name)
 
-    def get_all_by_project_id(self, project_id):
+    def get_activities_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
+
+    def get_all_timeinterval_bookings(self):
+        with TimeIntervalBookingMapper() as mapper:
+            return mapper.find_all()
+
+    def get_all_bookings_for_timeinterval(self):
+        with BookingMapper() as mapper:
+            return mapper.find_by_type('T')
 
     def get_project_by_name(self, name):
         projects = self.get_all_projects()
@@ -2376,4 +2371,97 @@ class Businesslogic():
             if elem.get_name() == name:
                 return elem
 
+    def get_projects_for_admin(self, admin):
+        all_projects = self.get_all_projects()
+        projects_for_admin = []
+        for elem in all_projects:
+            if elem.get_user_id() == admin:
+                projects_for_admin.append(elem)
+        return projects_for_admin
 
+    def get_projects_for_user(self, id):
+        user = self.get_user_by_id(id)
+        all_projects = self.get_all_projects()
+        all_project_user = self.get_all_projectusers()
+        projects = []
+        projects_of_user = []
+        for elem in all_project_user:
+            if elem.get_user_id() == user.get_id():
+                projects.append(elem)
+        for elem in all_projects:
+            for x in projects:
+                if elem.get_id() == x.get_project_id():
+                    projects_of_user.append(elem)
+        return projects_of_user
+
+    def get_activities_by_project_id_and_user_id(self, project_id, user_id):
+        # Alle Aktivitäten für ein Projekt in dem der User Member ist
+        projects_for_user = self.get_projects_for_user(user_id)
+        activities = []
+        for elem in projects_for_user:
+            if elem.get_id() == project_id:
+                activities.append(
+                    self.get_activities_by_project_id(elem.get_id()))
+        return activities
+
+    def get_actual_working_time_for_user_by_activity_id(self, user_id, activity_id):
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings = self.get_all_bookings_for_timeinterval()
+
+        'Holen Aktivität und deren Capacity'
+        activity = self.get_activity_by_id(activity_id)
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        bookings_of_user = []
+        timeinterval_booking_of_user = []
+        timeintervals_of_user = []
+        projectwork_of_user = []
+        project_work_for_this_activity_of_user = []
+
+        'Hier sind alle Zeiten des Users für eine Aktivität'
+        sum_time = []
+
+        # In diesem Schritt werden von den PrjWrkBOs diejenigen selektiert, die der User bearbeitet hat
+        for elem in all_bookings:
+            if elem.get_user_id() == user_id:
+                bookings_of_user.append(elem)
+        if len(bookings_of_user) < 1:
+            for elem in bookings_of_user:
+                print('in bookins_of_user: ', elem)
+                ti_b_id = elem.get_time_interval_booking_id()
+                ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
+                timeinterval_booking_of_user.append(ti_b)
+            for elem in timeinterval_booking_of_user:
+                print('in ti_b for user: ', elem)
+                ti_id = elem.get_timeinterval_id()
+                ti = self.get_timeinterval_by_id(ti_id)
+                timeintervals_of_user.append(ti)
+            for elem in timeintervals_of_user:
+                print('in ti for user: ', elem)
+                if elem.get_type() == 'ProjectWork':
+                    project_work = self.get_project_work_by_id(
+                        elem.get_project_work_id())
+                    projectwork_of_user.append(project_work)
+            for elem in projectwork_of_user:
+                print('in projectwork for user: ', elem)
+                if elem.get_activity_id() == activity_id:
+                    project_work_for_this_activity_of_user.append(elem)
+                    sum = elem.get_end() - elem.get_start()
+                    sum = sum.total_seconds()
+                    sum_time.append(sum)
+            sum = math.fsum(sum_time)/3600
+            sum = round(sum, 2)
+            return sum
+        else:
+            return 0
+
+    def get_projects_of_user(self, userid):
+        projectuser = self.get_project_user_by_user_id(userid)
+        projectid = []
+        for elem in projectuser:
+            projectid.append(elem.get_project_id())
+        res = []
+        for elem in projectid:
+            hold = self.get_project_by_id(elem)
+            res.append(hold)
+        return res

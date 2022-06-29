@@ -8,6 +8,13 @@ class IllnessEndMapper(Mapper):
         super().__init__()
 
     def insert(self, illness_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein IllnessEndBO in die Datenbank ein
+        param: illness_end (IllnessEndBO)
+        return: illness_end
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.illnessend ")
@@ -37,6 +44,12 @@ class IllnessEndMapper(Mapper):
         return illness_end
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle IllnessEndBO aus der Datenbank zurück
+        return: Liste mit IllnessEndBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -58,6 +71,13 @@ class IllnessEndMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das IllnessEndBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem IllnessEndBO
+        return: IllnessEndBO mit der eingegebenen Id
+        """
         result = None
 
         cursor = self._cnx.cursor()
@@ -86,6 +106,14 @@ class IllnessEndMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das IllnessEndBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem IllnessEndBO
+        return: IllnessEndBO mit dem angegebenen Datum Id
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

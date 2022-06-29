@@ -70,6 +70,10 @@ class MyActivitiesEntry extends Component {
         })
     }
 
+    componentDidMount(){
+        this.getActivities();
+    }
+
     
     render() { 
         
@@ -111,7 +115,7 @@ class MyActivitiesEntry extends Component {
                     //     </TableRow>
                     // ))
 
-                    activities.map((elem) => (
+                    this.state.activity.map((elem) => (
                         <>
                             <TableRow
                             hover
