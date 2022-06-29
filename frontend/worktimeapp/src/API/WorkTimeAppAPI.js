@@ -2153,15 +2153,15 @@ export default class WorkTimeAppAPI {
     getProjectsByProjectUser(id) {
         return this.#fetchAdvanced(this.#getProjectsByProjectUserURL(id))
             .then((responseJSON) => {
-                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
-                console.info(workTimeAccountBO);
+                let projectBO = ProjectBO.fromJSON(responseJSON);
+                console.info(projectBO);
                 return new Promise(function (resolve) {
-                    resolve(workTimeAccountBO);
+                    resolve(projectBO);
                 })
             })
     }
 
-    getActByProjekt(id) {
+    getActByProject(id){
         return this.#fetchAdvanced(this.#getActByProjectURL(id))
             .then((responseJSON) => {
                 let responseActivity = ActivityBO.fromJSON(responseJSON);

@@ -30,21 +30,22 @@ class MyActivitiesEntry extends Component {
         super(props);
         this.togglePopupMyProjectsEntry = this.togglePopupMyProjectsEntry.bind(this);
         this.state = {
-            activity : props.activity,
+            // activity : props.activity,
             showDialog: false,
             showPopupMyProjectEntry: false,
             projectId : props.projectId,
             activity : null,
-            showWorkDialog: false
+            showWorkDialog: false,
+            userId: props.userId,
         }
     }
 
     getActivities = () => {
-        WorkTimeAPI.getAPI().getActivitiesByProject(this.state.projectId).then( activities =>
+        WorkTimeAPI.getAPI().getActByProject(this.state.projectId).then( activities =>
             this.setState({
                 activity : activities
             }, function(){
-                console.log("Activities aus Backend")
+                console.log("Activities aus Backend", this.state.activity)
             })
         )
     }
@@ -73,10 +74,12 @@ class MyActivitiesEntry extends Component {
     componentDidMount(){
         this.getActivities();
     }
-
     
     render() { 
-        
+        const {activity} = this.state 
+        if(activity ==  null) {
+            return null
+        }
         return (
             <>
                 {/* <TableRow
@@ -115,7 +118,7 @@ class MyActivitiesEntry extends Component {
                     //     </TableRow>
                     // ))
 
-                    this.state.activity.map((elem) => (
+                    activity.map((elem) => (
                         <>
                             <TableRow
                             hover
@@ -129,7 +132,9 @@ class MyActivitiesEntry extends Component {
                                     <MyProjectsEntry
                                     text='Close'
                                     closePopup={this.togglePopupMyProjectsEntry.bind(this)}
-                                    user={this.state.currentUser} workTimeAccount = {this.state.workTimeAccountId} activity = {elem}
+                                    // user={this.state.currentUser} workTimeAccount = {this.state.workTimeAccountId} 
+                                    activity = {elem}
+                                    userId={this.state.userId}
                                     />
                                     : null
                                     }

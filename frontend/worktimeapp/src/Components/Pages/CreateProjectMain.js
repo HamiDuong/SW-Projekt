@@ -17,15 +17,26 @@ import Card from '@mui/material/Card';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import Typography from '@mui/material/Typography';
 
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
+
+/**
+ * Hier werden Users für CreateProject geholt und auch der ProjectBO wird hier erstellt.
+ * Außerdem wird auch 
+ */
 
 class CreateProjectMain extends Component {
     constructor(props) {
         super(props);
+        //Die Änderungen werden für CreateProjectMain gespeichert.
         this.togglePopups = this.togglePopups.bind(this);
         // this.toggleMembers = this.toggleMembers.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
-
+        /**
+         * Hier werden die States für CreateProjectMain gesetzt.
+         */
         this.state = {
             projectName: null,
             commissioner: null,
@@ -83,37 +94,6 @@ class CreateProjectMain extends Component {
         )
         }
 
-    // addProjects = () => {
-    //     let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.state.userId);
-    //     console.log(newProject)
-    //     console.log(this.props.userId)
-    //     WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
-    //         this.setState({
-    //             projectName: project.name,
-    //             commissioner: project.commissioner,
-    //             userId: 1,
-    //             projectId: project.id,
-    //         }, function () {
-    //             console.log('add project läuft')
-    //         }))
-    //         let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.projectId);
-    //         WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO).then(projectduration =>
-    //             this.setState({
-    //                 start : projectduration.start,
-    //                 end : projectduration.end,
-    //                 projectduration: projectduration,
-    //                 projectdurationId: projectduration.id
-
-    //             }))
-    //         let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-    //         WorkTimeAppAPI.getAPI().addBooking(newBookingBO).then(booking =>
-    //             this.setState({
-    //                 workTimeAccountId: 1,
-    //                 userId : 1,
-    //                 bookingId: booking.id,
-    //             }))
-   
-    // }
     getAllUsers = () => {
         WorkTimeAppAPI.getAPI().getAllUsers()
         .then(userBOs =>
@@ -179,7 +159,7 @@ class CreateProjectMain extends Component {
             user={this.users}  /> 
             
         } else {
-            return <h3>You haven´t selected a project yet.</h3>
+            return <h3>You haven´t created a project yet.</h3>
         }
     }
 

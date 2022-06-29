@@ -45,8 +45,7 @@ class ActivityMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, dateOfLastChange, name, capacity,
-             projectId, currentCapacity) = tuples[0]
+            (id, dateOfLastChange, name, capacity, projectId, currentCapacity) = tuples[0]
             activityobj = ActivityBO()
             activityobj.set_id(id)
             activityobj.set_date_of_last_change(dateOfLastChange)

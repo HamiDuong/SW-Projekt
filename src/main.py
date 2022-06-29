@@ -3600,7 +3600,7 @@ class ProjectsOfUser(Resource):
 
 @worktimeapp.route('/activitiesproject/<int:id>')
 @worktimeapp.param('id', 'Die Projekt ID')
-class ProjectsOfUser(Resource):
+class ActivityProjectId(Resource):
     @worktimeapp.marshal_with(activity)
     # @secured
     def get(self, id):

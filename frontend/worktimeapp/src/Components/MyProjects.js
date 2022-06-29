@@ -120,7 +120,7 @@ class MyProjects extends Component {
           showEditActicity: false,
 
           workTimeAccountId:0,
-          userId: 1,
+          // userId: 1,
           showEditProject: false,
 
           showAddActivity: false
@@ -197,7 +197,10 @@ class MyProjects extends Component {
       this.setState({
         projects : project
       }, function(){
-        console.log("Projekte wurden geholt")
+        console.log("Projekte wurden geholt", project[0])
+        this.state.projects.forEach(function(elem){
+          console.log(elem)
+        })
       })
     )
 
@@ -255,10 +258,15 @@ class MyProjects extends Component {
 
   componentDidMount(){
     this.getProjects();
-    console.log("Component Did Mount")
+    console.log("Component Did Mount", this.state.projects)
+    
   }
 
   render(){
+    const {projects} = this.state
+    if(projects==null){
+      return null
+    }
     return(
       <Card sx={{ m:5, p:2, minwidth: 500}}>
         <Typography variant="h5" component="div">
@@ -269,7 +277,7 @@ class MyProjects extends Component {
           Your projects and activities at the moment. 
         </Typography>
 
-        {this.state.projects.map((item) => (
+        {projects.map((item) => (
           <Accordion>
             <AccordionSummary>
               <TableRow>
@@ -292,7 +300,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
+                <MyActivitiesEntry projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}

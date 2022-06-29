@@ -15,9 +15,11 @@ import BreakBO from '../API/BreakBO';
 class MyProjectEntry extends Component {
   constructor(props){
     super(props);
+    //Hier werden die Änderungen gespeichert.
     this.togglePopups = this.togglePopups.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.state={
+      //Hier werden die States für MyProjectEntry gesetzt.
       start:0,
       startButton: false,
       startActivity: 0,
@@ -25,14 +27,16 @@ class MyProjectEntry extends Component {
       startBreak:0,
       endBreak:0,
       activityId: props.activity.id,
+      // activityId: 1,
       typeProjectWork: "projectwork",
       typeBreak: "break",
       startEvent: null,
       endEvent: null,
       eventBookingId: 0,
       timeintervalBookingId: 0,
-      userId: 1,
-      workTimeAccountId:0,
+      // userId: props.user.getID(),
+      userId: props.userId,
+      workTimeAccountId: 0,
       trigger: false,
     };
 }
@@ -46,6 +50,7 @@ let newBreakBO = new BreakBO(this.state.startBreak, this.state.endBreak, this.st
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newBreakBO)
             console.log(newBookingBO)
+          
 }
 /**
  * Hier werden die Objekte für ProjectWork und Booking erstellt und die entsprechenden API Funktionen werden aufgerufen.
@@ -57,6 +62,7 @@ addProjectWork(){
             WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
             console.log(newProjectWorkBO)
             console.log(newBookingBO)
+            console.log('AAAAAA!!!!',this.state.activityId)
 }
 
 /**
@@ -177,7 +183,6 @@ showing() {
       return <h5>Please start the activity!</h5>
   }
 }
-
 /**
  * Mit dieser Funktion wird die Funktion startProjectWork aufgerufen.
  * Außerdem wird startButton auf True gesetzt.
@@ -207,10 +212,7 @@ render(){
                         Start Activity
                     </Button>
                 </Grid>
-            {/* <Button onClick={this.onPause}>Stop</Button>
-            <Button onClick={this.onReset}>Reset</Button> */}
             {func}
-
         </div>
     )
 }

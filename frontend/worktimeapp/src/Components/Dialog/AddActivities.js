@@ -9,7 +9,13 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from '@m
 import CloseIcon from '@mui/icons-material/Close';
 import Card from '@mui/material/Card';
 
+/**
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ */
 
+/**
+ * Hier werden die Aktivitäten für das Projekt erstellt.
+ */
 
 class AddActivities extends Component {
     constructor(props) {
