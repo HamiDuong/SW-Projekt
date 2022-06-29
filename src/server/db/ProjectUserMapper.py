@@ -90,8 +90,33 @@ class ProjectUserMapper(Mapper):
             projectuserobj.set_project_id(projectId)
             projectuserobj.set_user_id(userId)
             projectuserobj.set_capacity(capacity)
-            projectuserobj.set_current_capacity(currentCapacity)   
-            result.append(projectuserobj)         
+            projectuserobj.set_current_capacity(currentCapacity)
+            result.append(projectuserobj)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_project_user_by_user_id_and_project_id(self, user_id, project_id):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projectusers WHERE userId={} AND projectId={}".format(
+            user_id, project_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples:
+            (id, dateOfLastChange, projectId, userId,
+             capacity, currentCapacity) = tuples[0]
+            projectuserobj = ProjectUserBO()
+            projectuserobj.set_id(id)
+            projectuserobj.set_date_of_last_change(dateOfLastChange)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
+            projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
+            result = projectuserobj
 
         self._cnx.commit()
         cursor.close()

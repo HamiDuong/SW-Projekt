@@ -234,6 +234,7 @@ export default class WorkTimeAppAPI {
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
     #getProjectForAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/admin/${id}`;
     #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
+    #getProjectForUserAndAdminURL = (id)=>`${this.#worktimeappServerBaseURL}/projects/for/user/and/admin/${id}`;
     #getProjectMembersByProjectId = (id) => `${this.#worktimeappServerBaseURL}/projectmembersbyprojectid/${id}`;
 
     #getProjectsByProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/project/${id}`;
@@ -1541,6 +1542,15 @@ export default class WorkTimeAppAPI {
 
     getAllProjectsForUser(id) {
         return this.#fetchAdvanced(this.#getProjectForUserURL(id)).then((responseJSON) => {
+            let responseProject = ProjectBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
+    getAllProjectsForUserAndAdmin(id) {
+        return this.#fetchAdvanced(this.#getProjectForUserAndAdminURL(id)).then((responseJSON) => {
             let responseProject = ProjectBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseProject)

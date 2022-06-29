@@ -812,7 +812,7 @@ class ProjectWithUserIDOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Users')
 class ProjectAdminOperations(Resource):
     @worktimeapp.marshal_list_with(project)
-    # @secured
+    @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_for_admin(id)
@@ -823,10 +823,24 @@ class ProjectAdminOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Users')
 class ProjectUserOperationsII(Resource):
     @worktimeapp.marshal_list_with(project)
-    # @secured
+    @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_for_user(id)
+        return projects
+
+
+@worktimeapp.route('/projects/for/user/and/admin/<int:id>')
+@worktimeapp.param('id', 'Die ID des Users')
+class ProjectUserOperationsIII(Resource):
+    @worktimeapp.marshal_list_with(project)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects_for_members = adm.get_projects_for_user(id)
+        projects_for_admin = adm.get_projects_by_user_id(id)
+        projects = projects_for_members + projects_for_admin
+
         return projects
 
 
@@ -834,7 +848,7 @@ class ProjectUserOperationsII(Resource):
 @worktimeapp.param('id', 'Die ID des Users')
 class ActivitiyOperationsII(Resource):
     @worktimeapp.marshal_list_with(activity)
-    # @secured
+    @secured
     def get(self, project_id, user_id):
         adm = Businesslogic()
         projects = adm.get_activities_by_project_id_and_user_id(
@@ -844,7 +858,7 @@ class ActivitiyOperationsII(Resource):
 
 @worktimeapp.route('/times/<int:activity_id>/<int:user_id>')
 class TimeOperations(Resource):
-    # #@secured
+    @secured
     def get(self, activity_id, user_id):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -856,7 +870,7 @@ class TimeOperations(Resource):
 
 @worktimeapp.route('/times/projectdurataion/<int:project_id>')
 class TimeOperations(Resource):
-    # #@secured
+    @secured
     def get(self, project_id):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""

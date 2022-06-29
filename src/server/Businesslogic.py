@@ -2029,36 +2029,49 @@ class Businesslogic():
     # Die Arbeitszeit von der ProjectWork Buchung in die ProjectUser und Activity Tabelle einfügen
     def calculate_delta_for_project_work(self, tbooking, delta_float, activityid):
         print(delta_float)
-        with ProjectUserMapper() as mapper:
-            projectuser = mapper.find_by_key(tbooking.get_user_id())
-            capacity = projectuser.get_capacity()
-
-        if (projectuser.get_current_capacity() == None) or (projectuser.get_current_capacity() == 0):
-            current_capacity = round((capacity - delta_float), 2)
-            projectuser.set_current_capacity(current_capacity)
-            with ProjectUserMapper() as mapper:
-                mapper.update(projectuser)
-
+        activity = self.get_activity_by_id(activityid)
+        project = self.get_project_by_id(activity.get_project_id())
+        if tbooking.get_user_id() == project.get_user_id():
+            if (activity.get_current_capacity() == None) or (activity.get_current_capacity() == 0):
+                activity.set_current_capacity(delta_float)
+                with ActivityMapper() as mapper:
+                    mapper.update(activity)
+            else:
+                new_current_capacity_a = round(
+                    (activity.get_current_capacity() + delta_float), 2)
+                activity.set_current_capacity(new_current_capacity_a)
+                with ActivityMapper() as mapper:
+                    mapper.update(activity)
         else:
-            new_current_capacity = round(
-                (projectuser.get_current_capacity() - delta_float), 2)
-            projectuser.set_current_capacity(new_current_capacity)
             with ProjectUserMapper() as mapper:
-                mapper.update(projectuser)
+                activity = self.get_activity_by_id(activityid)
+                projectuser = mapper.find_project_user_by_user_id_and_project_id(
+                    tbooking.get_user_id(), activity.get_project_id())
+                capacity = projectuser.get_capacity()
 
-        with ActivityMapper() as mapper:
-            activity = mapper.find_by_key(activityid)
+            if (projectuser.get_current_capacity() == None) or (projectuser.get_current_capacity() == 0):
+                current_capacity = round((capacity - delta_float), 2)
+                projectuser.set_current_capacity(current_capacity)
+                with ProjectUserMapper() as mapper:
+                    mapper.update(projectuser)
 
-        if (activity.get_current_capacity() == None) or (activity.get_current_capacity() == 0):
-            activity.set_current_capacity(delta_float)
-            with ActivityMapper() as mapper:
-                mapper.update(activity)
-        else:
-            new_current_capacity_a = round(
-                (activity.get_current_capacity() + delta_float), 2)
-            activity.set_current_capacity(new_current_capacity_a)
-            with ActivityMapper() as mapper:
-                mapper.update(activity)
+            else:
+                new_current_capacity = round(
+                    (projectuser.get_current_capacity() - delta_float), 2)
+                projectuser.set_current_capacity(new_current_capacity)
+                with ProjectUserMapper() as mapper:
+                    mapper.update(projectuser)
+
+            if (activity.get_current_capacity() == None) or (activity.get_current_capacity() == 0):
+                activity.set_current_capacity(delta_float)
+                with ActivityMapper() as mapper:
+                    mapper.update(activity)
+            else:
+                new_current_capacity_a = round(
+                    (activity.get_current_capacity() + delta_float), 2)
+                activity.set_current_capacity(new_current_capacity_a)
+                with ActivityMapper() as mapper:
+                    mapper.update(activity)
 
     # Die Arbeitszeit für Work Buchungen in die WorkTimeAccount Tabelle einfügen
     def calculate_delta_work(self, tbooking, delta_float):

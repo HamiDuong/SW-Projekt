@@ -134,12 +134,14 @@ class TimeIntervalBookings extends Component {
     */
 
     getProjects = () => {
-        WorkTimeAppAPI.getAPI().getProjectsForUser(1).then(projectBOs =>
+        WorkTimeAppAPI.getAPI().getAllProjectsForUserAndAdmin(this.props.userId).then(projectBOs =>
             this.setState({
                 projects: projectBOs,
-            }, function () {
-                console.log(this.state.projects)
-            }))
+            }
+            , function () {
+                console.log("STATE VON PROJECTS", this.state.projects)
+            }
+            ))
     }
 
     /* 
