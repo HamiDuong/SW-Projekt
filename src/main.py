@@ -3518,6 +3518,16 @@ class ProjectsOfUser(Resource):
         projects = adm.get_projects_of_user(id)
         return projects
 
+@worktimeapp.route('/activitiesproject/<int:id>')
+@worktimeapp.param('id', 'Die Projekt ID')
+class ProjectsOfUser(Resource):
+    @worktimeapp.marshal_with(activity)
+    # @secured
+    def get(self, id):
+        adm = Businesslogic()
+        projects = adm.get_all_by_project_id(id)
+        return projects
+
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
 müssen nun die App auch tatsächlich zu starten.

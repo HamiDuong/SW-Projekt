@@ -243,6 +243,8 @@ export default class WorkTimeAppAPI {
     #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
 
+    #getActByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/activitiesproject/${id}`
+
     //User
     //Author Esra Özkul
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
@@ -1914,6 +1916,17 @@ export default class WorkTimeAppAPI {
                 console.info(workTimeAccountBO);
                 return new Promise(function (resolve) {
                     resolve(workTimeAccountBO);
+                })
+            })
+    }
+
+    getActByProjekt(id){
+        return this.#fetchAdvanced(this.#getActByProjectURL(id))
+            .then((responseJSON) => {
+                let responseActivity = ActivityBO.fromJSON(responseJSON);
+                console.info(responseActivity);
+                return new Promise(function (resolve) {
+                    resolve(responseActivity);
                 })
             })
     }
