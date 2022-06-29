@@ -1549,15 +1549,6 @@ export default class WorkTimeAppAPI {
         })
     }
 
-    getAllProjectsForUserAndAdmin(id) {
-        return this.#fetchAdvanced(this.#getProjectForUserAndAdminURL(id)).then((responseJSON) => {
-            let responseProject = ProjectBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(responseProject)
-            })
-        })
-    }
-
 
     getMembersByProjectId(id) {
         return this.#fetchAdvanced(this.#getProjectMembersByProjectId(id)).then((responseJSON) => {

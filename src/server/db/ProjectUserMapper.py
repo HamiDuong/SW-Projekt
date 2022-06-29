@@ -167,7 +167,7 @@ class ProjectUserMapper(Mapper):
 
         command = "UPDATE projectusers " + \
             "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
-        data = (projectuser_obj.get_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(
+        data = (projectuser_obj.get_project_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(
         ), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_id())
         cursor.execute(command, data)
 
