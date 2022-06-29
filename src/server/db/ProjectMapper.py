@@ -178,6 +178,8 @@ class ProjectMapper(Mapper):
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
             result = projectobj
+        except IndexError:
+            result = None
 
         self._cnx.commit()
         cursor.close()
@@ -202,7 +204,7 @@ class ProjectMapper(Mapper):
             projectobj.set_commissioner(commissioner)
             projectobj.set_user_id(userId)
             result = projectobj
-        except IndexError:
+        else:
             result = None
 
         self._cnx.commit()

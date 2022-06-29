@@ -44,7 +44,7 @@ class Entry extends Component {
                 capacity: activityBO[0].capacity,
                 current_capacity: activityBO[0].current_capacity
             }, function () {
-                console.log(this.state.name)
+                console.log(this.state.name, activityBO[0].capacity)
             }))
     }
 

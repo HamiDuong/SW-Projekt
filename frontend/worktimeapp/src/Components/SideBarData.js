@@ -25,13 +25,13 @@ export const SideBarData = [
     },
     {
         title: 'IndividualEntry',
-        path: '/IndividualEntry',
+        path: '/individualEntry',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
         title: 'SelectionProjects',
-        path: '/SelectionProjects',
+        path: '/selectionProjects',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },

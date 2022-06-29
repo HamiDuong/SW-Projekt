@@ -14,7 +14,7 @@ class OverEntry extends Component {
             capacity: [],
             current_capacity: [],
             activity_names: [],
-            userId: 1,
+            userId: this.props.userId,
             activities_vorhanden: false,
         })
     }
@@ -75,9 +75,7 @@ class OverEntry extends Component {
 
         } catch (e) {
             console.log(e);
-            this.setState({
-                activities_vorhanden: false,
-            })
+
         }
     }
 
@@ -91,23 +89,20 @@ class OverEntry extends Component {
     funcy() {
         let len = this.state.activities.length
         let liste = this.state.activities[0]
-        console.log(liste, 'hier ist wahrscheinlich was falsch...')
+        console.log(liste, len, 'hier ist wahrscheinlich was falsch...')
         if (this.state.activities_vorhanden == true) {
-            for (let i = 0; i <= len; i++) {
-                return (
-                    <div>
-                        {liste.map((element, index) => {
-                            console.log('Was ist hier?', element, index)
-                            const value = element.id
-                            return (
-                                <Entry projectId={this.state.projectId
-                                } value={value} />
-                            )
-                        })}
-                    </div>
-                )
-
-            }
+            return (
+                <div>
+                    {liste.map((element, index) => {
+                        console.log('Was ist hier?', element, index)
+                        const value = element.id
+                        console.log(value, 'VALUE', this.state.projectId)
+                        return (
+                            <Entry projectId={this.state.projectId} value={value} />
+                        )
+                    })}
+                </div>
+            )
         } else {
             return (
                 <div> Keine Aktivitäten vorhanden</div>

@@ -44,7 +44,7 @@ class ActivityMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
+        try:
             (id, dateOfLastChange, name, capacity,
              projectId, currentCapacity) = tuples[0]
             activityobj = ActivityBO()
@@ -55,6 +55,8 @@ class ActivityMapper(Mapper):
             activityobj.set_project_id(projectId)
             activityobj.set_current_capacity(currentCapacity)
             result = activityobj
+        except IndexError:
+            result = None
 
         self._cnx.commit()
         cursor.close()

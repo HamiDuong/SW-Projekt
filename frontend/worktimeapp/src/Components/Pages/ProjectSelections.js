@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { InputLabel } from '@mui/material';
-import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import OverTime from './OverTime';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import OverEntry from './OverEntry';
 import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
-
 
 class ProjectSelection extends Component {
     constructor(props) {
@@ -21,7 +17,7 @@ class ProjectSelection extends Component {
             projectName: '',
             selected: false,
             projectId: '',
-            userId: 1,
+            userId: this.props.userId,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -31,7 +27,7 @@ class ProjectSelection extends Component {
             projectId: e.target.value,
             selected: true,
         }, function () {
-            console.log('????!!!!', this.state.projectId);
+            console.log(this.state.projectId);
         })
     }
 

@@ -2437,29 +2437,32 @@ class Businesslogic():
         for elem in all_bookings:
             if elem.get_user_id() == user_id:
                 bookings_of_user.append(elem)
-        for elem in bookings_of_user:
-            print('in bookins_of_user: ', elem)
-            ti_b_id = elem.get_time_interval_booking_id()
-            ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
-            timeinterval_booking_of_user.append(ti_b)
-        for elem in timeinterval_booking_of_user:
-            print('in ti_b for user: ', elem)
-            ti_id = elem.get_timeinterval_id()
-            ti = self.get_timeinterval_by_id(ti_id)
-            timeintervals_of_user.append(ti)
-        for elem in timeintervals_of_user:
-            print('in ti for user: ', elem)
-            if elem.get_type() == 'ProjectWork':
-                project_work = self.get_project_work_by_id(
-                    elem.get_project_work_id())
-                projectwork_of_user.append(project_work)
-        for elem in projectwork_of_user:
-            print('in projectwork for user: ', elem)
-            if elem.get_activity_id() == activity_id:
-                project_work_for_this_activity_of_user.append(elem)
-                sum = elem.get_end() - elem.get_start()
-                sum = sum.total_seconds()
-                sum_time.append(sum)
-        sum = math.fsum(sum_time)/3600
-        sum = round(sum, 2)
-        return sum
+        if len(bookings_of_user)<1:
+            for elem in bookings_of_user:
+                print('in bookins_of_user: ', elem)
+                ti_b_id = elem.get_time_interval_booking_id()
+                ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
+                timeinterval_booking_of_user.append(ti_b)
+            for elem in timeinterval_booking_of_user:
+                print('in ti_b for user: ', elem)
+                ti_id = elem.get_timeinterval_id()
+                ti = self.get_timeinterval_by_id(ti_id)
+                timeintervals_of_user.append(ti)
+            for elem in timeintervals_of_user:
+                print('in ti for user: ', elem)
+                if elem.get_type() == 'ProjectWork':
+                    project_work = self.get_project_work_by_id(
+                        elem.get_project_work_id())
+                    projectwork_of_user.append(project_work)
+            for elem in projectwork_of_user:
+                print('in projectwork for user: ', elem)
+                if elem.get_activity_id() == activity_id:
+                    project_work_for_this_activity_of_user.append(elem)
+                    sum = elem.get_end() - elem.get_start()
+                    sum = sum.total_seconds()
+                    sum_time.append(sum)
+            sum = math.fsum(sum_time)/3600
+            sum = round(sum, 2)
+            return sum
+        else:
+            return 0

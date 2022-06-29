@@ -28,7 +28,7 @@ class ActivityBookingEntry extends Component {
     }
 
     componentDidMount() {
-        this.getProjectsForUser(this.props.act_id, this.props.us_id)
+        this.getProjectsForUser(3, 1)
         this.getUserById(this.props.us_id)
         this.getProjectDuration(1)
     }
