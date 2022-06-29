@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Dialog, TableCell, TableRow, DialogContent } from "@mui/material";
-import EditActivity from './Dialog/EditActivity';
+import EditProject from './Dialog/EditProject';
+import AddActivity from './Dialog/AddActivity';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 
@@ -37,6 +38,7 @@ class MyActivitiesEntry extends Component {
             activity : null,
             showWorkDialog: false,
             userId: props.userId,
+            showAddActivity: false
         }
     }
 
@@ -74,6 +76,35 @@ class MyActivitiesEntry extends Component {
     componentDidMount(){
         this.getActivities();
     }
+
+    openAddActivityWindow = () => {
+        // if(item.userId == this.state.userId){
+        //   this.setState({
+        //     showAddActivity: true
+        //   }, function(){
+        //     console.log('Add Activity Window öffnen')
+        //   })  
+        //   console.log(this.state.showEditProject)
+        // }else{
+        //   console.log('Hallo')
+        // }
+    
+          this.setState({
+            showAddActivity: true
+          }, function(){
+            console.log('Add Activity Window öffnen')
+          })  
+          console.log(this.state.showAddActivity)
+        
+      }
+    
+      closeAddActivityWindow = () => {
+          this.setState({
+            showAddActivity:false
+          }, function(){
+            console.log('Add Activity Window schließen')
+          })
+      }
     
     render() { 
         const {activity} = this.state 
@@ -143,7 +174,12 @@ class MyActivitiesEntry extends Component {
                             {/* <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity> */}
                         </>
                     ))
+                    
                 }
+                <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
+                <Button id = 'addActivity' onClick = {this.openAddActivityWindow} >Add Activity</Button>
+                <EditProject show={this.state.showEditProject} project = {this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
+                <AddActivity show = {this.state.showAddActivity} project = {this.state.projectId} onClose = {this.closeAddActivityWindow}></AddActivity>
 
             </>
         );
