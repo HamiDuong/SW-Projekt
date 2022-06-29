@@ -2387,6 +2387,17 @@ class Businesslogic():
             if elem.get_name() == name:
                 return elem
 
+    def get_projects_of_user(self, userid):
+        projectuser = self.get_project_user_by_user_id(userid)
+        projectid = []
+        for elem in projectuser:
+            projectid.append(elem.get_project_id())
+        res = []
+        for elem in projectid:
+            hold = self.get_project_by_id(elem)
+            res.append(hold)
+        return res
+
 
 # adm = Businesslogic()
 # user2 = adm.get_user_by_id(1)
