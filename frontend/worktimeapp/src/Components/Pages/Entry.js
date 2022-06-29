@@ -57,8 +57,10 @@ class Entry extends Component {
 
 
     getProjectUser(projectId) {
-        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member, index) => {
-            if (member.length == 0) {
+        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
+            console.log('was kommt eigentlich an?', member)
+            if (member.length <= 0) {
+                console.log('Weniger als 0')
                 this.setState({
                     members: [0],
                     userIds: [0]
@@ -66,13 +68,31 @@ class Entry extends Component {
             }
             else {
                 this.setState({
-                    members: [...this.state.members, member[this.state.members.length]],
-                    userIds: [...this.state.userIds, member[this.state.members.length].user_id]
-                })
+                    members: member,
+                }, function () {
+                    console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
+                }); this.getUserIds()
+
+
             }
         }
         )
     }
+
+    getUserIds() {
+        let members = this.state.members
+        let liste = []
+        members.map(element =>
+            liste.push(element.getUserId()),
+            console.log('Hier ist die Liste', liste))
+        this.setState({
+            userIds: [...this.state.userIds, ...liste]
+        }, function () {
+            console.log('2. Callbackfunction', this.state.userIds)
+        })
+    }
+
+
 
     handleClick() {
         this.setState({
@@ -159,6 +179,7 @@ class Entry extends Component {
                                 <TableBody>
 
                                     {this.state.userIds.map(element => {
+                                        console.log(element, 'Ist das hier eine UserId?')
                                         return (
                                             <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId} />)
                                     })}

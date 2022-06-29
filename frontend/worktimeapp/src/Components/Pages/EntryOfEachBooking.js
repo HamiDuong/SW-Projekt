@@ -20,7 +20,7 @@ class ActivityBookingEntry extends Component {
         })
     }
 
-    getProjectsForUser = (act_id, us_id) => {
+    getBookedTimeByActivityIdAndProjectId = (act_id, us_id) => {
         WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(time =>
             this.setState({
                 time: time
@@ -29,7 +29,7 @@ class ActivityBookingEntry extends Component {
             }))
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.getProjectDuration(this.props.projectId)
         if (this.props.us_id == 0) {
             this.setState({
@@ -39,7 +39,8 @@ class ActivityBookingEntry extends Component {
             })
         }
         else {
-            this.getProjectsForUser(this.props.act_id, this.props.us_id)
+            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+            console.log('Was passiert hier?', this.props.us_id)
             this.getUserById(this.props.us_id)
 
         }
@@ -48,8 +49,8 @@ class ActivityBookingEntry extends Component {
     getUserById(id) {
         WorkTimeAppAPI.getAPI().getUserById(id).then(userBO =>
             this.setState({
-                user: userBO,
-                userName: userBO[0].first_name
+                user: userBO[0],
+                userName: userBO[0].getFirstName()
             }, function () {
                 console.log('Hier ist der User: ', this.state.user)
             }))
@@ -61,7 +62,7 @@ class ActivityBookingEntry extends Component {
             this.setState({
                 projectDuration: projectDurationBO
             }, function () {
-                console.log('Hier ist der User: ', this.state.projectDuration)
+                console.log('Hier ist der die Duration: ', this.state.projectDuration)
             }))
     }
 

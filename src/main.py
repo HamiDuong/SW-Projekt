@@ -348,7 +348,7 @@ User Methoden
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class UserOperations(Resource):
     @worktimeapp.marshal_list_with(user)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -358,7 +358,7 @@ class UserOperations(Resource):
 
     @worktimeapp.marshal_with(user, code=200)
     @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen User-Objekts.
         **ACHTUNG:** Wir fassen die vom Client gesendeten Daten als Vorschlag auf.
@@ -392,7 +392,7 @@ class UserOperations(Resource):
 @worktimeapp.param('id', 'Id des Objekts')
 class UserWithIdOperations(Resource):
     @worktimeapp.marshal_with(user)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten User-Objekts.
 
@@ -402,7 +402,7 @@ class UserWithIdOperations(Resource):
         user = adm.get_user_by_id(id)
         return user
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
@@ -417,7 +417,7 @@ class UserWithIdOperations(Resource):
 
     @worktimeapp.marshal_with(user)
     @worktimeapp.expect(user, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten User-Objekts.
 
@@ -444,7 +444,7 @@ class UserWithIdOperations(Resource):
 # @worktimeapp.param('user_name', 'Der User Name des Benutzers')
 # class UsersByNameOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     @secured
+#     #@secured
 #     def get(self, user_name):
 #         """ Auslesen von User-Objekten, die durch den User Name bestimmt werden.
 
@@ -460,7 +460,7 @@ class UserWithIdOperations(Resource):
 @worktimeapp.param('last_name', 'Der Nachname des Benutzers')
 class UsersByNameOperations(Resource):
     @worktimeapp.marshal_with(user)
-    @secured
+    # @secured
     def get(self, last_name):
         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -476,7 +476,7 @@ class UsersByNameOperations(Resource):
 @worktimeapp.param('String', 'Die E-Mail-Adresse eines Benutzers')
 class UserWithEmailOperations(Resource):
     @worktimeapp.marshal_with(user)
-    @secured
+    # @secured
     def get(self, mail_adress):
         """Auslesen von User-Objekten, die durch die E-Mail_Adresse bestimmt werden.
 
@@ -492,7 +492,7 @@ class UserWithEmailOperations(Resource):
 # @worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
 # class UserRelatedAccountOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     @secured
+#     #@secured
 #     def get(self, user_name):
 #         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -507,7 +507,7 @@ class UserWithEmailOperations(Resource):
 @worktimeapp.param('google_user_id', 'Google Id eines Benutzers')
 class UserWithGoogleOperations(Resource):
     @worktimeapp.marshal_with(user)
-    @secured
+    # @secured
     def get(self, google_user_id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -521,7 +521,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 # class UserListOperations(Resource):
 #     @worktimeapp.marshal_list_with(user)
-#     @secured
+#     #@secured
 #     def get(self):
 #         """Auslesen aller User-Objekte.
 
@@ -532,7 +532,7 @@ class UserWithGoogleOperations(Resource):
 
 #     @worktimeapp.marshal_with(user, code=200)
 #     @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-#     @secured
+#     #@secured
 #     def post(self):
 #         """Anlegen eines neuen User-Objekts.
 
@@ -565,7 +565,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('id', 'Die ID des User-Objekts')
 # class UserOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     @secured
+#     #@secured
 #     def get(self, id):
 #         """Auslesen eines bestimmten User-Objekts.
 
@@ -575,7 +575,7 @@ class UserWithGoogleOperations(Resource):
 #         cust = adm.get_user_by_id(id)
 #         return cust
 
-#     @secured
+#     #@secured
 #     def delete(self, id):
 #         """Löschen eines bestimmten User-Objekts.
 
@@ -588,7 +588,7 @@ class UserWithGoogleOperations(Resource):
 
 #     @worktimeapp.marshal_with(user)
 #     @worktimeapp.expect(user, validate=True)
-#     @secured
+#     #@secured
 #     def put(self, id):
 #         """Update eines bestimmten User-Objekts.
 
@@ -615,7 +615,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('lastname', 'Der Nachname des Kunden')
 # class UsersByNameOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     @secured
+#     #@secured
 #     def get(self, lastname):
 #         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -631,7 +631,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('id', 'Die ID des User-Objekts')
 # class UserRelatedAccountOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     @secured
+#     #@secured
 #     def get(self, id):
 #         """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
 
@@ -658,7 +658,7 @@ Worktimeaccount
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class WorkTimeAccountOperations(Resource):
     @worktimeapp.marshal_list_with(worktimeaccount)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller WorkTimeAccount-Objekte.
 
@@ -670,7 +670,7 @@ class WorkTimeAccountOperations(Resource):
     @worktimeapp.marshal_with(worktimeaccount, code=200)
     # Wir erwarten ein Worktimeaccount-Objekt von Client-Seite.
     @worktimeapp.expect(worktimeaccount)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Worktimeaccount-Objekts.
 
@@ -706,7 +706,7 @@ class WorkTimeAccountOperations(Resource):
 @worktimeapp.param('id', 'Id des Accounts')
 class WorktimeaccountWithIdOperations(Resource):
     @worktimeapp.marshal_with(worktimeaccount)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -717,7 +717,7 @@ class WorktimeaccountWithIdOperations(Resource):
         return worktimeaccount
 
     @worktimeapp.marshal_with(worktimeaccount)
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten User-Objekts.
 
@@ -730,7 +730,7 @@ class WorktimeaccountWithIdOperations(Resource):
 
     @worktimeapp.marshal_with(worktimeaccount)
     @worktimeapp.expect(worktimeaccount, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten User-Objekts.
 
@@ -757,7 +757,7 @@ class WorktimeaccountWithIdOperations(Resource):
 @worktimeapp.param('user_id', 'User Id des Accounts')
 class WorktimeaccountWithUserIdOperations(Resource):
     @worktimeapp.marshal_with(worktimeaccount)
-    @secured
+    # @secured
     def get(self, user_id):
         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -777,7 +777,7 @@ Project
 class ProjectOperations(Resource):
     @worktimeapp.marshal_with(project)
     @worktimeapp.expect(project)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectBO.from_dict(api.payload)
@@ -787,10 +787,17 @@ class ProjectOperations(Resource):
                 proposal.get_commissioner(),
                 proposal.get_user_id(),
             )
+            pu = adm.create_projectuser(
+                p.get_id(),
+                p.get_user_id(),
+                100,
+                0
+            )
+
             return p
 
     @worktimeapp.marshal_list_with(project)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         project = adm.get_all_projects()
@@ -801,7 +808,7 @@ class ProjectOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Users')
 class ProjectWithUserIDOperations(Resource):
     @worktimeapp.marshal_with(project)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         project = adm.get_projects_by_user_id(id)
@@ -844,7 +851,7 @@ class ActivitiyOperationsII(Resource):
 
 @worktimeapp.route('/times/<int:activity_id>/<int:user_id>')
 class TimeOperations(Resource):
-    # #@secured
+    # @secured
     def get(self, activity_id, user_id):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -856,7 +863,7 @@ class TimeOperations(Resource):
 
 @worktimeapp.route('/times/projectdurataion/<int:project_id>')
 class TimeOperations(Resource):
-    # #@secured
+    # @secured
     def get(self, project_id):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -869,14 +876,14 @@ class TimeOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
     @worktimeapp.marshal_with(project)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
         return project
 
     @worktimeapp.marshal_with(project)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         project = adm.get_project_by_id(id)
@@ -885,7 +892,7 @@ class ProjectWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(project)
     @worktimeapp.expect(project, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectBO.from_dict(api.payload)
@@ -902,7 +909,7 @@ class ProjectWithIDOperations(Resource):
 @worktimeapp.param('name', 'Der Name des Projekts')
 class ProjectWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(project)
-    @secured
+    # @secured
     def get(self, name):
         adm = Businesslogic()
         project = adm.get_project_by_name(name)
@@ -914,7 +921,7 @@ class ProjectWithSTRINGOperations(Resource):
 class ProjectUserOperations(Resource):
     @worktimeapp.marshal_with(projectuser)
     @worktimeapp.expect(projectuser)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectUserBO.from_dict(api.payload)
@@ -928,7 +935,7 @@ class ProjectUserOperations(Resource):
             return p
 
     @worktimeapp.marshal_list_with(projectuser)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         projectuser = adm.get_all_projectusers()
@@ -939,7 +946,7 @@ class ProjectUserOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectuser)
-    # @secured
+    # #@secured
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_all_project_members(id)
@@ -950,14 +957,14 @@ class ProjectWithIDOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectuser)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_projectuser_by_id(id)
         return projectuser
 
     @worktimeapp.marshal_with(projectuser)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         projectuser = adm.get_projectuser_by_id(id)
@@ -966,7 +973,7 @@ class ProjectWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(projectuser)
     @worktimeapp.expect(projectuser, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectUserBO.from_dict(api.payload)
@@ -985,7 +992,7 @@ class ProjectWithIDOperations(Resource):
 class ActivityOperations(Resource):
     @worktimeapp.marshal_with(activity)
     @worktimeapp.expect(activity)
-    @secured
+    # #@secured
     def post(self):
         adm = Businesslogic()
         proposal = ActivityBO.from_dict(api.payload)
@@ -999,7 +1006,7 @@ class ActivityOperations(Resource):
             return p
 
     @worktimeapp.marshal_list_with(activity)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         activity = adm.get_all_activities()
@@ -1020,14 +1027,14 @@ class ActivityWithProjectIdperations(Resource):
 @worktimeapp.param('id', 'Die ID der Aktivitaet')
 class ActivityWithIDOperations(Resource):
     @worktimeapp.marshal_with(activity)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
         return activity
 
     @worktimeapp.marshal_with(activity)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         activity = adm.get_activity_by_id(id)
@@ -1036,7 +1043,7 @@ class ActivityWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(activity)
     @worktimeapp.expect(activity, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ActivityBO.from_dict(api.payload)
@@ -1053,7 +1060,7 @@ class ActivityWithIDOperations(Resource):
 @worktimeapp.param('name', 'Der Name der Aktivitaet')
 class ActivityWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(activity)
-    # #@secured
+    # ##@secured
     def get(self, name):
         adm = Businesslogic()
         activity = adm.get_by_name(name)
@@ -1065,7 +1072,7 @@ class ActivityWithSTRINGOperations(Resource):
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class EventListOperations(Resource):
     @worktimeapp.marshal_list_with(event)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1076,7 +1083,7 @@ class EventListOperations(Resource):
     @worktimeapp.marshal_with(event, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(event)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1097,7 +1104,7 @@ class EventListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class EventOperations(Resource):
     @worktimeapp.marshal_with(event)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1106,7 +1113,7 @@ class EventOperations(Resource):
         cust = adm.get_event_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1118,7 +1125,7 @@ class EventOperations(Resource):
 
     @worktimeapp.marshal_with(event)
     @worktimeapp.expect(event, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1148,7 +1155,7 @@ Going
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class GoingListOperations(Resource):
     @worktimeapp.marshal_list_with(going)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1159,7 +1166,7 @@ class GoingListOperations(Resource):
     @worktimeapp.marshal_with(going, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(going)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1200,7 +1207,7 @@ class GoingListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class GoingOperations(Resource):
     @worktimeapp.marshal_with(going)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1209,7 +1216,7 @@ class GoingOperations(Resource):
         cust = adm.get_going_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1221,7 +1228,7 @@ class GoingOperations(Resource):
 
     @worktimeapp.marshal_with(going)
     @worktimeapp.expect(going, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1251,7 +1258,7 @@ Coming
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ComingListOperations(Resource):
     @worktimeapp.marshal_list_with(coming)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1262,7 +1269,7 @@ class ComingListOperations(Resource):
     @worktimeapp.marshal_with(coming, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(coming)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1303,7 +1310,7 @@ class ComingListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ComingOperations(Resource):
     @worktimeapp.marshal_with(coming)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1312,7 +1319,7 @@ class ComingOperations(Resource):
         cust = adm.get_coming_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1324,7 +1331,7 @@ class ComingOperations(Resource):
 
     @worktimeapp.marshal_with(coming)
     @worktimeapp.expect(coming, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1354,7 +1361,7 @@ VacationBegin
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class VacationBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(vacation_begin)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1365,7 +1372,7 @@ class VacationBeginListOperations(Resource):
     @worktimeapp.marshal_with(vacation_begin, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(vacation_begin)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1406,7 +1413,7 @@ class VacationBeginListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class VacationBeginOperations(Resource):
     @worktimeapp.marshal_with(vacation_begin)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1415,7 +1422,7 @@ class VacationBeginOperations(Resource):
         cust = adm.get_vacation_begin_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1427,7 +1434,7 @@ class VacationBeginOperations(Resource):
 
     @worktimeapp.marshal_with(vacation_begin)
     @worktimeapp.expect(vacation_begin, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1457,7 +1464,7 @@ VacationEnd
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class VacationEndListOperations(Resource):
     @worktimeapp.marshal_list_with(vacation_end)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1468,7 +1475,7 @@ class VacationEndListOperations(Resource):
     @worktimeapp.marshal_with(vacation_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(vacation_end)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1509,7 +1516,7 @@ class VacationEndListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class VacationEndOperations(Resource):
     @worktimeapp.marshal_with(vacation_end)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1518,7 +1525,7 @@ class VacationEndOperations(Resource):
         cust = adm.get_vacation_end_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1530,7 +1537,7 @@ class VacationEndOperations(Resource):
 
     @worktimeapp.marshal_with(vacation_end)
     @worktimeapp.expect(vacation_end, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1560,7 +1567,7 @@ FlexDayStart
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class FlexDayStartListOperations(Resource):
     @worktimeapp.marshal_list_with(flex_day_start)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
 
@@ -1572,7 +1579,7 @@ class FlexDayStartListOperations(Resource):
     @worktimeapp.marshal_with(flex_day_start, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(flex_day_start)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1613,7 +1620,7 @@ class FlexDayStartListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class FlexDayStartOperations(Resource):
     @worktimeapp.marshal_with(flex_day_start)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
 
@@ -1623,7 +1630,7 @@ class FlexDayStartOperations(Resource):
         cust = adm.get_flex_day_start_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
 
@@ -1636,7 +1643,7 @@ class FlexDayStartOperations(Resource):
 
     @worktimeapp.marshal_with(flex_day_start)
     @worktimeapp.expect(flex_day_start, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
 
@@ -1667,7 +1674,7 @@ FlexDayEnd
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class FlexDayEndListOperations(Resource):
     @worktimeapp.marshal_list_with(flex_day_end)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
 
@@ -1679,7 +1686,7 @@ class FlexDayEndListOperations(Resource):
     @worktimeapp.marshal_with(flex_day_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(flex_day_end)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1720,7 +1727,7 @@ class FlexDayEndListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class FlexDayEndOperations(Resource):
     @worktimeapp.marshal_with(flex_day_end)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
 
@@ -1730,7 +1737,7 @@ class FlexDayEndOperations(Resource):
         cust = adm.get_flex_day_end_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
 
@@ -1743,7 +1750,7 @@ class FlexDayEndOperations(Resource):
 
     @worktimeapp.marshal_with(flex_day_end)
     @worktimeapp.expect(flex_day_end, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
 
@@ -1774,7 +1781,7 @@ IllnessEnd
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class IllnessEndListOperations(Resource):
     @worktimeapp.marshal_list_with(illness_end)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1785,7 +1792,7 @@ class IllnessEndListOperations(Resource):
     @worktimeapp.marshal_with(illness_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(illness_end)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1826,7 +1833,7 @@ class IllnessEndListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class IllnessEndOperations(Resource):
     @worktimeapp.marshal_with(illness_end)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1835,7 +1842,7 @@ class IllnessEndOperations(Resource):
         cust = adm.get_illness_end_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1847,7 +1854,7 @@ class IllnessEndOperations(Resource):
 
     @worktimeapp.marshal_with(illness_end)
     @worktimeapp.expect(illness_end, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1877,7 +1884,7 @@ IllnessBegin
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class IllnessBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(illness_begin)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1888,7 +1895,7 @@ class IllnessBeginListOperations(Resource):
     @worktimeapp.marshal_with(illness_begin, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(illness_begin)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -1929,7 +1936,7 @@ class IllnessBeginListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class IllnessBeginOperations(Resource):
     @worktimeapp.marshal_with(illness_begin)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1938,7 +1945,7 @@ class IllnessBeginOperations(Resource):
         cust = adm.get_illness_begin_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -1950,7 +1957,7 @@ class IllnessBeginOperations(Resource):
 
     @worktimeapp.marshal_with(illness_begin)
     @worktimeapp.expect(illness_begin, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -1980,7 +1987,7 @@ BreakBegin
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class BreakBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(break_begin)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -1991,7 +1998,7 @@ class BreakBeginListOperations(Resource):
     @worktimeapp.marshal_with(break_begin, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(break_begin)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -2032,7 +2039,7 @@ class BreakBeginListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class BreakBeginOperations(Resource):
     @worktimeapp.marshal_with(break_begin)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2041,7 +2048,7 @@ class BreakBeginOperations(Resource):
         cust = adm.get_break_begin_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2053,7 +2060,7 @@ class BreakBeginOperations(Resource):
 
     @worktimeapp.marshal_with(break_begin)
     @worktimeapp.expect(break_begin, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -2083,7 +2090,7 @@ BreakEnd
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class BreakEndListOperations(Resource):
     @worktimeapp.marshal_list_with(break_end)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -2094,7 +2101,7 @@ class BreakEndListOperations(Resource):
     @worktimeapp.marshal_with(break_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(break_end)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -2135,7 +2142,7 @@ class BreakEndListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class BreakEndOperations(Resource):
     @worktimeapp.marshal_with(break_end)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2144,7 +2151,7 @@ class BreakEndOperations(Resource):
         cust = adm.get_break_end_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2156,7 +2163,7 @@ class BreakEndOperations(Resource):
 
     @worktimeapp.marshal_with(break_end)
     @worktimeapp.expect(break_end, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -2186,7 +2193,7 @@ ProjectWorkEnd
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ProjectWorkEndListOperations(Resource):
     @worktimeapp.marshal_list_with(project_work_end)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -2197,7 +2204,7 @@ class ProjectWorkEndListOperations(Resource):
     @worktimeapp.marshal_with(project_work_end, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(project_work_end)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -2238,7 +2245,7 @@ class ProjectWorkEndListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ProjectWorkEndOperations(Resource):
     @worktimeapp.marshal_with(project_work_end)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2247,7 +2254,7 @@ class ProjectWorkEndOperations(Resource):
         cust = adm.get_project_work_end_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2259,7 +2266,7 @@ class ProjectWorkEndOperations(Resource):
 
     @worktimeapp.marshal_with(project_work_end)
     @worktimeapp.expect(project_work_end, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -2289,7 +2296,7 @@ ProjectWorkBegin
 @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class ProjectWorkBeginListOperations(Resource):
     @worktimeapp.marshal_list_with(project_work_begin)
-    @secured
+    # @secured
     def get(self):
         """Auslesen aller Event-Objekte.
         Sollten keine Event-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -2300,7 +2307,7 @@ class ProjectWorkBeginListOperations(Resource):
     @worktimeapp.marshal_with(project_work_begin, code=200)
     # Wir erwarten ein Event-Objekt von Client-Seite.
     @worktimeapp.expect(project_work_begin)
-    @secured
+    # @secured
     def post(self):
         """Anlegen eines neuen Event-Objekts."""
 
@@ -2341,7 +2348,7 @@ class ProjectWorkBeginListOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Event-Objekts')
 class ProjectWorkBeginOperations(Resource):
     @worktimeapp.marshal_with(project_work_begin)
-    @secured
+    # @secured
     def get(self, id):
         """Auslesen eines bestimmten Event-Objekts.
         Das auszulesbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2350,7 +2357,7 @@ class ProjectWorkBeginOperations(Resource):
         cust = adm.get_project_work_begin_by_id(id)
         return cust
 
-    @secured
+    # @secured
     def delete(self, id):
         """Löschen eines bestimmten Event-Objekts.
         Das zu löschbegine Objekt wird durch die ```id``` in dem URI bestimmt.
@@ -2362,7 +2369,7 @@ class ProjectWorkBeginOperations(Resource):
 
     @worktimeapp.marshal_with(project_work_begin)
     @worktimeapp.expect(project_work_begin, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         """Update eines bestimmten Event-Objekts.
         **ACHTUNG:** Relevante id ist die id, die mittels URI bereitgestellt und somit als Methodenparameter
@@ -2392,7 +2399,7 @@ Timeinterval
 class TimeIntervalOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
     @worktimeapp.expect(timeinterval)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = TimeIntervalBO.from_dict(api.payload)
@@ -2409,7 +2416,7 @@ class TimeIntervalOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(timeinterval)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         timeinterval = adm.get_all_timeintervals()
@@ -2420,14 +2427,14 @@ class TimeIntervalOperations(Resource):
 @worktimeapp.param('id', 'ID des Timeintervalls')
 class TimeIntervalWithIDOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_id(id)
         return timeinterval
 
     @worktimeapp.marshal_with(timeinterval)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_id(id)
@@ -2435,7 +2442,7 @@ class TimeIntervalWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(timeinterval)
     @worktimeapp.expect(timeinterval, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = TimeIntervalBO.from_dict(api.payload)
@@ -2452,7 +2459,7 @@ class TimeIntervalWithIDOperations(Resource):
 @worktimeapp.param('type', 'Type des Timeintervalls')
 class TimeIntervalWithTypeOperations(Resource):
     @worktimeapp.marshal_with(timeinterval)
-    @secured
+    # @secured
     def get(self, type):
         adm = Businesslogic()
         timeinterval = adm.get_timeinterval_by_type(type)
@@ -2468,7 +2475,7 @@ Break
 class BreakOperations(Resource):
     @worktimeapp.marshal_with(breaks)
     @worktimeapp.expect(breaks)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = BreakBO.from_dict(api.payload)
@@ -2547,7 +2554,7 @@ class BreakOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(breaks)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         breaks = adm.get_all_breaks()
@@ -2558,14 +2565,14 @@ class BreakOperations(Resource):
 @worktimeapp.param('id', 'ID der Break')
 class BreakWithIDOperations(Resource):
     @worktimeapp.marshal_with(breaks)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         breaks = adm.get_break_by_id(id)
         return breaks
 
     @worktimeapp.marshal_with(breaks)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         breaks = adm.get_break_by_id(id)
@@ -2573,7 +2580,7 @@ class BreakWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(breaks)
     @worktimeapp.expect(breaks, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = BreakBO.from_dict(api.payload)
@@ -2598,7 +2605,7 @@ class BreakWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von Break')
 class FindBreakByDate(Resource):
     @worktimeapp.marshal_with(breaks)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         breaks = adm.get_breaks_by_date(start)
@@ -2609,7 +2616,7 @@ class FindBreakByDate(Resource):
 @worktimeapp.param('start', 'Start von Break')
 class FindBreakByTimePeriod(Resource):
     @worktimeapp.marshal_with(breaks)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         breaks = adm.get_breaks_by_time_period(start, end)
@@ -2625,7 +2632,7 @@ Illness
 class IllnessOperations(Resource):
     @worktimeapp.marshal_with(illness)
     @worktimeapp.expect(illness)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = IllnessBO.from_dict(api.payload)
@@ -2654,7 +2661,7 @@ class IllnessOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(illness)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         illness = adm.get_all_illnesses()
@@ -2665,14 +2672,14 @@ class IllnessOperations(Resource):
 @worktimeapp.param('id', 'ID der Illness')
 class IllnessWithIDOperations(Resource):
     @worktimeapp.marshal_with(illness)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         illness = adm.get_illness_by_id(id)
         return illness
 
     @worktimeapp.marshal_with(illness)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         illness = adm.get_illness_by_id(id)
@@ -2680,7 +2687,7 @@ class IllnessWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(illness)
     @worktimeapp.expect(illness, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = IllnessBO.from_dict(api.payload)
@@ -2719,7 +2726,7 @@ class IllnessWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByDate(Resource):
     @worktimeapp.marshal_with(illness)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         proposal = FlexDayBO.from_dict(api.payload)
@@ -2738,7 +2745,7 @@ class FindIllnessByDate(Resource):
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByTimePeriod(Resource):
     @worktimeapp.marshal_with(illness)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         illness = adm.get_illnesses_by_time_period(start, end)
@@ -2754,7 +2761,7 @@ FlexDay
 class FlexDayOperations(Resource):
     @worktimeapp.marshal_with(flexday)
     @worktimeapp.expect(flexday)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = FlexDayBO.from_dict(api.payload)
@@ -2830,7 +2837,7 @@ class FlexDayOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(flexday)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         flexday = adm.get_all_flex_days()
@@ -2841,14 +2848,14 @@ class FlexDayOperations(Resource):
 @worktimeapp.param('id', 'ID der FlexDay')
 class FlexDayWithIDOperations(Resource):
     @worktimeapp.marshal_with(flexday)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         flexday = adm.get_flex_day_by_id(id)
         return flexday
 
     @worktimeapp.marshal_with(flexday)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         flexday = adm.get_flex_day_by_id(id)
@@ -2856,7 +2863,7 @@ class FlexDayWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(flexday)
     @worktimeapp.expect(flexday, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = FlexDayBO.from_dict(api.payload)
@@ -2881,7 +2888,7 @@ class FlexDayWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByDate(Resource):
     @worktimeapp.marshal_with(flexday)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         flexday = adm.get_flex_days_by_date(start)
@@ -2892,7 +2899,7 @@ class FindBreakByDate(Resource):
 @worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByTimePeriod(Resource):
     @worktimeapp.marshal_with(flexday)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         flexday = adm.get_flex_days_by_time_period(start, end)
@@ -2908,7 +2915,7 @@ ProjectDuration
 class ProjectDurationOperations(Resource):
     @worktimeapp.marshal_with(projectduration)
     @worktimeapp.expect(projectduration)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectDurationBO.from_dict(api.payload)
@@ -2940,7 +2947,7 @@ class ProjectDurationOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(projectduration)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         projectduration = adm.get_all_project_durations()
@@ -2951,14 +2958,14 @@ class ProjectDurationOperations(Resource):
 @worktimeapp.param('id', 'ID der ProjectDuration')
 class ProjecDurationWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectduration)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         projectduration = adm.get_project_duration_by_id(id)
         return projectduration
 
     @worktimeapp.marshal_with(projectduration)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         projectduration = adm.get_project_duration_by_id(id)
@@ -2966,7 +2973,7 @@ class ProjecDurationWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(projectduration)
     @worktimeapp.expect(projectduration, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectDurationBO.from_dict(api.payload)
@@ -2983,7 +2990,7 @@ class ProjecDurationWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von ProjectDuration')
 class FindProjectDurationByDate(Resource):
     @worktimeapp.marshal_with(projectduration)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         projectduration = adm.get_project_durations_by_date(start)
@@ -2994,7 +3001,7 @@ class FindProjectDurationByDate(Resource):
 @worktimeapp.param('start', 'Start von ProjectDuration')
 class FindProjectDurationByTimePeriod(Resource):
     @worktimeapp.marshal_with(projectduration)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         projectduration = adm.get_project_durations_by_time_period(start, end)
@@ -3005,7 +3012,7 @@ class FindProjectDurationByTimePeriod(Resource):
 @worktimeapp.param('projectid', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
     @worktimeapp.marshal_with(projectduration)
-    @secured
+    # @secured
     def get(self, projectid):
         adm = Businesslogic()
         projectduration = adm.get_project_duration_by_project_id(projectid)
@@ -3021,7 +3028,7 @@ ProjectWork
 class ProjectWorkOperations(Resource):
     @worktimeapp.marshal_with(projectwork)
     @worktimeapp.expect(projectwork)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = ProjectWorkBO.from_dict(api.payload)
@@ -3098,7 +3105,7 @@ class ProjectWorkOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(projectwork)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         projectwork = adm.get_all_project_works()
@@ -3109,14 +3116,14 @@ class ProjectWorkOperations(Resource):
 @worktimeapp.param('id', 'ID der ProjectWork')
 class ProjecWorkWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectwork)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         projectwork = adm.get_project_work_by_id(id)
         return projectwork
 
     @worktimeapp.marshal_with(projectwork)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         projectwork = adm.get_project_work_by_id(id)
@@ -3124,7 +3131,7 @@ class ProjecWorkWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(projectwork)
     @worktimeapp.expect(projectwork, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectWorkBO.from_dict(api.payload)
@@ -3149,7 +3156,7 @@ class ProjecWorkWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von ProjectWork')
 class FindProjectWorkByDate(Resource):
     @worktimeapp.marshal_with(projectwork)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         projectwork = adm.get_project_works_by_date(start)
@@ -3160,7 +3167,7 @@ class FindProjectWorkByDate(Resource):
 @worktimeapp.param('start', 'Start von ProjectWork')
 class FindProjectWorkByTimePeriod(Resource):
     @worktimeapp.marshal_with(projectwork)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         projectwork = adm.get_project_works_by_time_period(start, end)
@@ -3171,7 +3178,7 @@ class FindProjectWorkByTimePeriod(Resource):
 @worktimeapp.param('id', 'Id von Project')
 class FindProjectWorkByProjectId(Resource):
     @worktimeapp.marshal_with(projectwork)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         projectwork = adm.get_project_works_by_activity_id(id)
@@ -3187,7 +3194,7 @@ Vacation
 class VacationOperations(Resource):
     @worktimeapp.marshal_with(vacation)
     @worktimeapp.expect(vacation)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = VacationBO.from_dict(api.payload)
@@ -3217,7 +3224,7 @@ class VacationOperations(Resource):
         return p
 
     @worktimeapp.marshal_list_with(vacation)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         vacation = adm.get_all_vacations()
@@ -3228,14 +3235,14 @@ class VacationOperations(Resource):
 @worktimeapp.param('id', 'ID der Vacation')
 class VacationWithIDOperations(Resource):
     @worktimeapp.marshal_with(vacation)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         vacation = adm.get_vacation_by_id(id)
         return vacation
 
     @worktimeapp.marshal_with(vacation)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         vacation = adm.get_vacation_by_id(id)
@@ -3243,7 +3250,7 @@ class VacationWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(vacation)
     @worktimeapp.expect(vacation, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = VacationBO.from_dict(api.payload)
@@ -3282,7 +3289,7 @@ class VacationWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von Vacation')
 class FindVacationByDate(Resource):
     @worktimeapp.marshal_with(vacation)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         vacation = adm.get_vacations_by_date(start)
@@ -3293,7 +3300,7 @@ class FindVacationByDate(Resource):
 @worktimeapp.param('start', 'Start von Vacation')
 class FindVacationByTimePeriod(Resource):
     @worktimeapp.marshal_with(vacation)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         vacation = adm.get_vacations_by_time_period(start, end)
@@ -3309,7 +3316,7 @@ Work
 class WorkOperations(Resource):
     @worktimeapp.marshal_with(work)
     @worktimeapp.expect(work)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = WorkBO.from_dict(api.payload)
@@ -3387,7 +3394,7 @@ class WorkOperations(Resource):
         print(p.get_start_event())
 
     @worktimeapp.marshal_list_with(work)
-    @secured
+    # @secured
     def get(self):
         adm = Businesslogic()
         work = adm.get_all_works()
@@ -3398,14 +3405,14 @@ class WorkOperations(Resource):
 @worktimeapp.param('id', 'ID der Work')
 class WorkWithIDOperations(Resource):
     @worktimeapp.marshal_with(work)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         work = adm.get_work_by_id(id)
         return work
 
     @worktimeapp.marshal_with(work)
-    @secured
+    # @secured
     def delete(self, id):
         adm = Businesslogic()
         work = adm.get_work_by_id(id)
@@ -3413,7 +3420,7 @@ class WorkWithIDOperations(Resource):
 
     @worktimeapp.marshal_with(work)
     @worktimeapp.expect(work, validate=True)
-    @secured
+    # @secured
     def put(self, id):
         adm = Businesslogic()
         p = WorkBO.from_dict(api.payload)
@@ -3436,7 +3443,7 @@ class WorkWithIDOperations(Resource):
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByDate(Resource):
     @worktimeapp.marshal_with(work)
-    @secured
+    # @secured
     def get(self, start):
         adm = Businesslogic()
         work = adm.get_works_by_date(start)
@@ -3447,7 +3454,7 @@ class FindWorkByDate(Resource):
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByTimePeriod(Resource):
     @worktimeapp.marshal_with(work)
-    @secured
+    # @secured
     def get(self, start, end):
         adm = Businesslogic()
         work = adm.get_works_by_time_period(start, end)
@@ -3480,7 +3487,7 @@ class EventBookingsForUser(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class TimeIntervalBookingOperationsWithParam(Resource):
     @worktimeapp.marshal_with(timeinterval_with_events)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
@@ -3499,7 +3506,7 @@ class TimeIntervalBookingOperationsWithParam(Resource):
 class TimeintervalBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
     @worktimeapp.expect(booking)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)
@@ -3532,7 +3539,7 @@ class TimeintervalBookingOperations(Resource):
 class EventBookingOperations(Resource):
     @worktimeapp.marshal_with(booking)
     @worktimeapp.expect(booking)
-    @secured
+    # @secured
     def post(self):
         adm = Businesslogic()
         proposal = BookingBO.from_dict(api.payload)
@@ -3556,7 +3563,7 @@ class EventBookingOperations(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
     @worktimeapp.marshal_with(event_subclass)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
@@ -3574,7 +3581,7 @@ class EventBookingOperationsWithParam(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
     @worktimeapp.marshal_with(event_subclass)
-    @secured
+    # @secured
     def get(self, id):
         adm = Businesslogic()
         user = adm.get_user_by_id(id)
@@ -3591,7 +3598,7 @@ class EventBookingOperationsWithParam(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class ProjectsOfUser(Resource):
     @worktimeapp.marshal_with(project)
-    # @secured
+    # #@secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_of_user(id)
@@ -3602,10 +3609,10 @@ class ProjectsOfUser(Resource):
 @worktimeapp.param('id', 'Die Projekt ID')
 class ActivityProjectId(Resource):
     @worktimeapp.marshal_with(activity)
-    # @secured
+    # #@secured
     def get(self, id):
         adm = Businesslogic()
-        projects = adm.get_all_by_project_id(id)
+        projects = adm.get_activities_by_project_id(id)
         return projects
 
 

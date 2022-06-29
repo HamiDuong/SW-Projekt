@@ -234,6 +234,7 @@ export default class WorkTimeAppAPI {
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
     #getProjectForAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/admin/${id}`;
     #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
+    #getProjectForUserAndAdminURL = (id)=>`${this.#worktimeappServerBaseURL}/projects/for/user/and/admin/${id}`;
     #getProjectMembersByProjectId = (id) => `${this.#worktimeappServerBaseURL}/projectmembersbyprojectid/${id}`;
 
     #getProjectsByProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/project/${id}`;
