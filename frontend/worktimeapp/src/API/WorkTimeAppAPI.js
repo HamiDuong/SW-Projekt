@@ -236,6 +236,8 @@ export default class WorkTimeAppAPI {
     #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
     #getProjectMembersByProjectId = (id) => `${this.#worktimeappServerBaseURL}/projectmembersbyprojectid/${id}`;
 
+    #getProjectsByProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/project/${id}`;
+
     //Activity
     // Author Khadidja Kebaili
     #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activitybyproject/${id}`
@@ -248,6 +250,9 @@ export default class WorkTimeAppAPI {
     #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
 
 
+    #getActByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/activitiesproject/${id}`
+
+    //User
     //Author Esra Özkul
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
     #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
@@ -2140,6 +2145,31 @@ export default class WorkTimeAppAPI {
                 resolve(responseProjectUserBO);
             })
         })
+    }
+
+
+
+    //Project By ProjectUser By UserId
+    getProjectsByProjectUser(id) {
+        return this.#fetchAdvanced(this.#getProjectsByProjectUserURL(id))
+            .then((responseJSON) => {
+                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
+                console.info(workTimeAccountBO);
+                return new Promise(function (resolve) {
+                    resolve(workTimeAccountBO);
+                })
+            })
+    }
+
+    getActByProjekt(id) {
+        return this.#fetchAdvanced(this.#getActByProjectURL(id))
+            .then((responseJSON) => {
+                let responseActivity = ActivityBO.fromJSON(responseJSON);
+                console.info(responseActivity);
+                return new Promise(function (resolve) {
+                    resolve(responseActivity);
+                })
+            })
     }
 
 }

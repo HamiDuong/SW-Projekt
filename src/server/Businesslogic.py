@@ -2437,7 +2437,7 @@ class Businesslogic():
         for elem in all_bookings:
             if elem.get_user_id() == user_id:
                 bookings_of_user.append(elem)
-        if len(bookings_of_user)<1:
+        if len(bookings_of_user) < 1:
             for elem in bookings_of_user:
                 print('in bookins_of_user: ', elem)
                 ti_b_id = elem.get_time_interval_booking_id()
@@ -2466,3 +2466,14 @@ class Businesslogic():
             return sum
         else:
             return 0
+
+    def get_projects_of_user(self, userid):
+        projectuser = self.get_project_user_by_user_id(userid)
+        projectid = []
+        for elem in projectuser:
+            projectid.append(elem.get_project_id())
+        res = []
+        for elem in projectid:
+            hold = self.get_project_by_id(elem)
+            res.append(hold)
+        return res
