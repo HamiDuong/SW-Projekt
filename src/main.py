@@ -992,7 +992,7 @@ class ProjectWithIDOperations(Resource):
 class ActivityOperations(Resource):
     @worktimeapp.marshal_with(activity)
     @worktimeapp.expect(activity)
-    # #@secured
+     #@secured
     def post(self):
         adm = Businesslogic()
         proposal = ActivityBO.from_dict(api.payload)

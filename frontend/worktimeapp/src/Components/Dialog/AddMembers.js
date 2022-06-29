@@ -11,6 +11,9 @@ import Card from '@mui/material/Card';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
+/**
+ * Hier werden die einzelnen Members für die Projekte hinzugefügt.
+ */
 
 class AddMembers extends Component {
   constructor(props) {
@@ -30,9 +33,11 @@ class AddMembers extends Component {
       currentCapacity: 0, 
       capacityValidationFailed: false,
       open: false,
-  }
+      }
   
      }
+  
+  /** In dieser Funktion kann man die einzelnen User mit der Nachname suchen. */
   searchUserNamesForProject = async () => {
     const {userName} = this.state;
     console.log(this.state.userName)
@@ -45,7 +50,7 @@ class AddMembers extends Component {
           userNameSearchError: null
         });
 
-        //Jetzt werden die User geladen
+        //Jetzt werden die User geladen.
         const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
         console.log("Test")
       let selectedUser = null;
@@ -57,7 +62,7 @@ class AddMembers extends Component {
           userNotFound: true
         });
       }
-      //set the final state
+      //Hier wird der endgültiger Zustand gesetzt.
       this.setState({
         targetusers: users,
         selectedUser: selectedUser,
@@ -77,7 +82,7 @@ class AddMembers extends Component {
       });
     }
     }}
-    /** Handles value changes of the customer select textfield */
+    /** Verwaltet Wertänderungen des Users select-Textfeldes */
   userSelectionChange = (event) => {
     let users = event.target.value;
     
@@ -87,7 +92,7 @@ class AddMembers extends Component {
     });
   }
   
-    /** Handles value changes of the forms textfields and validates the transferAmout field */
+  /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */ 
   textFieldValueChange = (event) => {
     const val = event.target.value;
     // Validate the amount field
@@ -104,7 +109,10 @@ class AddMembers extends Component {
             
           }, console.log(this.state.userId));
         }
-  
+
+      /* 
+      Sobald die Komponenten geladen hat soll die Funktion searchUserNamesForProject geholt werden.
+      */
        componentDidMount() {
         this.searchUserNamesForProject(1)
        } 
@@ -123,7 +131,7 @@ class AddMembers extends Component {
           console.log('Here', projectuser, this.state.projectId, this.state.capacity)
          }))
       }
-  /** Handles the close / cancel button click event */
+  /** Verwaltet das Schliessen / Abbrechen-Klickereignis */
     handleClose = () => {
       this.props.closePopupMembers();
       }
@@ -138,7 +146,7 @@ class AddMembers extends Component {
 
             <form noValidate autoComplete='off'>
               {
-                // show a search text field if there are no searchedCustomer yet
+                // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                 (targetusers.length === 0) ? 
                   <TextField autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
                     onChange={this.textFieldValueChange}
@@ -151,7 +159,7 @@ class AddMembers extends Component {
                       </InputAdornment>,
                     }} />
                   :
-                  // Show a selection of targetCustomers, if there are any. Provide no search button. 
+                  // Zeigt eine Auswahl von selectedUser an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                   <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
                     value={selectedUser}
                     onChange={this.userSelectionChange}>

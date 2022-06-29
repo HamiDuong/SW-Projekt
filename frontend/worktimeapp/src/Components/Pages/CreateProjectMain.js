@@ -22,21 +22,16 @@ import Typography from '@mui/material/Typography';
  */
 
 /**
- * Hier werden Users für CreateProject geholt und auch der ProjectBO wird hier erstellt.
- * Außerdem wird auch 
+ * ProjectBOs werden hier erstellt und alle Users werden geholt.
  */
-
 class CreateProjectMain extends Component {
     constructor(props) {
         super(props);
         //Die Änderungen werden für CreateProjectMain gespeichert.
         this.togglePopups = this.togglePopups.bind(this);
-        // this.toggleMembers = this.toggleMembers.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        /**
-         * Hier werden die States für CreateProjectMain gesetzt.
-         */
+        
         this.state = {
             projectName: null,
             commissioner: null,
@@ -70,7 +65,9 @@ class CreateProjectMain extends Component {
 
 
     }
-
+    /**
+     * Hier wird der Popup aufgerufen.
+     */
     togglePopups() {
         this.setState({
             selected: true,
@@ -78,7 +75,9 @@ class CreateProjectMain extends Component {
     }
 
 
-
+    /**
+     * Hier werden die Project Objekte erstellt und die entsprechenden API Funktionen aufgerufen.
+     */
     addProjects = () => {
         let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.props.userId);
         console.log(newProject)
@@ -93,7 +92,10 @@ class CreateProjectMain extends Component {
             )
         )
         }
-
+    
+    /**
+     * Hier werden alle User Objekte geholt und in die Liste users gepsiechert.
+     */
     getAllUsers = () => {
         WorkTimeAppAPI.getAPI().getAllUsers()
         .then(userBOs =>
@@ -113,8 +115,11 @@ class CreateProjectMain extends Component {
                     loadingInProgress: true,
                     error: null
                 });
-
     }
+
+    /**
+     * Hier werden die ProjectDuration Objekte und Booking Objekte erstellt und die entsprechenden API Funktionen aufgerufen.
+     */
     addProjectDurationBooking = () => {
             let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.projectId);
            console.log(newProjectDurationBO)
@@ -128,13 +133,15 @@ class CreateProjectMain extends Component {
         
         }
         
-    
+    /* 
+    Sobald die Komponenten geladen hat sollen alle Users geholt werden.
+    */
     componentDidMount(){
         this.getAllUsers();
 
     }
 
-    /** Handles value changes of the forms textfields and validates them */
+    /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
     textFieldValueChange = (event) => {
         const value = event.target.value;
 
@@ -150,7 +157,9 @@ class CreateProjectMain extends Component {
         });
     }
 
-
+    /** Im Showing wird der Text eingezeigt, wenn noch kein Projekt erstellt wurde.
+    * Wenn ein Projekt erstellt wurde so wird CreateProject weitergegeben.
+    */
     showing() {
         if (this.state.selected) {
             console.log('showing läuft', this.state.projectId)
@@ -163,27 +172,40 @@ class CreateProjectMain extends Component {
         }
     }
 
+    /**
+     * Sobald der Button 'Create Project' geklickt wird, wird die Funktion addProject aufgerufen
+     * und im State wird selected true gesetzt.
+     */
     handleClick() {
         this.addProjects();
         // this.addTimeIntervalBooking();
         this.setState({
             selected: true,
         });
-        console.log(this.state.projectId, 'Hallooohhooo')
     }
 
+    /**
+     * Öffnen des Selects für CreateProject
+     */
     handleChange() {
         this.setState({
             selected: true,
         });
     }
     
+    /**
+     * Hier wird im State der Start DateTime gespeichert.
+     */
     handleStartDateChange(newValue){
         this.setState({
             start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
         console.log(this.state.start)
     }
+
+    /**
+     * Hier wird im State der End DateTime gespeichert.
+     */
     handleEndDateChange(newValue){
         this.setState({
             end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
@@ -218,6 +240,7 @@ class CreateProjectMain extends Component {
                 noValidate
                 autoComplete="off"
             >
+                {/**Hier befinden sich die TextFields für das befüllen der Values, die später in der Funktion addProject aufgerufen werden. */}
                 <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName}
                     onChange={this.textFieldValueChange} error={projectNameValidationFailed}
                     helperText={projectNameValidationFailed ? 'The project name must contain at least one character' : ' '} />

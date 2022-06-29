@@ -1559,21 +1559,21 @@ export default class WorkTimeAppAPI {
         })
     }
 
-    addActivity(activity) {
-        return this.#fetchAdvanced(this.#addActivityURL(), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(activity)
-        }).them((responseJSON) => {
-            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseActivity)
-            })
-        })
-    }
+    // addActivity(activity) {
+    //     return this.#fetchAdvanced(this.#addActivityURL(), {
+    //         method: 'POST',
+    //         headers: {
+    //             'Accept': 'application/json, text/plain',
+    //             'Content-type': 'application/json',
+    //         },
+    //         body: JSON.stringify(activity)
+    //     }).them((responseJSON) => {
+    //         let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
+    //         return new Promise(function (resolve) {
+    //             resolve(responseActivity)
+    //         })
+    //     })
+    // }
 
     deleteActivity(activity) {
         return this.#fetchAdvanced(this.#deleteActivityURL(activity), {

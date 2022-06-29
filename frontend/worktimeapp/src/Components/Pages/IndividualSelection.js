@@ -3,20 +3,20 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverIndividualEntry from './OverIndividualEntries';
+import OverIndividualEntries from './OverIndividualEntries';
+import Alert from '@mui/material/Alert';
 
-
-class MyWorkTimeOverview extends Component {
+class IndividualSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            project: this.props.id,
+            project: '',
             projects: [],
-            projectId: '',
+            temperature: '',
             projectName: '',
             selected: false,
-            user: '',
-            userId: 1,
+            projectId: '',
+            userId: this.props.userId,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -24,9 +24,10 @@ class MyWorkTimeOverview extends Component {
     handleChange(e) {
         this.setState({
             projectId: e.target.value,
-            name: e.target.value,
-            selected: true
-        });
+            selected: true,
+        }, function () {
+            console.log(this.state.projectId);
+        })
     }
 
 
@@ -46,12 +47,14 @@ class MyWorkTimeOverview extends Component {
 
 
     showing() {
+        const projectId = this.state.projectId
         if (this.state.selected) {
-            return <div>
-                <OverIndividualEntry onChange={this.handleChange} value={this.state.projectId} />
-            </div>
+            return <OverIndividualEntries value={projectId} onChange={this.handleChange} />
         } else {
-            return <h1>You haven´t selected a project yet.</h1>
+            return (
+                <div>
+                    <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
+                </div>)
         }
     }
 
@@ -60,6 +63,7 @@ class MyWorkTimeOverview extends Component {
         const func = this.showing()
         return (
             <Box>
+                <h1>Nicht-Admin-Sicht</h1>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
@@ -71,4 +75,4 @@ class MyWorkTimeOverview extends Component {
     }
 }
 
-export default MyWorkTimeOverview;
+export default IndividualSelection;

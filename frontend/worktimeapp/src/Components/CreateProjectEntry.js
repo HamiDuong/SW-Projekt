@@ -14,7 +14,9 @@ import Typography from '@mui/material/Typography';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
-
+/**
+ * Hier werden die beiden Dialoge aufgerufen AddActivities und AddMembers.
+ */
 class CreateProject extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,6 @@ class CreateProject extends Component {
     this.state = {
       showPopupActivity: false,
       showPopupMember:false,
-      //Network states
       loadingInProgress: false,
       createprojectError: null,
       projectName: null,
@@ -46,7 +47,7 @@ class CreateProject extends Component {
   }
 
 
-  /** Handles value changes of the forms textfields and validates them */
+  /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
   textFieldValueChange = (event) => {
     const value = event.target.value;
 
@@ -62,16 +63,14 @@ class CreateProject extends Component {
     });
   }
 
+
   componentDidMount() {
     console.log(this.props.selected)
   }
 
-  // addProjectMemberClosed(){
-  //   this.setState({
-  //     showAddProjectMember: true,
-  //   })
-  // }
-
+  /** Sobald der Button 'Create Project' geklickt wird, öffnen sie weitere zwei Buttons 'Add Activity' und 'Add Members'
+   * Wenn man auf die jeweilige Button klickt öffnet sich der dazugehörige PopUp.
+   */
   showing() {
     if (this.props.selected) {
       return (
@@ -99,15 +98,8 @@ class CreateProject extends Component {
                 projectId={this.props.value}
                 text='Close Me'
                 closePopupMembers={() => this.setState({ showPopupMember: false })}
-                // onClose={() => this.setState({
-                //   showAddProjectMember: true
-                // })}
               />
               : null}
-
-          
-
-
         </div >
       )
     } else {
@@ -115,6 +107,7 @@ class CreateProject extends Component {
     }
   }
   render() {
+    /** Hier wird die Funktion showing in die Konstante gesetzt. */
     const showing = this.showing()
     const { classes } = this.props;
     const { projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed } = this.state
@@ -127,42 +120,13 @@ class CreateProject extends Component {
         noValidate
         autoComplete="off"
       >
-
-        {/* <Grid xs={12} item>
-          <Button variant="contained" onClick={this.togglePopupMembers.bind(this)}>+</Button>
-        </Grid>
-
-
-        {this.state.showPopupAddMembers ?
-          <AddMember
-            text='Close Me'
-            closePopupMembers={this.togglePopupMembers.bind(this)}
-          />
-          : null
-        } */}
-
+        {/** Hier wird die funktion showing aufgerufen */}
         {showing}
 
       </Box>
 
     )
   }
-}
-/** PropTypes */
-CreateProject.propTypes = {
-  /** @ignore */
-  classes: PropTypes.object.isRequired,
-  /** The CustomerBO to be edited */
-  customer: PropTypes.object,
-  /** If true, the form is rendered */
-  show: PropTypes.bool.isRequired,
-  /**  
-   * Handler function which is called, when the dialog is closed.
-   * Sends the edited or created CustomerBO as parameter or null, if cancel was pressed.
-   *  
-   * Signature: onClose(CustomerBO customer);
-   */
-  onClose: PropTypes.func.isRequired,
 }
 
 export default CreateProject;

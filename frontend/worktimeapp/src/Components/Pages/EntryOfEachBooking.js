@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import TableCell from '@mui/material/TableCell';
@@ -30,21 +31,12 @@ class ActivityBookingEntry extends Component {
     }
 
     componentDidMount = () => {
-        this.getProjectDuration(this.props.projectId)
-        if (this.props.us_id == 0) {
-            this.setState({
-                userName: '-',
-                time: '-',
-                show_info: true
-            })
-        }
-        else {
-            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
-            console.log('Was passiert hier?', this.props.us_id)
-            this.getUserById(this.props.us_id)
+        console.log('Was passiert hier?', this.props.us_id, this.props.act_id)
+        this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+        this.getUserById(this.props.us_id)
 
-        }
     }
+
 
     getUserById(id) {
         WorkTimeAppAPI.getAPI().getUserById(id).then(userBO =>
@@ -57,38 +49,18 @@ class ActivityBookingEntry extends Component {
     }
 
 
-    getProjectDuration = (project_id) => {
-        WorkTimeAppAPI.getAPI().getProjectDurationInDays(project_id).then(projectDurationBO =>
-            this.setState({
-                projectDuration: projectDurationBO
-            }, function () {
-                console.log('Hier ist der die Duration: ', this.state.projectDuration)
-            }))
-    }
-
     render() {
         return (
             <Box>
-                {this.state.show_info ?
-                    <div>
-                        <Paper sx={{ width: '100%' }}>
-                            <TableCell width={150}></TableCell>
-                            <TableCell width={300}>{this.state.time}</TableCell>
-                            <TableCell width={350}>{this.state.userName}</TableCell>
-                            <TableCell width={350}>{this.props.current_c}</TableCell>
-                            <TableCell width={350}>{this.props.capacity}</TableCell>
-                            <TableCell width={200}>{this.state.projectDuration}</TableCell>
-                        </Paper>
-                        <Alert sx={{ margin: 3 }} variant='outlined' severity="info">There are no project members for your project yet.</Alert></div> :
-                    <Paper sx={{ width: '100%' }}>
-                        <TableCell width={150}></TableCell>
-                        <TableCell width={300}>{this.state.time}</TableCell>
-                        <TableCell width={350}>{this.state.userName}</TableCell>
-                        <TableCell width={350}>{this.props.current_c}</TableCell>
-                        <TableCell width={350}>{this.props.capacity}</TableCell>
-                        <TableCell width={200}>{this.state.projectDuration}</TableCell>
-                    </Paper>
-                }
+
+                <Paper sx={{ width: '100%', margin: 'auto' }}>
+                    <TableCell width={250}></TableCell>
+                    <TableCell width={400}>{this.state.time}</TableCell>
+                    <TableCell width={500}>{this.state.userName}</TableCell>
+                    <TableCell width={350}>{this.props.user_capa}</TableCell>
+
+                </Paper>
+
 
             </Box>
 

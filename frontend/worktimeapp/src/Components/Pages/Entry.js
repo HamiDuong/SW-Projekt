@@ -14,7 +14,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { TableContainer } from '@mui/material';
+import { TableContainer, TableCell } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
@@ -32,7 +32,9 @@ class Entry extends Component {
             members: '',
             userIds: [],
             open: false,
-            projectId: this.props.projectId
+            projectId: this.props.projectId,
+            projectDuration: '',
+            userCapacity: [],
 
         })
     }
@@ -52,6 +54,7 @@ class Entry extends Component {
     componentDidMount() {
         this.getActivity(this.props.value)
         this.getProjectUser(this.props.projectId)
+        this.getProjectDuration(this.props.projectId)
     }
 
 
@@ -71,8 +74,8 @@ class Entry extends Component {
                     members: member,
                 }, function () {
                     console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
-                }); this.getUserIds()
-
+                }); this.getUserIds();
+                this.getPlanedCapacitiesForUser()
 
             }
         }
@@ -92,6 +95,27 @@ class Entry extends Component {
         })
     }
 
+    getPlanedCapacitiesForUser() {
+        let members = this.state.members
+        let listeZwei = []
+        members.map(element =>
+            listeZwei.push(element.getCapacity()),
+            console.log('Hier ist die Liste', listeZwei))
+        this.setState({
+            userCapacity: [...this.state.userCapacity, ...listeZwei]
+        }, function () {
+            console.log('23458. Callbackfunction', this.state.userCapacity)
+        })
+    }
+
+    getProjectDuration = (project_id) => {
+        WorkTimeAppAPI.getAPI().getProjectDurationInDays(project_id).then(projectDurationBO =>
+            this.setState({
+                projectDuration: projectDurationBO
+            }, function () {
+                console.log('Hier ist der die Duration: ', this.state.projectDuration)
+            }))
+    }
 
 
     handleClick() {
@@ -121,7 +145,6 @@ class Entry extends Component {
                                             alignItems: 'center',
                                             justifyContent: 'left'
                                         }}>
-
                                         <IconButton aria-label="expand row"
                                             size="small"
                                             onClick={this.handleClick}>
@@ -132,24 +155,82 @@ class Entry extends Component {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-
                     </Box>
 
                     <Collapse in={open} timeout="auto" unmountOnExit>
+
+                        <Table style={{ marginLeft: '250px' }}>
+                            <TableHead>
+                                <Box sx={{
+                                    marginTop: '5',
+                                    width: '70%',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                                    color: 'text.secondary',
+                                    '& svg': {
+                                        m: 2,
+                                    },
+                                    '& hr': {
+                                        mx: 1,
+                                    },
+
+                                }}>
+                                    <Box sx={{
+                                        width: '20%',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-evenly'
+                                    }}
+                                    >
+                                        <MoreTimeIcon />
+                                        <TableRow >Project duration (in days) </TableRow>
+                                        <TableRow>{this.state.projectDuration}</TableRow>
+                                    </Box>
+                                    <Box sx={{
+                                        width: '20%',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-evenly'
+                                    }}>
+                                        <ScheduleIcon size={'small'} />
+                                        <TableRow>Planed capacity</TableRow>
+                                        <TableRow>{this.state.capacity}</TableRow>
+                                    </Box>
+                                    <Box sx={{
+                                        width: '20%',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-evenly'
+                                    }}>
+                                        <ScheduleIcon size={'small'} />
+                                        <TableRow>Total Booked Time</TableRow>
+                                        <TableRow>{this.state.current_capacity}</TableRow>
+                                    </Box>
+
+                                </Box>
+                            </TableHead>
+
+
+                        </Table>
+
+
                         <TableContainer style={{
                             display: 'flex',
                             justifyContent: 'center'
                         }}>
+
                             <Table sx={{ width: '75%' }}>
+
                                 <TableHead>
                                     <Box sx={{
                                         marginTop: '5',
                                         width: '100%',
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        justifyContent: 'space-around',
+                                        justifyContent: 'space-evenly',
                                         border: (theme) => `1px solid ${theme.palette.divider}`,
-
                                         bgcolor: 'background.paper',
                                         color: 'text.secondary',
                                         '& svg': {
@@ -160,28 +241,24 @@ class Entry extends Component {
                                         },
 
                                     }}><ListAltIcon size={'small'} />
-                                        <TableRow>Planed capacity</TableRow>
+                                        <TableRow>Booked capacity</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <PersonIcon />
                                         <TableRow>Employees</TableRow>
                                         <Divider orientation="vertical" flexItem />
                                         <TaskAltIcon />
-                                        <TableRow >Booked times</TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <ScheduleIcon size={'small'} />
-                                        <TableRow>Current capacity</TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <MoreTimeIcon />
-                                        <TableRow>Project duration</TableRow>
+                                        <TableRow >Planed capacity of employee</TableRow>
+
                                     </Box>
                                 </TableHead>
 
                                 <TableBody>
 
-                                    {this.state.userIds.map(element => {
+                                    {this.state.userIds.map((element, index) => {
                                         console.log(element, 'Ist das hier eine UserId?')
                                         return (
-                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId} />)
+                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId}
+                                                user_capa={this.state.userCapacity[index]} />)
                                     })}
 
                                 </TableBody>
@@ -196,4 +273,3 @@ class Entry extends Component {
 }
 
 export default Entry;
-

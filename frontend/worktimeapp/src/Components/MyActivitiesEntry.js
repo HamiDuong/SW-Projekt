@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Dialog, TableCell, TableRow, DialogContent } from "@mui/material";
 import EditProject from './Dialog/EditProject';
+import EditActivity from './Dialog/EditActivity';
 import AddActivity from './Dialog/AddActivity';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';

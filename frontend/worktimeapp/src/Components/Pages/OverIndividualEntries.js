@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import IndividualEntry from './IndividualEntry';
+import Alert from '@mui/material/Alert';
 
 
 class OverIndividualEntry extends Component {
@@ -12,15 +13,17 @@ class OverIndividualEntry extends Component {
             capacity: [],
             current_capacity: [],
             activity_names: [],
-            userId: 1
+            userId: this.props.userId,
+            activities_vorhanden: false,
         })
     }
 
-
-    componentDidMount() {
-        this.getActivitiesForProjectOfThisUser(this.props.value, this.state.userId)
-        console.log(this.props.value)
-
+    getActivitiesForProject = (project) => {
+        WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
+            this.setState({
+                activities: [...this.state.activities, activity],
+            }, this.checkActivities(activity)
+            ))
     }
 
 
@@ -34,25 +37,6 @@ class OverIndividualEntry extends Component {
             ))
     }
 
-
-
-    getActivitiesForProjectOfThisUser = (project_id, user_id) => {
-        WorkTimeAppAPI.getAPI().getActivitiesByProjectForUser(project_id, user_id).then(activity =>
-            this.setState({
-                activities: [...this.state.activities, activity],
-            }, this.checkActivities(activity),
-                this.getCapacityofUserForProject(activity[0].id, this.state.userId)
-            ))
-    }
-
-    checkActivities = (element) => {
-        try {
-            this.getCapacities(element);
-            this.getActivityNames(element);
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     getCapacities = (arr) => {
         const acti = this.state.activities
@@ -75,22 +59,70 @@ class OverIndividualEntry extends Component {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].name]
             }, function () {
-                console.log(this.state.activity_names)
+                console.log('AN', this.state.activity_names)
             })
             i = i + 1
         }
     }
 
+    checkActivities = (element) => {
+        try {
+            this.getCapacities(element);
+            this.getActivityNames(element);
+            this.setState({ activities_vorhanden: true })
+            this.getCapacityofUserForProject(element[0].id, this.state.userId);
+
+        } catch (e) {
+            console.log(e);
+
+        }
+    }
+
+    componentDidMount() {
+        this.getActivitiesForProject(this.props.value)
+        console.log('this.props.value')
+
+    }
+
+
+    funcy() {
+        let len = this.state.activities.length
+        let liste = this.state.activities[0]
+        console.log(liste, len, 'hier ist wahrscheinlich was falsch...')
+        if (this.state.activities_vorhanden == true) {
+            return (
+                <div>
+                    {liste.map((element, index) => {
+                        console.log('Was ist hier?', element, index)
+                        const value = element.id
+                        console.log(value, 'VALUE', this.state.projectId)
+                        return (
+                            <IndividualEntry projectId={this.state.projectId} value={value} />
+                        )
+                    })}
+                </div>
+            )
+        } else {
+            return (
+                <div> Keine Aktivitäten vorhanden</div>
+            )
+        }
+
+    }
+
+
     render() {
         return (
             <div>
-                {this.state.activities.map((element, index) => {
-                    const value = element[index].id
-                    return <IndividualEntry value={value} />
-                })}
+                {
+                    this.state.activities_vorhanden ?
+                        this.funcy()
+                        : <div>
+                            <Alert sx={{ margin: 3 }} variant='outlined' severity="info">There are no activities for your project yet.</Alert>
+                        </div>
+                }
             </div>
         );
     }
 }
-
 export default OverIndividualEntry;
