@@ -171,27 +171,35 @@ class MyProjects extends Component {
 
   //ProjectUser BOs von User holen -> damit Projekte holen
   getProjects = () => {
-    WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
-      this.setState({
-        projectuser : projectuser
-      }, function(){
-        console.log("API ProjectUser")
-      })  
-    )
+    // WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
+    //   this.setState({
+    //     projectuser : projectuser
+    //   }, function(){
+    //     console.log("API ProjectUser")
+    //   })  
+    // )
     
-    let resproject = []
+    // let resproject = []
 
-    this.state.projectuser.forEach(elem => {
-      WorkTimeAppAPI.getAPI().getProject(elem.getProjectId()).then(project =>
-        resproject.append(project)
-      )
-    });
+    // this.state.projectuser.forEach(elem => {
+    //   WorkTimeAppAPI.getAPI().getProject(elem.getProjectId()).then(project =>
+    //     resproject.append(project)
+    //   )
+    // });
 
-    this.setState({
-      projects : resproject
-    }, function(){
-      console.log('Got the new projects')
-    })
+    // this.setState({
+    //   projects : resproject
+    // }, function(){
+    //   console.log('Got the new projects')
+    // })
+
+    WorkTimeAppAPI.getAPI().getProjectsByProjectUser(this.state.userId).then(project =>
+      this.setState({
+        projects : project
+      }, function(){
+        console.log("Projekte wurden geholt")
+      })
+    )
 
   }
 
@@ -247,6 +255,7 @@ class MyProjects extends Component {
 
   componentDidMount(){
     this.getProjects();
+    console.log("Component Did Mount")
   }
 
   render(){

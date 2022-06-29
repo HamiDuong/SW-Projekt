@@ -232,6 +232,8 @@ export default class WorkTimeAppAPI {
     #updateProjectURL = (id) => `${this.#worktimeappServerBaseURL}/project/${id}`;
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
 
+    #getProjectsByProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/project/${id}`;
+
     //Activity
     // Author Khadidja Kebaili
     #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`
@@ -1903,5 +1905,17 @@ export default class WorkTimeAppAPI {
                 resolve(responseProjectUserBO);
             })
         })}
+
+    //Project By ProjectUser By UserId
+    getProjectsByProjectUser(id){
+        return this.#fetchAdvanced(this.#getProjectsByProjectUserURL(id))
+            .then((responseJSON) => {
+                let workTimeAccountBO = WorkTimeAccountBO.fromJSON(responseJSON);
+                console.info(workTimeAccountBO);
+                return new Promise(function (resolve) {
+                    resolve(workTimeAccountBO);
+                })
+            })
+    }
     
 }
