@@ -120,7 +120,7 @@ class TimeIntervalBookings extends Component {
     Hier werden die Event Objekte geholt und in der Liste vacationIllnessEvents gespeichert. 
     */
     getEventBookings = () => {
-        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(1).then(vacationBOs =>
+        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(this.props.userId).then(vacationBOs =>
             this.setState({
                 vacationIllnessEvents: vacationBOs,
             }, function () {
@@ -134,7 +134,7 @@ class TimeIntervalBookings extends Component {
     */
 
     getProjects = () => {
-        WorkTimeAppAPI.getAPI().getAllProjectsForUserAndAdmin(this.props.userId).then(projectBOs =>
+        WorkTimeAppAPI.getAPI().getAllProjectsForUser(this.props.userId).then(projectBOs =>
             this.setState({
                 projects: projectBOs,
             }

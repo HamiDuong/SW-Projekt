@@ -787,6 +787,13 @@ class ProjectOperations(Resource):
                 proposal.get_commissioner(),
                 proposal.get_user_id(),
             )
+            pu = adm.create_projectuser(
+                p.get_id(),
+                p.get_user_id(),
+                100,
+                0
+            )
+
             return p
 
     @worktimeapp.marshal_list_with(project)
@@ -827,20 +834,6 @@ class ProjectUserOperationsII(Resource):
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_for_user(id)
-        return projects
-
-
-@worktimeapp.route('/projects/for/user/and/admin/<int:id>')
-@worktimeapp.param('id', 'Die ID des Users')
-class ProjectUserOperationsIII(Resource):
-    @worktimeapp.marshal_list_with(project)
-    @secured
-    def get(self, id):
-        adm = Businesslogic()
-        projects_for_members = adm.get_projects_for_user(id)
-        projects_for_admin = adm.get_projects_by_user_id(id)
-        projects = projects_for_members + projects_for_admin
-
         return projects
 
 
