@@ -235,6 +235,7 @@ flex_day_end = api.inherit('FlexDayEnd', bo, {
 })
 
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
 Timeinterval und zugehörige Subklassen
 """
 timeinterval = api.inherit('TimeInterval', bo, {
@@ -2389,11 +2390,11 @@ class ProjectWorkBeginOperations(Resource):
         else:
             return '', 500
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+
 Timeinterval
 """
-
 
 @worktimeapp.route('/timeinterval')
 class TimeIntervalOperations(Resource):
@@ -2421,7 +2422,6 @@ class TimeIntervalOperations(Resource):
         adm = Businesslogic()
         timeinterval = adm.get_all_timeintervals()
         return timeinterval
-
 
 @worktimeapp.route('timeinterval/<int:id>')
 @worktimeapp.param('id', 'ID des Timeintervalls')
@@ -2454,7 +2454,6 @@ class TimeIntervalWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('timeintervaltype/<string:type>')
 @worktimeapp.param('type', 'Type des Timeintervalls')
 class TimeIntervalWithTypeOperations(Resource):
@@ -2465,11 +2464,12 @@ class TimeIntervalWithTypeOperations(Resource):
         timeinterval = adm.get_timeinterval_by_type(type)
         return timeinterval
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 Break
 """
-
 
 @worktimeapp.route('/break')
 class BreakOperations(Resource):
@@ -2560,7 +2560,6 @@ class BreakOperations(Resource):
         breaks = adm.get_all_breaks()
         return breaks
 
-
 @worktimeapp.route('/break/<int:id>')
 @worktimeapp.param('id', 'ID der Break')
 class BreakWithIDOperations(Resource):
@@ -2600,7 +2599,6 @@ class BreakWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('breakdate/<string:start>')
 @worktimeapp.param('start', 'Start von Break')
 class FindBreakByDate(Resource):
@@ -2610,7 +2608,6 @@ class FindBreakByDate(Resource):
         adm = Businesslogic()
         breaks = adm.get_breaks_by_date(start)
         return breaks
-
 
 @worktimeapp.route('breakperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Break')
@@ -2622,11 +2619,12 @@ class FindBreakByTimePeriod(Resource):
         breaks = adm.get_breaks_by_time_period(start, end)
         return breaks
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 Illness
 """
-
 
 @worktimeapp.route('/illness')
 class IllnessOperations(Resource):
@@ -2666,7 +2664,6 @@ class IllnessOperations(Resource):
         adm = Businesslogic()
         illness = adm.get_all_illnesses()
         return illness
-
 
 @worktimeapp.route('illness/<int:id>')
 @worktimeapp.param('id', 'ID der Illness')
@@ -2721,7 +2718,6 @@ class IllnessWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('illnessdate/<string:start>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByDate(Resource):
@@ -2740,7 +2736,6 @@ class FindIllnessByDate(Resource):
             )
         return p
 
-
 @worktimeapp.route('illnessperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Illness')
 class FindIllnessByTimePeriod(Resource):
@@ -2751,11 +2746,12 @@ class FindIllnessByTimePeriod(Resource):
         illness = adm.get_illnesses_by_time_period(start, end)
         return illness
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 FlexDay
 """
-
 
 @worktimeapp.route('/flexday')
 class FlexDayOperations(Resource):
@@ -2843,7 +2839,6 @@ class FlexDayOperations(Resource):
         flexday = adm.get_all_flex_days()
         return flexday
 
-
 @worktimeapp.route('/flexday/<int:id>')
 @worktimeapp.param('id', 'ID der FlexDay')
 class FlexDayWithIDOperations(Resource):
@@ -2883,7 +2878,6 @@ class FlexDayWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('flexdaydate/<string:start>')
 @worktimeapp.param('start', 'Start von FlexDay')
 class FindBreakByDate(Resource):
@@ -2893,7 +2887,6 @@ class FindBreakByDate(Resource):
         adm = Businesslogic()
         flexday = adm.get_flex_days_by_date(start)
         return flexday
-
 
 @worktimeapp.route('flexdayperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von FlexDay')
@@ -2905,11 +2898,12 @@ class FindBreakByTimePeriod(Resource):
         flexday = adm.get_flex_days_by_time_period(start, end)
         return flexday
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 ProjectDuration
 """
-
 
 @worktimeapp.route('/projectduration')
 class ProjectDurationOperations(Resource):
@@ -2953,7 +2947,6 @@ class ProjectDurationOperations(Resource):
         projectduration = adm.get_all_project_durations()
         return projectduration
 
-
 @worktimeapp.route('/projectduration/<int:id>')
 @worktimeapp.param('id', 'ID der ProjectDuration')
 class ProjecDurationWithIDOperations(Resource):
@@ -2985,7 +2978,6 @@ class ProjecDurationWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('projectdurationdate/<string:start>')
 @worktimeapp.param('start', 'Start von ProjectDuration')
 class FindProjectDurationByDate(Resource):
@@ -2995,7 +2987,6 @@ class FindProjectDurationByDate(Resource):
         adm = Businesslogic()
         projectduration = adm.get_project_durations_by_date(start)
         return projectduration
-
 
 @worktimeapp.route('projectdurationperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von ProjectDuration')
@@ -3007,7 +2998,6 @@ class FindProjectDurationByTimePeriod(Resource):
         projectduration = adm.get_project_durations_by_time_period(start, end)
         return projectduration
 
-
 @worktimeapp.route('/projectdurationproject/<int:projectid>')
 @worktimeapp.param('projectid', 'Id von Project')
 class FindProjectDurationByProjectId(Resource):
@@ -3018,11 +3008,12 @@ class FindProjectDurationByProjectId(Resource):
         projectduration = adm.get_project_duration_by_project_id(projectid)
         return projectduration
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 ProjectWork
 """
-
 
 @worktimeapp.route('/projectwork')
 class ProjectWorkOperations(Resource):
@@ -3111,7 +3102,6 @@ class ProjectWorkOperations(Resource):
         projectwork = adm.get_all_project_works()
         return projectwork
 
-
 @worktimeapp.route('projectwork/<int:id>')
 @worktimeapp.param('id', 'ID der ProjectWork')
 class ProjecWorkWithIDOperations(Resource):
@@ -3151,7 +3141,6 @@ class ProjecWorkWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('projectworkdate/<string:start>')
 @worktimeapp.param('start', 'Start von ProjectWork')
 class FindProjectWorkByDate(Resource):
@@ -3173,7 +3162,6 @@ class FindProjectWorkByTimePeriod(Resource):
         projectwork = adm.get_project_works_by_time_period(start, end)
         return projectwork
 
-
 @worktimeapp.route('projectworkactivity/<int:activitytid>')
 @worktimeapp.param('id', 'Id von Project')
 class FindProjectWorkByProjectId(Resource):
@@ -3184,11 +3172,12 @@ class FindProjectWorkByProjectId(Resource):
         projectwork = adm.get_project_works_by_activity_id(id)
         return projectwork
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 Vacation
 """
-
 
 @worktimeapp.route('/vacation')
 class VacationOperations(Resource):
@@ -3229,7 +3218,6 @@ class VacationOperations(Resource):
         adm = Businesslogic()
         vacation = adm.get_all_vacations()
         return vacation
-
 
 @worktimeapp.route('/vacation/<int:id>')
 @worktimeapp.param('id', 'ID der Vacation')
@@ -3284,7 +3272,6 @@ class VacationWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('vacationdate/<string:start>')
 @worktimeapp.param('start', 'Start von Vacation')
 class FindVacationByDate(Resource):
@@ -3294,7 +3281,6 @@ class FindVacationByDate(Resource):
         adm = Businesslogic()
         vacation = adm.get_vacations_by_date(start)
         return vacation
-
 
 @worktimeapp.route('vacationperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Vacation')
@@ -3306,11 +3292,12 @@ class FindVacationByTimePeriod(Resource):
         vacation = adm.get_vacations_by_time_period(start, end)
         return vacation
 
-
 """
+@author Ha Mi Duong (https://github.com/HamiDuong)
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+
 Work
 """
-
 
 @worktimeapp.route('/work')
 class WorkOperations(Resource):
@@ -3400,7 +3387,6 @@ class WorkOperations(Resource):
         work = adm.get_all_works()
         return work
 
-
 @worktimeapp.route('work/<int:id>')
 @worktimeapp.param('id', 'ID der Work')
 class WorkWithIDOperations(Resource):
@@ -3438,7 +3424,6 @@ class WorkWithIDOperations(Resource):
         else:
             return '', 500
 
-
 @worktimeapp.route('workdate/<string:start>')
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByDate(Resource):
@@ -3449,7 +3434,6 @@ class FindWorkByDate(Resource):
         work = adm.get_works_by_date(start)
         return work
 
-
 @worktimeapp.route('vacationperiod/<string:start>/<string:end>')
 @worktimeapp.param('start', 'Start von Work')
 class FindWorkByTimePeriod(Resource):
@@ -3459,7 +3443,6 @@ class FindWorkByTimePeriod(Resource):
         adm = Businesslogic()
         work = adm.get_works_by_time_period(start, end)
         return work
-
 
 """
 Combined Methodes
@@ -3593,7 +3576,9 @@ class EventBookingOperationsWithParam(Resource):
                 user)
             return eventbookings
 
-
+"""
+@author Ha Mi Duong (https://github.com/HamiDuong)
+"""
 @worktimeapp.route('/projectuser/project/<int:id>')
 @worktimeapp.param('id', 'Die User ID')
 class ProjectsOfUser(Resource):
@@ -3604,7 +3589,9 @@ class ProjectsOfUser(Resource):
         projects = adm.get_projects_of_user(id)
         return projects
 
-
+"""
+@author Ha Mi Duong (https://github.com/HamiDuong)
+"""
 @worktimeapp.route('/activitiesproject/<int:id>')
 @worktimeapp.param('id', 'Die Projekt ID')
 class ActivityProjectId(Resource):
@@ -3614,7 +3601,6 @@ class ActivityProjectId(Resource):
         adm = Businesslogic()
         projects = adm.get_activities_by_project_id(id)
         return projects
-
 
 """
 Nachdem wir nun sämtliche Resourcen definiert haben, die wir via REST bereitstellen möchten,
