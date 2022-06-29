@@ -68,10 +68,10 @@ class OverEntry extends Component {
 
     checkActivities = (element) => {
         try {
-            this.getCapacityofUserForProject(element[0].id, this.state.userId);
             this.getCapacities(element);
             this.getActivityNames(element);
             this.setState({ activities_vorhanden: true })
+            this.getCapacityofUserForProject(element[0].id, this.state.userId);
 
         } catch (e) {
             console.log(e);

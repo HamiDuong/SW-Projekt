@@ -32,6 +32,7 @@ class Entry extends Component {
             members: '',
             userIds: [],
             open: false,
+            projectId: this.props.projectId
 
         })
     }
@@ -56,15 +57,21 @@ class Entry extends Component {
 
 
     getProjectUser(projectId) {
-        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member, index) =>
-            this.setState({
-                members: [...this.state.members, member[this.state.members.length]],
-                userIds: [...this.state.userIds, member[this.state.members.length].user_id]
-            }, function () {
-                for (var i = 0; i < this.state.members.length + 1; i++) {
-                    console.log('!!', this.state.userIds)
-                }
-            }))
+        WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member, index) => {
+            if (member.length == 0) {
+                this.setState({
+                    members: [0],
+                    userIds: [0]
+                })
+            }
+            else {
+                this.setState({
+                    members: [...this.state.members, member[this.state.members.length]],
+                    userIds: [...this.state.userIds, member[this.state.members.length].user_id]
+                })
+            }
+        }
+        )
     }
 
     handleClick() {
@@ -153,7 +160,7 @@ class Entry extends Component {
 
                                     {this.state.userIds.map(element => {
                                         return (
-                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} />)
+                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId} />)
                                     })}
 
                                 </TableBody>
