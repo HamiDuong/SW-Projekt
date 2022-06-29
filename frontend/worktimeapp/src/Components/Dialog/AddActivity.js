@@ -11,7 +11,8 @@ class AddActivity extends Component {
 
             name : '',
             capacity : '',
-            projectId : props.project.id
+            projectId : props.project.id,
+            currentCapacity: 0
         }
     }
 
@@ -31,7 +32,8 @@ class AddActivity extends Component {
         let activity = new ActivityBO(
             this.state.name,
             this.state.capacity,
-            this.state.projectId
+            this.state.projectId,
+            this.state.currentCapacity
         )
         WorkTimeAPI.getAPI().addActivity(activity).then(
             console.log(activity)
@@ -51,7 +53,7 @@ class AddActivity extends Component {
                         id="name"
                         label="Name"
                         variant="standard"
-                        value = {this.state.name}
+                        
                         onChange = {this.handleChange}
                         InputLabelProps={{
                             shrink: true,
@@ -61,7 +63,7 @@ class AddActivity extends Component {
                         id="capacity"
                         label="Capacity"
                         variant="standard"
-                        value = {this.state.capacity}
+                        
                         onChange = {this.handleChange}
                         InputLabelProps={{
                             shrink: true,
@@ -75,7 +77,7 @@ class AddActivity extends Component {
                         Cancel
                     </Button>
                     <Button
-                        onClick={this.handleClose}
+                        onClick={this.addActivity}
                     >
                         Add activity
                     </Button>

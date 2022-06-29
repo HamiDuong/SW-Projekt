@@ -2172,4 +2172,20 @@ export default class WorkTimeAppAPI {
             })
     }
 
+    updateProject(project) {
+        return this.#fetchAdvanced(this.#updateProjectURL(project), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(project)
+        }).then((responseJSON) => {
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProject)
+            })
+        })
+    }
+
 }
