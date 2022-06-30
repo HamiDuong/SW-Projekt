@@ -49,6 +49,14 @@ export default class ProjectUser extends BusinessObject{
         return this.currentCapacity;
     }
 
+    SetCurrentCapacity(currentCapacity){
+        this.currentCapacity = currentCapacity;
+    }
+
+    GetCurrentCapacity(){
+        return this.currentCapacity
+    }
+
 
     static fromJSON(projectuser){
         let res = [];
