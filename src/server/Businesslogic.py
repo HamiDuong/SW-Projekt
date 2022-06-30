@@ -2258,9 +2258,11 @@ class Businesslogic():
             mapper.delete(worktimeaccount_obj)
 
     """
+    @author [Vi Nam Le] (https://github.com/vinamle)
     Project
     """
 
+    # Projekt erstellen
     def create_project(self, name, commissioner, user_id):
         project = ProjectBO()
         project.set_name(name)
@@ -2269,38 +2271,47 @@ class Businesslogic():
         with ProjectMapper() as mapper:
             return mapper.insert(project)
 
+    # Projekt via Id holen
     def get_project_by_id(self, id):
         with ProjectMapper() as mapper:
             return mapper.find_by_key(id)
 
+    # letzten Eintrag von Projekt holen
     def get_last_project_entry(self):
         with ProjectMapper() as mapper:
             return mapper.find_last_entry()
 
+    # alle Projekte holen
     def get_all_projects(self):
         with ProjectMapper() as mapper:
             return mapper.find_all()
 
+    # Änderungen im Projekt speichern
     def save_project(self, project):
         with ProjectMapper() as mapper:
             mapper.update(project)
 
+    # Projekt löschen
     def delete_project(self, project):
         with ProjectMapper() as mapper:
             mapper.delete(project)
 
+    # Projekt via UserId holen
     def get_projects_by_user_id(self, id):
         with ProjectMapper() as mapper:
             return mapper.find_projects_by_user_id(id)
 
+    # Projekt via Name holen
     def get_by_project_name(self, name):
         with ProjectMapper() as mapper:
             mapper.find_by_project_name(name)
 
     """
+    @author [Vi Nam Le] (https://github.com/vinamle)
     Projectuser
     """
 
+    # ProjectUser erstellen
     def create_projectuser(self, project_id, user_id, capacity, current):
         projectuser = ProjectUserBO()
         projectuser.set_project_id(project_id)
@@ -2310,26 +2321,32 @@ class Businesslogic():
         with ProjectUserMapper() as mapper:
             return mapper.insert(projectuser)
 
+    # ProjectUser via Id holen
     def get_projectuser_by_id(self, id):
         with ProjectUserMapper() as mapper:
             return mapper.find_by_key(id)
 
+    # ProjectUser via UserId holen
     def get_project_user_by_user_id(self, id):
         with ProjectUserMapper() as mapper:
             return mapper.find_project_user_by_user_id(id)
 
+    # alle ProjectUser holen
     def get_all_projectusers(self):
         with ProjectUserMapper() as mapper:
             return mapper.find_all()
 
+    # Änderungen von ProjectUser speichern
     def save_projectuser(self, projectuser):
         with ProjectUserMapper() as mapper:
             mapper.update(projectuser)
 
+    # ProjectUser löschen
     def delete_projectuser(self, projectuser):
         with ProjectUserMapper() as mapper:
             mapper.delete(projectuser)
 
+    # ProjectUser via ProjectId holen
     def get_all_project_members(self, project_id):
         liste = self.get_all_projectusers()
         result = []
@@ -2338,8 +2355,12 @@ class Businesslogic():
                 result.append(elem)
         return result
 
-    # Activity
+    """
+    @author [Vi Nam Le] (https://github.com/vinamle)
+    Activity
+    """
 
+    # Activity erstellen
     def create_activity(self, name, capacity, project_id, current_capacity):
         activity = ActivityBO()
         activity.set_name(name)
@@ -2350,29 +2371,39 @@ class Businesslogic():
         with ActivityMapper() as mapper:
             return mapper.insert(activity)
 
+    # Acticity via Id holen
     def get_activity_by_id(self, id):
         with ActivityMapper() as mapper:
             return mapper.find_by_key(id)
 
+    # alle Activities holen
     def get_all_activities(self):
         with ActivityMapper() as mapper:
             return mapper.find_all()
 
+    # Änderungen in Activity speichern
     def save_activity(self, activity):
         with ActivityMapper() as mapper:
             mapper.update(activity)
 
+    # Activity löschen
     def delete_activity(self, activity):
         with ActivityMapper() as mapper:
             mapper.delete(activity)
 
+    # Acticity via Namen holen
     def get_by_name(self, name):
         with ActivityMapper() as mapper:
             return mapper.find_by_name(name)
 
+    # Activity via ProjectId holen
     def get_activities_by_project_id(self, project_id):
         with ActivityMapper() as mapper:
             return mapper.find_all_by_project_id(project_id)
+
+    """
+    gemischte Methoden
+    """
 
     def get_all_timeinterval_bookings(self):
         with TimeIntervalBookingMapper() as mapper:
