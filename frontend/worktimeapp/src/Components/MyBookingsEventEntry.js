@@ -1,12 +1,13 @@
-import { TableContainer } from '@mui/material';
 import React, {Component} from 'react';
-import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBookingEvent from './Dialog/EditBookingEvent';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Erstellung eines Eintrags für Eventbuchungen
+ */
 class MyBookingsEventEntry extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +20,7 @@ class MyBookingsEventEntry extends Component {
         }
     }
 
+    // Dialog zur Bearbeitung öffnen
     showEdit = () => {
         this.setState({
             showDialog: true
@@ -27,6 +29,7 @@ class MyBookingsEventEntry extends Component {
         })
     }
 
+    // Dialog zur Bearbeitugn schließen
     closeDialog = (booking) => {
         if(booking){
             this.updateBooking(booking)
@@ -45,10 +48,12 @@ class MyBookingsEventEntry extends Component {
         }
     }
 
+    // Debugging sobald die Komponente geladen ist
     componentDidMount(){
         console.log(this.state.booking)
     }
 
+    // Änderungen in den gerenderten Komponenten werden im State abgespeichert
     handleChange = ev => {
         this.setState({ [ev.target.name] : ev.target.value });
     };

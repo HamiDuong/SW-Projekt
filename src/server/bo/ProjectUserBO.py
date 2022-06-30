@@ -6,7 +6,6 @@ Klasse Projektmitarbeiter.
 Ein Projektmitarbeiter ist Teil eines oder mehreren Projekten
 """
 class ProjectUserBO(bo.BusinessObject):
-
     def __init__(self):
         super().__init__()
         self._project_id = None
@@ -46,7 +45,6 @@ class ProjectUserBO(bo.BusinessObject):
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
         return "ProjectUser: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(),
                                                          self.get_project_id(), self.get_user_id(),

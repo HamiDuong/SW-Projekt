@@ -54,6 +54,9 @@ class ActivityBO(bo.BusinessObject):
     """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz"""
     def __str__(self):
         return "Aktivität: {}, {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_current_capacity())
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
+        Diese besteht aus der ID der Superklasse ergänzt durch die Aktivitaeten eines Projekts."""
+
 
     @staticmethod
     def from_dict(dictionary=dict()):

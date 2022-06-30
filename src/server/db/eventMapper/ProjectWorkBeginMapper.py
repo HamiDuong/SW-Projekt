@@ -8,6 +8,13 @@ class ProjectWorkBeginMapper(Mapper):
         super().__init__()
 
     def insert(self, project_work_begin):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein ProjectWorkBeginBO in die Datenbank ein
+        param: project_work_begin (ProjectWorkBeginBO)
+        return: project_work_begin
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(
@@ -38,6 +45,12 @@ class ProjectWorkBeginMapper(Mapper):
         return project_work_begin
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle ProjectWorkBeginBO aus der Datenbank zurück
+        return: Liste mit ProjectWorkBeginBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -59,6 +72,14 @@ class ProjectWorkBeginMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ProjectWorkBeginBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem ProjectWorkBeginBO
+        return: ProjectWorkBeginBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -87,6 +108,14 @@ class ProjectWorkBeginMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das ProjectWorkBeginBO mit dem angegebenen Datumzurück
+        param: key (int) - Id vom gesuchtem ProjectWorkBeginBO
+        return: ProjectWorkBeginBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

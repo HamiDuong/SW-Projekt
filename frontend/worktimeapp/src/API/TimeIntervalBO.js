@@ -1,5 +1,10 @@
 import BusinessObject from './BusinessObject';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ *Objekt für Zeitintervalle
+ */
 export default class TimeIntervalBO extends BusinessObject {
     constructor(type, breakId, illnessId, projectDurationId, projectWorkId, vacationId, workId, flexDayId){
         super();
@@ -13,6 +18,7 @@ export default class TimeIntervalBO extends BusinessObject {
         this.flexDayId = flexDayId;
     }
 
+    // Getter und Setter
     setType(t){
         this.type = t;
     }
@@ -77,6 +83,7 @@ export default class TimeIntervalBO extends BusinessObject {
         return this.flexDayId;
     }
 
+    // wandelt JSON in TimeIntervalBO
     static fromJSON(timeintervals){
         let res = [];
         if(Array.isArray(timeintervals)){

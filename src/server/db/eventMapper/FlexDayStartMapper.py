@@ -8,6 +8,13 @@ class FlexDayStartMapper(Mapper):
         super().__init__()
 
     def insert(self, flex_day_start):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein FlexDayStartBO in die Datenbank ein
+        param: flex_day_start (FlexDayStartBO)
+        return: flex_day_start
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute(
@@ -38,7 +45,12 @@ class FlexDayStartMapper(Mapper):
         return flex_day_start
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
 
+        Gibt alle FlexDayEndBO aus der Datenbank zurück
+        return: Liste mit FlexDayStartBO (Liste)
+        """
         result = []
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdaystart"
@@ -59,6 +71,14 @@ class FlexDayStartMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das FlexDayStartBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem FlexDayStartBO
+        return: FlexDayStartBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -87,6 +107,14 @@ class FlexDayStartMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das FlexDayStartBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem FlexDayStartBO
+        return: FlexDayStartBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

@@ -22,6 +22,11 @@ import ProjectWorkStartBO from '../../API/EventBOs/ProjectWorkStartBO';
 import VacationEndBO from '../../API/EventBOs/VacationEndBO';
 import VacationStartBO from '../../API/EventBOs/VacationStartBO';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Dialog für die Bearbeitung von Eventbuchungen
+ */
 class EditBookingEvent extends Component {
     constructor(props) {
         super(props);
@@ -33,14 +38,17 @@ class EditBookingEvent extends Component {
         this.baseState = this.state;
     }
 
+    // schließen vom Dialog
     handleClose = () => {
         this.props.onClose(null)
     }
     
+    // löschen des Eintrags
     deleteBooking = () => {
         console.log("Booking löschen");
         const { booking } = this.props;
 
+        // Endpunkt entsprechend des Typs wählen
         switch(this.state.type){
             case "BreakStart":
                 WorkTimeAppAPI.getAPI().deleteBreakStart(booking.getId()).then(booking =>{
@@ -117,6 +125,7 @@ class EditBookingEvent extends Component {
 
     }
 
+    // Änderungen im State abspeichern
     saveChanges = () => {
         let timehold = document.getElementById("time");
         this.setState({
@@ -126,8 +135,11 @@ class EditBookingEvent extends Component {
         });
     }
 
+    // Änderungen abspeichern
     updateBooking = () => {
         let updatedbooking = null;
+
+        // Endpunkt entsprechen des Typs wählen
         switch(this.state.type){
             case "BreakStart":
                 updatedbooking = Object.assign(new BreakStartBO(), this.props.booking);

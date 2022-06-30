@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Pausen
+ */
 export default class BreakBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type){
         super();
@@ -51,6 +56,7 @@ export default class BreakBO extends BusinessObject{
         return this.type;
     }
 
+    // wandelt JSON in BreakBO um
     static fromJSON(breaks){
         let res = [];
         if(Array.isArray(breaks)){

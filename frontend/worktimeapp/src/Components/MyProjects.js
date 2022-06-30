@@ -37,6 +37,7 @@ import MyActivitiesEntry from './MyActivitiesEntry'
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import EditProject from './Dialog/EditProject';
 import AddActivity from './Dialog/AddActivity';
+import { isThursday } from 'date-fns';
 
 const header = [
   {
@@ -117,9 +118,13 @@ class MyProjects extends Component {
 
           showEditWindow: false,
           showEditActicity: false,
+
+          workTimeAccountId:0,
+          // userId: 1,
           showEditProject: false,
 
-          showAddActivity: false
+          showAddActivity: false,
+          selectedProjectId: null,
       }
   }
 
@@ -167,67 +172,103 @@ class MyProjects extends Component {
 
   //ProjectUser BOs von User holen -> damit Projekte holen
   getProjects = () => {
-    WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
-      this.setState({
-        projectuser : projectuser
-      }, function(){
-        console.log("API ProjectUser")
-      })  
-    )
+    // WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.userId).then(projectuser =>   
+    //   this.setState({
+    //     projectuser : projectuser
+    //   }, function(){
+    //     console.log("API ProjectUser")
+    //   })  
+    // )
     
-    let resproject = []
+    // let resproject = []
 
-    this.state.projectuser.forEach(elem => {
-      WorkTimeAppAPI.getAPI().getProject(elem.getProjectId()).then(project =>
-        resproject.append(project)
-      )
-    });
+    // this.state.projectuser.forEach(elem => {
+    //   WorkTimeAppAPI.getAPI().getProject(elem.getProjectId()).then(project =>
+    //     resproject.append(project)
+    //   )
+    // });
+
+    // this.setState({
+    //   projects : resproject
+    // }, function(){
+    //   console.log('Got the new projects')
+    // })
+
+    WorkTimeAppAPI.getAPI().getProjectsByProjectUser(this.state.userId).then(project =>
+      this.setState({
+        projects : project
+      }, function(){
+        console.log("Projekte wurden geholt", project[0])
+        this.state.projects.forEach(function(elem){
+          console.log(elem)
+        })
+      })
+    )
 
   }
 
   // updateProject = (project) => {
   // }
 
-  openEditProjectWindow = () => {
-    this.setState({
-      showEditProject: true
-    }, function(){
-      console.log('Edit Window Projekt öffnen')
-    })
+  // openEditProjectWindow = () => {
+  //   this.setState({
+  //     showEditProject: true
+  //   }, function(){
+  //     console.log('Edit Window Projekt öffnen')
+  //   })
 
-    console.log(this.state.showEditProject)
-  }
+  //   console.log(this.state.showEditProject)
+  // }
 
-  closeEditProjectWindow = () => {
-      this.setState({
-        showEditProject:false
-      }, function(){
-        console.log('Edit Window Projekt schließen')
-      })
-  }
+  // closeEditProjectWindow = () => {
+  //     this.setState({
+  //       showEditProject:false
+  //     }, function(){
+  //       console.log('Edit Window Projekt schließen')
+  //     })
+  // }
 
-  openAddActivityWindow = (item) => {
-    if(item.userId == this.state.userId){
-      this.setState({
-        showAddActivity: true
-      }, function(){
-        console.log('Add Activity Window öffnen')
-      })  
-      console.log(this.state.showEditProject)
-    }else{
-      alert('No authorization')
-    }
-  }
+  // openAddActivityWindow = () => {
+    // if(item.userId == this.state.userId){
+    //   this.setState({
+    //     showAddActivity: true
+    //   }, function(){
+    //     console.log('Add Activity Window öffnen')
+    //   })  
+    //   console.log(this.state.showEditProject)
+    // }else{
+    //   console.log('Hallo')
+    // }
+    
+  //     this.setState({
+  //       showAddActivity: true,
+      
+  //     }, function(){
+  //       console.log('Add Activity Window öffnen')
+  //     })  
+  //     console.log(this.state.showEditProject)
+    
+  // }
 
-  closeAddActivityWindow = () => {
-      this.setState({
-        showAddActivity:false
-      }, function(){
-        console.log('Add Activity Window schließen')
-      })
+  // closeAddActivityWindow = () => {
+  //     this.setState({
+  //       showAddActivity:false
+  //     }, function(){
+  //       console.log('Add Activity Window schließen')
+  //     })
+  // }
+
+  componentDidMount(){
+    this.getProjects();
+    console.log("Component Did Mount", this.state.projects)
+    
   }
 
   render(){
+    const {projects} = this.state
+    if(projects==null){
+      return null
+    }
     return(
       <Card sx={{ m:5, p:2, minwidth: 500}}>
         <Typography variant="h5" component="div">
@@ -238,7 +279,7 @@ class MyProjects extends Component {
           Your projects and activities at the moment. 
         </Typography>
 
-        {data.map((item) => (
+        {projects.map((item) => (
           <Accordion>
             <AccordionSummary>
               <TableRow>
@@ -261,15 +302,15 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <MyActivitiesEntry projectId = {item.id}></MyActivitiesEntry>
+                <MyActivitiesEntry projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
-              <Button onClick={this.openEditProjectWindow}>Edit Project</Button>
-              <Button onClick={this.openAddActivityWindow(item)}>Add Activity</Button>
+              {/* <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
+              <Button id = 'addActivity' onClick = {this.openAddActivityWindow} project = {item}>Add Activity</Button> */}
             </AccordionDetails>
-            <EditProject show={this.state.showEditProject} project = {item} onClose={this.closeEditProjectWindow}></EditProject>
-            <AddActivity show = {this.state.showAddActivity} project = {item} onClose = {this.closeAddActivityWindow}></AddActivity>
+            {/* <EditProject show={this.state.showEditProject} project = {item} onClose={this.closeEditProjectWindow}></EditProject>
+            <AddActivity show = {this.state.showAddActivity} project = {item} onClose = {this.closeAddActivityWindow}></AddActivity> */}
           </Accordion>
         ))}
       </Card>

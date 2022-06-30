@@ -49,7 +49,10 @@ class UserBO (bo.BusinessObject):
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
-        return "UserBO: Id {}, First Name {}, Last Name {}, Mail {}, GoogleId {}".format(self.get_id(), self.get_first_name(), self.get_last_name(), self.get_mail_adress(), self.get_google_user_id())
+        return "UserBO: Id: {}, DateOfLastChange: {}, First Name: {}, Last Name: {}, Mail: {}, GoogleUserId: {}".format(
+            self.get_id(), self.get_date_of_last_change(
+            ), self.get_first_name(), self.get_last_name(),
+            self.get_mail_adress(), self.get_google_user_id())
 
     @staticmethod
     def from_dict(dictionary=dict()):

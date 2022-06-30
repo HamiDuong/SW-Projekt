@@ -8,6 +8,13 @@ class FlexDayEndMapper(Mapper):
         super().__init__()
 
     def insert(self, flex_day_end):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Fügt ein FlexDayBeginBO in die Datenbank ein
+        param: flex_day_end (FlexDayEndBO)
+        return: flex_day_end
+        """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.flexdayend ")
@@ -37,6 +44,12 @@ class FlexDayEndMapper(Mapper):
         return flex_day_end
 
     def find_all(self):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt alle FlexDayEndBO aus der Datenbank zurück
+        return: Liste mit FlexDayEndBO (Liste)
+        """
 
         result = []
         cursor = self._cnx.cursor()
@@ -58,6 +71,14 @@ class FlexDayEndMapper(Mapper):
         return result
 
     def find_by_key(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das FlexDayEndBO mit den gegebener Id zurück
+        param: key (int) - Id vom gesuchtem FlexDayEndBO
+        return: FlexDayEndBO mit der eingegebenen Id
+        """
+
         result = None
 
         cursor = self._cnx.cursor()
@@ -85,6 +106,14 @@ class FlexDayEndMapper(Mapper):
         return result
 
     def find_by_date(self, key):
+        """
+        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+
+        Gibt das FlexDayEndBO mit dem angegebenen Datum zurück
+        param: key (int) - Id vom gesuchtem FlexDayEndBO
+        return: FlexDayEndBO mit dem angegebenen Datum
+        """
+
         result = []
 
         cursor = self._cnx.cursor()

@@ -117,6 +117,7 @@ class ActivityMapper(Mapper):
     param: activity_obj (ActivityBO) - ActivityBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
+
     def delete(self, activity_obj):
         cursor = self._cnx.cursor()
 
@@ -132,6 +133,7 @@ class ActivityMapper(Mapper):
     param: name (str) - UserId vom gesuchtem ActivityBO
     return: ActivityBO mit user_id = id
     """
+
     def find_by_name(self, name):
         result = None
         cursor = self._cnx.cursor()
@@ -161,6 +163,7 @@ class ActivityMapper(Mapper):
     param: project_id (int) - ProjectId vom gesuchtem ActivityBO
     return: ActivityBO mit project_id = project_id
     """
+
     def find_all_by_project_id(self, key):
         result = []
         cursor = self._cnx.cursor()
