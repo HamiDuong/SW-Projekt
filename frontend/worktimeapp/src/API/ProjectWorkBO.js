@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Projektarbeitszeit
+ */
 export default class ProjectWorkBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type, activityId){
         super();
@@ -11,7 +16,7 @@ export default class ProjectWorkBO extends BusinessObject{
         this.activityId = activityId;
     }
 
-    //Getter und Setter
+    // Getter und Setter
     setStart(start){
         this.start = start;
     }
@@ -60,6 +65,7 @@ export default class ProjectWorkBO extends BusinessObject{
         return this.activityId;
     }
 
+    // wandelt JSON in ProjectWorkBO
     static fromJSON(pWork){
         let res = [];
         if(Array.isArray(pWork)){
