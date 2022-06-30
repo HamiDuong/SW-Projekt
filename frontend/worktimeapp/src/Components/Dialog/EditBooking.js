@@ -17,6 +17,11 @@ import ProjectWorkBO from '../../API/ProjectWorkBO';
 import VacationBO from '../../API/VacationBO';
 import WorkBO from '../../API/WorkBO';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Dialog für die Bearbeitung von Intervalbuchungen
+ */
 class EditBooking extends Component {
     constructor(props) {
         super(props);
@@ -30,15 +35,18 @@ class EditBooking extends Component {
         this.baseState = this.state;
     }
 
+    // Schließen vom Dialog
     handleClose = () => {
         this.props.onClose(null)
     }
     
+    // Löschen der Buchung
     deleteBooking = (obj) => {
         console.log("Booking löschen")
 
         const { booking } = this.props;
 
+        // entsprechend der Art des Intervals wird ein anderer Endpunkt angesprochen
         switch(this.state.type){
             case "Break":
                 WorkTimeAppAPI.getAPI().deleteBreak(booking.getId()).then(booking =>{
@@ -87,6 +95,7 @@ class EditBooking extends Component {
 
     }
 
+    // neue Werte der Buchung im State speichern
     saveChanges = () => {
         let starthold = document.getElementById("startdate");
         let endhold = document.getElementById("enddate");
@@ -98,6 +107,7 @@ class EditBooking extends Component {
         });
     }
 
+    // Änderung der Intervalbuchung abspeichern
     updateBooking = () => {
         let starthold = document.getElementById("start");
         let endhold = document.getElementById("end");
@@ -109,6 +119,8 @@ class EditBooking extends Component {
         });
 
         let updatedbooking = null;
+
+        // richtigen Endpunkt entsprechend des Typs wählen
         switch(this.state.type){
             case "Break":
                 updatedbooking = Object.assign(new BreakBO(), this.props.booking);

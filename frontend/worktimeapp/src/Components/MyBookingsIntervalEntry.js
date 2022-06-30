@@ -1,13 +1,13 @@
-import { TableContainer } from '@mui/material';
 import React, {Component} from 'react';
-import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBooking from './Dialog/EditBooking'
 
-//Erstellung eines Eintrags in der Tabelle
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Erstellung eines Eintrags für Intervalbuchungen
+ */
 class MyBookingsIntervalEntry extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +20,7 @@ class MyBookingsIntervalEntry extends Component {
         }
     }
 
+    // Dialog für die Bearbeitung öffnen
     showEdit = () => {
         this.setState({
             showDialog: true
@@ -28,6 +29,7 @@ class MyBookingsIntervalEntry extends Component {
         })
     }
 
+    // Dialog für die Bearbeitung schließen
     closeDialog = (booking) => {
         if(booking){
             this.updateBooking(booking)
@@ -46,14 +48,15 @@ class MyBookingsIntervalEntry extends Component {
         }
     }
 
+    // Debugging sobald die Komponente geladen ist
     componentDidMount(){
         console.log(this.state.booking)
     }
 
+    // Änderungen in den gerenderten Komponenten im State abspeichern
     handleChange = ev => {
         this.setState({ [ev.target.name] : ev.target.value });
     };
-
 
     render() { 
         return (

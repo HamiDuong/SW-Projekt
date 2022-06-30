@@ -115,9 +115,9 @@ const fakebackend = {
 }
 
 /**
- * Table of all bookings of the current user
+ * @author [Ha Mi Duong] (https://github.com/HamiDuong)
  * 
- * @author [Ha Mi Duong] (https://github.com/HamiDuong)Böblingen
+ * All bookings of the current user in a table
  */
 
 class MyBookings extends Component {
