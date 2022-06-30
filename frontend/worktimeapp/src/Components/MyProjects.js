@@ -210,25 +210,25 @@ class MyProjects extends Component {
   // updateProject = (project) => {
   // }
 
-  openEditProjectWindow = () => {
-    this.setState({
-      showEditProject: true
-    }, function(){
-      console.log('Edit Window Projekt öffnen')
-    })
+  // openEditProjectWindow = () => {
+  //   this.setState({
+  //     showEditProject: true
+  //   }, function(){
+  //     console.log('Edit Window Projekt öffnen')
+  //   })
 
-    console.log(this.state.showEditProject)
-  }
+  //   console.log(this.state.showEditProject)
+  // }
 
-  closeEditProjectWindow = () => {
-      this.setState({
-        showEditProject:false
-      }, function(){
-        console.log('Edit Window Projekt schließen')
-      })
-  }
+  // closeEditProjectWindow = () => {
+  //     this.setState({
+  //       showEditProject:false
+  //     }, function(){
+  //       console.log('Edit Window Projekt schließen')
+  //     })
+  // }
 
-  openAddActivityWindow = () => {
+  // openAddActivityWindow = () => {
     // if(item.userId == this.state.userId){
     //   this.setState({
     //     showAddActivity: true
@@ -240,23 +240,23 @@ class MyProjects extends Component {
     //   console.log('Hallo')
     // }
     
-      this.setState({
-        showAddActivity: true,
+  //     this.setState({
+  //       showAddActivity: true,
       
-      }, function(){
-        console.log('Add Activity Window öffnen')
-      })  
-      console.log(this.state.showEditProject)
+  //     }, function(){
+  //       console.log('Add Activity Window öffnen')
+  //     })  
+  //     console.log(this.state.showEditProject)
     
-  }
+  // }
 
-  closeAddActivityWindow = () => {
-      this.setState({
-        showAddActivity:false
-      }, function(){
-        console.log('Add Activity Window schließen')
-      })
-  }
+  // closeAddActivityWindow = () => {
+  //     this.setState({
+  //       showAddActivity:false
+  //     }, function(){
+  //       console.log('Add Activity Window schließen')
+  //     })
+  // }
 
   componentDidMount(){
     this.getProjects();

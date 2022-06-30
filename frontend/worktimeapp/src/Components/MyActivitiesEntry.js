@@ -39,10 +39,12 @@ class MyActivitiesEntry extends Component {
             activity : null,
             showWorkDialog: false,
             userId: props.userId,
-            showAddActivity: false
+            showAddActivity: false,
+            showEditProject: false
         }
     }
 
+    // Aktivitäten eines Projekts holen
     getActivities = () => {
         WorkTimeAPI.getAPI().getActByProject(this.state.projectId).then( activities =>
             this.setState({
@@ -53,6 +55,7 @@ class MyActivitiesEntry extends Component {
         )
     }
 
+    // Dialog öffnen
     showEdit = () => {
         this.setState({
             showWorkDialog: true
@@ -60,12 +63,8 @@ class MyActivitiesEntry extends Component {
             console.log("EditWindow öffnen per OnClick")
         })
     }
-    togglePopupMyProjectsEntry() {
-        this.setState({
-          showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
-        });
-      }
 
+    // Schließen von Dialog 
     closeDialog = () => {
         this.setState({
             showWorkDialog: false
@@ -74,10 +73,37 @@ class MyActivitiesEntry extends Component {
         })
     }
 
+    togglePopupMyProjectsEntry() {
+        this.setState({
+          showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
+        });
+    }
+
+    // Activities des Projects holen sobald die Komponente geladen ist
     componentDidMount(){
         this.getActivities();
     }
 
+    // Dialog zur Bearbeitung von Projekt öffnen
+    openEditProjectWindow = () => {
+        this.setState({
+          showEditProject: true
+        }, function(){
+          console.log('Edit Window Projekt öffnen')
+        })
+        console.log(this.state.showEditProject)
+    }
+    
+    // Schließen von Dialog zur Bearbeitung von Projekt
+    closeEditProjectWindow = () => {
+        this.setState({
+            showEditProject:false
+        }, function(){
+            console.log('Edit Window Projekt schließen')
+        })
+    }
+
+    // Dialog zum Hinzufügen von von Aktivitäten öffnen
     openAddActivityWindow = () => {
         // if(item.userId == this.state.userId){
         //   this.setState({
@@ -96,16 +122,16 @@ class MyActivitiesEntry extends Component {
             console.log('Add Activity Window öffnen')
           })  
           console.log(this.state.showAddActivity)
-        
-      }
+    }
     
-      closeAddActivityWindow = () => {
-          this.setState({
+    // Dialog zum Hinzufügen von von Aktivitäten schließen
+    closeAddActivityWindow = () => {
+        this.setState({
             showAddActivity:false
-          }, function(){
+        }, function(){
             console.log('Add Activity Window schließen')
-          })
-      }
+        })
+    }
     
     render() { 
         const {activity} = this.state 
