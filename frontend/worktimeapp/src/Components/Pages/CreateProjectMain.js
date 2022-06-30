@@ -57,14 +57,10 @@ class CreateProjectMain extends Component {
             projectduration: null,
             workTimeAccountId: 1,
             eventBookingId: 0,
-            timeintervalBookingId: 0,
-            
-
-            
+            timeintervalBookingId: 0, 
         }
-
-
     }
+
     /**
      * Hier wird der Popup aufgerufen.
      */
@@ -91,7 +87,7 @@ class CreateProjectMain extends Component {
             }, this.addProjectDurationBooking(this.state.projectId),
             )
         )
-        }
+    }
     
     /**
      * Hier werden alle User Objekte geholt und in die Liste users gepsiechert.
@@ -130,15 +126,13 @@ class CreateProjectMain extends Component {
             console.log(this.state.type)
             console.log(newProjectDurationBO)
             console.log(newBookingBO)
-        
-        }
+    }
         
     /* 
     Sobald die Komponenten geladen hat sollen alle Users geholt werden.
     */
     componentDidMount(){
         this.getAllUsers();
-
     }
 
     /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
@@ -212,6 +206,7 @@ class CreateProjectMain extends Component {
         })
         console.log(this.state.end)
     }
+
     render() {
         const { projectName, projectNameValidationFailed, commissioner, commissionerValidationFailed } = this.state
         const func = this.showing()
@@ -239,7 +234,7 @@ class CreateProjectMain extends Component {
                 }}
                 noValidate
                 autoComplete="off"
-            >
+                >
                 {/**Hier befinden sich die TextFields für das befüllen der Values, die später in der Funktion addProject aufgerufen werden. */}
                 <TextField type='text' required fullWidth margin='normal' id='projectName' label='project name:' value={projectName}
                     onChange={this.textFieldValueChange} error={projectNameValidationFailed}
@@ -294,7 +289,6 @@ class CreateProjectMain extends Component {
 
             </Box>
             </Card>
-
         );
     }
 }

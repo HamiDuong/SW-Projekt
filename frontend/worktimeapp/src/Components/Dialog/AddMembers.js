@@ -18,7 +18,7 @@ import Card from '@mui/material/Card';
 class AddMembers extends Component {
   constructor(props) {
     super(props);
-     this.state={
+      this.state={
       projectId: '',
       userId: 1,
       capacity: 0,
@@ -35,7 +35,7 @@ class AddMembers extends Component {
       open: false,
       }
   
-     }
+  }
   
   /** In dieser Funktion kann man die einzelnen User mit der Nachname suchen. */
   searchUserNamesForProject = async () => {
@@ -81,12 +81,12 @@ class AddMembers extends Component {
 
       });
     }
-    }}
+    }
+  }
     /** Verwaltet Wertänderungen des Users select-Textfeldes */
   userSelectionChange = (event) => {
     let users = event.target.value;
     
-
     this.setState({
       selectedUser: users,
     });
@@ -101,40 +101,41 @@ class AddMembers extends Component {
     });
   }
   
-        handle(e) {
-          this.setState({
-            event: e.target.value,
-            selectedUser: true,
-            userId: e.target.value
+  handle(e) {
+    this.setState({
+    event: e.target.value,
+    selectedUser: true,
+    userId: e.target.value
             
-          }, console.log(this.state.userId));
-        }
+    }, console.log(this.state.userId));
+  }
 
-      /* 
-      Sobald die Komponenten geladen hat soll die Funktion searchUserNamesForProject geholt werden.
-      */
-       componentDidMount() {
-        this.searchUserNamesForProject(1)
-       } 
+  /* 
+  Sobald die Komponenten geladen hat soll die Funktion searchUserNamesForProject geholt werden.
+  */
+  componentDidMount() {
+    this.searchUserNamesForProject(1)
+  } 
 
-       addProjectUser = () => { 
-        let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.selectedUser.getID(), this.state.capacity, this.state.currentCapacity);
-        console.log(newProjectUser)
-        WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser => 
-         this.setState({
-          projectId: projectuser.project_id,
-          capacity: projectuser.capacity,
-          userId: projectuser.userId,
-          currentCapacity: projectuser.currentCapacity
-         }, 
-         function(){
-          console.log('Here', projectuser, this.state.projectId, this.state.capacity)
+  addProjectUser = () => { 
+    let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.selectedUser.getID(), this.state.capacity, this.state.currentCapacity);
+    console.log(newProjectUser)
+    WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser => 
+      this.setState({
+        projectId: projectuser.project_id,
+        capacity: projectuser.capacity,
+        userId: projectuser.userId,
+        currentCapacity: projectuser.currentCapacity
+      }, 
+        function(){
+        console.log('Here', projectuser, this.state.projectId, this.state.capacity)
          }))
-      }
+  }
+
   /** Verwaltet das Schliessen / Abbrechen-Klickereignis */
-    handleClose = () => {
-      this.props.closePopupMembers();
-      }
+  handleClose = () => {
+    this.props.closePopupMembers();
+  }
 
   state = {  }
   render() { 
@@ -143,7 +144,6 @@ class AddMembers extends Component {
     return ( 
       <Card sx={{ m:1, p:3, minwidth: 700}}>
       <Box>
-
             <form noValidate autoComplete='off'>
               {
                 // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
@@ -186,12 +186,6 @@ class AddMembers extends Component {
               <Button onClick={this.handleClose} color='secondary'>
               Cancel
             </Button>
-                {/* <Select onChange={this.handleChange}>
-                    {users.map(project =>
-                        users.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
-                    )}
-                </Select> */}
-                
             </Box>
             </Card>
      );

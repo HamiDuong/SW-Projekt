@@ -37,10 +37,8 @@ class CreateProject extends Component {
       projectId: '',
       users: props.users,
       showAddProjectMember: false,
-
     }
     this.baseState = this.state;
-
   }
   handleChange() {
     this.props.onChange()
@@ -106,6 +104,7 @@ class CreateProject extends Component {
       return <h1>You need to create a Project to add activities</h1>
     }
   }
+
   render() {
     /** Hier wird die Funktion showing in die Konstante gesetzt. */
     const showing = this.showing()
@@ -122,9 +121,7 @@ class CreateProject extends Component {
       >
         {/** Hier wird die funktion showing aufgerufen */}
         {showing}
-
       </Box>
-
     )
   }
 }

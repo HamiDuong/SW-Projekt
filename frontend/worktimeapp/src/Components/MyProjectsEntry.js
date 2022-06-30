@@ -100,7 +100,7 @@ startProjectWork=()=>{
     startActivity: format(new Date(), "yyyy-MM-dd HH:mm:ss")
           },function(){
             console.log('START',this.state.startActivity)
-})
+  })
   }
 }
 
@@ -119,8 +119,7 @@ endProjectWork=()=>{
           },
           function(){
               this.addProjectWork()
-            } 
-            )         
+          })         
 }
 
 /**
@@ -136,9 +135,9 @@ breakStart=()=>{
       startBreak: format(new Date(), "yyyy-MM-dd HH:mm:ss")
             },function(){
               console.log('START BREAK',this.state.startBreak)
-  })
-
+    })
 }
+
 /**
  * breakEnd startet den Break. Der Timer wird gestoppt.
  * In breakEnd wird das aktuelle Datum und Uhrzeit gespeichert.
@@ -153,7 +152,7 @@ breakEnd=()=>{
           },function(){
             this.addBreak()
           } 
-)
+  )
 }
 
 /**
@@ -183,6 +182,7 @@ showing() {
       return <h5>Please start the activity!</h5>
   }
 }
+
 /**
  * Mit dieser Funktion wird die Funktion startProjectWork aufgerufen.
  * Außerdem wird startButton auf True gesetzt.

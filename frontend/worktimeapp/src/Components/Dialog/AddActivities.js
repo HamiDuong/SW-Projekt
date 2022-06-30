@@ -49,7 +49,7 @@ class AddActivities extends Component {
          function(){
           console.log('Here', activity, this.state.projectId, this.state.activityName)
          }))
-      }
+    }
     
     /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
     textFieldValueChange = (event) => {
@@ -65,7 +65,7 @@ class AddActivities extends Component {
           [event.target.id + 'ValidationFailed']: error,
           [event.target.id + 'Edited']: true
         });
-        }
+    }
     
     render() { 
         const {activityName, activityNameValidationFailed, capacity, capacityValidationFailed} = this.state 
@@ -106,7 +106,7 @@ class AddActivities extends Component {
             </div>
             </Box>
             </Card>
-         );
+        );
     }
 }
 
