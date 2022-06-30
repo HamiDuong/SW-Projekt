@@ -3,6 +3,11 @@ import React, {Component} from 'react';
 import WorkTimeAPI from '../../API/WorkTimeAppAPI'
 import ActivityBO from '../../API/ActivityBO'
 
+/**
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * 
+ * Dialog um Aktivities zu bestehenden Projekten hinzuzufügen
+ */
 class AddActivity extends Component {
     constructor(props){
         super(props);
@@ -16,6 +21,7 @@ class AddActivity extends Component {
         }
     }
 
+    // Änderungen im State abspeichern
     handleChange = (event) => {
         const value = event.target.value;
     
@@ -31,12 +37,12 @@ class AddActivity extends Component {
         });
         }
 
-    //speichert Änderungen in den Textfeldern in State
+    // Dialogfenster schließen
     handleClose = () => {
         this.props.onClose(null)
     }
 
-    //erstellt ein neues ActivityBO mit den Daten aus State
+    // erstellt ein neues ActivityBO mit den Daten aus State
     addActivity = () => {
         let activity = new ActivityBO(
             this.state.name,

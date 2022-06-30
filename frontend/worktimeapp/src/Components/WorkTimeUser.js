@@ -8,7 +8,10 @@ import {
  import React, { Component } from 'react';
  import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
-
+/**
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ */
 class WorkTimeUser extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +28,7 @@ class WorkTimeUser extends Component {
 
     }
 
+    // String in Date umwandeln und formatieren in passenden String
     getValues = () => {
         let start = new Date(this.state.start);
         let day = start.getFate();
@@ -38,34 +42,34 @@ class WorkTimeUser extends Component {
         })
     }
 
+    //ContractTime des aktuellen Users holen
     getContracttimeOfCurrentUser = () => {
         WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(this.state.userId).then( worktimeaccount =>
             this.setState({
                 contracttime : worktimeaccount.getContractTime()
             })
-
         )
     }
 
+    // Zeitdifferenz zwischen Start und Ende berechnen
     getCalculatedTime = () => {
         let res = 0
 
         let start = new Date(this.state.start);
         let end = new Date(this.state.end);
 
-        let starttime
+        let starttime = start.getHours() + (start.getMinutes()/60)
+        let endtime = end.getHours() + (end.getMinutes()/60)
 
-        res = start - end
-
-        let wtime = res
+        res = endtime - starttime
 
         this.setState({
-            worktedtime : wtime
+            worktedtime : res
         })
-
-
     }
 
+    // wenn Komponente geladen ist werden die Daten aus Props umgewandelt und im State abgespeichert
+    // Zeitdifferenz berechnen
     componentDidMount(){
         console.log("Rows for Work Time Sheet did mount")
         this.getValues();

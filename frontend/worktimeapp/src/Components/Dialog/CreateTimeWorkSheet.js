@@ -16,7 +16,12 @@ import React, { Component } from 'react';
 import WorkTimeUser from '../WorkTimeUser';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-
+/**
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Erstellt einen Dialog mit den WorkBOs des aktuellen Users: gearbeitete Zeit, erwartete Zeit
+ */
 class CreateTimeWorkSheet extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +36,7 @@ class CreateTimeWorkSheet extends Component {
         };
     }
 
+    // ContractTime des akutellen Users im State abspeichern
     getContracttimeOfCurrentUser = () => {
         WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(this.state.userId).then( worktimeaccount =>
             this.setState({
@@ -40,10 +46,12 @@ class CreateTimeWorkSheet extends Component {
         )
     }
 
+    // Dialog schließen
     handleClose = () => {
         this.props.onClose(null)
     }
 
+    // Debugging sobald die Komponente geladen ist
     componentDidMount(){
         console.log(this.state.workbookings)
         //get Contract Time of current User
@@ -51,6 +59,7 @@ class CreateTimeWorkSheet extends Component {
         //get contract time
     }
 
+    // WorkBOs in Tabelle rendern
     createTimeSheet = () => {
         let bookings = this.state.workbookings;
         return(
