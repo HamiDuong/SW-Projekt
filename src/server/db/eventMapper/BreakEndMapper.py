@@ -107,7 +107,7 @@ class BreakEndMapper(Mapper):
 
     def find_by_date(self, key):
         """
-        @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
 
         Gibt das BreakEndBO mit dem angegebenen Datum zurück
         param: key (int) - Id vom gesuchtem ComingBO

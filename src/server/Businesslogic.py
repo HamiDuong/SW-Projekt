@@ -68,9 +68,28 @@ class Businesslogic():
     '''Beginn der Event-& und Evensubklassenmethoden'''
     '''Author: Khadidja Kebaili'''
 
-    def create_event(self, type, coming_id, going_id, break_begin_id,  break_end_id,
+    def create_event(self, type, coming_id, going_id, break_begin_id, break_end_id,
                      illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
                      vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines EventBOs mit Typ des Events und jeweils einen Fremdschlüssel
+        :param type: Event-Typ
+        :param coming_id: Fremdschlüssel ComingBO
+        :param going_id: Fremdschlüssel GoingBO
+        :param break_begin_id: Fremdschlüssel BreakBeginBO
+        :param break_end_id: Fremdschlüssel BreakEndBO
+        :param illness_begin_id: Fremdschlüssel IllnessBeginBO
+        :param illness_end_id: Fremdschlüssel IllnessEndBO
+        :param project_work_begin_id: Fremdschlüssel ProjectWorkBeginBO
+        :param project_work_end_id: Fremdschlüssel ProjectWorkEndBO
+        :param vacation_begin_id: Fremdschlüssel VacationBeginBO
+        :param vacation_end_id: Fremdschlüssel VacationEndBO
+        :param flex_day_start_id: Fremdschlüssel FlexDayStartBO
+        :param flex_day_end_id: Fremdschlüssel FlexDayEndBO
+        :return: EventBO mit Typ und einem Fremdschlüssel, restliche Parameter sind null-Werte
+        """
         event = EventBO()
         event.set_type(type),
         event.set_coming_id(coming_id),
@@ -88,17 +107,35 @@ class Businesslogic():
         with EventMapper() as mapper:
             return mapper.insert(event)
 
-    # Methode um ein EventBO mit bestimmter ID aus der Datenbank zu laden
-    def get_event_by_id(self, number):
-        with EventMapper() as mapper:
-            return mapper.find_by_key(number)
+    def get_event_by_id(self, id):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
 
-    # Methode um alle EventBOs aus der Datenbank zu laden
+        Methode um ein EventBO mit bestimmter ID aus der Datenbank zu laden
+        :param id: EventBO-ID
+        :return: EventBO
+        """
+        with EventMapper() as mapper:
+            return mapper.find_by_key(id)
+
     def get_all_events(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle EventBOs aus der Datenbank zu laden
+        :return: Array mit EventBOs
+        """
         with EventMapper() as mapper:
             return mapper.find_all()
 
     def get_all_events_by_type(self, type):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um EventBOs mit bestimmten Typ aus der Datenbank zu laden
+        :param type: Typ der Eventsubklasse (bspw. breakbegin)
+        :return: Array mit EventBOs
+        """
         events = self.get_all_events()
         events_of_type = []
         for elem in events:
@@ -106,18 +143,35 @@ class Businesslogic():
                 events_of_type.append(elem)
         return events_of_type
 
-    # Methode um ein EventBOs zu updaten
     def save_event(self, event):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        EventBO aus der Datenbank laden, updaten und speichern.
+        :param event: EventBO
+        """
         with EventMapper() as mapper:
             mapper.update(event)
 
-    # Methode um ein EventBO aus der Datenbank zu entfernen
     def delete_event(self, event):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein EventBO aus der Datenbank zu entfernen
+        :param event: EventBO
+        :return: EventBO
+        """
         with EventMapper() as mapper:
             mapper.delete(event)
-    # Erstellung eines ComingBOs, also wenn ein Mitarbeiter sich einstempelt.
 
     def create_coming(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+         Erstellung eines ComingBOs, also dem Kommenereignis, dass durch bspw. das Einstempeln erfasst wird.
+        :param time: Zeitpunkt des Ereignisses
+        :return: ComingBO
+        """
         coming = ComingBO()
         coming.set_time(time)
         with ComingMapper() as mapper:
@@ -159,8 +213,14 @@ class Businesslogic():
         with ComingMapper() as mapper:
             mapper.delete(coming)
 
-    # Erstellung eines GoingBOs, also wenn ein Mitarbeiter sich ausstempelt.
     def create_going(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+         Erstellung eines GoingBOs, also dem Kommenereignis, dass durch bspw. das Ausstempeln erfasst wird.
+        :param time: Zeitpunkt des Ereignisses
+        :return: GoingBO
+        """
         going = GoingBO()
         going.set_time(time)
         with GoingMapper() as mapper:
@@ -185,6 +245,7 @@ class Businesslogic():
                     "going_id", going.get_id(), going.get_type())
                 mapper.update(event)
                 self.save_event_booking(event)
+
     # Methode um ein GoingBO aus der Datenbank zu entfernen
 
     def delete_going(self, going):
@@ -201,8 +262,14 @@ class Businesslogic():
         with GoingMapper() as mapper:
             mapper.delete(going)
 
-    # Erstellung eines ProjectWorkBeginBOs, also wenn ein Mitarbeiter mit der Projektarbeit beginnt
     def create_project_work_begin(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+         Erstellung eines ProjectWorkBeginBOs, also wenn ein Mitarbeiter mit der Projektarbeit beginnt
+        :param time: Zeitpunkt des Ereignisses
+        :return: ProjectWorkBeginBO
+        """
         project_work_begin = ProjectWorkBeginBO()
         project_work_begin.set_time(time)
         with ProjectWorkBeginMapper() as mapper:
@@ -244,9 +311,14 @@ class Businesslogic():
         with ProjectWorkBeginMapper() as mapper:
             mapper.delete(project_work_begin)
 
-      # Erstellung eines ProjectWorkEndBOs, also wenn ein Mitarbeiter mit der Projektarbeit aufhört
-
     def create_project_work_end(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+         Erstellung eines ProjectWorkEndBOs, also wenn ein Mitarbeiter mit der Projektarbeit aufhört
+        :param time: Zeitpunkt des Ereignisses
+        :return: ProjectWorkEndBO
+        """
         project_work_end = ProjectWorkEndBO()
         project_work_end.set_time(time)
         with ProjectWorkEndMapper() as mapper:
@@ -288,9 +360,14 @@ class Businesslogic():
         with VacationBeginMapper() as mapper:
             mapper.delete(project_work_end)
 
-    # Erstellung eines VacationBeginBOs, also wenn ein Mitarbeiter seinen Urlaub antritt
-
     def create_vacation_begin(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+         Erstellung eines VacationBeginBOs, also wenn ein Mitarbeiter seinen Urlaub antritt
+        :param time: Zeitpunkt des Ereignisses
+        :return: VacationBeginBO
+        """
         vacation_begin = VacationBeginBO()
         vacation_begin.set_time(time)
         with VacationBeginMapper() as mapper:
@@ -337,8 +414,14 @@ class Businesslogic():
         with VacationBeginMapper() as mapper:
             mapper.delete(vacation_begin)
 
-    # Erstellung eines VacationEndBOs, also wenn ein Mitarbeiter aus dem Urlaub kommt
     def create_vacation_end(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines VacationEndBOs, also wenn ein Mitarbeiter aus dem Urlaub kommt
+        :param time: Zeitpunkt des Ereignisses
+        :return: VacationEndBO
+        """
         vacation_end = VacationEndBO()
         vacation_end.set_time(time)
         with VacationEndMapper() as mapper:
@@ -380,8 +463,14 @@ class Businesslogic():
         with VacationEndMapper() as mapper:
             mapper.delete(vacation_end)
 
-        # Erstellung eines IllnessBeginBOs, also der Beginn der Krankheit eines Mitarbeiters
     def create_illness_begin(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines IllnessBeginBOs, also der Beginn der Krankheit eines Mitarbeiters
+        :param time: Zeitpunkt des Ereignisses
+        :return: IllnessBeginBO
+        """
         illness_begin = IllnessBeginBO()
         illness_begin.set_time(time)
         with IllnessBeginMapper() as mapper:
@@ -399,6 +488,7 @@ class Businesslogic():
             return mapper.find_all()
 
         # Methode um ein IllnessBeginBO zu updaten
+
     def save_illness_begin(self, illness_begin):
         with IllnessBeginMapper() as mapper:
             mapper.update(illness_begin)
@@ -409,6 +499,7 @@ class Businesslogic():
                 self.save_event_booking(event)
 
         # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
+
     def delete_illness_begin(self, illness_begin):
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
@@ -428,8 +519,14 @@ class Businesslogic():
         with IllnessBeginMapper() as mapper:
             mapper.delete(illness_begin)
 
-        # Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
     def create_illness_end(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines IllnessEndBOs, also das Ende der Krankheit eines Mitarbeiters
+        :param time: Zeitpunkt des Ereignisses
+        :return: IllnessEndBO
+        """
         illness_end = IllnessEndBO()
         illness_end.set_time(time)
         with IllnessEndMapper() as mapper:
@@ -475,11 +572,15 @@ class Businesslogic():
             mapper.delete(endevent)
         with IllnessEndMapper() as mapper:
             mapper.delete(illness_end)
-        # Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
-
-    # Erstellung eines FlexDayStartBOs, also der Beginn der Gleittage eines Mitarbeiters
 
     def create_flex_day_start(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines FlexDayStartBOs, also der Beginn des Gleittags eines Mitarbeiters.
+        :param time: Zeitpunkt des Ereignisses
+        :return: FlexDayStartBO
+        """
         flex_day_start = FlexDayStartBO()
         flex_day_start.set_time(time)
         with FlexDayStartMapper() as mapper:
@@ -522,8 +623,14 @@ class Businesslogic():
         with FlexDayMapper() as mapper:
             mapper.delete(flex_day_start)
 
-    # Erstellung eines FlexDayEndBOs, also das Ende der Gleittage eines Mitarbeiters
     def create_flex_day_end(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines FlexDayEndBOs, also das Ende der Gleittage eines Mitarbeiters
+        :param time: Zeitpunkt des Ereignisses
+        :return: FlexDayEndBO
+        """
         flex_day_end = FlexDayEndBO()
         flex_day_end.set_time(time)
         with FlexDayEndMapper() as mapper:
@@ -564,9 +671,15 @@ class Businesslogic():
             mapper.delete(endevent)
         with FlexDayEndMapper() as mapper:
             mapper.delete(flex_day_end)
-        # Erstellung eines BreakEndBOs, also das Ende der Gleittage eines Mitarbeiters
 
     def create_break_begin(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines BreakBeginBOs, also des Pausenbegins eines Mitarbeiters.
+        :param time: Zeitpunkt des Ereignisses
+        :return: BreakBeginBO
+        """
         break_begin = BreakBeginBO()
         break_begin.set_time(time)
         with BreakBeginMapper() as mapper:
@@ -600,9 +713,14 @@ class Businesslogic():
         with BreakBeginMapper() as mapper:
             mapper.delete(break_begin)
 
-        # Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
-
     def create_break_end(self, time):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Erstellung eines BreakEndBOs, also das Ende der Krankheit eines Mitarbeiters
+        :param time: Zeitpunkt des Ereignisses
+        :return: BreakBeginBO
+        """
         break_end = BreakEndBO()
         break_end.set_time(time)
         with BreakEndMapper() as mapper:
@@ -634,75 +752,38 @@ class Businesslogic():
         with BreakEndMapper() as mapper:
             mapper.delete(breakEnd)
 
-    '''Dieser Teil ist für die Filter-Funktion im Frontend'''
-
-    # Support-Funktion
-    def in_between_times(self, event, start, end):
-        if event >= start and event <= end:
-            return event
-        else:  # over midnight e.g., 23:30-04:15
-            pass
-
     # Support-Funktion
     def get_all_event_subclasses(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Alle Subklassen der Klasse EventBO
+        :return: Array mit allen Event-Subklassen
+        """
         events = [self.get_all_break_ends(), self.get_all_break_begins(), self.get_all_project_work_begins(),
-                  self.get_all_project_work_ends(), self.get_all_vacation_begins(
-        ), self.get_all_vacation_ends(),
-            self.get_all_illnessBegins(), self.get_all_illnessEnds(),
-            self.get_all_comings(), self.get_all_goings()]
+                  self.get_all_project_work_ends(), self.get_all_vacation_begins(), self.get_all_vacation_ends(),
+                  self.get_all_illness_begins(), self.get_all_illness_end(), self.get_all_comings(),
+                  self.get_all_goings()]
         return events
-
-    # Support-Funktion
-    def get_all_events_in_between_times(self, start, end):
-        events_in_between_times = []
-        events = self.get_all_event_subclasses()
-        for elem in events:
-            events_in_between_times.append(
-                self.in_between_times(elem, start, end))
-        return events_in_between_times
-
-    def get_all_events_by_timeperiod(self, start, end):
-        enddate = datetime.now().fromisoformat(str(end))
-        startdate = datetime.now().fromisoformat(str(start))
-        events = self.get_all_event_subclasses()
-        interval = []
-        for elem in events:
-            for x in elem:
-                if x.get_time() >= startdate or x.get_time() <= enddate:
-                    interval.append(x)
-                else:
-                    pass
-        return interval
-
-    def get_event_by_timeperiod_and_type(self, start, end, type):
-        enddate = datetime.now().fromisoformat(str(end))
-        startdate = datetime.now().fromisoformat(str(start))
-        events = self.get_events_by_type(type)
-        interval = []
-        for elem in events:
-            if elem.get_time() >= startdate or elem.get_time() <= enddate:
-                interval.append(elem)
-            else:
-                pass
-        return interval
 
     """
     Timeinterval Methoden
     @author Ha Mi Duong (https://github.com/HamiDuong)
     """
 
-    #alle Timeintervalle holen
+    # alle Timeintervalle holen
     def get_all_timeintervals(self):
         with TimeIntervalMapper() as mapper:
             return mapper.find_all()
 
-    #Timeinterval mit gegebener Id holen
+    # Timeinterval mit gegebener Id holen
     def get_timeinterval_by_id(self, id):
         with TimeIntervalMapper() as mapper:
             return mapper.find_by_key(id)
 
-    #neues TimeintervalBO erstellen
-    def create_timeinterval(self, type, break_id, illness_id, project_duration_id, project_work_id, vacation_id, flexday_id, work_id):
+    # neues TimeintervalBO erstellen
+    def create_timeinterval(self, type, break_id, illness_id, project_duration_id, project_work_id, vacation_id,
+                            flexday_id, work_id):
         timeinterval = TimeIntervalBO()
         timeinterval.set_type(type)
         timeinterval.set_break_id(break_id)
@@ -716,12 +797,12 @@ class Businesslogic():
         with TimeIntervalMapper() as mapper:
             return mapper.insert(timeinterval)
 
-    #Änderungen im gegebenen TimeintervalBO abspeichern
+    # Änderungen im gegebenen TimeintervalBO abspeichern
     def save_timeinterval(self, timeinterval):
         with TimeIntervalMapper() as mapper:
             return mapper.update(timeinterval)
 
-    #löscht ein Timeinterval
+    # löscht ein Timeinterval
     def delete_timeinterval(self, timeinterval):
         with TimeIntervalMapper() as mapper:
             mapper.delete(timeinterval)
@@ -1004,7 +1085,7 @@ class Businesslogic():
                 mapper.delete(startevent)
             with IllnessBeginMapper() as mapper:
                 mapper.delete(illness_begin)
-        elif not(illness.get_end_event() == None):
+        elif not (illness.get_end_event() == None):
             with IllnessEndMapper() as mapper:
                 illness_end = mapper.find_by_key(
                     illness.get_end_event())
@@ -1187,7 +1268,7 @@ class Businesslogic():
                 mapper.delete(startevent)
             with VacationBeginMapper() as mapper:
                 mapper.delete(vacation_begin)
-        elif not(vacation_obj.get_end_event() == None):
+        elif not (vacation_obj.get_end_event() == None):
             with VacationEndMapper() as mapper:
                 vacation_end = mapper.find_by_key(
                     vacation_obj.get_end_event())
@@ -1609,6 +1690,7 @@ class Businesslogic():
     """
     Booking Methoden @author Mihriban Dogan (https://github.com/mihriban-dogan)
     """
+
     # Ein TimeIntervalBooking anhand der ID aus der Datenbank holen
 
     def get_timeinterval_booking_by_id(self, id):
@@ -1635,7 +1717,7 @@ class Businesslogic():
         with TimeIntervalBookingMapper() as mapper:
             return mapper.insert(timeintervalbooking)
 
-     # Ein EventBooking in die EventBooking Tabelle einfügen
+    # Ein EventBooking in die EventBooking Tabelle einfügen
     def create_event_booking(self, eventbookingId):
         """Ein Event Booking anlegen"""
 
@@ -2010,14 +2092,14 @@ class Businesslogic():
                 breaks = mapper.find_by_key(
                     timeinterval.get_break_id())
                 delta = breaks.get_end() - breaks.get_start()
-                delta_float = round(((delta.total_seconds()/60)/60), 2)
+                delta_float = round(((delta.total_seconds() / 60) / 60), 2)
                 self.calculate_delta_break_flexdays(tbooking, delta_float)
         if timeinterval.get_type() == "work":
             with WorkMapper() as mapper:
                 work = mapper.find_by_key(
                     timeinterval.get_work_id())
             delta = work.get_end() - work.get_start()
-            delta_float = round(((delta.total_seconds()/60)/60), 2)
+            delta_float = round(((delta.total_seconds() / 60) / 60), 2)
             print("Gearbeitete Zeit", delta_float)
             self.calculate_delta_work(tbooking, delta_float)
         if timeinterval.get_type() == "flexday":
@@ -2025,7 +2107,7 @@ class Businesslogic():
                 flexdays = mapper.find_by_key(
                     timeinterval.get_flex_day_id())
             delta = flexdays.get_end() - flexdays.get_start()
-            delta_float = round(((delta.total_seconds()/60)/60), 2)
+            delta_float = round(((delta.total_seconds() / 60) / 60), 2)
             self.calculate_delta_break_flexdays(tbooking, delta_float)
 
     # Die Arbeitszeit für ProjectWork Buchungen berechnen
@@ -2040,7 +2122,7 @@ class Businesslogic():
                 timeinterval.get_project_work_id())
 
         delta = projectwork.get_end() - projectwork.get_start()
-        delta_float = round(((delta.total_seconds()/60)/60), 2)
+        delta_float = round(((delta.total_seconds() / 60) / 60), 2)
         activityid = projectwork.get_activity_id()
 
         self.calculate_delta_for_project_work(
@@ -2402,24 +2484,49 @@ class Businesslogic():
             return mapper.find_all_by_project_id(project_id)
 
     """
-    gemischte Methoden
-    """
+    Zuordnung Project-User, geleistete Projektarbeit und zugehörige Projekte bzw. Aktivitäten
+    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+     """
 
     def get_all_timeinterval_bookings(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        Methode holt alle Timeinterval-Buchungen aus der Datenbank
+        :return: Array mit Timeintervalbookings.
+        """
         with TimeIntervalBookingMapper() as mapper:
             return mapper.find_all()
 
     def get_all_bookings_for_timeinterval(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        Methode holt alle Buchungen aus der Datenbank, die ein Timeinterval enthalten
+        :return: Array mit BookingBOs
+        """
         with BookingMapper() as mapper:
             return mapper.find_by_type('T')
 
     def get_project_by_name(self, name):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        
+        Lädt Projekte aus der Datenbank und gibt dasjenige Projekt mit dem gesuchten Namen zurück.
+        :param name: Name des zu holenden Projekts
+        :return: ProjectBO
+        """
         projects = self.get_all_projects()
         for elem in projects:
             if elem.get_name() == name:
                 return elem
 
     def get_projects_for_admin(self, admin):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        
+        Lädt Projekte aus der Datenbank und gibt dasjenige Projekt mit dem gesuchten Admin zurück.
+        :param admin: eingetragene UserId des Admins
+        :return: Admin (UserBO)
+        """
         all_projects = self.get_all_projects()
         projects_for_admin = []
         for elem in all_projects:
@@ -2428,6 +2535,13 @@ class Businesslogic():
         return projects_for_admin
 
     def get_projects_for_user(self, id):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        
+        Lädt Projekte aus der Datenbank und gibt diejenigen Projekte zurück, die als UserID die gesuchte id haben.
+        :param id: 
+        :return: 
+        """
         user = self.get_user_by_id(id)
         all_projects = self.get_all_projects()
         all_project_user = self.get_all_projectusers()
@@ -2498,7 +2612,7 @@ class Businesslogic():
                     sum = elem.get_end() - elem.get_start()
                     sum = sum.total_seconds()
                     sum_time.append(sum)
-            sum = math.fsum(sum_time)/3600
+            sum = math.fsum(sum_time) / 3600
             sum = round(sum, 2)
             return sum
         else:
