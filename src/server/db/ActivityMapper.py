@@ -2,7 +2,10 @@ from server.db.Mapper import Mapper
 from server.bo.ActivityBO import ActivityBO
 from datetime import datetime
 
-
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Mapper für Activity
+"""
 class ActivityMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -11,7 +14,6 @@ class ActivityMapper(Mapper):
     Gibt alle ActivityBO aus der Datenbank zurück
     return: Liste mit ActivityBO (list) - alle ActivityBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -36,7 +38,6 @@ class ActivityMapper(Mapper):
     param: key (int) - Id vom gesuchtem ActivityBO
     return: ActivityBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -67,7 +68,6 @@ class ActivityMapper(Mapper):
     param: activity_obj (ActivityBO) - ActivityBO welches eingefügt werden soll
     return: activity_obj
     """
-
     def insert(self, activity_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM activities")
@@ -97,7 +97,6 @@ class ActivityMapper(Mapper):
     param: activity_obj (ActivityBO) - ActivityBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, activity_obj):
         cursor = self._cnx.cursor()
 
@@ -130,7 +129,7 @@ class ActivityMapper(Mapper):
         cursor.close()
 
     """
-    Gibt das ActivityBO mit dem gegebenen Startdatum zurück
+    Gibt das ActivityBO mit dem gegebenen Namen zurück
     param: name (str) - UserId vom gesuchtem ActivityBO
     return: ActivityBO mit user_id = id
     """
@@ -160,7 +159,7 @@ class ActivityMapper(Mapper):
         return result
 
     """
-    Gibt das ActivityBO mit dem gegebenen Startdatum zurück
+    Gibt das ActivityBO mit gegebener project_id zurück
     param: project_id (int) - ProjectId vom gesuchtem ActivityBO
     return: ActivityBO mit project_id = project_id
     """

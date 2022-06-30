@@ -2,7 +2,10 @@ from server.db.Mapper import Mapper
 from server.bo.ProjectBO import ProjectBO
 from datetime import datetime
 
-
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Mapper für Projekte
+"""
 class ProjectMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -11,7 +14,6 @@ class ProjectMapper(Mapper):
     Gibt alle ProjectBO aus der Datenbank zurück
     return: Liste mit ProjectBO (list) - alle ProjectBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -36,7 +38,6 @@ class ProjectMapper(Mapper):
     param: key (int) - Id vom gesuchtem ProjectBO
     return: ProjectBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -64,7 +65,6 @@ class ProjectMapper(Mapper):
     param: project_obj (ProjectBO) - ProjectBO welches eingefügt werden soll
     return: project_obj
     """
-
     def insert(self, project_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM projects")
@@ -94,7 +94,6 @@ class ProjectMapper(Mapper):
     param: project_obj (ProjectBO) - ProjectBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, project_obj):
         cursor = self._cnx.cursor()
 
@@ -115,7 +114,6 @@ class ProjectMapper(Mapper):
     param: project_obj (ProjectBO) - ProjectBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-
     def delete(self, project_obj):
         cursor = self._cnx.cursor()
 
@@ -127,11 +125,10 @@ class ProjectMapper(Mapper):
         cursor.close()
 
     """
-    Gibt das ProjectBO mit dem gegebenen Startdatum zurück
+    Gibt das ProjectBO mit der gegebener user_id zurück
     param: id (int) - UserId vom gesuchtem ProjectBO
     return: ProjectBO mit userId = id
     """
-
     def find_projects_by_user_id(self, key):
         result = []
         cursor = self._cnx.cursor()
@@ -156,7 +153,7 @@ class ProjectMapper(Mapper):
         return result
 
     """
-    Gibt das ProjectBO mit dem gegebenen Startdatum zurück
+    Gibt das ProjectBO mit dem gegebenen Namen zurück
     param: name (str) - name vom gesuchtem ProjectBO
     return: ProjectBO mit name = name
     """
@@ -186,6 +183,10 @@ class ProjectMapper(Mapper):
 
         return result
 
+    """
+    Gibt den letzten Eintrag aus der Datenbank zurück
+    return: ProjectBO
+    """
     def find_last_entry(self):
 
         result = None

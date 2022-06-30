@@ -1,10 +1,11 @@
 from server.bo import BusinessObject as bo
 
-
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Klasse Aktivitaet.
+Eine Aktivitaet gehoert zu einem Projekt und gibt an was und wie lange am Projekt gearbeitet wird
+"""
 class ActivityBO(bo.BusinessObject):
-    """Klasse Aktivitaet.
-    Eine Aktivitaet gehoert zu einem Projekt und gibt an was und wie lange am Projekt gearbeitet wird
-    """
 
     def __init__(self):
         super().__init__()
@@ -50,15 +51,16 @@ class ActivityBO(bo.BusinessObject):
     def set_current_capacity(self, value):
         self._current_capacity = value
 
+    """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz"""
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-
+        return "Aktivität: {}, {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_current_capacity())
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
         Diese besteht aus der ID der Superklasse ergänzt durch die Aktivitaeten eines Projekts."""
-        return "Customer: {}, {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(), self.get_name(), self.get_capacity(), self.get_project_id(), self.get_current_capacity())
+
 
     @staticmethod
     def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in einen Customer()."""
+        """Umwandeln eines Python dict() in einen ActivityBO()."""
         obj = ActivityBO()
         obj.set_id(dictionary["id"])
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

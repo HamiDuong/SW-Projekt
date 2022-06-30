@@ -2,7 +2,10 @@ from server.db.Mapper import Mapper
 from server.bo.ProjectUserBO import ProjectUserBO
 from datetime import datetime
 
-
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Mapper für ProjectUser
+"""
 class ProjectUserMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -11,7 +14,6 @@ class ProjectUserMapper(Mapper):
     Gibt alle ProjectUserBO aus der Datenbank zurück
     return: Liste mit ProjectUserBO (list) - alle ProjectUserBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -37,7 +39,6 @@ class ProjectUserMapper(Mapper):
     param: key (int) - Id vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -98,6 +99,11 @@ class ProjectUserMapper(Mapper):
 
         return result
 
+    """
+    Gibt das ProjectUserBO mit gegebener user_id und project_id
+    param: user_id (Integer), project_id (Integer)
+    return: ProjectUserBO
+    """
     def find_project_user_by_user_id_and_project_id(self, user_id, project_id):
         result = None
         cursor = self._cnx.cursor()
@@ -128,7 +134,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches eingefügt werden soll
     return: projectuser_obj
     """
-
     def insert(self, projectuser_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM projectusers")
@@ -158,7 +163,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
@@ -179,7 +183,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-
     def delete(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
@@ -191,11 +194,10 @@ class ProjectUserMapper(Mapper):
         cursor.close()
 
     """
-    Gibt das ProjectUserBO mit dem gegebenen Startdatum zurück
+    Gibt alle ProjectUserBO mit gegebener projectId zurück
     param: id (int) - UserId vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit user_id = id
     """
-
     def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()

@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * Businessobject von Project
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
 export default class Project extends BusinessObject {
     constructor(name, commissioner, userId, projectId) {
         super();
