@@ -22,6 +22,7 @@ import {
 import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
 import CreateTimeWorkSheet from '../Dialog/CreateTimeWorkSheet';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
 // header cells for booking table
 const header = [
@@ -128,6 +129,7 @@ class MyBookings extends Component {
 
             intervalbookings: [],
             eventbookings: [],
+            eventbookings2:[],
 
             filteredintervalbookings: [],
             filteredeventbookings: [],
@@ -155,6 +157,7 @@ class MyBookings extends Component {
         this.getBookings();
         this.getWorkBookings();
         console.log("userid bookings", this.props.userId);
+        console.log("INTERVALBOOKINGS", this.state.intervalbookings)
         //this.getWorkBookings();
     }
 
@@ -174,24 +177,32 @@ class MyBookings extends Component {
 
         // !--Hier umstellen vor Deployment--!
 
-        // WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
-        //     this.setState({
-        //         intervalbookings: responseJSON.timeintervals,
-        //         eventbookings: responseJSON.events,
-        //         filteredintervalbookings: responseJSON.timeintervals,
-        //         filteredeventbookings: responseJSON.events            
-        //     },function(){
-        //         console.log("getBookings");
-        //     }))
+        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
+            this.setState({
+                intervalbookings: responseJSON.timeintervals,
+                eventbookings: responseJSON.events,
+                filteredintervalbookings: responseJSON.timeintervals,
+                filteredeventbookings: responseJSON.events            
+            },function(){
+                console.log(this.state.intervalbookings);
+            }))
 
-        this.setState({
-            intervalbookings: fakebackend.timeintervals,
-            eventbookings: fakebackend.events,
-            filteredintervalbookings: fakebackend.timeintervals,
-            filteredeventbookings: fakebackend.events
-        }, function () {
-            console.log("getBookings");
-        });
+        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(this.props.userId).then(vacationBOs =>
+            this.setState({
+                eventbookings2: vacationBOs,        
+            },function(){
+                console.log(this.state.eventbookings2);
+            }))
+
+
+        // this.setState({
+        //     intervalbookings: fakebackend.timeintervals,
+        //     eventbookings: fakebackend.events,
+        //     filteredintervalbookings: fakebackend.timeintervals,
+        //     filteredeventbookings: fakebackend.events
+        // }, function () {
+        //     console.log("getBookings");
+        // });
 
         // Filter intervalbookings with the type 'Work'
         let res = [];
@@ -447,6 +458,9 @@ class MyBookings extends Component {
             <TableBody>
                 {
                     this.state.filteredeventbookings.map(row => <MyBookingsEventEntry booking={row} userId={this.props.userId} />)
+                }
+                {
+                    this.state.eventbookings2.map(row =><MyBookingsEventEntry booking={row} userId={this.props.userId} />)
                 }
             </TableBody>
         )

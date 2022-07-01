@@ -25,7 +25,7 @@ class MyBookingsIntervalEntry extends Component {
         this.setState({
             showDialog: true
         }, function(){
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
@@ -59,6 +59,7 @@ class MyBookingsIntervalEntry extends Component {
     };
 
     render() { 
+        const {booking} = this.state
         return (
             <>
                 <TableRow
@@ -71,7 +72,7 @@ class MyBookingsIntervalEntry extends Component {
                     <TableCell>{this.state.booking.end}</TableCell>
 
                 </TableRow>
-                <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}/>
+                <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={booking}/>
             </>
         );
     }

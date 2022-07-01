@@ -47,81 +47,94 @@ class EditBookingEvent extends Component {
     deleteBooking = () => {
         console.log("Booking löschen");
         const { booking } = this.props;
+        console.log(booking)
 
         // Endpunkt entsprechend des Typs wählen
-        switch(this.state.type){
-            case "BreakStart":
-                WorkTimeAppAPI.getAPI().deleteBreakStart(booking.getId()).then(booking =>{
-                    console.log("Delete BreakStart");
-                    console.log(booking);
-                });
-            
-            case "BreakEnd":
-                WorkTimeAppAPI.getAPI().deleteBreakEnd(booking.getId()).then(booking =>{
-                    console.log("Delete BreakEnd");
-                    console.log(booking);
-                });
-
-            case "Coming":
-                WorkTimeAppAPI.getAPI().deleteComing(booking.getId()).then(booking =>{
-                    console.log("Delete Coming");
-                    console.log(booking);
-                });
-
-            case "Going":
-                WorkTimeAppAPI.getAPI().deleteGoing(booking.getId()).then(booking =>{
-                    console.log("Delete Going");
-                    console.log(booking);
-                });
-
-            case "FlexDayEnd":
-                WorkTimeAppAPI.getAPI().deleteFlexDayEnd(booking.getId()).then(booking =>{
-                    console.log("Delete FlexDayEnd");
-                    console.log(booking);
-                });
-
-            case "FlexDayStart":
-                WorkTimeAppAPI.getAPI().deleteFlexDayStart(booking.getId()).then(booking =>{
-                    console.log("Delete FlexDayStart");
-                    console.log(booking);
-                });
-
-            case "IllnessStart":
-                WorkTimeAppAPI.getAPI().deleteIllnessStart(booking.getId()).then(booking =>{
-                    console.log("Delete IllnessStart");
-                    console.log(booking);
-                });
-
-            case "IllnessEnd":
-                WorkTimeAppAPI.getAPI().deleteIllnessEnd(booking.getId()).then(booking =>{
-                    console.log("Delete IllnessEnd");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkStart":
-                WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking =>{
-                    console.log("Delete ProjectWorkStart");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkEnd":
-                WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking =>{
-                    console.log("Delete ProjectWorkEnd");
-                    console.log(booking);
-                });
-
-            case "VacationStart":
-                WorkTimeAppAPI.getAPI().deleteVacationStart(this.state.booking).then(booking =>{
-                    console.log("Delete VacationStart");
-                    console.log(booking);
-                });
-
-            case "VacationEnd":
-                WorkTimeAppAPI.getAPI().deleteVacationEnd(this.state.booking).then(booking =>{
-                    console.log("Delete VacationEnd");
-                    console.log(booking);
-                });                    
+        
+        if(this.state.type == "breakstart"){
+            WorkTimeAppAPI.getAPI().deleteBreakStart(this.state.booking).then(booking =>{
+                console.log("Delete BreakStart");
+                console.log(booking);
+            });
         }
+
+        if(this.state.type == "breakend"){
+            WorkTimeAppAPI.getAPI().deleteBreakEnd(this.state.booking).then(booking =>{
+                console.log("Delete BreakEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "coming"){
+            WorkTimeAppAPI.getAPI().deleteComing(this.state.booking).then(booking =>{
+                console.log("Delete Coming");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "going"){
+            WorkTimeAppAPI.getAPI().deleteGoing(this.state.booking).then(booking =>{
+                console.log("Delete Going");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "flexdayend"){
+            WorkTimeAppAPI.getAPI().deleteFlexDayEnd(this.state.booking).then(booking =>{
+                console.log("Delete FlexDayEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "flexdaystart"){
+            WorkTimeAppAPI.getAPI().deleteFlexDayStart(this.state.booking).then(booking =>{
+                console.log("Delete FlexDayStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "illnessbegin"){
+            WorkTimeAppAPI.getAPI().deleteIllnessStart(this.state.booking).then(booking =>{
+                console.log("Delete IllnessStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "illnessend"){
+            WorkTimeAppAPI.getAPI().deleteIllnessEnd(this.state.booking).then(booking =>{
+                console.log("Delete IllnessEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "projectworkstart"){
+            WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking =>{
+                console.log("Delete ProjectWorkStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "projectworkend"){
+            WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking =>{
+                console.log("Delete ProjectWorkEnd");
+                console.log(booking);      
+            });      
+        }
+
+        if(this.state.type == "vacationbegin"){
+            WorkTimeAppAPI.getAPI().deleteVacationStart(this.state.booking).then(booking =>{
+                console.log("Delete VacationStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "vacationend"){
+            WorkTimeAppAPI.getAPI().deleteVacationEnd(this.state.booking).then(booking =>{
+                console.log("Delete VacationEnd");
+                console.log(booking);
+            });              
+        }
+        this.handleClose();
 
     }
 
@@ -139,104 +152,121 @@ class EditBookingEvent extends Component {
     updateBooking = () => {
         let updatedbooking = null;
 
+        let timehold = document.getElementById("time");
+        let val = timehold.value
+
+        console.log(this.state.time);
+
         // Endpunkt entsprechen des Typs wählen
-        switch(this.state.type){
-            case "BreakStart":
-                updatedbooking = Object.assign(new BreakStartBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateBreakStart(updatedbooking).then(booking =>{
-                    console.log("Update BreakStart");
-                    console.log(booking);
-                });
-
-            case "BreakEnd":
-                updatedbooking = Object.assign(new BreakEndBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateBreakEnd(updatedbooking).then(booking =>{
-                    console.log("Update BreakEnd");
-                    console.log(booking);
-                });
-
-            case "Coming":
-                updatedbooking = Object.assign(new ComingBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateComing(updatedbooking).then(booking =>{
-                    console.log("Update Coming");
-                    console.log(booking);
-                });
-
-            case "Going":
-                updatedbooking = Object.assign(new GoingBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateGoing(updatedbooking).then(booking =>{
-                    console.log("Update Going");
-                    console.log(booking);
-                });
-
-            case "FlexDayEnd":
-                updatedbooking = Object.assign(new FlexDayEndBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateFlexDayEnd(updatedbooking).then(booking =>{
-                    console.log("Update FlexDayEnd");
-                    console.log(booking);
-                });
-
-            case "FlexDayStart":
-                updatedbooking = Object.assign(new FlexDayStartBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateFlexDayStart(updatedbooking).then(booking =>{
-                    console.log("Update FlexDayStart");
-                    console.log(booking);
-                });
-
-            case "IllnessStart":
-                updatedbooking = Object.assign(new IllnessStartBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateIllnessStart(updatedbooking).then(booking =>{
-                    console.log("Update IllnessStart");
-                    console.log(booking);
-                });
-
-            case "IllnessEnd":
-                updatedbooking = Object.assign(new IllnessEndBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateIllnessEnd(updatedbooking).then(booking =>{
-                    console.log("Update IllnessEnd");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkStart":
-                updatedbooking = Object.assign(new ProjectWorkStartBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateProjectWorkStart(updatedbooking).then(booking =>{
-                    console.log("Update ProjectWorkStart");
-                    console.log(booking);
-                });
-
-            case "ProjectWorkEnd":
-                updatedbooking = Object.assign(new ProjectWorkEndBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateProjectWorkEnd(updatedbooking).then(booking =>{
-                    console.log("Update ProjectWorkEnd");
-                    console.log(booking);
-                });
-
-            case "VacationStart":
-                updatedbooking = Object.assign(new VacationStartBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateVacationStart(updatedbooking).then(booking =>{
-                    console.log("Update VacationStart");
-                    console.log(booking);
-                });
-
-            case "VacationEnd":
-                updatedbooking = Object.assign(new VacationEndBO(), this.props.booking);
-                updatedbooking.setTime(this.state.time);
-                WorkTimeAppAPI.getAPI().updateVacationEnd(updatedbooking).then(booking =>{
-                    console.log("Update VacationEnd");
-                    console.log(booking);
-                });
+        if(this.state.type == "breakstart"){
+            updatedbooking = Object.assign(new BreakStartBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateBreakStart(updatedbooking).then(booking =>{
+                console.log("Update BreakStart");
+                console.log(booking);
+            });            
         }
+
+        if(this.state.type == "breakend"){
+            updatedbooking = Object.assign(new BreakEndBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateBreakEnd(updatedbooking).then(booking =>{
+                console.log("Update BreakEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "coming"){
+            updatedbooking = Object.assign(new ComingBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateComing(updatedbooking).then(booking =>{
+                console.log("Update Coming");
+                console.log(booking);
+            });
+        }
+
+        if(this.state.type == "going"){
+            updatedbooking = Object.assign(new GoingBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateGoing(updatedbooking).then(booking =>{
+                console.log("Update Going");
+                console.log(booking);
+            });            
+        }
+        
+
+        if(this.state.type == "flexdayend"){
+            updatedbooking = Object.assign(new FlexDayEndBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateFlexDayEnd(updatedbooking).then(booking =>{
+                console.log("Update FlexDayEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "flexdaystart"){
+            updatedbooking = Object.assign(new FlexDayStartBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateFlexDayStart(updatedbooking).then(booking =>{
+                console.log("Update FlexDayStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "illnessbegin"){
+            updatedbooking = Object.assign(new IllnessStartBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateIllnessStart(updatedbooking).then(booking =>{
+                console.log("Update IllnessStart");
+                console.log(booking);
+            });
+        }
+
+        if(this.state.type == "illnessend"){
+            updatedbooking = Object.assign(new IllnessEndBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateIllnessEnd(updatedbooking).then(booking =>{
+                console.log("Update IllnessEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "projectworkstart"){
+            updatedbooking = Object.assign(new ProjectWorkStartBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateProjectWorkStart(updatedbooking).then(booking =>{
+                console.log("Update ProjectWorkStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "projectworkend"){
+            updatedbooking = Object.assign(new ProjectWorkEndBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateProjectWorkEnd(updatedbooking).then(booking =>{
+                console.log("Update ProjectWorkEnd");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "vacationbegin"){
+            updatedbooking = Object.assign(new VacationStartBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateVacationStart(updatedbooking).then(booking =>{
+                console.log("Update VacationStart");
+                console.log(booking);
+            });            
+        }
+
+        if(this.state.type == "vacationend"){
+            updatedbooking = Object.assign(new VacationEndBO(), this.props.booking);
+            updatedbooking.setTime(val);
+            WorkTimeAppAPI.getAPI().updateVacationEnd(updatedbooking).then(booking =>{
+                console.log("Update VacationEnd");
+                console.log(booking);
+            });            
+        }
+        this.handleClose()
     }
 
     render() { 
@@ -252,7 +282,7 @@ class EditBookingEvent extends Component {
                             id = "type"
                             label = "Type"
                             variant = 'standard'
-                            defaultValue={this.state.booking.type}       
+                            value = {this.state.type}      
                             InputLabelProps={{
                                 readOnly: true
                             }}                                             
@@ -263,7 +293,7 @@ class EditBookingEvent extends Component {
                                 id = "time"
                                 label="Date"
                                 variant = "standard"
-                                defaultValue={this.state.booking.time}
+                                defaultValue={this.state.time}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}

@@ -15,17 +15,29 @@ class EditProject extends Component {
     constructor(props){
         super(props);
         this.state = {
-            project : props.project,
-            activity : '',
+            projectId : this.props.project,
+            p : '',
 
-            projectname : props.project.name,
-            commissioner : props.project.commissioner
+            projectname : '',
+            commissioner : ''
         }
         this.baseState = this.state;
     }
 
     handleClose = () => {
         this.props.onClose(null);
+    }
+
+    getProject = () => {
+        WorkTimeAPI.getAPI().getProject(this.state.projectId).then( project =>
+            this.setState({
+                p : project,
+                projectname : project.name,
+                commissioner : project.commissioner
+            }, function(){
+                console.log("Projekt aus Backend")
+            })
+        )
     }
 
     deleteProject = (project) => {
@@ -35,16 +47,22 @@ class EditProject extends Component {
     }
 
     updateProject = () => {
-        let updatedProject = Object.assign(new ProjectBO(), this.state.project);
-        updatedProject.setName(this.state.projectname);
-        updatedProject.setCommissioner(this.state.commissioner);
+        console.log("Update Projekt")
+        let hold = document.getElementById("projectname");
+        let pname = hold.value;
+        let hold2 = document.getElementById("commissioner");
+        let commi = hold2.value;
+
+        let updatedProject = Object.assign(new ProjectBO(), this.state.p);
+        updatedProject.setName(pname);
+        updatedProject.setCommissioner(commi);
 
         WorkTimeAPI.getAPI().updateProject(updatedProject).then(
             console.log(updatedProject)
         ).then(
             project => {
-                this.baseState.projectname = this.state.projectname;
-                this.baseState.commissioner = this.state.commissioner;
+                this.baseState.projectname = pname;
+                this.baseState.commissioner = commi;
             }
         )
         this.handleClose();
@@ -58,6 +76,14 @@ class EditProject extends Component {
                 console.log("Activities aus Backend")
             })
         )
+    }
+
+    handleChange = ev => {
+        this.setState({ [ev.target.name]: ev.target.value });
+    };
+
+    componentDidMount(){
+        this.getProject()
     }
     
     render() { 
@@ -80,7 +106,7 @@ class EditProject extends Component {
                         }}
                     />
                     <TextField
-                        id="commisioner"
+                        id="commissioner"
                         label="Commisioner"
                         variant="standard"
                         defaultValue={this.state.commissioner}
