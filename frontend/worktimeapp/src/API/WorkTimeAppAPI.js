@@ -2183,7 +2183,7 @@ export default class WorkTimeAppAPI {
     }
 
     updateProject(project) {
-        return this.#fetchAdvanced(this.#updateProjectURL(project), {
+        return this.#fetchAdvanced(this.#updateProjectURL(project.getID()), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -2196,6 +2196,16 @@ export default class WorkTimeAppAPI {
                 resolve(responseProject)
             })
         })
+    }
+
+    getProject(project) {
+        return this.#fetchAdvanced(this.#getProjectURL(project)).then((responseJSON) => {
+            let responseproject = ProjectBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseproject)
+            })
+        })
+
     }
 
 }

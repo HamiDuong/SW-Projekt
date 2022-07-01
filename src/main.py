@@ -144,7 +144,7 @@ worktimeaccount = api.inherit('Object', bo, {
 project = api.inherit('Project', bo, {
     'name': fields.String(attribute='_name', description='Der Name des Projekts'),
     'commissioner': fields.String(attribute='_commissioner', description='Der Name des Projektleiter'),
-    'user_id': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer')
+    'userId': fields.Integer(attribute='_user_id', description='Die ID eines Benutzer')
 })
 
 '''ProjectUser'''
@@ -449,7 +449,7 @@ class UserWithIdOperations(Resource):
 # @worktimeapp.param('user_name', 'Der User Name des Benutzers')
 # class UsersByNameOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self, user_name):
 #         """ Auslesen von User-Objekten, die durch den User Name bestimmt werden.
 
@@ -497,7 +497,7 @@ class UserWithEmailOperations(Resource):
 # @worktimeapp.param('id', 'Die E-Mail-Adresse eines Benutzers')
 # class UserRelatedAccountOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self, user_name):
 #         """Auslesen von User-Objekten, die durch den User Namen bestimmt werden.
 
@@ -526,7 +526,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 # class UserListOperations(Resource):
 #     @worktimeapp.marshal_list_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self):
 #         """Auslesen aller User-Objekte.
 
@@ -537,7 +537,7 @@ class UserWithGoogleOperations(Resource):
 
 #     @worktimeapp.marshal_with(user, code=200)
 #     @worktimeapp.expect(user)  # Wir erwarten ein User-Objekt von Client-Seite.
-#     #@secured
+#     ## @secured
 #     def post(self):
 #         """Anlegen eines neuen User-Objekts.
 
@@ -570,7 +570,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('id', 'Die ID des User-Objekts')
 # class UserOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self, id):
 #         """Auslesen eines bestimmten User-Objekts.
 
@@ -580,7 +580,7 @@ class UserWithGoogleOperations(Resource):
 #         cust = adm.get_user_by_id(id)
 #         return cust
 
-#     #@secured
+#     ## @secured
 #     def delete(self, id):
 #         """Löschen eines bestimmten User-Objekts.
 
@@ -593,7 +593,7 @@ class UserWithGoogleOperations(Resource):
 
 #     @worktimeapp.marshal_with(user)
 #     @worktimeapp.expect(user, validate=True)
-#     #@secured
+#     ## @secured
 #     def put(self, id):
 #         """Update eines bestimmten User-Objekts.
 
@@ -620,7 +620,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('lastname', 'Der Nachname des Kunden')
 # class UsersByNameOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self, lastname):
 #         """ Auslesen von User-Objekten, die durch den Nachnamen bestimmt werden.
 
@@ -636,7 +636,7 @@ class UserWithGoogleOperations(Resource):
 # @worktimeapp.param('id', 'Die ID des User-Objekts')
 # class UserRelatedAccountOperations(Resource):
 #     @worktimeapp.marshal_with(user)
-#     #@secured
+#     ## @secured
 #     def get(self, id):
 #         """Auslesen aller Acount-Objekte bzgl. eines bestimmten User-Objekts.
 
@@ -904,7 +904,7 @@ class ProjectWithIDOperations(Resource):
 
         if p is not None:
             p.set_id(id)
-            adm.update_project(p)
+            adm.save_project(p)
             return p, 200
         else:
             return '', 50
@@ -951,7 +951,7 @@ class ProjectUserOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectuser)
-    # #@secured
+    # ## @secured
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_all_project_members(id)
@@ -1065,7 +1065,7 @@ class ActivityWithIDOperations(Resource):
 @worktimeapp.param('name', 'Der Name der Aktivitaet')
 class ActivityWithSTRINGOperations(Resource):
     @worktimeapp.marshal_with(activity)
-    # ##@secured
+    # ### @secured
     def get(self, name):
         adm = Businesslogic()
         activity = adm.get_by_name(name)
@@ -3633,7 +3633,7 @@ class EventBookingOperationsWithParam(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class ProjectsOfUser(Resource):
     @worktimeapp.marshal_with(project)
-    # #@secured
+    # ## @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_of_user(id)
@@ -3649,7 +3649,7 @@ class ProjectsOfUser(Resource):
 @worktimeapp.param('id', 'Die Projekt ID')
 class ActivityProjectId(Resource):
     @worktimeapp.marshal_with(activity)
-    # #@secured
+    # ## @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_activities_by_project_id(id)

@@ -6,12 +6,11 @@ import BusinessObject from "./BusinessObject";
  * @author [Vi Nam Le] (https://github.com/vinamle)
  */
 export default class Project extends BusinessObject {
-    constructor(name, commissioner, userId, projectId) {
+    constructor(name, commissioner, userId) {
         super();
         this.name = name;
         this.commissioner = commissioner;
         this.userId = userId;
-        this.projectId = projectId;
 
     }
 
@@ -40,13 +39,7 @@ export default class Project extends BusinessObject {
         return this.userId;
     }
 
-    setProjectId(id) {
-        this.projectId = id;
-    }
-
-    getProjectId() {
-        return this.projectId;
-    }
+    
 
     // GetProjectId(){
     //     return this.projectId;
