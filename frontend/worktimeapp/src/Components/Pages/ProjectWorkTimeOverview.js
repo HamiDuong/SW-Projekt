@@ -54,20 +54,6 @@ class IndividualSelection extends Component {
         }
     }
 
-
-    showing() {
-
-        const projectId = this.state.projectId
-        if (this.state.selected) {
-            return <ActivityOverview value={projectId} onChange={this.handleChange} />
-        } else {
-            return (
-                <div>
-                    <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
-                </div>)
-        }
-    }
-
     render() {
         const projects = this.state.projects
         const projectId = this.state.projectId
