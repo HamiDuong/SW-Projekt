@@ -32,7 +32,7 @@ export const SideBarData = [
     },
     {
         title: 'WorktimeOverviewAdmin',
-        path: '/selectionProjects',
+        path: '/adminoverview',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },

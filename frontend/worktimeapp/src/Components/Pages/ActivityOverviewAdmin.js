@@ -4,7 +4,7 @@ import Entry from './ActivityEntriesAdmin';
 import Alert from '@mui/material/Alert';
 
 
-class OverEntry extends Component {
+class ActivityOverviewAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = ({
@@ -121,4 +121,4 @@ class OverEntry extends Component {
     }
 }
 
-export default OverEntry;
+export default ActivityOverviewAdmin;

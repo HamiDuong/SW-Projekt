@@ -4,7 +4,7 @@ import IndividualEntry from './ActivityEntries';
 import Alert from '@mui/material/Alert';
 
 
-class OverIndividualEntry extends Component {
+class ActivityOverview extends Component {
     constructor(props) {
         super(props);
         this.state = ({
@@ -43,7 +43,7 @@ class OverIndividualEntry extends Component {
         let i = 0
         while (i <= acti.length) {
             this.setState({
-                capacity: [...this.state.capacity, arr[i].capacity]
+                capacity: [...this.state.capacity, arr[i].getCapacity()]
             }, function () {
                 console.log(this.state.capacity)
             })
@@ -57,9 +57,9 @@ class OverIndividualEntry extends Component {
         let i = 0
         while (i <= acti.length) {
             this.setState({
-                activity_names: [...this.state.activity_names, arr[i].name]
+                activity_names: [...this.state.activity_names, arr[i].getName()]
             }, function () {
-                console.log('AN', this.state.activity_names)
+                console.log('Callback function', this.state.activity_names)
             })
             i = i + 1
         }
@@ -70,7 +70,7 @@ class OverIndividualEntry extends Component {
             this.getCapacities(element);
             this.getActivityNames(element);
             this.setState({ activities_vorhanden: true })
-            this.getCapacityofUserForProject(element[0].id, this.state.userId);
+            this.getCapacityofUserForProject(element[0].getId(), this.state.userId);
 
         } catch (e) {
             console.log(e);
@@ -80,22 +80,17 @@ class OverIndividualEntry extends Component {
 
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
-        console.log('this.props.value')
-
     }
 
 
-    funcy() {
+    showing() {
         let len = this.state.activities.length
         let liste = this.state.activities[0]
-        console.log(liste, len, 'hier ist wahrscheinlich was falsch...')
         if (this.state.activities_vorhanden == true) {
             return (
                 <div>
-                    {liste.map((element, index) => {
-                        console.log('Was ist hier?', element, index)
+                    {liste.map((element) => {
                         const value = element.id
-                        console.log(value, 'VALUE', this.state.projectId)
                         return (
                             <IndividualEntry projectId={this.state.projectId} value={value} />
                         )
@@ -107,7 +102,6 @@ class OverIndividualEntry extends Component {
                 <div> Keine Aktivitäten vorhanden</div>
             )
         }
-
     }
 
 
@@ -116,7 +110,7 @@ class OverIndividualEntry extends Component {
             <div>
                 {
                     this.state.activities_vorhanden ?
-                        this.funcy()
+                        this.showing()
                         : <div>
                             <Alert sx={{ margin: 3 }} variant='outlined' severity="info">There are no activities for your project yet.</Alert>
                         </div>
@@ -125,4 +119,4 @@ class OverIndividualEntry extends Component {
         );
     }
 }
-export default OverIndividualEntry;
+export default ActivityOverview;

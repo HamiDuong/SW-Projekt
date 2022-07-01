@@ -3,7 +3,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverIndividualEntries from './ActivityOverview';
+import ActivityOverview from './ActivityOverview';
 import Alert from '@mui/material/Alert';
 
 class IndividualSelection extends Component {
@@ -49,7 +49,7 @@ class IndividualSelection extends Component {
     showing() {
         const projectId = this.state.projectId
         if (this.state.selected) {
-            return <OverIndividualEntries value={projectId} onChange={this.handleChange} />
+            return <ActivityOverview value={projectId} onChange={this.handleChange} />
         } else {
             return (
                 <div>
@@ -60,16 +60,16 @@ class IndividualSelection extends Component {
 
     render() {
         const projects = this.state.projects
-        const func = this.showing()
+        const showing = this.showing()
         return (
             <Box>
-                <h1>Nicht-Admin-Sicht</h1>
+                <h2>Your booked projectworks</h2>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
                     )}
                 </Select>
-                <div>{func}</div>
+                <div>{showing}</div>
             </Box>
         );
     }

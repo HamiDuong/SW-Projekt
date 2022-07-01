@@ -10,7 +10,7 @@ import CreateProject from './Components/Pages/CreateProjectMain';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
 import MyProjects from './Components/MyProjects';
-import ProjectSelection from './Components/Pages/ProjectWorkTimeOverviewAdmin'
+import ProjectWorkTimeOverviewAdmin from './Components/Pages/ProjectWorkTimeOverviewAdmin'
 import Login from './Components/Login';
 import { GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebaseConfig.js';
@@ -112,7 +112,7 @@ class App extends React.Component {
                 <Route path='/timeintervalbookings' exact element={<TimeIntervalBookings userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/eventbookings' exact element={<EventBookings userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/createprojectmain' exact element={<CreateProject userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} user={this.state.currentUser} />} />
-                <Route path='/selectionProjects' exact element={<ProjectSelection userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
+                <Route path='/adminoverview' exact element={<ProjectWorkTimeOverviewAdmin userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/individualEntry' exact element={<IndividualSelection userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
               </Routes>
             </Router>

@@ -5,7 +5,11 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
 
-class IndividualEntriesOfEachBooking extends Component {
+class ActivityEntryBookings extends Component {
+    /* 
+    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+    
+    In dieser Komponente werden alle Aktivitäten und deren Buchungen eines User abgespeichert. */
     constructor(props) {
         super(props);
         this.state = ({
@@ -13,13 +17,14 @@ class IndividualEntriesOfEachBooking extends Component {
             act_id: '',
             time: '',
             user: '',
-            userName: '',
             projectDuration: '',
             show_info: false,
         })
     }
 
     getBookedTimeByActivityIdAndProjectId = (act_id, us_id) => {
+        /** Lädt die tatsächlich geleistete Projektarbeit eines Users mithilfe dessen Id und der Aktivity Id 
+         *  und speichert die gebuchte Zeit im State ab.*/
         WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(time =>
             this.setState({
                 time: time
@@ -29,23 +34,8 @@ class IndividualEntriesOfEachBooking extends Component {
     }
 
     componentDidMount = () => {
-        console.log('Was passiert hier?', this.props.us_id, this.props.act_id)
         this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
-        this.getUserById(this.props.us_id)
-
     }
-
-
-    getUserById(id) {
-        WorkTimeAppAPI.getAPI().getUserById(id).then(userBO =>
-            this.setState({
-                user: userBO[0],
-                userName: userBO[0].getFirstName()
-            }, function () {
-                console.log('Hier ist der User: ', this.state.user)
-            }))
-    }
-
 
     render() {
         return (
@@ -62,4 +52,4 @@ class IndividualEntriesOfEachBooking extends Component {
     }
 }
 
-export default IndividualEntriesOfEachBooking;
+export default ActivityEntryBookings;

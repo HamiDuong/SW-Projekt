@@ -4,10 +4,13 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import TableCell from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Alert from '@mui/material/Alert';
 
 
 class ActivityBookingEntry extends Component {
+    /* 
+@author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+ 
+In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos zu den ProjectUsern abgespeichert. */
     constructor(props) {
         super(props);
         this.state = ({
@@ -16,6 +19,7 @@ class ActivityBookingEntry extends Component {
             time: '',
             user: '',
             userName: '',
+            userLastName: '',
             projectDuration: '',
             show_info: false,
         })
@@ -31,7 +35,6 @@ class ActivityBookingEntry extends Component {
     }
 
     componentDidMount = () => {
-        console.log('Was passiert hier?', this.props.us_id, this.props.act_id)
         this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
         this.getUserById(this.props.us_id)
 
@@ -39,15 +42,16 @@ class ActivityBookingEntry extends Component {
 
 
     getUserById(id) {
+        /** Lädt einen User mithilfe dessen Id und speichert ihn und den Vornamen und Nachnamen im State ab. */
         WorkTimeAppAPI.getAPI().getUserById(id).then(userBO =>
             this.setState({
                 user: userBO[0],
-                userName: userBO[0].getFirstName()
+                userName: userBO[0].getFirstName(),
+                userLastName: userBO[0].getLastName()
             }, function () {
                 console.log('Hier ist der User: ', this.state.user)
             }))
     }
-
 
     render() {
         return (
@@ -56,15 +60,10 @@ class ActivityBookingEntry extends Component {
                 <Paper sx={{ width: '100%', margin: 'auto' }}>
                     <TableCell width={250}></TableCell>
                     <TableCell width={400}>{this.state.time}</TableCell>
-                    <TableCell width={500}>{this.state.userName}</TableCell>
+                    <TableCell width={500}>{this.state.userName}, {this.state.userLastName}</TableCell>
                     <TableCell width={350}>{this.props.user_capa}</TableCell>
-
                 </Paper>
-
-
             </Box>
-
-
         );
     }
 }

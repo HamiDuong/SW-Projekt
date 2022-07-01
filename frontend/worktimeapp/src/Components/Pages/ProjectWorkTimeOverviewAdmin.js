@@ -3,10 +3,15 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverEntry from './ActivityOverviewAdmin';
+import ActivityOverviewAdmin from './ActivityOverviewAdmin';
 import Alert from '@mui/material/Alert';
 
-class ProjectSelection extends Component {
+class ProjectWorkTimeOverviewAdmin extends Component {
+    /* 
+    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+    In dieser Seite werden alle Aktivitäten, deren Informationen, sowie deren Buchungen und Bearbeitetenden User angezeigt. 
+    */
+
     constructor(props) {
         super(props);
         this.state = {
@@ -49,7 +54,7 @@ class ProjectSelection extends Component {
     showing() {
         const projectId = this.state.projectId
         if (this.state.selected) {
-            return <OverEntry value={projectId} onChange={this.handleChange} />
+            return <ActivityOverviewAdmin value={projectId} onChange={this.handleChange} />
         } else {
             return (
                 <div>
@@ -63,7 +68,7 @@ class ProjectSelection extends Component {
         const func = this.showing()
         return (
             <Box>
-                <h1>Admin-Sicht</h1>
+                <h2>Overview of booked work for your projects</h2>
                 <Select onChange={this.handleChange}>
                     {projects.map(project =>
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
@@ -75,4 +80,4 @@ class ProjectSelection extends Component {
     }
 }
 
-export default ProjectSelection;
+export default ProjectWorkTimeOverviewAdmin;

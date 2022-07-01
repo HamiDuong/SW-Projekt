@@ -20,6 +20,10 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
 class Entry extends Component {
+    /* 
+    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+    
+    In dieser Komponente werden alle Aktivitäten und die zugehörigen Informationen aller ProjectUser abgespeichert. */
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this)
@@ -40,40 +44,33 @@ class Entry extends Component {
     }
 
     getActivity(id) {
+        /** Holt Aktivität mithilfe deren Id und speichert die Informationen Aktivitätsname, geplante und gebuchte Kapazität*/
         WorkTimeAppAPI.getAPI().getActivityById(id).then(activityBO =>
             this.setState({
                 activity: activityBO[0],
-                name: activityBO[0].name,
-                capacity: activityBO[0].capacity,
-                current_capacity: activityBO[0].current_capacity
+                name: activityBO[0].getName(),
+                capacity: activityBO[0].getCapacity(),
+                currentCapacity: activityBO[0].getCurrentCapacity()
             }, function () {
                 console.log(this.state.name, activityBO[0].capacity)
             }))
     }
 
-    componentDidMount() {
-        this.getActivity(this.props.value)
-        this.getProjectUser(this.props.projectId)
-        this.getProjectDuration(this.props.projectId)
-    }
-
-
-
     getProjectUser(projectId) {
+        /** Holt alle ProjectMembers mithilfe der ProjectId und speichert diese als Liste im State*/
         WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
-            console.log('was kommt eigentlich an?', member)
+            /**Prüfung ob es Members zu diesem Projekt gibt*/
             if (member.length <= 0) {
                 console.log('Weniger als 0')
                 this.setState({
                     members: [0],
                     userIds: [0]
                 })
-            }
-            else {
+            } else {
                 this.setState({
                     members: member,
                 }, function () {
-                    console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
+                    console.log(this.state.members, 'Callback Function', this.state.userIds)
                 }); this.getUserIds();
                 this.getPlanedCapacitiesForUser()
 
@@ -83,11 +80,13 @@ class Entry extends Component {
     }
 
     getUserIds() {
+        /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
+        * und speichert diese als neue Liste im State ab.*/
         let members = this.state.members
         let liste = []
         members.map(element =>
             liste.push(element.getUserId()),
-            console.log('Hier ist die Liste', liste))
+        )
         this.setState({
             userIds: [...this.state.userIds, ...liste]
         }, function () {
@@ -96,19 +95,22 @@ class Entry extends Component {
     }
 
     getPlanedCapacitiesForUser() {
+        /** Holt die geplante Kapazität der einzelnen ProjectMembers 
+         * und speichert die Informationen in neuer Liste im State ab.*/
         let members = this.state.members
-        let listeZwei = []
+        let capacitiesOfUsers = []
         members.map(element =>
-            listeZwei.push(element.getCapacity()),
-            console.log('Hier ist die Liste', listeZwei))
+            capacitiesOfUsers.push(element.getCapacity()),
+        )
         this.setState({
-            userCapacity: [...this.state.userCapacity, ...listeZwei]
+            userCapacity: [...this.state.userCapacity, ...capacitiesOfUsers]
         }, function () {
-            console.log('23458. Callbackfunction', this.state.userCapacity)
+            console.log('Callbackfunction', this.state.userCapacity)
         })
     }
 
     getProjectDuration = (project_id) => {
+        /** Holt Projectdauer mithilfe deren Id und speichert die Informationen als Liste im State ab.*/
         WorkTimeAppAPI.getAPI().getProjectDurationInDays(project_id).then(projectDurationBO =>
             this.setState({
                 projectDuration: projectDurationBO
@@ -117,16 +119,20 @@ class Entry extends Component {
             }))
     }
 
-
     handleClick() {
         this.setState({
             open: !this.state.open,
         }, console.log('click'))
     }
 
+    componentDidMount() {
+        this.getActivity(this.props.value)
+        this.getProjectUser(this.props.projectId)
+        this.getProjectDuration(this.props.projectId)
+    }
+
     render() {
         const open = this.state.open
-        const setOpen = this.state.setOpen
         return (
             <div>
                 <Box>

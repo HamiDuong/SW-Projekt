@@ -10,7 +10,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import { TableContainer } from '@mui/material';
-import IndividualEntriesOfEachBooking from './ActivityEntryBookings';
+import ActivityEntryBookings from './ActivityEntryBookings';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -19,6 +19,10 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
 class IndividualEntry extends Component {
+    /* 
+    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+    In dieser Komponente werden alle Aktivitäten und die zugehörigen Informationen eines User abgespeichert. */
+
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this)
@@ -26,7 +30,7 @@ class IndividualEntry extends Component {
             activity: '',
             name: '',
             capacity: '',
-            current_capacity: '',
+            currentCapacity: '',
             activities: '',
             members: '',
             userIds: [],
@@ -43,11 +47,11 @@ class IndividualEntry extends Component {
         WorkTimeAppAPI.getAPI().getActivityById(id).then(activityBO =>
             this.setState({
                 activity: activityBO[0],
-                name: activityBO[0].name,
-                capacity: activityBO[0].capacity,
-                current_capacity: activityBO[0].current_capacity
+                name: activityBO[0].getName(),
+                capacity: activityBO[0].getCapacity(),
+                currentCapacity: activityBO[0].getCurrentCapacity()
             }, function () {
-                console.log(this.state.name, activityBO[0].capacity)
+                console.log(this.state.name, activityBO[0].getCapacity())
             }))
     }
 
@@ -71,7 +75,7 @@ class IndividualEntry extends Component {
                     members: member,
                 },
                     function () {
-                        console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
+                        console.log(this.state.members, 'Callback Function', this.state.userIds)
                     });
                 this.getUserIds();
                 this.getPlanedCapacitiesForUser()
@@ -87,11 +91,11 @@ class IndividualEntry extends Component {
         let liste = []
         members.map(element =>
             liste.push(element.getUserId()),
-            console.log('Hier ist die Liste', liste))
+        )
         this.setState({
             userIds: [...this.state.userIds, ...liste]
         }, function () {
-            console.log('2. Callbackfunction', this.state.userIds)
+            console.log(this.state.userIds)
         })
     }
 
@@ -102,11 +106,11 @@ class IndividualEntry extends Component {
         let capacitiesOfUsers = []
         members.map(element =>
             capacitiesOfUsers.push(element.getCapacity()),
-            console.log('Hier ist die Liste', capacitiesOfUsers))
+        )
         this.setState({
             userCapacity: [...this.state.userCapacity, ...capacitiesOfUsers]
         }, function () {
-            console.log('23458. Callbackfunction', this.state.userCapacity)
+            console.log('Callbackfunction', this.state.userCapacity)
         })
     }
 
@@ -174,8 +178,7 @@ class IndividualEntry extends Component {
                                     },
                                     '& hr': {
                                         mx: 1,
-                                    },
-
+                                    }
                                 }}>
                                     <Box sx={{
                                         width: '20%',
@@ -206,9 +209,7 @@ class IndividualEntry extends Component {
                             display: 'flex',
                             justifyContent: 'center'
                         }}>
-
                             <Table sx={{ width: '75%' }}>
-
                                 <TableHead>
                                     <Box sx={{
                                         margin: 'auto',
@@ -224,8 +225,7 @@ class IndividualEntry extends Component {
                                         },
                                         '& hr': {
                                             mx: 1,
-                                        },
-
+                                        }
                                     }}>
                                         <Box sx={{
                                             display: 'inline-flex',
@@ -235,28 +235,22 @@ class IndividualEntry extends Component {
                                             <TableRow>Booked capacity</TableRow>
                                         </Box>
                                         <Divider orientation="vertical" flexItem />
-                                        <Box
-                                            sx={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                            }}>
+                                        <Box sx={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                        }}>
                                             <TaskAltIcon />
                                             <TableRow >Planed capacity of employee</TableRow>
                                         </Box>
                                     </Box>
                                 </TableHead>
-
                                 <TableBody>
-
                                     {this.state.userIds.map((element, index) => {
-                                        console.log(element, 'Ist das hier eine UserId?')
                                         return (
-                                            <IndividualEntriesOfEachBooking act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId}
+                                            <ActivityEntryBookings act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
                                                 user_capa={this.state.userCapacity[index]} />)
                                     })}
-
                                 </TableBody>
-
                             </Table>
                         </TableContainer>
                     </Collapse>
