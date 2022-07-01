@@ -40,28 +40,24 @@ class ActivityOverview extends Component {
 
     getCapacities = (arr) => {
         const acti = this.state.activities
-        let i = 0
-        while (i <= acti.length) {
+        for (let i = 0; i <= acti.length; i++) {
             this.setState({
                 capacity: [...this.state.capacity, arr[i].getCapacity()]
             }, function () {
                 console.log(this.state.capacity)
             })
-            i = i + 1
         }
     }
 
 
     getActivityNames = (arr) => {
         const acti = this.state.activities
-        let i = 0
-        while (i <= acti.length) {
+        for (let i = 0; i <= acti.length; i++) {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].getName()]
             }, function () {
                 console.log('Callback function', this.state.activity_names)
             })
-            i = i + 1
         }
     }
 
@@ -92,7 +88,7 @@ class ActivityOverview extends Component {
                     {liste.map((element) => {
                         const value = element.id
                         return (
-                            <IndividualEntry projectId={this.state.projectId} value={value} />
+                            <IndividualEntry projectId={this.state.projectId} value={value} us_id={this.state.userId} />
                         )
                     })}
                 </div>

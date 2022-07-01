@@ -66,7 +66,7 @@ class IndividualSelection extends Component {
                     )}
                 </Select>
                 {this.state.selected ?
-                    <ActivityOverview value={projectId} onChange={this.handleChange} /> :
+                    <ActivityOverview value={projectId} onChange={this.handleChange} userId={this.state.userId} /> :
                     <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
                 }
             </Box>

@@ -32,13 +32,12 @@ class IndividualEntry extends Component {
             capacity: '',
             currentCapacity: '',
             activities: '',
-            members: '',
-            userIds: [],
+            member: '',
+            userId: this.props.us_id,
             open: false,
             projectId: this.props.projectId,
             projectDuration: '',
-            userCapacity: [],
-
+            userCapacity: '',
         })
     }
 
@@ -57,12 +56,11 @@ class IndividualEntry extends Component {
 
     componentDidMount() {
         this.getActivity(this.props.value)
-        this.getProjectUser(this.props.projectId)
+        this.getProjectUserII(this.props.projectId)
         this.getProjectDuration(this.props.projectId)
     }
 
-
-    getProjectUser(projectId) {
+    getProjectUserII(projectId) {
         /** Holt alle ProjectMembers mithilfe der ProjectId und speichert diese als Liste im State*/
         WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
             /**Prüft ob es Members zu diesem Projekt gibt*/
@@ -72,44 +70,26 @@ class IndividualEntry extends Component {
                     userIds: [0]
                 })
             } else {
-                this.setState({
-                    members: member,
-                },
-                    function () {
-                        console.log(this.state.members, 'Callback Function', this.state.userIds)
-                    });
-                this.getUserIds();
+                member.map(element => {
+                    if (element.getUserId() == this.state.userId) {
+                        this.setState({
+                            member: element
+                        })
+                    }
+                });
                 this.getPlanedCapacitiesForUser()
             }
         }
         )
     }
 
-    getUserIds() {
-        /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
-         * und speichert diese als neue Liste im State ab.*/
-        let members = this.state.members
-        let liste = []
-        members.map(element =>
-            liste.push(element.getUserId()),
-        )
-        this.setState({
-            userIds: [...this.state.userIds, ...liste]
-        }, function () {
-            console.log(this.state.userIds)
-        })
-    }
+
 
     getPlanedCapacitiesForUser() {
         /** Holt die geplante Kapazität der einzelnen ProjectMembers 
          * und speichert die Informationen in neuer Liste im State ab.*/
-        let members = this.state.members
-        let capacitiesOfUsers = []
-        members.map(element =>
-            capacitiesOfUsers.push(element.getCapacity()),
-        )
         this.setState({
-            userCapacity: [...this.state.userCapacity, ...capacitiesOfUsers]
+            userCapacity: this.state.member.getCapacity()
         }, function () {
             console.log('Callbackfunction', this.state.userCapacity)
         })
@@ -162,46 +142,37 @@ class IndividualEntry extends Component {
                         </TableContainer>
                     </Box>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Table style={{ marginLeft: '250px' }}>
-                            <TableHead>
-                                <Box sx={{
-                                    marginTop: '5',
-                                    width: '70%',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                                    color: 'text.secondary',
-                                    '& svg': {
-                                        m: 2,
-                                    },
-                                    '& hr': {
-                                        mx: 1,
-                                    }
-                                }}>
+                        <TableContainer style={{
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}>
+                            <Table sx={{ width: '75%' }}>
+                                <TableHead>
                                     <Box sx={{
-                                        width: '40%',
+                                        marginTop: '5',
+                                        width: '100%',
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        justifyContent: 'flex-start'
-                                    }}
-                                    >
+                                        justifyContent: 'space-evenly',
+                                        border: (theme) => `1px solid ${theme.palette.divider}`,
+                                        color: 'text.secondary',
+                                        '& svg': {
+                                            m: 2,
+                                        },
+                                        '& hr': {
+                                            mx: 1,
+                                        }
+                                    }}>
                                         <MoreTimeIcon />
                                         <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
-                                    </Box>
-                                    <Box sx={{
-                                        width: '40%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'flex-start'
-                                    }}>
-                                        <ScheduleIcon size={'small'} />
-                                        <TableRow>Planed capacity of {this.state.name}: {this.state.capacity} </TableRow>
+                                        <ScheduleIcon />
+                                        <TableRow>Planed capacity of '{this.state.name}' : {this.state.capacity} </TableRow>
                                     </Box>
 
-                                </Box>
-                            </TableHead>
-                        </Table>
+
+                                </TableHead>
+                            </Table>
+                        </TableContainer>
                         <TableContainer style={{
                             display: 'flex',
                             justifyContent: 'center'
@@ -242,11 +213,8 @@ class IndividualEntry extends Component {
                                     </Box>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state.userIds.map((element, index) => {
-                                        return (
-                                            <ActivityEntryBookings act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
-                                                user_capa={this.state.userCapacity[index]} />)
-                                    })}
+                                    <ActivityEntryBookings act_id={this.props.value} us_id={this.state.userId} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
+                                        user_capa={this.state.userCapacity} />
                                 </TableBody>
                             </Table>
                         </TableContainer>
