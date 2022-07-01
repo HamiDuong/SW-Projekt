@@ -18,6 +18,8 @@ type                        Art des Intervalls
 Verworfen
 timeIntervalId (FK)         Zuordnung zu TimeInterval 
 """
+
+
 class FlexDayMapper(TimeIntervalMapper):
 
     def __init__(self):
@@ -27,6 +29,7 @@ class FlexDayMapper(TimeIntervalMapper):
     Gibt alle FlexDayBO aus der Datenbank zurück
     return: Liste mit FlexDayBO (list) - alle FlexDayBO in der Datenbank
     """
+
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -53,6 +56,7 @@ class FlexDayMapper(TimeIntervalMapper):
     param: key (int) - Id vom gesuchtem FlexDayBO
     return: FlexDayBO mit der Id = key
     """
+
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -84,6 +88,7 @@ class FlexDayMapper(TimeIntervalMapper):
     param: flexday (FlexDayBO) - FlexDayBO welches eingefügt werden soll
     return: flexday
     """
+
     def insert(self, flexday):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.flexdays")
@@ -100,7 +105,7 @@ class FlexDayMapper(TimeIntervalMapper):
 
         command = "INSERT INTO worktimeapp.flexdays (id, dateOfLastChange, start, end, startEvent, endEvent, type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         data = (flexday.get_id(), flexday.get_date_of_last_change(), flexday.get_start(
-        ), flexday. get_end(), flexday.get_start_event(), flexday.get_end_event(), "Flexday")
+        ), flexday. get_end(), flexday.get_start_event(), flexday.get_end_event(), "FlexDay")
 
         cursor.execute(command, data)
 
@@ -114,6 +119,7 @@ class FlexDayMapper(TimeIntervalMapper):
     param: flexday (FlexDayBO) - FlexDayBO mit aktualisierten Daten
     return: None 
     """
+
     def update(self, flexday):
         cursor = self._cnx.cursor()
 
@@ -134,6 +140,7 @@ class FlexDayMapper(TimeIntervalMapper):
     param: flexday (FlexDayBO) - FlexDayBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
+
     def delete(self, flexday):
         cursor = self._cnx.cursor()
 
@@ -149,6 +156,7 @@ class FlexDayMapper(TimeIntervalMapper):
     param: date (datetime) - Id vom gesuchtem FlexDayBO
     return: Liste von FlexDayBO mit start = date
     """
+
     def find_by_date(self, date):
         result = None
         cursor = self._cnx.cursor()
