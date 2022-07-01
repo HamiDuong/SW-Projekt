@@ -18,6 +18,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import WorkTimeAppAPI from './API/WorkTimeAppAPI';
 import IndividualSelection from './Components/Pages/ProjectWorkTimeOverview';
+import WelcomePage from './Components/WelcomePage';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -97,15 +98,16 @@ class App extends React.Component {
   render() {
     return (
       <ThemeProvider theme={Theme}>
+        
         <CssBaseline />
         <div>
           {this.state.currentUser && this.state.userId ?
 
             <Router>
-              {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.
-         */}
+              {/* Der Router und der Navigationleiste wird in diesem Abschnitt ausgeführt.*/}
               <NavBar user={this.state.currentUser} />
               <Routes>
+                <Route path='/' exact element={<WelcomePage/>}></Route>
                 <Route path='/myprofile' exact element={<MyProfile user={this.state.currentUser} workTimeAccount={this.state.workTimeAccountId} />} />
                 <Route path='/mybookings' exact element={<MyBookings userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
                 <Route path='/myprojects' exact element={<MyProjects userId={this.state.userId} workTimeAccountId={this.state.workTimeAccountId} />} />
