@@ -61,6 +61,7 @@ class IndividualEntry extends Component {
         this.getProjectDuration(this.props.projectId)
     }
 
+
     getProjectUser(projectId) {
         /** Holt alle ProjectMembers mithilfe der ProjectId und speichert diese als Liste im State*/
         WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
@@ -179,25 +180,23 @@ class IndividualEntry extends Component {
                                     }
                                 }}>
                                     <Box sx={{
-                                        width: '20%',
+                                        width: '40%',
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        justifyContent: 'space-evenly'
+                                        justifyContent: 'flex-start'
                                     }}
                                     >
                                         <MoreTimeIcon />
-                                        <TableRow >Project duration (in days) </TableRow>
-                                        <TableRow>{this.state.projectDuration}</TableRow>
+                                        <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
                                     </Box>
                                     <Box sx={{
-                                        width: '20%',
+                                        width: '40%',
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        justifyContent: 'space-evenly'
+                                        justifyContent: 'flex-start'
                                     }}>
                                         <ScheduleIcon size={'small'} />
-                                        <TableRow>Planed capacity</TableRow>
-                                        <TableRow>{this.state.capacity}</TableRow>
+                                        <TableRow>Planed capacity of {this.state.name}: {this.state.capacity} </TableRow>
                                     </Box>
 
                                 </Box>

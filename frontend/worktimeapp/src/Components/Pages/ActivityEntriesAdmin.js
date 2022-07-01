@@ -31,7 +31,7 @@ class Entry extends Component {
             activity: '',
             name: '',
             capacity: '',
-            current_capacity: '',
+            currentCapacity: '',
             activities: '',
             members: '',
             userIds: [],
@@ -50,9 +50,9 @@ class Entry extends Component {
                 activity: activityBO[0],
                 name: activityBO[0].getName(),
                 capacity: activityBO[0].getCapacity(),
-                currentCapacity: activityBO[0].getCurrentCapacity()
+                currentCapacity: activityBO[0].current_capacity
             }, function () {
-                console.log(this.state.name, activityBO[0].capacity)
+                console.log(this.state.name, activityBO[0].capacity, 'HALLLLOOOO', this.state.currentCapacity)
             }))
     }
 
@@ -164,74 +164,45 @@ class Entry extends Component {
                     </Box>
 
                     <Collapse in={open} timeout="auto" unmountOnExit>
-
-                        <Table style={{ marginLeft: '250px' }}>
-                            <TableHead>
-                                <Box sx={{
-                                    marginTop: '5',
-                                    width: '70%',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                                    color: 'text.secondary',
-                                    '& svg': {
-                                        m: 2,
-                                    },
-                                    '& hr': {
-                                        mx: 1,
-                                    },
-
-                                }}>
-                                    <Box sx={{
-                                        width: '20%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-evenly'
-                                    }}
-                                    >
-                                        <MoreTimeIcon />
-                                        <TableRow >Project duration (in days) </TableRow>
-                                        <TableRow>{this.state.projectDuration}</TableRow>
-                                    </Box>
-                                    <Box sx={{
-                                        width: '20%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-evenly'
-                                    }}>
-                                        <ScheduleIcon size={'small'} />
-                                        <TableRow>Planed capacity</TableRow>
-                                        <TableRow>{this.state.capacity}</TableRow>
-                                    </Box>
-                                    <Box sx={{
-                                        width: '20%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-evenly'
-                                    }}>
-                                        <ScheduleIcon size={'small'} />
-                                        <TableRow>Total Booked Time</TableRow>
-                                        <TableRow>{this.state.current_capacity}</TableRow>
-                                    </Box>
-
-                                </Box>
-                            </TableHead>
-
-
-                        </Table>
-
-
                         <TableContainer style={{
                             display: 'flex',
                             justifyContent: 'center'
                         }}>
-
                             <Table sx={{ width: '75%' }}>
-
                                 <TableHead>
                                     <Box sx={{
                                         marginTop: '5',
+                                        width: '100%',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-evenly',
+                                        border: (theme) => `1px solid ${theme.palette.divider}`,
+
+                                        color: 'text.secondary',
+                                        '& svg': {
+                                            m: 2,
+                                        },
+                                        '& hr': {
+                                            mx: 1,
+                                        },
+
+                                    }}>
+                                        <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <TableRow>Planed capacity : {this.state.capacity}</TableRow>
+                                        <Divider orientation="vertical" flexItem />
+                                        <TableRow>Total Booked Time: {this.state.currentCapacity} </TableRow>
+                                    </Box>
+                                </TableHead>
+                            </Table>
+                        </TableContainer>
+                        <TableContainer style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}>
+                            <Table sx={{ width: '75%' }}>
+                                <TableHead>
+                                    <Box sx={{
                                         width: '100%',
                                         display: 'inline-flex',
                                         alignItems: 'center',
@@ -246,29 +217,23 @@ class Entry extends Component {
                                             mx: 1,
                                         },
 
-                                    }}><ListAltIcon size={'small'} />
-                                        <TableRow>Booked capacity</TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <PersonIcon />
-                                        <TableRow>Employees</TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <TaskAltIcon />
-                                        <TableRow >Planed capacity of employee</TableRow>
+                                    }}>
+                                        <TableRow><ListAltIcon />Booked capacity</TableRow>
+                                        <Divider orientation="vertical" />
+                                        <TableRow><PersonIcon />Employees</TableRow>
+                                        <Divider orientation="vertical" />
+                                        <TableRow > <TaskAltIcon />Planed capacity of employee</TableRow>
 
                                     </Box>
                                 </TableHead>
-
                                 <TableBody>
-
                                     {this.state.userIds.map((element, index) => {
                                         console.log(element, 'Ist das hier eine UserId?')
                                         return (
                                             <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId}
                                                 user_capa={this.state.userCapacity[index]} />)
                                     })}
-
                                 </TableBody>
-
                             </Table>
                         </TableContainer>
                     </Collapse>

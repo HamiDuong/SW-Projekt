@@ -15,6 +15,7 @@ class ActivityOverviewAdmin extends Component {
             activity_names: [],
             userId: this.props.userId,
             activities_vorhanden: false,
+            selectedProject: '',
         })
     }
 
@@ -71,13 +72,11 @@ class ActivityOverviewAdmin extends Component {
             this.getActivityNames(element);
             this.setState({ activities_vorhanden: true })
             this.getCapacityofUserForProject(element[0].id, this.state.userId);
-
         } catch (e) {
             console.log(e);
 
         }
     }
-
 
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
