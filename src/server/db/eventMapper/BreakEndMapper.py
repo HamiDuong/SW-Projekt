@@ -21,7 +21,7 @@ class BreakEndMapper(Mapper):
         tuples = cursor.fetchall()
         break_end.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 break_end.set_id(maxid[0] + 1)
             else:
@@ -34,7 +34,7 @@ class BreakEndMapper(Mapper):
             break_end.get_id(),
             break_end.get_date_of_last_change(),
             break_end.get_time(),
-            break_end.get_type()
+            break_end.get_type(),
         )
 
         cursor.execute(command, data)
@@ -83,7 +83,8 @@ class BreakEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakend WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -118,7 +119,8 @@ class BreakEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakend WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -140,10 +142,15 @@ class BreakEndMapper(Mapper):
         cursor = self._cnx.cursor()
         break_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.breakend " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (break_end.get_date_of_last_change(), break_end.get_time(),
-                break_end.get_id())
+        command = (
+            "UPDATE worktimeapp.breakend "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            break_end.get_date_of_last_change(),
+            break_end.get_time(),
+            break_end.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -155,7 +162,8 @@ class BreakEndMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.breakend WHERE id={}".format(
-            break_end.get_id())
+            break_end.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

@@ -12,7 +12,7 @@ class VacationEndBO(EventBO.EventBO):
     def __init__(self):
         super().__init__()
         self._time = None
-        self._type = 'vacationend'
+        self._type = "vacationend"
 
     def set_time(self, time):
         """Methode um die Zeit des Urlaubsende eines Mitarbeiters einzustellen."""
@@ -36,8 +36,11 @@ class VacationEndBO(EventBO.EventBO):
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
         return "VacationEndBO {}, {}, {}, {}".format(
-            self.get_id(), self.get_date_of_last_change(),
-            self.get_type(), self.get_time())
+            self.get_id(),
+            self.get_date_of_last_change(),
+            self.get_type(),
+            self.get_time(),
+        )
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -48,11 +51,9 @@ class VacationEndBO(EventBO.EventBO):
         obj.set_time(dictionary["time"])
         return obj
 
-
-
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
-        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+        """@author Mihriban Dogan (https://github.com/mihriban-dogan)"""
         obj = VacationEndBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

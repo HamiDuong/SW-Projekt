@@ -132,7 +132,6 @@ class IndividualEntry extends Component {
 
     render() {
         const open = this.state.open
-        const setOpen = this.state.setOpen
         return (
             <div>
                 <Box>
@@ -145,12 +144,11 @@ class IndividualEntry extends Component {
                         <TableContainer>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableBody>
-                                    <Box
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'left'
-                                        }}>
+                                    <Box style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'left'
+                                    }}>
                                         <IconButton aria-label="expand row"
                                             size="small"
                                             onClick={this.handleClick}>

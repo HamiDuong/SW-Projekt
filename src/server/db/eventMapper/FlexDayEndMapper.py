@@ -21,7 +21,7 @@ class FlexDayEndMapper(Mapper):
         tuples = cursor.fetchall()
         flex_day_end.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 flex_day_end.set_id(maxid[0] + 1)
             else:
@@ -34,7 +34,7 @@ class FlexDayEndMapper(Mapper):
             flex_day_end.get_id(),
             flex_day_end.get_date_of_last_change(),
             flex_day_end.get_time(),
-            flex_day_end.get_type()
+            flex_day_end.get_type(),
         )
 
         cursor.execute(command, data)
@@ -53,7 +53,9 @@ class FlexDayEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend"
+        command = (
+            "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend"
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -83,7 +85,8 @@ class FlexDayEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -118,7 +121,8 @@ class FlexDayEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdayend WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -140,10 +144,15 @@ class FlexDayEndMapper(Mapper):
         cursor = self._cnx.cursor()
         flex_day_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.flexdayend " + \
-                  "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (flex_day_end.get_date_of_last_change(), flex_day_end.get_time(),
-                flex_day_end.get_id())
+        command = (
+            "UPDATE worktimeapp.flexdayend "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            flex_day_end.get_date_of_last_change(),
+            flex_day_end.get_time(),
+            flex_day_end.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -155,7 +164,8 @@ class FlexDayEndMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.flexdayend WHERE id={}".format(
-            flex_day_end.get_id())
+            flex_day_end.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()
