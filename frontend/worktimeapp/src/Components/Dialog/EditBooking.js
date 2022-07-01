@@ -184,9 +184,6 @@ class EditBooking extends Component {
             console.log("State für neue Werte");
         });
 
-        console.log(this.state.startdate);
-        console.log(this.state.enddate);
-
         let updatedbooking = null;
         // console.log("State");
         // console.log(this.state.startdate);
