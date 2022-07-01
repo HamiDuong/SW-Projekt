@@ -19,50 +19,50 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export const SideBarData = [
     {
-        title: 'MyProfile',
+        title: 'My Profile',
         path: '/myprofile',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'MyWorkTimeOverview',
+        title: 'My Work Time Overview',
         path: '/individualEntry',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'WorktimeOverviewAdmin',
+        title: 'Work Time Overview Admin',
         path: '/adminoverview',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'MyProjects',
+        title: 'My Projects',
         path: '/myprojects',
         icon: <AssignmentIcon />,
         className: 'nav-text'
     },
     {
-        title: 'CreateProject',
+        title: 'Create Project',
         path: '/createprojectmain',
         icon: <TaskIcon />,
         className: 'nav-text'
     },
 
     {
-        title: 'MyBookings',
+        title: 'My Bookings',
         path: '/mybookings',
         icon: <PostAddIcon />,
         className: 'nav-text'
     },
     {
-        title: 'TimeIntervalBookings',
+        title: 'Time Interval Bookings',
         path: '/timeintervalbookings',
         icon: <AccessTimeIcon />,
         className: 'nav-text'
     },
     {
-        title: 'EventBookings',
+        title: 'Event Bookings',
         path: '/eventbookings',
         icon: <AccessTimeFilledIcon />,
         className: 'nav-text'

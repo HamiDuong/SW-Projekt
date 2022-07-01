@@ -12,7 +12,6 @@ class IndividualSelection extends Component {
         this.state = {
             project: '',
             projects: [],
-            temperature: '',
             projectName: '',
             selected: false,
             projectId: '',
@@ -24,7 +23,7 @@ class IndividualSelection extends Component {
     handleChange(e) {
         this.setState({
             projectId: e.target.value,
-            selected: true,
+            selected: !this.state.selected,
         }, function () {
             console.log(this.state.projectId);
         })
@@ -45,22 +44,19 @@ class IndividualSelection extends Component {
         this.getProjectsForUser(this.state.userId)
     }
 
-
-    showing() {
-        const projectId = this.state.projectId
-        if (this.state.selected) {
-            return <ActivityOverview value={projectId} onChange={this.handleChange} />
-        } else {
-            return (
-                <div>
-                    <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
-                </div>)
+    componentDidUpdate(prevProps, prevState) {
+        // only update if searchValue has changed
+        if (prevState.selected !== this.state.selected) {
+            this.getProjectsForUser(this.state.userId)
+            this.setState({
+                selected: true
+            })
         }
     }
 
     render() {
         const projects = this.state.projects
-        const showing = this.showing()
+        const projectId = this.state.projectId
         return (
             <Box>
                 <h2>Your booked projectworks</h2>
@@ -69,7 +65,10 @@ class IndividualSelection extends Component {
                         project.map(elem => <MenuItem value={elem.id}>{elem.name}</MenuItem>)
                     )}
                 </Select>
-                <div>{showing}</div>
+                {this.state.selected ?
+                    <ActivityOverview value={projectId} onChange={this.handleChange} /> :
+                    <Alert sx={{ margin: 3 }} variant='outlined' severity="info">You haven´t selected a project yet.</Alert>
+                }
             </Box>
         );
     }

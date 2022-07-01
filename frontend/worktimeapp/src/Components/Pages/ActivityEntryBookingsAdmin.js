@@ -26,6 +26,8 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
     }
 
     getBookedTimeByActivityIdAndProjectId = (act_id, us_id) => {
+        /** Lädt die tatsächlich geleistete Projektarbeit eines jeden Project-Users mithilfe dessen Id und der Aktivity Id 
+         *  und speichert die gebuchten Zeiten im State ab.*/
         WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(time =>
             this.setState({
                 time: time
@@ -37,7 +39,6 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
     componentDidMount = () => {
         this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
         this.getUserById(this.props.us_id)
-
     }
 
 
@@ -56,7 +57,6 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
     render() {
         return (
             <Box>
-
                 <Paper sx={{ width: '100%', margin: 'auto' }}>
                     <TableCell width={250}></TableCell>
                     <TableCell width={400}>{this.state.time}</TableCell>
