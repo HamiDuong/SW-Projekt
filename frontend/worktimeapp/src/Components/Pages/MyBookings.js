@@ -156,9 +156,6 @@ class MyBookings extends Component {
         console.log('ComponentDidMount');
         this.getBookings();
         this.getWorkBookings();
-        console.log("userid bookings", this.props.userId);
-        console.log("INTERVALBOOKINGS", this.state.intervalbookings)
-        //this.getWorkBookings();
     }
 
     // componentDidUpdate(prevProps){
@@ -172,6 +169,24 @@ class MyBookings extends Component {
         this.setState({ [ev.target.name]: ev.target.value });
     };
 
+    filterBookings = () => {
+        let bookings = this.props.intervalbookings;
+        let res = [];
+
+        bookings.forEach(element => {
+            if(element.type == "Work"){
+                res.push(element);
+            }
+        });
+
+        this.setState({
+            intervalbookings : res
+        }, function(){
+            console.log("Gefiltert")
+        })
+
+    }    
+
     // Gets all booked bookings of the current user
     getBookings = () => {
 
@@ -184,7 +199,21 @@ class MyBookings extends Component {
                 filteredintervalbookings: responseJSON.timeintervals,
                 filteredeventbookings: responseJSON.events            
             },function(){
-                console.log(this.state.intervalbookings);
+                let work = responseJSON.timeintervals;
+                let res = [];
+
+                work.forEach(element => {
+                    if(element.type == "Work"){
+                        res.push(element);
+                    }
+                });
+                this.setState({
+                    workbookings : res
+                }, function(){
+                    console.log("Workbookings filtern");
+                    console.log(this.state.workbookings);
+                })
+
             }))
 
         WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(this.props.userId).then(vacationBOs =>
@@ -193,6 +222,8 @@ class MyBookings extends Component {
             },function(){
                 console.log(this.state.eventbookings2);
             }))
+
+        
 
 
         // this.setState({
@@ -205,24 +236,33 @@ class MyBookings extends Component {
         // });
 
         // Filter intervalbookings with the type 'Work'
-        let res = [];
-        let bookings = fakebackend.timeintervals;
-        bookings.forEach(elem => {
-            if (elem.type == "Work") {
-                res.push(elem);
-            }
-        });
-        this.setState({
-            workbookings: res
-        }, function () {
-            console.log("Workbookings wurden ausgefiltert")
-        });
+        // console.log("Work Bookings");
+        // let res = [];
+        // let bookings = this.state.intervalbookings;
+        // console.log(bookings);
+        // bookings.forEach(elem => {
+        //     if (elem.type == "Work") {
+        //         res.push(elem);
+
+        //     }
+        // });
+        // this.setState({
+        //     workbookings: res
+        // }, function () {
+        //     console.log("Workbookings wurden ausgefiltert", res)
+        // });
+        // console.log("Ergebnis")
+        // console.log(this.state.workbookings)
     }
 
     // Filter intervalbookings with the type 'Work'
     getWorkBookings = () => {
         let res = [];
         let bookings = this.state.intervalbookings;
+
+        console.log("Intervalbookings");
+        console.log(this.state.intervalbookings);
+
         bookings.forEach(elem => {
             if (elem.type == "Work") {
                 res.push(elem);
@@ -288,9 +328,11 @@ class MyBookings extends Component {
                 } else if (elemtype == "illnessbegin" || elemtype == "illnessend") {
                     elemtype = "Illness";
                 } else if (elemtype == "projectworkbegin" || elemtype == "projectworkend") {
-                    elemtype = "Project Work";
+                    elemtype = "ProjectWork";
                 } else if (elemtype == "vacationbegin" || elemtype == "vacationend") {
                     elemtype = "Vacation";
+                } else if (elemtype == "projectduration" || elemtype == "projectduration") {
+                    elemtype = "ProjectDuration";
                 }
 
                 if (type == elemtype) {
@@ -386,7 +428,6 @@ class MyBookings extends Component {
             }, function () {
                 console.log("Interval sorted by start and end date");
             })
-
         }
 
         // Sort event bookings by time
@@ -497,6 +538,7 @@ class MyBookings extends Component {
 
     // render the component
     render() {
+        const { workbookings } = this.state;
         return (
             <>
                 {/* <h1>My Bookings</h1> */}
@@ -546,7 +588,7 @@ class MyBookings extends Component {
                             shrink: true,
                         }}
                     />
-                    <FormControl sx={{ minWidth: 258 }}>
+                    {/* <FormControl sx={{ minWidth: 258 }}>
                         <InputLabel>Type</InputLabel>
                         <Select
                             name='typefilter'
@@ -555,13 +597,14 @@ class MyBookings extends Component {
                             variant="standard"
                         >
                             <MenuItem value={"Work"}>Work</MenuItem>
-                            <MenuItem value={"Flex Day"}>Flex Day</MenuItem>
-                            <MenuItem value={"Sick Day"}>Sick Day</MenuItem>
+                            <MenuItem value={"FlexDay"}>Flex Day</MenuItem>
+                            <MenuItem value={"SickDay"}>Sick Day</MenuItem>
                             <MenuItem value={"Vacation"}>Vacation</MenuItem>
                             <MenuItem value={"Break"}>Break</MenuItem>
-                            <MenuItem value={"Project Work"}>Project Work</MenuItem>
+                            <MenuItem value={"ProjectWork"}>Project Work</MenuItem>
+                            <MenuItem value={"ProjectDuration"}>Project Duration</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                     <Button
                         onClick={this.filterBookings}
                         disabled={this.state.showFilterButton}
@@ -574,11 +617,6 @@ class MyBookings extends Component {
                     >
                         Remove Filter
                     </Button>
-                    {/* <Button
-                        onClick={this.printState}
-                    >
-                        Print State
-                    </Button> */}
                     <Button
                         onClick={this.openCreateWorkTimeSheet}
                     >
@@ -610,7 +648,7 @@ class MyBookings extends Component {
                         </TableContainer>
                     </Paper>
                 </Box>
-                <CreateTimeWorkSheet show={this.state.dialogWorkTimeSheet} workbookings={this.state.workbookings} onClose={this.closeDialog} userId={this.state.userId}></CreateTimeWorkSheet>
+                <CreateTimeWorkSheet show={this.state.dialogWorkTimeSheet} workbookings={workbookings} onClose={this.closeDialog} userId={this.state.userId}></CreateTimeWorkSheet>
             </>
         );
     }

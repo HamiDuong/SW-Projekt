@@ -40,7 +40,9 @@ class CreateTimeWorkSheet extends Component {
     getContracttimeOfCurrentUser = () => {
         WorkTimeAppAPI.getAPI().getWorkTimeAccountByUserId(this.state.userId).then( worktimeaccount =>
             this.setState({
-                contracttime : worktimeaccount.getContractTime()
+                contracttime : worktimeaccount.contractTime
+            }, function(){
+                console.log(this.state.contracttime)
             })
 
         )
@@ -53,11 +55,30 @@ class CreateTimeWorkSheet extends Component {
 
     // Debugging sobald die Komponente geladen ist
     componentDidMount(){
-        console.log(this.state.workbookings)
         //get Contract Time of current User
         //get Worktimeaccount by user id
         //get contract time
+        this.getContracttimeOfCurrentUser();
+        // this.filterBookings();
     }
+
+    // filterBookings = () => {
+    //     let bookings = this.props.intervalbookings;
+    //     let res = [];
+
+    //     bookings.forEach(element => {
+    //         if(element.type == "Work"){
+    //             res.push(element);
+    //         }
+    //     });
+
+    //     this.setState({
+    //         intervalbookings : res
+    //     }, function(){
+    //         console.log("Gefiltert")
+    //     })
+
+    // }
 
     // WorkBOs in Tabelle rendern
     createTimeSheet = () => {
@@ -103,25 +124,29 @@ class CreateTimeWorkSheet extends Component {
                             </TableRow>
                         )
                     } */}
-                    {
-                        this.state.workbookings.map( row =>
+                    {/* {
+                        this.state.intervalbookings.map( row =>
                             <WorkTimeUser userId = {this.state.userId} start = {row.start} end = {row.end}></WorkTimeUser>    
                         )
-                    }
+                    } */}
                 </TableBody>
             </Table>
         )
 
     }
 
+    // printState = () => {
+    //     console.log(this.state.intervalbookings)
+    // }
+
     render() { 
-        const { classes, show } = this.props
+        const { classes, show, workbookings } = this.props
         return (
             show ?
             <Dialog open={show} onClose={this.handleClose} maxWidth='s'>
                 <DialogContent>
                     <DialogTitle>
-                        <h2>Your Work Time Sheet</h2>
+                        Your Work Time Sheet
                     </DialogTitle>
 
                     {/* <h3>Input the path where you want to save the file:</h3>
@@ -164,7 +189,7 @@ class CreateTimeWorkSheet extends Component {
                                     )
                                 } */}
                                 {
-                                    this.state.workbookings.map( row =>
+                                    workbookings.map( row =>
                                         <TableRow>
                                             <TableCell>
                                                 {new Date(row.start).getDate() + '-' + (new Date(row.start).getMonth()+1) + '-' + new Date(row.start).getFullYear()}
@@ -176,10 +201,10 @@ class CreateTimeWorkSheet extends Component {
                                                 {new Date(row.end).toLocaleTimeString()}
                                             </TableCell>
                                             <TableCell>
-                                                {(new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60)) + '' + 'h'}
+                                                {((new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60))).toFixed(2) + '' + 'h'}
                                             </TableCell>
                                             <TableCell>
-                                                {this.state.contracttime}
+                                                8h
                                             </TableCell>                                           
                                         </TableRow>                                            
                                     )
@@ -196,6 +221,11 @@ class CreateTimeWorkSheet extends Component {
                     >
                         Close
                     </Button>
+                    {/* <Button
+                        onClick = {this.componentDidMount}
+                    >
+                        Erstellen
+                    </Button> */}
                     {/* <Button
                         onClick={this.handleClose}
                     >

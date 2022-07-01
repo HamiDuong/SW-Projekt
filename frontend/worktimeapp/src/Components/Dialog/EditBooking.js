@@ -37,7 +37,7 @@ class EditBooking extends Component {
 
     // Schließen vom Dialog
     handleClose = () => {
-        this.props.onClose(null)
+        this.props.onClose(null);
     }
 
     printState = () => {
