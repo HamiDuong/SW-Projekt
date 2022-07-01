@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import Entry from './Entry';
+import IndividualEntry from './ActivityEntries';
 import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
 
 
-class OverEntry extends Component {
+class OverIndividualEntry extends Component {
     constructor(props) {
         super(props);
         this.state = ({
@@ -98,7 +97,7 @@ class OverEntry extends Component {
                         const value = element.id
                         console.log(value, 'VALUE', this.state.projectId)
                         return (
-                            <Entry projectId={this.state.projectId} value={value} />
+                            <IndividualEntry projectId={this.state.projectId} value={value} />
                         )
                     })}
                 </div>
@@ -126,5 +125,4 @@ class OverEntry extends Component {
         );
     }
 }
-
-export default OverEntry;
+export default OverIndividualEntry;

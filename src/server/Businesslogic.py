@@ -60,7 +60,7 @@ from server.db.ActivityMapper import ActivityMapper
 import math
 
 
-class Businesslogic():
+class Businesslogic:
 
     def __init__(self):
         pass
@@ -177,14 +177,24 @@ class Businesslogic():
         with ComingMapper() as mapper:
             return mapper.insert(coming)
 
-    # Methode um ein ComingBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_coming_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein ComingBO mit bestimmter ID aus der Datenbank zu laden
+        :return: ComingBO
+        """
         with ComingMapper() as mapper:
             return mapper.find_by_key(number)
 
     # Methode um alle ComingBOs aus der Datenbank zu laden
     def get_all_comings(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle ComingBOs aus der Datenbank zu laden
+        :return: Array mit ComingBOs
+        """
         with ComingMapper() as mapper:
             return mapper.find_all()
 
@@ -226,13 +236,23 @@ class Businesslogic():
         with GoingMapper() as mapper:
             return mapper.insert(going)
 
-    # Methode um ein GoingBO mit bestimmter ID aus der Datenbank zu laden
     def get_going_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein GoingBO mit bestimmter ID aus der Datenbank zu laden
+        :return: GoingBO
+        """
         with GoingMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle GoingBOs aus der Datenbank zu laden
     def get_all_goings(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle GoingBOs aus der Datenbank zu laden
+        :return: Array mit GoingBOs
+        """
         with GoingMapper() as mapper:
             return mapper.find_all()
 
@@ -275,14 +295,23 @@ class Businesslogic():
         with ProjectWorkBeginMapper() as mapper:
             return mapper.insert(project_work_begin)
 
-    # Methode um ein ProjectWorkBeginBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_project_work_begin_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein ProjectWorkBeginBO mit bestimmter ID aus der Datenbank zu laden
+        :return: ProjectWorkBeginBO
+        """
         with ProjectWorkBeginMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle ProjectWorkBeginBOs aus der Datenbank zu laden
     def get_all_project_work_begins(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle ProjectWorkBeginBOs aus der Datenbank zu laden
+        :return: Array mit ProjectWorkBeginBOs
+        """
         with ProjectWorkBeginMapper() as mapper:
             return mapper.find_all()
 
@@ -324,14 +353,24 @@ class Businesslogic():
         with ProjectWorkEndMapper() as mapper:
             return mapper.insert(project_work_end)
 
-    # Methode um ein ProjectWorkEndBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_project_work_end_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein ProjectWorkEndBO mit bestimmter ID aus der Datenbank zu laden
+        :return: ProjectWorkEndBO
+        """
         with ProjectWorkEndMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle ProjectWorkEndBOs aus der Datenbank zu laden
+    # Methode um alle  aus der Datenbank zu laden
     def get_all_project_work_ends(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle ProjectWorkEndBOs aus der Datenbank zu laden
+        :return: Array mit ProjectWorkEndBOs
+        """
         with ProjectWorkEndMapper() as mapper:
             return mapper.find_all()
 
@@ -373,14 +412,24 @@ class Businesslogic():
         with VacationBeginMapper() as mapper:
             return mapper.insert(vacation_begin)
 
-    # Methode um ein VacationBeginBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_vacation_begin_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein VacationBeginBO mit bestimmter ID aus der Datenbank zu laden
+        :return: VacationBeginBO
+        """
         with VacationBeginMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle VacationBeginBOs aus der Datenbank zu laden
+    # Methode um alle  aus der Datenbank zu laden
     def get_all_vacation_begins(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle VacationBeginBOs aus der Datenbank zu laden
+        :return: Array mit VacationBeginBOs
+        """
         with VacationBeginMapper() as mapper:
             return mapper.find_all()
 
@@ -427,14 +476,23 @@ class Businesslogic():
         with VacationEndMapper() as mapper:
             return mapper.insert(vacation_end)
 
-    # Methode um ein VacationEndBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_vacation_end_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein VacationEndBO  mit bestimmter ID aus der Datenbank zu laden
+        :return: VacationEndBO
+        """
         with VacationEndMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle VacationEndBOs aus der Datenbank zu laden
     def get_all_vacation_ends(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle VacationEndBOs aus der Datenbank zu laden
+        :return: Array mit VacationEndBOs
+        """
         with VacationEndMapper() as mapper:
             return mapper.find_all()
 
@@ -476,14 +534,23 @@ class Businesslogic():
         with IllnessBeginMapper() as mapper:
             return mapper.insert(illness_begin)
 
-    # Methode um ein IllnessBeginBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_illness_begin_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein IllnessBeginBO   mit bestimmter ID aus der Datenbank zu laden
+        :return: IllnessBeginBO
+        """
         with IllnessBeginMapper() as mapper:
             return mapper.find_by_key(number)
-        # Methode um alle IllnessBeginBOs aus der Datenbank zu laden
 
     def get_all_illness_begins(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle IllnessBeginBOs aus der Datenbank zu laden
+        :return: Array mit IllnessBeginBOs
+        """
         with IllnessBeginMapper() as mapper:
             return mapper.find_all()
 
@@ -532,14 +599,23 @@ class Businesslogic():
         with IllnessEndMapper() as mapper:
             return mapper.insert(illness_end)
 
-    # Methode um ein IllnessEndBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_illness_end_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein IllnessEndBO mit bestimmter ID aus der Datenbank zu laden
+        :return: IllnessEndBO
+        """
         with IllnessEndMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle IllnessEndBOs aus der Datenbank zu laden
     def get_all_illness_end(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle IllnessEndBOs aus der Datenbank zu laden
+        :return: Array mit IllnessEndBOs
+        """
         with IllnessEndMapper() as mapper:
             return mapper.find_all()
 
@@ -563,7 +639,6 @@ class Businesslogic():
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
                 "eventBookingId", endeventbooking.get_id(), "E")
-
         with BookingMapper() as mapper:
             mapper.delete(booking)
         with EventBookingMapper() as mapper:
@@ -586,14 +661,23 @@ class Businesslogic():
         with FlexDayStartMapper() as mapper:
             return mapper.insert(flex_day_start)
 
-    # Methode um ein FlexDayStartBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_flex_day_start_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein FlexDayStartBO mit bestimmter ID aus der Datenbank zu laden
+        :return: FlexDayStartBO
+        """
         with FlexDayStartMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle FlexDayStartBOs aus der Datenbank zu laden
     def get_all_flex_day_starts(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle FlexDayStartBOs  aus der Datenbank zu laden
+        :return: Array mit FlexDayStartBOs IllnessBeginBOs
+        """
         with FlexDayStartMapper() as mapper:
             return mapper.find_all()
 
@@ -636,14 +720,23 @@ class Businesslogic():
         with FlexDayEndMapper() as mapper:
             return mapper.insert(flex_day_end)
 
-    # Methode um ein FlexDayEndBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_flex_day_end_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein FlexDayEndBO mit bestimmter ID aus der Datenbank zu laden
+        :return: FlexDayEndBO
+        """
         with FlexDayEndMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle FlexDayEndBOs aus der Datenbank zu laden
     def get_all_flex_day_end(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle FlexDayEndBOs aus der Datenbank zu laden
+        :return: Array mit FlexDayEndBOs
+        """
         with FlexDayEndMapper() as mapper:
             return mapper.find_all()
 
@@ -685,14 +778,23 @@ class Businesslogic():
         with BreakBeginMapper() as mapper:
             return mapper.insert(break_begin)
 
-    # Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
-
     def get_break_begin_by_id(self, number):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um ein BreakBeginBO mit bestimmter ID aus der Datenbank zu laden
+        :return: BreakBeginBO
+        """
         with BreakBeginMapper() as mapper:
             return mapper.find_by_key(number)
-        # Methode um alle BreakBeginBOs aus der Datenbank zu laden
 
     def get_all_break_begins(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle BreakBeginBOs aus der Datenbank zu laden
+        :return: Array mit BreakBeginBOs
+        """
         with BreakBeginMapper() as mapper:
             return mapper.find_all()
 
@@ -732,8 +834,13 @@ class Businesslogic():
         with BreakEndMapper() as mapper:
             return mapper.find_by_key(number)
 
-    # Methode um alle BreakEndBOs aus der Datenbank zu laden
     def get_all_break_ends(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Methode um alle BreakEndBOs  aus der Datenbank zu laden
+        :return: Array mit BreakEndBOs
+        """
         with BreakEndMapper() as mapper:
             return mapper.find_all()
 
@@ -2557,7 +2664,12 @@ class Businesslogic():
         return projects_of_user
 
     def get_activities_by_project_id_and_user_id(self, project_id, user_id):
-        # Alle Aktivitäten für ein Projekt in dem der User Member ist
+        """
+        Alle Aktivitäten aus der Datenbank laden, für ein Projekt dem der User zugeordnet ist.
+        :param project_id: Projekt-Id
+        :param user_id: User-Id des Projekt-Users bzw. members
+        :return: Array mit ActivityBOs
+        """
         projects_for_user = self.get_projects_for_user(user_id)
         activities = []
         for elem in projects_for_user:
@@ -2567,11 +2679,20 @@ class Businesslogic():
         return activities
 
     def get_actual_working_time_for_user_by_activity_id(self, user_id, activity_id):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Diese Methode lädt die TimeintervalBOs, Timeinterval-BookingBOs, BookingBOs und Aktivitäten aus der
+        Datenbank und verknüpft sie so miteinander, dass man als Wert die tatsächlich gebuchte Arbeitszeit (in h)
+        eines Projektmitarbeiters für eine bestimmte Aktivität zurückerhält.
+        :param user_id: Projektuser-Id
+        :param activity_id: Aktivitäts-Id
+        :return: Zeit in Stunden (Float)
+        """
+
+
         'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
         all_bookings = self.get_all_bookings_for_timeinterval()
-
-        'Holen Aktivität und deren Capacity'
-        activity = self.get_activity_by_id(activity_id)
 
         'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
         bookings_of_user = []
@@ -2583,35 +2704,45 @@ class Businesslogic():
         'Hier sind alle Zeiten des Users für eine Aktivität'
         sum_time = []
 
-        # In diesem Schritt werden von den PrjWrkBOs diejenigen selektiert, die der User bearbeitet hat
+        '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
         for elem in all_bookings:
-            print('bookings:', elem.get_user_id())
+            #print('bookings:', elem.get_user_id())
             if elem.get_user_id() == user_id:
                 bookings_of_user.append(elem)
+        '''Check ob es Einträge gibt, ansonsten return 0 '''
         if len(bookings_of_user) >= 1:
+            '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
             for elem in bookings_of_user:
-                print('in bookins_of_user: ', elem)
+                #print('in bookins_of_user: ', elem)
                 ti_b_id = elem.get_time_interval_booking_id()
                 ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
                 timeinterval_booking_of_user.append(ti_b)
+            '''Von den Bookings des Users werden die Ids für die Timeintervalle abgelesen und diese aus der Datenbank
+               geleaden.'''
             for elem in timeinterval_booking_of_user:
-                print('in ti_b for user: ', elem)
+                #print('in ti_b for user: ', elem)
                 ti_id = elem.get_timeinterval_id()
                 ti = self.get_timeinterval_by_id(ti_id)
                 timeintervals_of_user.append(ti)
+            '''Von den Zeitintervallen werden diejenigen selektiert, die als Typ projectwork besitzen'''
             for elem in timeintervals_of_user:
-                print('in ti for user: ', elem)
+                #print('in ti for user: ', elem)
                 if elem.get_type() == 'ProjectWork':
+                    '''PrpjectWorkBOs, anhand der Timeinterval-Bookings des Users, werden aus der Datenbank geladen'''
                     project_work = self.get_project_work_by_id(
                         elem.get_project_work_id())
                     projectwork_of_user.append(project_work)
+            '''Von den PrjWrkBOs werden diejenigen selektiert, die zu der gesuchten Aktivität gebucht wurden.'''
             for elem in projectwork_of_user:
-                print('in projectwork for user: ', elem)
+                #print('in projectwork for user: ', elem)
                 if elem.get_activity_id() == activity_id:
+                    '''Aktivitäten werden, anhand den ProjectWorkBOs des Users, aus der Datenbank geladen'''
                     project_work_for_this_activity_of_user.append(elem)
+                    '''Berechnung des Zeitdeltas der tatsächlich geleisteten Projektarbeit'''
                     sum = elem.get_end() - elem.get_start()
                     sum = sum.total_seconds()
                     sum_time.append(sum)
+            '''Umwandeln Sekunden in Stunden und aufrunden auf 2 Nachkommastellen.'''
             sum = math.fsum(sum_time) / 3600
             sum = round(sum, 2)
             return sum

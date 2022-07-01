@@ -3,7 +3,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverIndividualEntries from './OverIndividualEntries';
+import OverIndividualEntries from './ActivityOverview';
 import Alert from '@mui/material/Alert';
 
 class IndividualSelection extends Component {

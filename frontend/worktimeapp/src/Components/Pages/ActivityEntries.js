@@ -10,12 +10,11 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import { TableContainer } from '@mui/material';
-import IndividualEntriesOfEachBooking from './IndividualEntryOfEachBooking';
+import IndividualEntriesOfEachBooking from './ActivityEntryBookings';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import PersonIcon from '@mui/icons-material/Person';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
@@ -40,6 +39,7 @@ class IndividualEntry extends Component {
     }
 
     getActivity(id) {
+        /** Holt Aktivität mithilfe deren Id und speichert die Informationen Aktivitätsname, geplante und gebuchte Kapazität*/
         WorkTimeAppAPI.getAPI().getActivityById(id).then(activityBO =>
             this.setState({
                 activity: activityBO[0],
@@ -57,32 +57,32 @@ class IndividualEntry extends Component {
         this.getProjectDuration(this.props.projectId)
     }
 
-
-
     getProjectUser(projectId) {
+        /** Holt alle ProjectMembers mithilfe der ProjectId und speichert diese als Liste im State*/
         WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
-            console.log('was kommt eigentlich an?', member)
+            /**Prüft ob es Members zu diesem Projekt gibt*/
             if (member.length <= 0) {
-                console.log('Weniger als 0')
                 this.setState({
                     members: [0],
                     userIds: [0]
                 })
-            }
-            else {
+            } else {
                 this.setState({
                     members: member,
-                }, function () {
-                    console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
-                }); this.getUserIds();
+                },
+                    function () {
+                        console.log(this.state.members, 'Callback Function in Entry.js', this.state.userIds)
+                    });
+                this.getUserIds();
                 this.getPlanedCapacitiesForUser()
-
             }
         }
         )
     }
 
     getUserIds() {
+        /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
+         * und speichert diese als neue Liste im State ab.*/
         let members = this.state.members
         let liste = []
         members.map(element =>
@@ -96,19 +96,22 @@ class IndividualEntry extends Component {
     }
 
     getPlanedCapacitiesForUser() {
+        /** Holt die geplante Kapazität der einzelnen ProjectMembers 
+         * und speichert die Informationen in neuer Liste im State ab.*/
         let members = this.state.members
-        let listeZwei = []
+        let capacitiesOfUsers = []
         members.map(element =>
-            listeZwei.push(element.getCapacity()),
-            console.log('Hier ist die Liste', listeZwei))
+            capacitiesOfUsers.push(element.getCapacity()),
+            console.log('Hier ist die Liste', capacitiesOfUsers))
         this.setState({
-            userCapacity: [...this.state.userCapacity, ...listeZwei]
+            userCapacity: [...this.state.userCapacity, ...capacitiesOfUsers]
         }, function () {
             console.log('23458. Callbackfunction', this.state.userCapacity)
         })
     }
 
     getProjectDuration = (project_id) => {
+        /** Holt Projectdauer mithilfe deren Id und speichert die Informationen als Liste im State ab.*/
         WorkTimeAppAPI.getAPI().getProjectDurationInDays(project_id).then(projectDurationBO =>
             this.setState({
                 projectDuration: projectDurationBO
@@ -116,7 +119,6 @@ class IndividualEntry extends Component {
                 console.log('Hier ist der die Duration: ', this.state.projectDuration)
             }))
     }
-
 
     handleClick() {
         this.setState({
@@ -156,9 +158,7 @@ class IndividualEntry extends Component {
                             </Table>
                         </TableContainer>
                     </Box>
-
                     <Collapse in={open} timeout="auto" unmountOnExit>
-
                         <Table style={{ marginLeft: '250px' }}>
                             <TableHead>
                                 <Box sx={{
@@ -201,11 +201,7 @@ class IndividualEntry extends Component {
 
                                 </Box>
                             </TableHead>
-
-
                         </Table>
-
-
                         <TableContainer style={{
                             display: 'flex',
                             justifyContent: 'center'

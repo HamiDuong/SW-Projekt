@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import IndividualEntry from './IndividualEntry';
+import Entry from './ActivityEntriesAdmin';
 import Alert from '@mui/material/Alert';
 
 
-class OverIndividualEntry extends Component {
+class OverEntry extends Component {
     constructor(props) {
         super(props);
         this.state = ({
@@ -78,36 +78,31 @@ class OverIndividualEntry extends Component {
         }
     }
 
+
     componentDidMount() {
         this.getActivitiesForProject(this.props.value)
-        console.log('this.props.value')
-
     }
 
 
-    funcy() {
+    showEntries() {
         let len = this.state.activities.length
         let liste = this.state.activities[0]
-        console.log(liste, len, 'hier ist wahrscheinlich was falsch...')
-        if (this.state.activities_vorhanden == true) {
+        if (this.state.activities_vorhanden) {
             return (
                 <div>
-                    {liste.map((element, index) => {
-                        console.log('Was ist hier?', element, index)
+                    {liste.map((element) => {
                         const value = element.id
-                        console.log(value, 'VALUE', this.state.projectId)
                         return (
-                            <IndividualEntry projectId={this.state.projectId} value={value} />
+                            <Entry projectId={this.state.projectId} value={value} />
                         )
                     })}
                 </div>
             )
         } else {
             return (
-                <div> Keine Aktivitäten vorhanden</div>
+                console.log('No entries yet.')
             )
         }
-
     }
 
 
@@ -116,7 +111,7 @@ class OverIndividualEntry extends Component {
             <div>
                 {
                     this.state.activities_vorhanden ?
-                        this.funcy()
+                        this.showEntries()
                         : <div>
                             <Alert sx={{ margin: 3 }} variant='outlined' severity="info">There are no activities for your project yet.</Alert>
                         </div>
@@ -125,4 +120,5 @@ class OverIndividualEntry extends Component {
         );
     }
 }
-export default OverIndividualEntry;
+
+export default OverEntry;

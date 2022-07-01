@@ -3,7 +3,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import OverEntry from './OverEntry';
+import OverEntry from './ActivityOverviewAdmin';
 import Alert from '@mui/material/Alert';
 
 class ProjectSelection extends Component {

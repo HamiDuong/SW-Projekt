@@ -10,15 +10,14 @@ import CreateProject from './Components/Pages/CreateProjectMain';
 import TimeIntervalBookings from './Components/TimeIntervalBookings';
 import EventBookings from './Components/EventBookings';
 import MyProjects from './Components/MyProjects';
-import ProjectSelection from './Components/Pages/ProjectSelections'
-import IndividualEntry from './Components/Pages/IndividualEntry'
+import ProjectSelection from './Components/Pages/ProjectWorkTimeOverviewAdmin'
 import Login from './Components/Login';
 import { GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebaseConfig.js';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import WorkTimeAppAPI from './API/WorkTimeAppAPI';
-import IndividualSelection from './Components/Pages/IndividualSelection';
+import IndividualSelection from './Components/Pages/ProjectWorkTimeOverview';
 class App extends React.Component {
   constructor(props) {
     super(props);

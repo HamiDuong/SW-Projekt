@@ -9,7 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import ActivityBookingEntry from './EntryOfEachBooking'
+import ActivityBookingEntry from './ActivityEntryBookingsAdmin'
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Divider from '@mui/material/Divider';
 import ListAltIcon from '@mui/icons-material/ListAlt';
