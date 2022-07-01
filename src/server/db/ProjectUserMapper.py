@@ -217,3 +217,29 @@ class ProjectUserMapper(Mapper):
 
         self._cnx.commit()
         return result
+    
+    def find_by_projectid_userid(self, projectid, userid):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projectusers WHERE userId={} AND projectId={}".format(projectid, userid)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, projectId, userId,
+             capacity, currentCapacity) = tuples[0]
+            projectuserobj = ProjectUserBO()
+            projectuserobj.set_id(id)
+            projectuserobj.set_date_of_last_change(dateOfLastChange)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
+            projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
+            result = projectuserobj
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result        

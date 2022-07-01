@@ -2697,6 +2697,10 @@ class Businesslogic:
                 result.append(elem)
         return result
 
+    def get_projectuser_by_project_and_user(self, projectid, userid):
+        with ProjectUserMapper() as mapper:
+            return mapper.find_by_projectid_userid(projectid, userid)
+
     """
     @author [Vi Nam Le] (https://github.com/vinamle)
     Activity

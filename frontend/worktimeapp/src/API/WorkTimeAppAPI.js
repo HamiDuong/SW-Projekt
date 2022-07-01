@@ -273,6 +273,8 @@ export default class WorkTimeAppAPI {
     #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
     updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
 
+    #getProjectUserByUserId = (id) => `${this.#worktimeappServerBaseURL}/projectuser/projectid/${id}`;
+
     //Account
     #getWorkTimeAccountByUserIdURL = (id) => `${this.#worktimeappServerBaseURL}/worktimeaccountuser/${id}`;
 
@@ -2206,6 +2208,15 @@ export default class WorkTimeAppAPI {
             })
         })
 
+    }
+
+    getProjectUserByUserId(id){
+        return this.#fetchAdvanced(this.#getProjectUserByUserId(id)).then((responseJSON) => {
+            let responseprojectuser = ProjectUserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseprojectuser)
+            })
+        })        
     }
 
 }
