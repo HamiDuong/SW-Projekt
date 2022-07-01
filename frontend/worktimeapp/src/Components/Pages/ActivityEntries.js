@@ -146,30 +146,23 @@ class IndividualEntry extends Component {
                             display: 'flex',
                             justifyContent: 'center'
                         }}>
-                            <Table sx={{ width: '75%' }}>
+                            <Table sx={{ width: '70%' }}>
                                 <TableHead>
                                     <Box sx={{
-                                        marginTop: '5',
+                                        marginTop: '20px',
+                                        marginBotton: '10px',
+                                        marginRight: 'auto',
+                                        marginLeft: 'auto',
                                         width: '100%',
-                                        display: 'inline-flex',
+                                        display: 'flex',
                                         alignItems: 'center',
-                                        justifyContent: 'space-evenly',
-                                        border: (theme) => `1px solid ${theme.palette.divider}`,
+                                        justifyContent: 'space-around',
                                         color: 'text.secondary',
-                                        '& svg': {
-                                            m: 2,
-                                        },
-                                        '& hr': {
-                                            mx: 1,
-                                        }
+                                        flexWrap: 'wrap',
                                     }}>
-                                        <MoreTimeIcon />
                                         <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
-                                        <ScheduleIcon />
                                         <TableRow>Planed capacity of '{this.state.name}' : {this.state.capacity} </TableRow>
                                     </Box>
-
-
                                 </TableHead>
                             </Table>
                         </TableContainer>
@@ -200,7 +193,7 @@ class IndividualEntry extends Component {
                                             alignItems: 'center',
                                         }}>
                                             <ListAltIcon />
-                                            <TableRow>Booked capacity</TableRow>
+                                            <TableRow>Your booked capacity</TableRow>
                                         </Box>
                                         <Divider orientation="vertical" flexItem />
                                         <Box sx={{
@@ -208,7 +201,7 @@ class IndividualEntry extends Component {
                                             alignItems: 'center',
                                         }}>
                                             <TaskAltIcon />
-                                            <TableRow >Planed capacity of employee</TableRow>
+                                            <TableRow >Your planed capacity</TableRow>
                                         </Box>
                                     </Box>
                                 </TableHead>
