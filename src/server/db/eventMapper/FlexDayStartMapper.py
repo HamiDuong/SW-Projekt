@@ -17,12 +17,11 @@ class FlexDayStartMapper(Mapper):
         """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute(
-            "SELECT MAX(id) AS maxid FROM worktimeapp.flexdaystart ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.flexdaystart ")
         tuples = cursor.fetchall()
         flex_day_start.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 flex_day_start.set_id(maxid[0] + 1)
             else:
@@ -35,7 +34,7 @@ class FlexDayStartMapper(Mapper):
             flex_day_start.get_id(),
             flex_day_start.get_date_of_last_change(),
             flex_day_start.get_time(),
-            flex_day_start.get_type()
+            flex_day_start.get_type(),
         )
 
         cursor.execute(command, data)
@@ -53,7 +52,9 @@ class FlexDayStartMapper(Mapper):
         """
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdaystart"
+        command = (
+            "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdaystart"
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -83,7 +84,8 @@ class FlexDayStartMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.flexdaystart WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -119,7 +121,8 @@ class FlexDayStartMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date FROM worktimeapp.flexdaystart WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -141,10 +144,15 @@ class FlexDayStartMapper(Mapper):
         cursor = self._cnx.cursor()
         flex_day_start.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.flexdaystart " + \
-                  "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (flex_day_start.get_date_of_last_change(), flex_day_start.get_time(),
-                flex_day_start.get_id())
+        command = (
+            "UPDATE worktimeapp.flexdaystart "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            flex_day_start.get_date_of_last_change(),
+            flex_day_start.get_time(),
+            flex_day_start.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -156,7 +164,8 @@ class FlexDayStartMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.flexdaystart WHERE id={}".format(
-            flex_day_start.get_id())
+            flex_day_start.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

@@ -133,15 +133,25 @@ class EventBO(bo.BusinessObject):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
-        return "EventBO {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}".format(
-            self.get_id(), self.get_date_of_last_change(),
-            self.get_type(),
-            self.get_coming_id(), self.get_going_id(),
-            self.get_break_begin_id(),  self.get_break_end_id(),
-            self.get_illness_begin_id(), self.get_illness_end_id(),
-            self.get_project_work_begin_id(), self.get_project_work_end_id(),
-            self.get_vacation_begin_id(), self.get_vacation_end_id(),
-            self.get_flex_day_start_id(), self.get_flex_day_end_id())
+        return (
+            "EventBO {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}".format(
+                self.get_id(),
+                self.get_date_of_last_change(),
+                self.get_type(),
+                self.get_coming_id(),
+                self.get_going_id(),
+                self.get_break_begin_id(),
+                self.get_break_end_id(),
+                self.get_illness_begin_id(),
+                self.get_illness_end_id(),
+                self.get_project_work_begin_id(),
+                self.get_project_work_end_id(),
+                self.get_vacation_begin_id(),
+                self.get_vacation_end_id(),
+                self.get_flex_day_start_id(),
+                self.get_flex_day_end_id(),
+            )
+        )
 
     @staticmethod
     def from_dict(dictionary=dict()):

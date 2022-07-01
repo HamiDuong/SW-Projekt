@@ -86,16 +86,28 @@ import math
 
 
 class Businesslogic:
-
     def __init__(self):
         pass
 
-    '''Beginn der Event-& und Evensubklassenmethoden'''
-    '''Author: Khadidja Kebaili'''
+    """Beginn der Event-& und Evensubklassenmethoden"""
+    """Author: Khadidja Kebaili"""
 
-    def create_event(self, type, coming_id, going_id, break_begin_id, break_end_id,
-                     illness_begin_id, illness_end_id, project_work_begin_id, project_work_end_id,
-                     vacation_begin_id, vacation_end_id, flex_day_start_id, flex_day_end_id):
+    def create_event(
+        self,
+        type,
+        coming_id,
+        going_id,
+        break_begin_id,
+        break_end_id,
+        illness_begin_id,
+        illness_end_id,
+        project_work_begin_id,
+        project_work_end_id,
+        vacation_begin_id,
+        vacation_end_id,
+        flex_day_start_id,
+        flex_day_end_id,
+    ):
         """
         @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
 
@@ -229,15 +241,22 @@ class Businesslogic:
             coming = mapper.update(coming)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "coming_id", coming.get_id(), coming.get_type())
+                    "coming_id", coming.get_id(), coming.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
-    # Methode um ein ComingBO aus der Datenbank zu entfernen
     def delete_coming(self, coming):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein ComingBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param coming: ComingBO
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "coming_id", coming.get_id(), coming.get_type())
+                "coming_id", coming.get_id(), coming.get_type()
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
 
@@ -287,16 +306,24 @@ class Businesslogic:
             going = mapper.update(going)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "going_id", going.get_id(), going.get_type())
+                    "going_id", going.get_id(), going.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
     # Methode um ein GoingBO aus der Datenbank zu entfernen
 
     def delete_going(self, going):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein GoingBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param going: GoingBO
+        """
         with EventMapper() as mapper:
             endevent = mapper.find_by_foreign_key_and_type(
-                "going_id", going.get_id(), going.get_type())
+                "going_id", going.get_id(), going.get_type()
+            )
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
 
@@ -352,9 +379,18 @@ class Businesslogic:
 
     # Methode um ein ProjectWorkBeginBO aus der Datenbank zu entfernen
     def delete_project_work_begin(self, project_work_begin):
+        """
+        Authors: Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein ProjectWorkBeginBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param project_work_begin: ProjectWorkBeginBO
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "project_work_begin_id", project_work_begin.get_id(), project_work_begin.get_type())
+                "project_work_begin_id",
+                project_work_begin.get_id(),
+                project_work_begin.get_type(),
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
 
@@ -405,15 +441,27 @@ class Businesslogic:
             mapper.update(project_work_end)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "project_work_end_id", project_work_end.get_id(), project_work_end.get_type())
+                    "project_work_end_id",
+                    project_work_end.get_id(),
+                    project_work_end.get_type(),
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
     # Methode um ein ProjectWorkEndBO aus der Datenbank zu entfernen
     def delete_project_work_end(self, project_work_end):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein ProjectWorkEndBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param project_work_end: ProjectWorkEndBO
+        """
         with EventMapper() as mapper:
             endevent = mapper.find_by_foreign_key_and_type(
-                "project_work_end_id", project_work_end.get_id(), project_work_end.get_type())
+                "project_work_end_id",
+                project_work_end.get_id(),
+                project_work_end.get_type(),
+            )
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
 
@@ -464,20 +512,31 @@ class Businesslogic:
             mapper.update(vacation_begin)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type())
+                    "vacation_begin_id",
+                    vacation_begin.get_id(),
+                    vacation_begin.get_type(),
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
-    # Methode um ein VacationBeginBO aus der Datenbank zu entfernen
     def delete_vacation_begin(self, vacation_begin):
+        """
+        Authors: Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein VacationBeginBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param vacation_begin: VacationBeginBO
+        :return:
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type())
+                "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type()
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
+                "eventBookingId", starteventbooking.get_id(), "E"
+            )
 
         with BookingMapper() as mapper:
             mapper.delete(booking)
@@ -528,14 +587,22 @@ class Businesslogic:
 
     # Methode um ein VacationEndBO aus der Datenbank zu entfernen
     def delete_vacation_end(self, vacation_end):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein VacationEndBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param vacation_end: VacationEndBO
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "vacation_end_id", vacation_end.get_id(), vacation_end.get_type())
+                "vacation_end_id", vacation_end.get_id(), vacation_end.get_type()
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
+                "eventBookingId", starteventbooking.get_id(), "E"
+            )
 
         with BookingMapper() as mapper:
             mapper.delete(booking)
@@ -586,21 +653,28 @@ class Businesslogic:
             mapper.update(illness_begin)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "illness_begin_id", illness_begin.get_id(), illness_begin.get_type())
+                    "illness_begin_id", illness_begin.get_id(), illness_begin.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
-        # Methode um ein IllnessBeginBO aus der Datenbank zu entfernen
-
     def delete_illness_begin(self, illness_begin):
+        """
+        Authors Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein IllnessBeginBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param illness_begin: IllnessBeginBO
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "illness_begin_id", illness_begin.get_id(), illness_begin.get_type())
+                "illness_begin_id", illness_begin.get_id(), illness_begin.get_type()
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E")
+                "eventBookingId", starteventbooking.get_id(), "E"
+            )
 
         with BookingMapper() as mapper:
             mapper.delete(booking)
@@ -650,20 +724,28 @@ class Businesslogic:
             mapper.update(illness_end)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "illness_end_id", illness_end.get_id(), illness_end.get_type())
+                    "illness_end_id", illness_end.get_id(), illness_end.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
-    # Methode um ein IllnessEndBO aus der Datenbank zu entfernen
     def delete_illness_end(self, illness_end):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein VacationEndBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param illness_end: IllnessEndBO
+        """
         with EventMapper() as mapper:
             endevent = mapper.find_by_foreign_key_and_type(
-                "illness_end_id", illness_end.get_id(), illness_end.get_type())
+                "illness_end_id", illness_end.get_id(), illness_end.get_type()
+            )
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", endeventbooking.get_id(), "E")
+                "eventBookingId", endeventbooking.get_id(), "E"
+            )
         with BookingMapper() as mapper:
             mapper.delete(booking)
         with EventBookingMapper() as mapper:
@@ -712,16 +794,25 @@ class Businesslogic:
             mapper.update(flex_day_start)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type())
+                    "flex_day_start_id",
+                    flex_day_start.get_id(),
+                    flex_day_start.get_type(),
+                )
                 print(flex_day_start.get_id())
                 mapper.update(event)
                 self.save_event_booking(event)
 
-    # Methode um ein FlexDayStartBO aus der Datenbank zu entfernen
     def delete_flex_day_start(self, flex_day_start):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein FlexDayStartBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param flex_day_start: FlexDayStartBO
+        """
         with EventMapper() as mapper:
             startevent = mapper.find_by_foreign_key_and_type(
-                "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type())
+                "flex_day_start_id", flex_day_start.get_id(), flex_day_start.get_type()
+            )
         with EventBookingMapper() as mapper:
             starteventbooking = mapper.find_by_event_id(startevent.get_id())
 
@@ -771,15 +862,24 @@ class Businesslogic:
             mapper.update(flex_day_end)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type())
+                    "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
     # Methode um ein FlexDayEndBO aus der Datenbank zu entfernen
     def delete_flex_day_end(self, flex_day_end):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein FlexEndBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param flex_day_end: FlexEndBO
+        :return:
+        """
         with EventMapper() as mapper:
             endevent = mapper.find_by_foreign_key_and_type(
-                "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type())
+                "flex_day_end_id", flex_day_end.get_id(), flex_day_end.get_type()
+            )
         with EventBookingMapper() as mapper:
             endeventbooking = mapper.find_by_event_id(endevent.get_id())
 
@@ -830,13 +930,21 @@ class Businesslogic:
             mapper.update(break_begin)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "break_begin_id", break_begin.get_id(), break_begin.get_type())
+                    "break_begin_id", break_begin.get_id(), break_begin.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
         # Methode um ein BreakBeginBO aus der Datenbank zu entfernen
 
     def delete_break_begin(self, break_begin):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein BreakBeginBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param break_begin: BreakBeginBO
+        :return:
+        """
         with BreakBeginMapper() as mapper:
             mapper.delete(break_begin)
 
@@ -875,14 +983,22 @@ class Businesslogic:
             mapper.update(break_end)
             with EventMapper() as mapper:
                 event = mapper.find_by_foreign_key_and_type(
-                    "break_end_id", break_end.get_id(), break_end.get_type())
+                    "break_end_id", break_end.get_id(), break_end.get_type()
+                )
                 mapper.update(event)
                 self.save_event_booking(event)
 
     # Methode um ein BreakEndBO aus der Datenbank zu entfernen
-    def delete_breakEnd(self, breakEnd):
+    def delete_breakEnd(self, break_end):
+        """
+        Author Khadidja Kebaili und Mihriban Dogan
+
+        Löscht ein BreakEndBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
+        :param breakEnd: BreakEndBO
+        :return:
+        """
         with BreakEndMapper() as mapper:
-            mapper.delete(breakEnd)
+            mapper.delete(break_end)
 
     # Support-Funktion
     def get_all_event_subclasses(self):
@@ -892,11 +1008,18 @@ class Businesslogic:
         Alle Subklassen der Klasse EventBO
         :return: Array mit allen Event-Subklassen
         """
-        events = [self.get_all_break_ends(), self.get_all_break_begins(), self.get_all_project_work_begins(),
-                  self.get_all_project_work_ends(), self.get_all_vacation_begins(
-        ), self.get_all_vacation_ends(),
-            self.get_all_illness_begins(), self.get_all_illness_end(), self.get_all_comings(),
-            self.get_all_goings()]
+        events = [
+            self.get_all_break_ends(),
+            self.get_all_break_begins(),
+            self.get_all_project_work_begins(),
+            self.get_all_project_work_ends(),
+            self.get_all_vacation_begins(),
+            self.get_all_vacation_ends(),
+            self.get_all_illness_begins(),
+            self.get_all_illness_end(),
+            self.get_all_comings(),
+            self.get_all_goings(),
+        ]
         return events
 
     """

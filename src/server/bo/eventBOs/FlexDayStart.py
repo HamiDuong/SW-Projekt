@@ -12,7 +12,7 @@ class FlexDayStartBO(EventBO.EventBO):
     def __init__(self):
         super().__init__()
         self._time = None
-        self._type = 'flexdaystart'
+        self._type = "flexdaystart"
 
     def set_time(self, time):
         """Methode um die Zeit des Beginn eines Überstundenabbau-Tages (freier Tag) einzustellen."""
@@ -36,8 +36,11 @@ class FlexDayStartBO(EventBO.EventBO):
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
         return "FlexDayStartBO {}, {}, {}, {}".format(
-            self.get_id(), self.get_date_of_last_change(),
-            self.get_type(), self.get_time())
+            self.get_id(),
+            self.get_date_of_last_change(),
+            self.get_type(),
+            self.get_time(),
+        )
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -50,7 +53,7 @@ class FlexDayStartBO(EventBO.EventBO):
 
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
-        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+        """@author Mihriban Dogan (https://github.com/mihriban-dogan)"""
         obj = FlexDayStartBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

@@ -16,7 +16,7 @@ class IllnessBeginBO(EventBO.EventBO):
     def set_time(self, time):
         """Methode um die Zeit des Krankheitsbeginn einzustellen."""
         self._time = time
-        self._type = 'illnessbegin'
+        self._type = "illnessbegin"
 
     def get_time(self):
         """Methode um die Zeit des Krankheitsbeginn zurückzubekommen."""
@@ -36,8 +36,11 @@ class IllnessBeginBO(EventBO.EventBO):
         Diese besteht aus der ID der Superklasse ergänzt durch den Zeitpunkt des
         des jeweiligen Events."""
         return "IllnessBeginBO {}, {}, {}, {}".format(
-            self.get_id(), self.get_date_of_last_change(),
-            self.get_type(), self.get_time())
+            self.get_id(),
+            self.get_date_of_last_change(),
+            self.get_type(),
+            self.get_time(),
+        )
 
     @staticmethod
     def from_dict(dictionary=dict()):
@@ -50,7 +53,7 @@ class IllnessBeginBO(EventBO.EventBO):
 
     @staticmethod
     def from_dict_timeinterval(dictionary=dict()):
-        '''@author Mihriban Dogan (https://github.com/mihriban-dogan)'''
+        """@author Mihriban Dogan (https://github.com/mihriban-dogan)"""
         obj = IllnessBeginBO()
         obj.set_id(dictionary["id"])  # eigentlich Teil von BusinessObject !
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])
