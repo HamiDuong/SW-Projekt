@@ -1,337 +1,172 @@
 import {
-    DialogActions,
-    TextField,
+    Button,
     Dialog,
+    DialogActions,
     DialogContent,
     DialogTitle,
-    Button
-} from '@mui/material';
+    TableContainer,
+    Table,
+    TextField } from '@mui/material';
 import React, { Component } from 'react';
-import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
+import ProjectBO from '../../API/ProjectBO';
+import WorkTimeAPI from '../../API/WorkTimeAppAPI';
+import EditProjectMemberEntry from '../EditProjectMemberEntry';
 
-import BreakBO from '../../API/BreakBO';
-import FlexDayBO from '../../API/FlexDayBO';
-import IllnessBO from '../../API/IllnessBO';
-import ProjectDurationBO from '../../API/ProjectDurationBO';
-import ProjectWorkBO from '../../API/ProjectWorkBO';
-import VacationBO from '../../API/VacationBO';
-import WorkBO from '../../API/WorkBO';
-
-/**
- * @author Ha Mi Duong (https://github.com/HamiDuong)
- * 
- * Dialog für die Bearbeitung von Intervalbuchungen
- */
-class EditBooking extends Component {
-    constructor(props) {
+class EditProject extends Component {
+    constructor(props){
         super(props);
         this.state = {
-            booking: this.props.booking,
+            projectId : this.props.project,
+            p : '',
+            members : "",
+            projectmember : [],
 
-            startdate: props.booking.start,
-            enddate:props.booking.end,
-            type: props.booking.type
-        };
+            projectname : '',
+            commissioner : ''
+        }
         this.baseState = this.state;
     }
 
-    // Schließen vom Dialog
     handleClose = () => {
         this.props.onClose(null);
     }
 
-    printState = () => {
-        console.log("Booking", this.state.booking)
-        console.log(this.state.startdate)
-        console.log(this.state.enddate)
-        console.log(this.state.type)
-    }
-    
-    // Löschen der Buchung
-    deleteBooking = (obj) => {
-        console.log("Booking löschen")
-
-        const { booking } = this.props;
-        console.log(this.state.type)
-        console.log(booking)
-        if ((this.state.type) ==="ProjectWork"){
-            let ProjectWorkBOs = ProjectWorkBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteProjectWork(ProjectWorkBOs[0].getID()).then(booking =>{
-                console.log("Delete Project Work");
-                console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="Vacation"){
-            let VacationBOs = VacationBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteVacation(VacationBOs[0].getID()).then(booking =>{
-                            console.log("Delete Vacation");
-                            console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="Break"){
-            let BreakBOs = BreakBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteBreak(BreakBOs[0].getID()).then(booking =>{
-                            console.log("Delete Break");
-                            console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="FlexDay"){
-            let FlexDayBOs = FlexDayBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteFlexDay(FlexDayBOs[0].getID()).then(booking =>{
-                            console.log("Delete Flex Day");
-                            console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="Illness"){
-            let IllnessBOs = BreakBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteIllness(IllnessBOs[0].getID()).then(booking =>{
-                            console.log("Delete Illness");
-                            console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="ProjectDuration"){
-            let ProjectDurationBOs = ProjectDurationBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteProjectDuration(ProjectDurationBOs[0].getID()).then(booking =>{
-                            console.log("Delete Project Duration");
-                            console.log(booking);
-                        });
-        }
-        else if ((this.state.type) ==="Work"){
-            let WorkBOs = WorkBO.fromJSON(booking)
-            WorkTimeAppAPI.getAPI().deleteWork(WorkBOs[0].getID()).then(booking =>{
-                            console.log("Delete Project Duration");
-                            console.log(booking);
-                        });
-        }
-        // entsprechend der Art des Intervals wird ein anderer Endpunkt angesprochen
-        // switch(this.state.type){
-        //     case "Break":
-        //         WorkTimeAppAPI.getAPI().deleteBreak(booking.id).then(booking =>{
-        //             console.log("Delete Break");
-        //             console.log(booking);
-        //         });
-            
-        //     case "Flex Day":
-        //         WorkTimeAppAPI.getAPI().deleteFlexDay(booking.id).then(booking =>{
-        //             console.log("Delete Flex Day");
-        //             console.log(booking);
-        //         });
-
-        //     case "Illness":
-        //         WorkTimeAppAPI.getAPI().deleteIllness(booking.id).then(booking =>{
-        //             console.log("Delete Illness");
-        //             console.log(booking);
-        //         });
-
-        //     case "Project Duration":
-        //         WorkTimeAppAPI.getAPI().deleteProjectDuration(booking.id).then(booking =>{
-        //             console.log("Delete Project Duration");
-        //             console.log(booking);
-        //         });
-
-        //     case "ProjectWork":
-        //         WorkTimeAppAPI.getAPI().deleteProjectWork(booking.id).then(booking =>{
-        //             console.log("Delete Project Work");
-        //             console.log(booking);
-        //         });
-
-        //     case "Vacation":
-        //         WorkTimeAppAPI.getAPI().deleteVacation(booking.id).then(booking =>{
-        //             console.log("Delete Vacation");
-        //             console.log(booking);
-        //         });
-
-        //     case "Work":
-        //         WorkTimeAppAPI.getAPI().deleteWork(booking.id).then(booking =>{
-        //             console.log("Delete Work");
-        //             console.log(booking);
-        //         });
-        // }
-
-        this.handleClose()
-
+    getProject = () => {
+        WorkTimeAPI.getAPI().getProject(this.state.projectId).then( project =>
+            this.setState({
+                p : project,
+                projectname : project.name,
+                commissioner : project.commissioner
+            }, function(){
+                console.log("Projekt aus Backend")
+            })
+        )
     }
 
-    // neue Werte der Buchung im State speichern
-    saveChanges = () => {
-        let starthold = document.getElementById("startdate");
-        let endhold = document.getElementById("enddate");
-        this.setState({
-            startdate: starthold.value,
-            enddate: endhold.value,
-        }, function(){
-            console.log("State für neue Werte")
-            console.log(this.state.startdate);
-        });
+    deleteProject = (project) => {
+        WorkTimeAPI.getAPI().deleteProject(project).then(
+            this.handleClose()
+        )
     }
 
-    componentDidMount(){
-        console.log("EditBooking ist gemountet");
-        console.log(this.state.booking)
+    updateProject = () => {
+        console.log("Update Projekt")
+        let hold = document.getElementById("projectname");
+        let pname = hold.value;
+        let hold2 = document.getElementById("commissioner");
+        let commi = hold2.value;
 
-    }
+        let updatedProject = Object.assign(new ProjectBO(), this.state.p);
+        updatedProject.setName(pname);
+        updatedProject.setCommissioner(commi);
 
-    // Änderung der Intervalbuchung abspeichern
-    updateBooking = () => {
-        let starthold = document.getElementById("startdate");
-        let endhold = document.getElementById("enddate");
-        // console.log("Starthold", starthold.value);
-        // console.log("Endhold", endhold.value);
-        this.setState({
-            startdate: starthold.value,
-            enddate: endhold.value,
-        }, function(){
-            console.log("State für neue Werte");
-        });
-
-        let updatedbooking = null;
-        // console.log("State");
-        // console.log(this.state.startdate);
-        // console.log(this.state.enddate);
-        // richtigen Endpunkt entsprechend des Typs wählen
-        if(this.state.type == "Break"){
-            updatedbooking = Object.assign(new BreakBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateBreak(updatedbooking).then(booking =>{
-                console.log("Update Break");
-                console.log(booking);
-            });            
-        }
-
-        if(this.state.type == "FlexDay"){
-            updatedbooking = Object.assign(new FlexDayBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateFlexDay(updatedbooking).then(booking =>{
-                console.log("Update Flex Day");
-                console.log(booking);
-            });            
-        }
-
-        if(this.state.type == "Illness"){
-            updatedbooking = Object.assign(new IllnessBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateIllness(updatedbooking).then(booking =>{
-                console.log("Update Illness");
-                console.log(booking);
-            });
-        }
-
-        if(this.state.type == "ProjectDuration"){
-            updatedbooking = Object.assign(new ProjectDurationBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            console.log("API CALL", updatedbooking)
-            WorkTimeAppAPI.getAPI().updateProjectDuration(updatedbooking).then(booking =>{
-                console.log("Update Project Duration");
-                console.log(booking);
-            });            
-        }
-
-        if(this.state.type == "ProjectWork"){
-            updatedbooking = Object.assign(new ProjectWorkBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateProjectWork(updatedbooking).then(booking =>{
-                console.log("Update Project Work");
-                console.log(booking);
-            });            
-        }
-
-        if(this.state.type == "Vacation"){
-            updatedbooking = Object.assign(new VacationBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateVacation(updatedbooking).then(booking =>{
-                console.log("Update Vacation");
-                console.log(booking);            
-            });
-        }
-
-        if(this.state.type == "Work"){
-            updatedbooking = Object.assign(new WorkBO(), this.props.booking);
-            updatedbooking.setStart(this.state.startdate);
-            updatedbooking.setEnd(this.state.enddate);
-            WorkTimeAppAPI.getAPI().updateWork(updatedbooking).then(booking =>{
-                console.log("Update Work");
-                console.log(booking);
-            });            
-        }
-
+        WorkTimeAPI.getAPI().updateProject(updatedProject).then(
+            console.log(updatedProject)
+        ).then(
+            project => {
+                this.baseState.projectname = pname;
+                this.baseState.commissioner = commi;
+            }
+        )
         this.handleClose();
     }
 
+    getActivities = () => {
+        WorkTimeAPI.getAPI().getActivitiesByProject(this.state.project.id).then( activities =>
+            this.setState({
+                activity : activities
+            }, function(){
+                console.log("Activities aus Backend")
+            })
+        )
+    }
+
+    handleChange = ev => {
+        this.setState({ [ev.target.name]: ev.target.value });
+    };
+
+    getProjectMembers = () => {
+        console.log("Projekt ID", this.state.projectId);
+        WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then( members =>
+            this.setState({
+                members : members
+            }, function(){
+                members.forEach(elem => {
+                    WorkTimeAPI.getAPI().getUserById(elem.userId).then( user =>
+                           this.setState({
+                                projectmember : [...this.state.projectmember, user]
+                           }, function(){
+                                console.log("PROJEKTMEMBER")
+                                console.log(this.state.projectmember);
+                           })
+                    )
+                });
+            })    
+        )
+    }
+
+    componentDidMount(){
+        this.getProject();
+        this.getProjectMembers();
+    }
+    
     render() { 
         const { classes, show } = this.props
         return (
-            show ?
-            <Dialog open={show} onClose={this.handleClose} maxWidth='xs'>
-                <DialogContent>
-                    <DialogTitle>
-                        <h2>Edit the Interval-Booking</h2>
-                    </DialogTitle>
-                        <TextField
-                            id = "type"
-                            label = "Type"
-                            variant = 'standard'
-                            defaultValue={this.state.booking.type}
-                            onChange ={this.saveChanges}  
-                            InputLabelProps={{
-                                readOnly: true
-                            }}                                             
+                show ?
+                <Dialog open = {show} onClose = {this.handleClose} maxWidth = 'sm'>
+                    <DialogContent>
+                        <DialogTitle>
+                            Edit the Project
+                        </DialogTitle>
+                    </DialogContent>
+                    <TextField
+                        id="projectname"
+                        label="Project Name"
+                        variant="standard"
+                        defaultValue={this.state.projectname}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        id="commissioner"
+                        label="Commisioner"
+                        variant="standard"
+                        defaultValue={this.state.commissioner}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TableContainer>
+                        <Table>
+                            {
+                                this.state.projectmember.map((user) => (
+                                    <EditProjectMemberEntry user = {user} projectId = {this.state.projectId}></EditProjectMemberEntry>
+                                ))
+                            }
+
+                        </Table>
+                    </TableContainer>
+                    <DialogActions>
+                        <Button
+                            onClick={this.handleClose}
                         >
-                        </TextField>
-                        <div>
-                            <TextField
-                                id = "startdate"
-                                label="Start Date"
-                                variant = "standard"
-                                defaultValue={this.state.booking.start}
-                                onChange ={this.saveChanges}  
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                            <TextField
-                                id = "enddate"
-                                label="End Date"
-                                variant = "standard"
-                                onChange ={this.saveChanges}  
-                                defaultValue={this.state.booking.end}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick = {this.printState}
-                    >
-                        State printen
-                    </Button>
-                    <Button
-                        onClick={this.handleClose}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={this.deleteBooking}
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        onClick={this.updateBooking}
-                    >
-                        Edit
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            : null
+                            Cancel
+                        </Button>
+                        <Button>
+                            Add Projectmember
+                        </Button>
+                        <Button
+                            onClick={this.updateProject}
+                        >
+                            Save
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                :null
         );
     }
 }
  
-export default EditBooking;
+export default EditProject;
