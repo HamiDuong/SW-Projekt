@@ -252,6 +252,9 @@ class MyBookings extends Component {
         }
     }
 
+
+
+
     // Map table rows for interval bookigns
     mapIntervalBookings = () => {
         return (
