@@ -13,6 +13,10 @@ import WorkTimeAPI from '../../API/WorkTimeAppAPI';
 import EditProjectMemberEntry from '../EditProjectMemberEntry';
 import AddProjectUser from './AddProjectUser';
 
+const distinct = (value, index, self) => {
+    return self.indexOf(value) === index;
+}
+
 class EditProject extends Component {
     constructor(props){
         super(props);
@@ -88,24 +92,41 @@ class EditProject extends Component {
         this.setState({ [ev.target.name]: ev.target.value });
     };
 
+    distinct = (value, index, self) => {
+        return self.indexOf(value) == index;
+    }
+
     getProjectMembers = () => {
+        let res = []
         console.log("Projekt ID", this.state.projectId);
         WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then( members =>
             this.setState({
                 members : members
             }, function(){
+                console.log('Hier die Members',members)
                 members.forEach(elem => {
                     WorkTimeAPI.getAPI().getUserById(elem.userId).then( user =>
-                           this.setState({
-                                projectmember : [...this.state.projectmember, user]
-                           }, function(){
-                                console.log("PROJEKTMEMBER")
-                                console.log(this.state.projectmember);
-                           })
+                        res.push(user)
+                        //    this.setState({
+                        //         projectmember : [...this.state.projectmember, user].filter(distinct)
+                        //    }, function(){
+                        //         console.log('Hier der User', user)
+                        //         console.log("PROJEKTMEMBER")
+                        //         res.push(user)
+                        //         console.log('Hier state von ProjektMember',this.state.projectmember);
+                        //    })
                     )
                 });
             })    
         )
+
+        this.setState({
+            projectmember : res
+        }, function(){
+            console.log("RES", res)
+        })
+    
+        console.log('Final', this.state.projectmember)
     }
 
     openAddDialog = () => {

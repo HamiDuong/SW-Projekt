@@ -221,6 +221,7 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().updateIllnessStart(updatedbooking).then(booking => {
                 console.log("Update IllnessStart");
                 console.log(booking);
+                this.props.onClose(booking)
             });
         }
 
@@ -230,6 +231,7 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().updateIllnessEnd(updatedbooking).then(booking => {
                 console.log("Update IllnessEnd");
                 console.log(booking);
+                this.props.onClose(booking)
             });
         }
 

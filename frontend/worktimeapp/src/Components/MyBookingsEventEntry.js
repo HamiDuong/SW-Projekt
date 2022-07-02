@@ -12,7 +12,7 @@ class MyBookingsEventEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            booking: props.booking,
+            booking: this.props.booking,
             showDialog: false,
             loadingInProgress: false,
             error: null,
