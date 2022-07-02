@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
-import {withStyles,
-    Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    TextField,
-    Button,
-    List,
-    ListItem,
-    Box,
-    Collapse,
-    ListItemText,
-    ListItemIcon,
-    ListItemButton,
-    ListSubheader,
-    TableRow,
-    TableHead,
-    TableContainer,
-    TableCell,
-    TableBody,
-    Table,
-    Paper,
-    FormControl,
-    Card,
-    Grid,
-    Select,
-    MenuItem,
-    InputLabel
+import {
+  withStyles,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  Box,
+  Collapse,
+  ListItemText,
+  ListItemIcon,
+  ListItemButton,
+  ListSubheader,
+  TableRow,
+  TableHead,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  Paper,
+  FormControl,
+  Card,
+  Grid,
+  Select,
+  MenuItem,
+  InputLabel
 } from '@mui/material';
 
 import { MyProjectpopup } from './MyProjectpopup';
@@ -41,63 +42,63 @@ import { isThursday } from 'date-fns';
 
 const header = [
   {
-  id: 'name',
-  name: 'Name',
-  label: 'Name'
+    id: 'name',
+    name: 'Name',
+    label: 'Name'
   },
   {
-      id: 'commissioner',
-      name: 'Commissioner',
-      label: 'Commissioner'
-  }, 
-  {
-      id: 'user',
-      name: 'User',
-      label: 'User'
+    id: 'commissioner',
+    name: 'Commissioner',
+    label: 'Commissioner'
   },
   {
-      id: 'duration',
-      name: 'Duration',
-      label: 'Duration'
+    id: 'user',
+    name: 'User',
+    label: 'User'
+  },
+  {
+    id: 'duration',
+    name: 'Duration',
+    label: 'Duration'
   },
 ]
 const data = [
   {
-      id: 1,
-      name:'SW Project',
-      commissioner: 'Thies',
-      user: 'Susi',
-      duration: '90 Tage'
+    id: 1,
+    name: 'SW Project',
+    commissioner: 'Thies',
+    user: 'Susi',
+    duration: '90 Tage'
   },
   {
-      id: 2,
-      name:'Programmieren',
-      commissioner: 'Thies',
-      user: 'Susi',
-      duration: '999 Tage'
+    id: 2,
+    name: 'Programmieren',
+    commissioner: 'Thies',
+    user: 'Susi',
+    duration: '999 Tage'
   },
   {
-      id: 3,
-      name:'Schlafen',
-      commissioner: '',
-      user: 'Susi',
-      duration: '15 Tage'
+    id: 3,
+    name: 'Schlafen',
+    commissioner: '',
+    user: 'Susi',
+    duration: '15 Tage'
   }
 ]
 
 const activities = [
-    {
-        name: "Use Case erstellen",
-        capacity: "45h"
-    },
-    {
-        name: "ERM Diagram",
-        capacity: "10h"
-    },
-    {
-        name: "Blabla",
-        capacity: "5h"
-    },
+  {
+    name: "Use Case erstellen",
+    capacity: "45h"
+  },
+  {
+    name: "ERM Diagram",
+    capacity: "10h"
+  },
+  {
+    name: "Blabla",
+    capacity: "5h"
+  },
 ]
 
 /**
@@ -107,25 +108,25 @@ const activities = [
  */
 
 class MyProjects extends Component {
-    
-    constructor(props) {
-        super(props);
 
-        this.state = {
-          userId : props.userId,
-          projects : null,
-          projectuser: null,
+  constructor(props) {
+    super(props);
 
-          showEditWindow: false,
-          showEditActicity: false,
+    this.state = {
+      userId: props.userId,
+      projects: null,
+      projectuser: null,
 
-          workTimeAccountId:0,
-          // userId: 1,
-          showEditProject: false,
+      showEditWindow: false,
+      showEditActicity: false,
 
-          showAddActivity: false,
-          selectedProjectId: null,
-      }
+      workTimeAccountId: 0,
+      // userId: 1,
+      showEditProject: false,
+
+      showAddActivity: false,
+      selectedProjectId: null,
+    }
   }
 
   // editWindow = () => {
@@ -142,7 +143,7 @@ class MyProjects extends Component {
   //   }, function(){
   //     console.log('Edit Window schließen')
   //   })
-    
+
   // }
 
   // editWindowActivity = () => {
@@ -179,7 +180,7 @@ class MyProjects extends Component {
     //     console.log("API ProjectUser")
     //   })  
     // )
-    
+
     // let resproject = []
 
     // this.state.projectuser.forEach(elem => {
@@ -196,10 +197,10 @@ class MyProjects extends Component {
 
     WorkTimeAppAPI.getAPI().getProjectsByProjectUser(this.state.userId).then(project =>
       this.setState({
-        projects : project
-      }, function(){
+        projects: project
+      }, function () {
         console.log("Projekte wurden geholt", project[0])
-        this.state.projects.forEach(function(elem){
+        this.state.projects.forEach(function (elem) {
           console.log(elem)
         })
       })
@@ -229,25 +230,25 @@ class MyProjects extends Component {
   // }
 
   // openAddActivityWindow = () => {
-    // if(item.userId == this.state.userId){
-    //   this.setState({
-    //     showAddActivity: true
-    //   }, function(){
-    //     console.log('Add Activity Window öffnen')
-    //   })  
-    //   console.log(this.state.showEditProject)
-    // }else{
-    //   console.log('Hallo')
-    // }
-    
+  // if(item.userId == this.state.userId){
+  //   this.setState({
+  //     showAddActivity: true
+  //   }, function(){
+  //     console.log('Add Activity Window öffnen')
+  //   })  
+  //   console.log(this.state.showEditProject)
+  // }else{
+  //   console.log('Hallo')
+  // }
+
   //     this.setState({
   //       showAddActivity: true,
-      
+
   //     }, function(){
   //       console.log('Add Activity Window öffnen')
   //     })  
   //     console.log(this.state.showEditProject)
-    
+
   // }
 
   // closeAddActivityWindow = () => {
@@ -258,10 +259,10 @@ class MyProjects extends Component {
   //     })
   // }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getProjects();
     console.log("Component Did Mount", this.state.projects)
-    
+
   }
 
   projectDeleted = project => {
@@ -272,19 +273,19 @@ class MyProjects extends Component {
     });
   }
 
-  render(){
-    const {projects} = this.state
-    if(projects==null){
+  render() {
+    const { projects } = this.state
+    if (projects == null) {
       return null
     }
-    return(
-      <Card sx={{ m:5, p:2, minwidth: 500}}>
+    return (
+      <Card sx={{ m: 5, p: 2, minwidth: 500 }}>
         <Typography variant="h5" component="div">
           <AssignmentIcon></AssignmentIcon>
           My Projects
         </Typography>
         <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-          Your projects and activities at the moment. 
+          Your projects and activities at the moment.
         </Typography>
 
         {projects.map((item) => (
@@ -292,10 +293,10 @@ class MyProjects extends Component {
             <AccordionSummary>
               <TableRow>
                 <TableCell>
-                  {"Project name: "+item.name}
+                  {"Project name: " + item.name}
                 </TableCell>
                 <TableCell align="right">
-                  {"Commisioner: "+item.commissioner}
+                  {"Commisioner: " + item.commissioner}
                 </TableCell>
               </TableRow>
             </AccordionSummary>
@@ -310,7 +311,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                <MyActivitiesEntry key = {item.getID()} onProjectDeleted={this.projectDeleted} projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
+                  <MyActivitiesEntry name={item.name} commissioner={item.commissioner} key={item.getID()} onProjectDeleted={this.projectDeleted} projectId={item.id} userId={this.state.userId}></MyActivitiesEntry>
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}

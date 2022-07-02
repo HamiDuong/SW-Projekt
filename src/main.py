@@ -896,11 +896,12 @@ class ProjectWithIDOperations(Resource):
         return ''
 
     @worktimeapp.marshal_with(project)
-    @worktimeapp.expect(project, validate=True)
+    @worktimeapp.expect(project)
     @secured
     def put(self, id):
         adm = Businesslogic()
         p = ProjectBO.from_dict(api.payload)
+        print(p.get_user_id(), p.get_name(), p.get_commissioner(), p.get_id(), 'OLLLLAAAA')
 
         if p is not None:
             p.set_id(id)

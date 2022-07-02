@@ -50,7 +50,7 @@ class Entry extends Component {
                 activity: activityBO[0],
                 name: activityBO[0].getName(),
                 capacity: activityBO[0].getCapacity(),
-                currentCapacity: activityBO[0].current_capacity
+                currentCapacity: activityBO[0].getCurrentCapacity()
             }, function () {
                 console.log(this.state.name, activityBO[0].capacity, 'HALLLLOOOO', this.state.currentCapacity)
             }))
@@ -230,7 +230,7 @@ class Entry extends Component {
                                     {this.state.userIds.map((element, index) => {
                                         console.log(element, 'Ist das hier eine UserId?')
                                         return (
-                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.current_capacity} projectId={this.state.projectId}
+                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
                                                 user_capa={this.state.userCapacity[index]} />)
                                     })}
                                 </TableBody>

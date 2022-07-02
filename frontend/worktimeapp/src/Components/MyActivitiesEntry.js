@@ -38,11 +38,13 @@ class MyActivitiesEntry extends Component {
             // activity : props.activity,
             showDialog: false,
             showPopupMyProjectEntry: false,
-            
-            projectId : props.projectId,
-            activity : null,
+
+            projectId: props.projectId,
+            activity: null,
             showWorkDialog: false,
             userId: props.userId,
+
+            admin: props.admin,
 
             showAddActivity: false,
             showEditProject: false,
@@ -53,10 +55,10 @@ class MyActivitiesEntry extends Component {
 
     // Aktivitäten eines Projekts holen
     getActivities = () => {
-        WorkTimeAPI.getAPI().getActByProject(this.state.projectId).then( activities =>
+        WorkTimeAPI.getAPI().getActByProject(this.state.projectId).then(activities =>
             this.setState({
-                activity : activities
-            }, function(){
+                activity: activities
+            }, function () {
                 console.log("Activities aus Backend", this.state.activity)
             })
         )
@@ -66,7 +68,7 @@ class MyActivitiesEntry extends Component {
     showEdit = () => {
         this.setState({
             showWorkDialog: true
-        }, function(){
+        }, function () {
             console.log("EditWindow öffnen per OnClick")
         })
     }
@@ -75,37 +77,37 @@ class MyActivitiesEntry extends Component {
     closeDialog = () => {
         this.setState({
             showWorkDialog: false
-        }, function(){
+        }, function () {
             console.log("Editwindow wird geschlossen")
         })
     }
 
     togglePopupMyProjectsEntry() {
         this.setState({
-          showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
+            showPopupMyProjectEntry: !this.state.showPopupMyProjectEntry
         });
     }
 
     // Activities des Projects holen sobald die Komponente geladen ist
-    componentDidMount(){
+    componentDidMount() {
         this.getActivities();
     }
 
     // Dialog zur Bearbeitung von Projekt öffnen
     openEditProjectWindow = () => {
         this.setState({
-          showEditProject: true
-        }, function(){
-          console.log('Edit Window Projekt öffnen')
+            showEditProject: true
+        }, function () {
+            console.log('Edit Window Projekt öffnen')
         })
         console.log(this.state.showEditProject)
     }
-    
+
     // Schließen von Dialog zur Bearbeitung von Projekt
     closeEditProjectWindow = () => {
         this.setState({
-            showEditProject:false
-        }, function(){
+            showEditProject: false
+        }, function () {
             console.log('Edit Window Projekt schließen')
         })
     }
@@ -122,28 +124,28 @@ class MyActivitiesEntry extends Component {
         // }else{
         //   console.log('Hallo')
         // }
-    
-          this.setState({
+
+        this.setState({
             showAddActivity: true
-          }, function(){
+        }, function () {
             console.log('Add Activity Window öffnen')
-          })  
-          console.log(this.state.showAddActivity)
+        })
+        console.log(this.state.showAddActivity)
     }
-    
+
     // Dialog zum Hinzufügen von von Aktivitäten schließen
     closeAddActivityWindow = (activity) => {
         if (activity) {
             const newActivityList = [...this.state.activity, activity];
             this.setState({
-              activity: newActivityList,
-              showAddActivity: false
+                activity: newActivityList,
+                showAddActivity: false
             });
-          } else {
+        } else {
             this.setState({
-              showCustomerForm: false
+                showCustomerForm: false
             });
-          }
+        }
         // this.setState({
         //     showAddActivity:false
         // }, function(){
@@ -153,47 +155,47 @@ class MyActivitiesEntry extends Component {
 
     openAddDialog = () => {
         this.setState({
-            showAddDialog : true
-        }, function(){
+            showAddDialog: true
+        }, function () {
             console.log(this.state.showAddDialog);
         })
     }
 
     closeAddDialog = () => {
         this.setState({
-            showAddDialog : false
-        }, function(){
+            showAddDialog: false
+        }, function () {
             console.log(this.state.showAddDialog);
         })
     }
     deleteProjectButtonClicked = () => {
         this.setState({
-          showDeleteProjectDialog: true
+            showDeleteProjectDialog: true
         });
-      }
+    }
 
-    deleteProjectDialogClosed= (project) => {
+    deleteProjectDialogClosed = (project) => {
         if (project) {
-          this.props.onProjectDeleted(project);
+            this.props.onProjectDeleted(project);
         };
-    
+
         // Don´t show the dialog
         this.setState({
-          showDeleteProjectDialog: false
+            showDeleteProjectDialog: false
         });
-      }
+    }
 
-      activityDeleted = activity => {
+    activityDeleted = activity => {
         const newActivityList = this.state.activity.filter(activityFromState => activityFromState.getID() !== activity.getID());
         console.log(activity)
         this.setState({
-          activity: newActivityList,
+            activity: newActivityList,
         });
-      }
-    
-    render() { 
-        const {activity} = this.state 
-        if(activity ==  null) {
+    }
+
+    render() {
+        const { activity, userId, admin } = this.state
+        if (activity == null) {
             return null
         }
         return (
@@ -220,8 +222,8 @@ class MyActivitiesEntry extends Component {
                     />
                     : null
                     } */}
-                
-                
+
+
                 {
                     // this.state.activity.map((elem) => (
                     //     <TableRow
@@ -235,25 +237,25 @@ class MyActivitiesEntry extends Component {
                     // ))
 
                     activity.map((elem) => (
-                        <MyActivitiesEntryRow key={elem.getID()} onActivityDeleted={this.activityDeleted} activity = {elem} userId = {this.state.userId}>
+                        <MyActivitiesEntryRow key={elem.getID()} onActivityDeleted={this.activityDeleted} activity={elem} userId={this.state.userId}>
 
                         </MyActivitiesEntryRow>
                     ))
-                    
+
                 }
-                <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
-                <Button id = 'addActivity' onClick = {this.openAddActivityWindow} >Add Activity</Button>
-                <Button id = "addProjectUser" onClick = {this.openAddDialog}>Add Project Member</Button>
-                <Button onClick={this.deleteProjectButtonClicked}>Delete Project</Button>
-                
-                <AddProjectUser show = {this.state.showAddDialog} project = {this.state.projectId} onClose = {this.closeAddDialog}></AddProjectUser>
-                <EditProject show={this.state.showEditProject} project = {this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
-                <AddActivity show = {this.state.showAddActivity} project = {this.state.projectId} onClose = {this.closeAddActivityWindow}></AddActivity>
+                <Button onClick={this.openEditProjectWindow} disabled={admin != userId}>Edit Project</Button>
+                <Button id='addActivity' onClick={this.openAddActivityWindow} disabled={admin != userId}>Add Activity</Button>
+                <Button id="addProjectUser" onClick={this.openAddDialog} disabled={admin != userId}>Add Project Member</Button>
+                <Button onClick={this.deleteProjectButtonClicked} disabled={admin != userId}>Delete Project</Button>
+
+                <AddProjectUser show={this.state.showAddDialog} project={this.state.projectId} onClose={this.closeAddDialog}></AddProjectUser>
+                <EditProject userId={this.props.userId} name={this.props.name} commissioner={this.props.commissioner} show={this.state.showEditProject} project={this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
+                <AddActivity show={this.state.showAddActivity} project={this.state.projectId} onClose={this.closeAddActivityWindow}></AddActivity>
                 <DeleteProject show={this.state.showDeleteProjectDialog} project={this.state.projectId} onClose={this.deleteProjectDialogClosed} />
 
             </>
         );
     }
 }
- 
+
 export default MyActivitiesEntry;
