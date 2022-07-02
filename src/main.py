@@ -3633,7 +3633,7 @@ class EventBookingOperationsWithParam(Resource):
 @worktimeapp.param('id', 'Die User ID')
 class ProjectsOfUser(Resource):
     @worktimeapp.marshal_with(project)
-    # #@secured
+    @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_projects_of_user(id)
@@ -3649,11 +3649,23 @@ class ProjectsOfUser(Resource):
 @worktimeapp.param('id', 'Die Projekt ID')
 class ActivityProjectId(Resource):
     @worktimeapp.marshal_with(activity)
-    # #@secured
+    @secured
     def get(self, id):
         adm = Businesslogic()
         projects = adm.get_activities_by_project_id(id)
         return projects
+
+
+@worktimeapp.route('/projectuser/projectid/<int:id>/<int:id2>')
+@worktimeapp.param('id', 'Die Projekt ID')
+class ProjectUserWithProjectIdUserId(Resource):
+    @worktimeapp.marshal_with(projectuser)
+    @secured
+    def get(self, projectid, userid):
+        adm = Businesslogic()
+        projectuser = adm.get_projectuser_by_project_and_user(
+            projectid, userid)
+        return projectuser
 
 
 """

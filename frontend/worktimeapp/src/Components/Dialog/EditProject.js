@@ -9,7 +9,8 @@ import {
     TextField } from '@mui/material';
 import React, { Component } from 'react';
 import ProjectBO from '../../API/ProjectBO';
-import WorkTimeAPI from '../../API/WorkTimeAppAPI'
+import WorkTimeAPI from '../../API/WorkTimeAppAPI';
+import EditProjectMemberEntry from '../EditProjectMemberEntry';
 
 class EditProject extends Component {
     constructor(props){
@@ -17,6 +18,8 @@ class EditProject extends Component {
         this.state = {
             projectId : this.props.project,
             p : '',
+            members : "",
+            projectmember : [],
 
             projectname : '',
             commissioner : ''
@@ -82,8 +85,29 @@ class EditProject extends Component {
         this.setState({ [ev.target.name]: ev.target.value });
     };
 
+    getProjectMembers = () => {
+        console.log("Projekt ID", this.state.projectId);
+        WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then( members =>
+            this.setState({
+                members : members
+            }, function(){
+                members.forEach(elem => {
+                    WorkTimeAPI.getAPI().getUserById(elem.userId).then( user =>
+                           this.setState({
+                                projectmember : [...this.state.projectmember, user]
+                           }, function(){
+                                console.log("PROJEKTMEMBER")
+                                console.log(this.state.projectmember);
+                           })
+                    )
+                });
+            })    
+        )
+    }
+
     componentDidMount(){
-        this.getProject()
+        this.getProject();
+        this.getProjectMembers();
     }
     
     render() { 
@@ -116,6 +140,11 @@ class EditProject extends Component {
                     />
                     <TableContainer>
                         <Table>
+                            {
+                                this.state.projectmember.map((user) => (
+                                    <EditProjectMemberEntry user = {user}></EditProjectMemberEntry>
+                                ))
+                            }
 
                         </Table>
                     </TableContainer>
