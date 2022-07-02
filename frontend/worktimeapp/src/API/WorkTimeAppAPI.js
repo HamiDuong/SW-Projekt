@@ -1517,7 +1517,7 @@ export default class WorkTimeAppAPI {
             },
             body: JSON.stringify(project)
         }).then((responseJSON) => {
-            let responseProject = WorkBO.fromJSON(responseJSON)[0];
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
