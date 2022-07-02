@@ -310,7 +310,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                <MyActivitiesEntry key = {item.getID()} onProjectDeleted={this.projectDeleted} projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
+                <MyActivitiesEntry key = {item.getID()} onProjectDeleted={this.projectDeleted} projectId = {item.id} userId={this.state.userId} admin = {item.userId} project = {item}></MyActivitiesEntry> 
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
