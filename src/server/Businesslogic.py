@@ -2982,5 +2982,3 @@ class Businesslogic:
             hold = self.get_project_by_id(elem)
             res.append(hold)
         return res
-
-

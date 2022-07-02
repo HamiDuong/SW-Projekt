@@ -6,30 +6,47 @@ import {
     DialogTitle,
     TableContainer,
     Table,
-    TextField } from '@mui/material';
+    TextField,
+    IconButton,
+    InputAdornment,
+    MenuItem
+} from '@mui/material';
 import React, { Component } from 'react';
 import ProjectBO from '../../API/ProjectBO';
-import WorkTimeAPI from '../../API/WorkTimeAppAPI';
+import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import EditProjectMemberEntry from '../EditProjectMemberEntry';
-import AddProjectUser from './AddProjectUser';
+import SearchIcon from '@mui/icons-material/Search';
 
 const distinct = (value, index, self) => {
     return self.indexOf(value) === index;
 }
 
 class EditProject extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            projectId : this.props.project,
-            p : '',
-            members : "",
-            projectmember : [],
+            projectId: this.props.project,
+            p: '',
+            userId: this.props.userId,
+            members: "",
+            projectmember: [],
 
-            projectname : '',
-            commissioner : '',
+            projectname: '',
+            commissioner: '',
 
-            showAddDialog : false
+            showAddDialog: false,
+            admin: '',
+
+            targetusers: [],
+            selecteduserName: null,
+            loadingInProgress: false,
+            userNameSearchError: null,
+            userNotFound: false,
+            selectedUser: null,
+            userName: '',
+            users: [],
+
+            newAdmin: ''
         }
         this.baseState = this.state;
     }
@@ -39,19 +56,19 @@ class EditProject extends Component {
     }
 
     getProject = () => {
-        WorkTimeAPI.getAPI().getProject(this.state.projectId).then( project =>
+        WorkTimeAppAPI.getAPI().getProject(this.state.projectId).then(project =>
             this.setState({
-                p : project,
-                projectname : project.name,
-                commissioner : project.commissioner
-            }, function(){
-                console.log("Projekt aus Backend")
+                p: project,
+                projectname: project[0].name,
+                commissioner: project[0].commissioner
+            }, function () {
+                console.log("33333333333333333333333333333", this.state.projectname)
             })
         )
     }
 
     deleteProject = (project) => {
-        WorkTimeAPI.getAPI().deleteProject(project).then(
+        WorkTimeAppAPI.getAPI().deleteProject(project).then(
             this.handleClose()
         )
     }
@@ -62,27 +79,36 @@ class EditProject extends Component {
         let pname = hold.value;
         let hold2 = document.getElementById("commissioner");
         let commi = hold2.value;
+        let hold3 = document.getElementById("userName");
+        let admn = hold3.value;
+        if (admn == 'You are the admin.') {
+            admn = this.props.userId
+        }
 
         let updatedProject = Object.assign(new ProjectBO(), this.state.p);
-        updatedProject.setName(pname);
-        updatedProject.setCommissioner(commi);
+        updatedProject.name = pname;
+        updatedProject.commissioner = commi;
+        updatedProject.userId = admn;
+        updatedProject.id = this.props.project
 
-        WorkTimeAPI.getAPI().updateProject(updatedProject).then(
+        WorkTimeAppAPI.getAPI().updateProject(updatedProject).then(
             console.log(updatedProject)
         ).then(
             project => {
                 this.baseState.projectname = pname;
                 this.baseState.commissioner = commi;
+                this.baseState.newAdmin = admn
+                this.baseState.projectId = this.props.project
             }
         )
         this.handleClose();
     }
 
     getActivities = () => {
-        WorkTimeAPI.getAPI().getActivitiesByProject(this.state.project.id).then( activities =>
+        WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.project.id).then(activities =>
             this.setState({
-                activity : activities
-            }, function(){
+                activity: activities
+            }, function () {
                 console.log("Activities aus Backend")
             })
         )
@@ -96,16 +122,88 @@ class EditProject extends Component {
         return self.indexOf(value) == index;
     }
 
+    /** In dieser Funktion kann man die einzelnen User mit der Nachname suchen. */
+    searchUserNamesForProject = async () => {
+        const { userName } = this.state;
+        if (userName.length > 0) {
+            try {
+                this.setState({
+                    targetuserName: [],
+                    selectedUser: null,
+                    loadingInProgress: true,
+                    userNameSearchError: null
+                });
+
+                //Jetzt werden die User geladen.
+                const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
+                console.log(users)
+                console.log("Test")
+                let selectedUser = null;
+                if (users.length > 0) {
+                    selectedUser = users[0];
+                } else {
+                    this.setState({
+                        userNotFound: true
+                    });
+                }
+                //Hier wird der endgültiger Zustand gesetzt.
+                this.setState({
+                    targetusers: users,
+                    selectedUser: selectedUser,
+                    loadingInProgress: false,
+                    userNameSearchError: null,
+                    newAdmin: users[0].id
+
+                }, function () {
+                    console.log("State", this.state.targetusers)
+                });
+            } catch (e) {
+                this.setState({
+                    targetusers: [],
+                    selectedUser: null,
+                    loadingInProgress: false,
+                    userNameSearchError: e
+
+                });
+            }
+        }
+    }
+    /** Verwaltet Wertänderungen des Users select-Textfeldes */
+    userSelectionChange = (event) => {
+        let users = event.target.value;
+        this.setState({
+            selectedUser: users,
+        });
+    }
+
+    /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
+    textFieldValueChange = (event) => {
+        const val = event.target.value;
+        // Validate the amount field
+        this.setState({
+            [event.target.id]: val
+        });
+    }
+
+    handle(e) {
+        this.setState({
+            event: e.target.value,
+            selectedUser: true,
+            userId: e.target.value
+
+        }, console.log(this.state.userId));
+    }
+
     getProjectMembers = () => {
         let res = []
         console.log("Projekt ID", this.state.projectId);
-        WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then( members =>
+        WorkTimeAppAPI.getAPI().getMembersByProjectId(this.state.projectId).then(members =>
             this.setState({
-                members : members
-            }, function(){
-                console.log('Hier die Members',members)
+                members: members
+            }, function () {
+                console.log('Hier die Members', members)
                 members.forEach(elem => {
-                    WorkTimeAPI.getAPI().getUserById(elem.userId).then( user =>
+                    WorkTimeAppAPI.getAPI().getUserById(elem.userId).then(user =>
                         res.push(user)
                         //    this.setState({
                         //         projectmember : [...this.state.projectmember, user].filter(distinct)
@@ -117,44 +215,46 @@ class EditProject extends Component {
                         //    })
                     )
                 });
-            })    
+            })
         )
 
         this.setState({
-            projectmember : res
-        }, function(){
+            projectmember: res
+        }, function () {
             console.log("RES", res)
         })
-    
+
         console.log('Final', this.state.projectmember)
     }
 
     openAddDialog = () => {
         this.setState({
-            showAddDialog : true
-        }, function(){
+            showAddDialog: true
+        }, function () {
             console.log(this.state.showAddDialog);
         })
     }
 
     closeAddDialog = () => {
         this.setState({
-            showAddDialog : false
-        }, function(){
+            showAddDialog: false
+        }, function () {
             console.log(this.state.showAddDialog);
         })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getProject();
         this.getProjectMembers();
+        this.searchUserNamesForProject(1)
     }
-    
-    render() { 
+
+    render() {
         const { classes, show } = this.props
+        const { targetusers, searchUser, selectedUser, capacity, capacityValidationFailed } = this.state;
         return (
-                show ?
-                <Dialog open = {show} onClose = {this.handleClose} maxWidth = 'sm'>
+            show ?
+                <Dialog open={show} onClose={this.handleClose} maxWidth='sm'>
                     <DialogContent>
                         <DialogTitle>
                             Edit the Project
@@ -164,7 +264,7 @@ class EditProject extends Component {
                         id="projectname"
                         label="Project Name"
                         variant="standard"
-                        defaultValue={this.state.projectname}
+                        defaultValue={this.props.name}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -173,16 +273,48 @@ class EditProject extends Component {
                         id="commissioner"
                         label="Commisioner"
                         variant="standard"
-                        defaultValue={this.state.commissioner}
+                        defaultValue={this.props.commissioner}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
+                    <form noValidate autoComplete='off'>
+                        {
+                            // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
+                            (targetusers.length === 0) ?
+                                <TextField autoFocus fullWidth margin='normal' required id='userName' label='admin'
+                                    onChange={this.textFieldValueChange}
+                                    onBlur={this.searchUserNamesForProject}
+                                    defaultValue='You are the admin.'
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position='end'>
+                                            <IconButton onClick={this.searchUserNamesForProject}>
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>,
+                                    }} />
+                                :
+                                // Zeigt eine Auswahl von selectedUser an, falls vorhanden. Geben Sie keine Suchschaltfläche.
+                                <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
+                                    value={selectedUser}
+                                    onChange={this.userSelectionChange}>
+                                    {
+                                        targetusers.map((users) => (
+
+                                            <MenuItem key={users.getID()} value={users}>
+                                                {users.getLastName()}, {users.getFirstName()}
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </TextField>
+
+                        }
+                    </form>
                     <TableContainer>
                         <Table>
                             {
                                 this.state.projectmember.map((user) => (
-                                    <EditProjectMemberEntry user = {user} projectId = {this.props.project}></EditProjectMemberEntry>
+                                    <EditProjectMemberEntry user={user} projectId={this.props.project}></EditProjectMemberEntry>
                                 ))
                             }
 
@@ -201,9 +333,9 @@ class EditProject extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                :null
+                : null
         );
     }
 }
- 
+
 export default EditProject;
