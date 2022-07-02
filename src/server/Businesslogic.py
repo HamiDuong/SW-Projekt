@@ -1905,7 +1905,6 @@ class Businesslogic:
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
                 "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
-
         with BookingMapper() as mapper:
             mapper.delete(booking)
         with TimeIntervalBookingMapper() as mapper:
@@ -1926,6 +1925,10 @@ class Businesslogic:
             mapper.delete(project_work_begin)
         with ProjectWorkEndMapper() as mapper:
             mapper.delete(project_work_end)
+        delta = project_work_obj.get_end() - project_work_obj.get_start()
+        delta_float = round(((delta.total_seconds() / 60) / 60), 2)
+        self.calculate_delta_for_project_work(booking, -delta_float, project_work_obj.get_activity_id())
+
 
     # ProjectWorkBO mit gegebenen Date holen
     def get_project_works_by_date(self, date):
@@ -2424,11 +2427,9 @@ class Businesslogic:
         with ProjectWorkMapper() as mapper:
             projectwork = mapper.find_by_key(
                 timeinterval.get_project_work_id())
-
         delta = projectwork.get_end() - projectwork.get_start()
         delta_float = round(((delta.total_seconds() / 60) / 60), 2)
         activityid = projectwork.get_activity_id()
-
         self.calculate_delta_for_project_work(
             tbooking, delta_float, activityid)
 
@@ -2982,6 +2983,4 @@ class Businesslogic:
             res.append(hold)
         return res
 
-# adm = Businesslogic()
-# project = adm.get_project_work_begin_by_id(8)
-# adm.save_project_work_begin(project)
+
