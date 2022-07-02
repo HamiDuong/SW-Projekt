@@ -1586,33 +1586,6 @@ export default class WorkTimeAppAPI {
     //     })
     // }
 
-    deleteActivity(activity) {
-        return this.#fetchAdvanced(this.#deleteActivityURL(activity), {
-            method: 'DELETE'
-        }).then((responseJSON) => {
-            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseActivity)
-            })
-        })
-    }
-
-    updateActivity(activity) {
-        return this.#fetchAdvanced(this.#updateWorkURL(activity), {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(activity)
-        }).then((responseJSON) => {
-            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseActivity)
-            })
-        })
-    }
-
     getActivitiesByProjectId(id) {
         return this.#fetchAdvanced(this.#getActivitiesByProjectIdURL(id)).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON);
@@ -2241,6 +2214,22 @@ export default class WorkTimeAppAPI {
             let responseProjectUser = ProjectUserBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProjectUser)
+            })
+        })
+    }
+
+    updateActivity(activity) {
+        return this.#fetchAdvanced(this.#updateActivityURL(activity.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(activity)
+        }).then((responseJSON) => {
+            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
             })
         })
     }

@@ -6,6 +6,7 @@ import AddActivity from './Dialog/AddActivity';
 import AddProjectUser from './Dialog/AddProjectUser';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
+import MyActivitiesEntryRow from './MyActivitiesEntryRow';
 
 const activities = [
     {
@@ -197,28 +198,9 @@ class MyActivitiesEntry extends Component {
                     // ))
 
                     activity.map((elem) => (
-                        <>
-                            <TableRow
-                            hover
-                            onClick = {this.showEdit}
-                            >
-                                <TableCell>{elem.name}</TableCell>
-                                <TableCell>{elem.capacity}</TableCell>
-                                <TableCell>
-                                    <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
-                                    {this.state.showPopupMyProjectEntry ? 
-                                    <MyProjectsEntry
-                                    text='Close'
-                                    closePopup={this.togglePopupMyProjectsEntry.bind(this)}
-                                    // user={this.state.currentUser} workTimeAccount = {this.state.workTimeAccountId} 
-                                    activity = {elem}
-                                    userId={this.state.userId}
-                                    />
-                                    : null
-                                    }
-                                </TableCell>
-                            </TableRow>
-                        </>
+                        <MyActivitiesEntryRow activity = {elem} userId = {this.state.userId}>
+
+                        </MyActivitiesEntryRow>
                     ))
                     
                 }

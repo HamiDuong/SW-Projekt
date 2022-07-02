@@ -1047,7 +1047,7 @@ class ActivityWithIDOperations(Resource):
         return ''
 
     @worktimeapp.marshal_with(activity)
-    @worktimeapp.expect(activity, validate=True)
+    @worktimeapp.expect(activity)
     # @secured
     def put(self, id):
         adm = Businesslogic()
@@ -1055,7 +1055,7 @@ class ActivityWithIDOperations(Resource):
 
         if p is not None:
             p.set_id(id)
-            adm.update_activity(p)
+            adm.save_activity(p)
             return p, 200
         else:
             return '', 500
