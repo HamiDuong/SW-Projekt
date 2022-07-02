@@ -7,6 +7,7 @@ import ProjectWorkBO from '../API/ProjectWorkBO';
 import WorkTimeAppAPI  from '../API/WorkTimeAppAPI';
 import BookingBO from '../API/BookingBO';
 import BreakBO from '../API/BreakBO';
+import DeleteProject from './Dialog/DeleteProject';
 
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
@@ -195,6 +196,7 @@ handleClick() {
   });
   console.log('Hallooohhooo')
 }
+
 
 render(){
   const func = this.showing()

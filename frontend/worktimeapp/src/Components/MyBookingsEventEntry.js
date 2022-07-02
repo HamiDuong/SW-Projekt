@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import EditBookingEvent from './Dialog/EditBookingEvent';
@@ -14,7 +14,6 @@ class MyBookingsEventEntry extends Component {
         this.state = {
             booking: props.booking,
             showDialog: false,
-
             loadingInProgress: false,
             error: null,
         }
@@ -24,24 +23,25 @@ class MyBookingsEventEntry extends Component {
     showEdit = () => {
         this.setState({
             showDialog: true
-        }, function(){
+        }, function () {
             console.log("EditWindow öffnen per OnClick")
         })
     }
 
     // Dialog zur Bearbeitugn schließen
-    closeDialog = (booking) => {
-        if(booking){
-            this.updateBooking(booking)
+    closeEditDialog = (booking) => {
+        if (booking) {
             this.setState({
+                booking: booking,
                 showDialog: false
-            }, function(){
+            }, function () {
                 console.log("Editwindow wird geschlossen")
+                this.props.onClose1(booking)
             })
-        }else{
+        } else {
             this.setState({
                 showDialog: false
-            },function(){
+            }, function () {
                 console.log("Editwindow wird geschlossen ohne Update")
             })
 
@@ -49,32 +49,32 @@ class MyBookingsEventEntry extends Component {
     }
 
     // Debugging sobald die Komponente geladen ist
-    componentDidMount(){
+    componentDidMount() {
         console.log(this.state.booking)
     }
 
     // Änderungen in den gerenderten Komponenten werden im State abgespeichert
     handleChange = ev => {
-        this.setState({ [ev.target.name] : ev.target.value });
+        this.setState({ [ev.target.name]: ev.target.value });
     };
 
-    render() { 
+    render() {
+        const { booking } = this.state
         return (
             <>
                 <TableRow
                     hover
-                    onClick = {this.showEdit}
+                    onClick={this.showEdit}
                 >
                     <TableCell>Event</TableCell>
                     <TableCell>{this.state.booking.type}</TableCell>
                     <TableCell>{this.state.booking.time}</TableCell>
                     <TableCell>-</TableCell>
-
                 </TableRow>
-                <EditBookingEvent show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}></EditBookingEvent>
+                <EditBookingEvent show={this.state.showDialog} onClose={this.closeEditDialog} booking={booking} />
             </>
         );
     }
 }
- 
+
 export default MyBookingsEventEntry;

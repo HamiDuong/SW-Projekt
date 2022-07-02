@@ -138,9 +138,9 @@ class TimeIntervalBookings extends Component {
             this.setState({
                 projects: projectBOs,
             }
-            , function () {
-                console.log("STATE VON PROJECTS", this.state.projects)
-            }
+                , function () {
+                    console.log("STATE VON PROJECTS", this.state.projects)
+                }
             ))
     }
 
@@ -371,46 +371,46 @@ class TimeIntervalBookings extends Component {
                             {/*
                     Wenn der Typ "Projekt" oder gewählt wurde, dann zeige auch die Felder Aktivität und Projekt an"
                     */}
-                    {this.state.type === "projectwork" && 
-                    <FormControl sx={{ minWidth: 256}}>
-                            <InputLabel>Select Project</InputLabel>
-                            <Select
-                                name="project"
-                                value={this.state.project}
-                                label="project"
-                                onChange={this.handleChange}
-                            >
-                                 {this.state.projects.map(projectBOs =>
-                                <MenuItem key={projectBOs.getID()} value={projectBOs.getID()}>
-                                     {projectBOs.getName()}
-                                   
-                                </MenuItem>
-                                )}
-                            </Select>
-                        </FormControl>}
-                    </Grid>
-                    <Grid xs={12} sm={10} item>
-                    {this.state.type === "projectwork" &&
-                    <FormControl sx={{ minWidth: 256}}>
-                            <InputLabel>Select Activity</InputLabel>
-                            <Select
-                                name="activityId"
-                                value={this.state.activityId}
-                                label="activity"
-                                onChange={this.handleChange}
-                            >
-                               {this.state.activities.map(activityBOs =>
-                                <MenuItem key={activityBOs.getID()} value={activityBOs.getID()}>
-                                     {activityBOs.GetName()}
-                                   
-                                </MenuItem>
-                                )}
-                            </Select>
-                        </FormControl>}
-                    </Grid>
-                    <Grid xs={12} item>
-                    <Button variant="contained" onClick={this.addTimeIntervalBooking}>Book Timeinterval</Button>
-                    </Grid>
+                            {this.state.type === "projectwork" &&
+                                <FormControl sx={{ minWidth: 256 }}>
+                                    <InputLabel>Select Project</InputLabel>
+                                    <Select
+                                        name="project"
+                                        value={this.state.project}
+                                        label="project"
+                                        onChange={this.handleChange}
+                                    >
+                                        {this.state.projects.map(projectBOs =>
+                                            <MenuItem key={projectBOs.getID()} value={projectBOs.getID()}>
+                                                {projectBOs.getName()}
+
+                                            </MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>}
+                        </Grid>
+                        <Grid xs={12} sm={10} item>
+                            {this.state.type === "projectwork" &&
+                                <FormControl sx={{ minWidth: 256 }}>
+                                    <InputLabel>Select Activity</InputLabel>
+                                    <Select
+                                        name="activityId"
+                                        value={this.state.activityId}
+                                        label="activity"
+                                        onChange={this.handleChange}
+                                    >
+                                        {this.state.activities.map(activityBOs =>
+                                            <MenuItem key={activityBOs.getID()} value={activityBOs.getID()}>
+                                                {activityBOs.getName()}
+
+                                            </MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>}
+                        </Grid>
+                        <Grid xs={12} item>
+                            <Button variant="contained" onClick={this.addTimeIntervalBooking}>Book Timeinterval</Button>
+                        </Grid>
 
                     </Grid>
                 </Card>

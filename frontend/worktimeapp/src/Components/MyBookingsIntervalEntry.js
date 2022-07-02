@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import EditBooking from './Dialog/EditBooking'
@@ -14,7 +14,6 @@ class MyBookingsIntervalEntry extends Component {
         this.state = {
             booking: props.booking,
             showDialog: false,
-
             loadingInProgress: false,
             error: null,
         }
@@ -24,24 +23,26 @@ class MyBookingsIntervalEntry extends Component {
     showEdit = () => {
         this.setState({
             showDialog: true
-        }, function(){
+        }, function () {
             console.log("EditWindow öffnen per OnClick");
         })
     }
 
     // Dialog für die Bearbeitung schließen
-    closeDialog = (booking) => {
-        if(booking){
-            this.updateBooking(booking)
+    closeEditDialog = (booking) => {
+        if (booking) {
             this.setState({
+                booking: booking,
                 showDialog: false
-            }, function(){
+            }, function () {
                 console.log("Editwindow wird geschlossen")
+                console.log(this.state.booking)
+                this.props.onClose1(booking)
             })
-        }else{
+        } else {
             this.setState({
                 showDialog: false
-            },function(){
+            }, function () {
                 console.log("Editwindow wird geschlossen ohne Update")
             })
 
@@ -49,22 +50,24 @@ class MyBookingsIntervalEntry extends Component {
     }
 
     // Debugging sobald die Komponente geladen ist
-    componentDidMount(){
+    componentDidMount() {
         console.log(this.state.booking)
     }
 
+
+
     // Änderungen in den gerenderten Komponenten im State abspeichern
     handleChange = ev => {
-        this.setState({ [ev.target.name] : ev.target.value });
+        this.setState({ [ev.target.name]: ev.target.value });
     };
 
-    render() { 
-        const {booking} = this.state
+    render() {
+        const { booking } = this.state
         return (
             <>
                 <TableRow
                     hover
-                    onClick = {this.showEdit}
+                    onClick={this.showEdit}
                 >
                     <TableCell>Interval</TableCell>
                     <TableCell>{this.state.booking.type}</TableCell>
@@ -72,10 +75,10 @@ class MyBookingsIntervalEntry extends Component {
                     <TableCell>{this.state.booking.end}</TableCell>
 
                 </TableRow>
-                <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={booking}/>
+                <EditBooking show={this.state.showDialog} onClose={this.closeEditDialog} booking={booking} />
             </>
         );
     }
 }
- 
+
 export default MyBookingsIntervalEntry;

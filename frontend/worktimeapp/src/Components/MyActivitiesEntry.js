@@ -7,6 +7,7 @@ import AddProjectUser from './Dialog/AddProjectUser';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 import MyActivitiesEntryRow from './MyActivitiesEntryRow';
+import DeleteProject from './Dialog/DeleteProject';
 
 const activities = [
     {
@@ -45,7 +46,8 @@ class MyActivitiesEntry extends Component {
 
             showAddActivity: false,
             showEditProject: false,
-            showAddDialog: false
+            showAddDialog: false,
+            showDeleteProjectDialog: false
         }
     }
 
@@ -153,6 +155,22 @@ class MyActivitiesEntry extends Component {
             console.log(this.state.showAddDialog);
         })
     }
+    deleteProjectButtonClicked = () => {
+        this.setState({
+          showDeleteProjectDialog: true
+        });
+      }
+
+    deleteProjectDialogClosed= (project) => {
+        if (project) {
+          this.props.onProjectDeleted(project);
+        };
+    
+        // Don´t show the dialog
+        this.setState({
+          showDeleteProjectDialog: false
+        });
+      }
     
     render() { 
         const {activity} = this.state 
@@ -207,9 +225,13 @@ class MyActivitiesEntry extends Component {
                 <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
                 <Button id = 'addActivity' onClick = {this.openAddActivityWindow} >Add Activity</Button>
                 <Button id = "addProjectUser" onClick = {this.openAddDialog}>Add Project Member</Button>
+                <Button onClick={this.deleteProjectButtonClicked}>Delete Project</Button>
+                
+                <AddProjectUser show = {this.state.showAddDialog} project = {this.state.projectId} onClose = {this.closeAddDialog}></AddProjectUser>
                 <EditProject show={this.state.showEditProject} project = {this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
                 <AddActivity show = {this.state.showAddActivity} project = {this.state.projectId} onClose = {this.closeAddActivityWindow}></AddActivity>
-                <AddProjectUser show = {this.state.showAddDialog} project = {this.state.projectId} onClose = {this.closeAddDialog}></AddProjectUser>
+                <DeleteProject show={this.state.showDeleteProjectDialog} project={this.state.projectId} onClose={this.deleteProjectDialogClosed} />
+
             </>
         );
     }
