@@ -1425,7 +1425,7 @@ export default class WorkTimeAppAPI {
     }
 
     deleteActivity(activity) {
-        return this.#fetchAdvanced(this.#deleteActivityURL(activity), {
+        return this.#fetchAdvanced(this.#deleteActivityURL(activity.getID()), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseActivity = ActivityBO.fromJSON(responseJSON)[0];

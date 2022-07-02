@@ -23,10 +23,6 @@ class EditActivity extends Component {
         this.baseState = this.state;
     }
 
-    handleClose = () => {
-        this.props.onClose(null)
-    }
-
     handleChange = ev => {
         this.setState({ [ev.target.name]: ev.target.value });
     };
@@ -54,15 +50,14 @@ class EditActivity extends Component {
         WorkTimeAppAPI.getAPI().updateActivity(updatedActivity).then(
             console.log(updatedActivity)
         )
-        this.handleClose()
+        // this.handleClose()
+        this.props.onClose(updatedActivity)
     }
 
-    deleteActivity = () => {
-        WorkTimeAppAPI.getAPI().deleteActivity(this.state.activity.id).then( act =>
-            console.log(act)    
-        )
-        this.handleClose()
-    }
+    handleClose = () => {
+        this.props.onClose(null);
+      }
+
 
     render() { 
         const { classes, show } = this.props
@@ -95,11 +90,7 @@ class EditActivity extends Component {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        onClick = {this.deleteActivity}
-                    >
-                        Delete
-                    </Button>
+                    
                     <Button
                         onClick = {this.editActivity}
                     >

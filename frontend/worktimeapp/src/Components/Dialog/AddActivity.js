@@ -53,7 +53,8 @@ class AddActivity extends Component {
         WorkTimeAPI.getAPI().addActivity(activity).then(
             console.log(activity)
         );
-        this.handleClose();
+        // this.handleClose();
+        this.props.onClose(activity)
     }
 
     render() { 
