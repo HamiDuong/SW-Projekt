@@ -2190,6 +2190,50 @@ class Businesslogic:
         print(res_final_dict)
         return res_final_dict
 
+    def get_project_duration_bookings_for_user(self, user):
+        res_ti = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'ProjectDuration':
+                    res = self.get_project_duration_by_id(
+                        timeintervals.get_project_duration_id())
+                    res_ti.append(res)
+
+        return res_ti
+
+    def get_project_work_bookings_for_user(self, user):
+        res_ti = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'ProjectWork':
+                    res = self.get_project_work_by_id(
+                        timeintervals.get_project_work_id())
+                    res_ti.append(res)
+
+        return res_ti
+
     # Alle EventBookings für einen User holen
     def get_all_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
@@ -2635,6 +2679,26 @@ class Businesslogic:
 
     # Projekt löschen
     def delete_project(self, project):
+        members = self.get_all_project_members(project.get_id())
+        activities = self.get_activities_by_project_id(project.get_id())
+        # projectdurations = []
+        # projectworks = []
+        for elem in members:
+            user = self.get_user_by_id(elem.get_user_id())
+            projectduration = self.get_project_duration_bookings_for_user(
+                user)
+            for projectdurationentry in projectduration:
+                # projectdurations.append(entry)
+                self.delete_project_duration(projectdurationentry)
+
+            projectwork = self.get_project_work_bookings_for_user(
+                user)
+            for projectworkentry in projectwork:
+                # projectworks.append(secondentry)
+                self.delete_project_work(projectworkentry)
+            with ProjectUserMapper() as mapper:
+                mapper.delete(elem)
+
         with ProjectMapper() as mapper:
             mapper.delete(project)
 

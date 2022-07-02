@@ -5,6 +5,7 @@ import EditActivity from './Dialog/EditActivity';
 import AddActivity from './Dialog/AddActivity';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
+import DeleteProject from './Dialog/DeleteProject';
 
 const activities = [
     {
@@ -40,7 +41,8 @@ class MyActivitiesEntry extends Component {
             showWorkDialog: false,
             userId: props.userId,
             showAddActivity: false,
-            showEditProject: false
+            showEditProject: false,
+            showDeleteProjectDialog: false
         }
     }
 
@@ -132,6 +134,22 @@ class MyActivitiesEntry extends Component {
             console.log('Add Activity Window schließen')
         })
     }
+    deleteProjectButtonClicked = () => {
+        this.setState({
+          showDeleteProjectDialog: true
+        });
+      }
+
+    deleteProjectDialogClosed= (project) => {
+        if (project) {
+          this.props.onProjectDeleted(project);
+        };
+    
+        // Don´t show the dialog
+        this.setState({
+          showDeleteProjectDialog: false
+        });
+      }
     
     render() { 
         const {activity} = this.state 
@@ -205,8 +223,10 @@ class MyActivitiesEntry extends Component {
                 }
                 <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
                 <Button id = 'addActivity' onClick = {this.openAddActivityWindow} >Add Activity</Button>
+                <Button onClick={this.deleteProjectButtonClicked}>Delete Project</Button>
                 <EditProject show={this.state.showEditProject} project = {this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
                 <AddActivity show = {this.state.showAddActivity} project = {this.state.projectId} onClose = {this.closeAddActivityWindow}></AddActivity>
+                <DeleteProject show={this.state.showDeleteProjectDialog} project={this.state.projectId} onClose={this.deleteProjectDialogClosed} />
 
             </>
         );
