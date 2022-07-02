@@ -132,12 +132,23 @@ class MyActivitiesEntry extends Component {
     }
     
     // Dialog zum Hinzufügen von von Aktivitäten schließen
-    closeAddActivityWindow = () => {
-        this.setState({
-            showAddActivity:false
-        }, function(){
-            console.log('Add Activity Window schließen')
-        })
+    closeAddActivityWindow = (activity) => {
+        if (activity) {
+            const newActivityList = [...this.state.activity, activity];
+            this.setState({
+              activity: newActivityList,
+              showAddActivity: false
+            });
+          } else {
+            this.setState({
+              showCustomerForm: false
+            });
+          }
+        // this.setState({
+        //     showAddActivity:false
+        // }, function(){
+        //     console.log('Add Activity Window schließen')
+        // })
     }
 
     openAddDialog = () => {
@@ -169,6 +180,14 @@ class MyActivitiesEntry extends Component {
         // Don´t show the dialog
         this.setState({
           showDeleteProjectDialog: false
+        });
+      }
+
+      activityDeleted = activity => {
+        const newActivityList = this.state.activity.filter(activityFromState => activityFromState.getID() !== activity.getID());
+        console.log(activity)
+        this.setState({
+          activity: newActivityList,
         });
       }
     
@@ -216,7 +235,7 @@ class MyActivitiesEntry extends Component {
                     // ))
 
                     activity.map((elem) => (
-                        <MyActivitiesEntryRow activity = {elem} userId = {this.state.userId}>
+                        <MyActivitiesEntryRow key={elem.getID()} onActivityDeleted={this.activityDeleted} activity = {elem} userId = {this.state.userId}>
 
                         </MyActivitiesEntryRow>
                     ))
