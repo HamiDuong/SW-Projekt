@@ -264,6 +264,14 @@ class MyProjects extends Component {
     
   }
 
+  projectDeleted = project => {
+    const newProjectList = this.state.projects.filter(projectFromState => projectFromState.getID() !== project);
+    console.log(project)
+    this.setState({
+      projects: newProjectList,
+    });
+  }
+
   render(){
     const {projects} = this.state
     if(projects==null){
@@ -302,7 +310,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                <MyActivitiesEntry projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
+                <MyActivitiesEntry key = {item.getID()} onProjectDeleted={this.projectDeleted} projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
