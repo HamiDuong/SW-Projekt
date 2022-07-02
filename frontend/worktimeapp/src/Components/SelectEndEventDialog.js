@@ -33,25 +33,6 @@ class SelectEndEventDialog extends Component {
 
         }
     }
-/* 
-Speichert den Input des start feldes im state
-*/
-    handleStartDateChange(newValue){
-        this.setState({
-            timeframestart: new Date(newValue)
-        })
-        console.log(this.state.start)
-    }
-/* 
-Speichert den Input des end feldes im state
-*/
-    handleEndDateChange(newValue){
-        this.setState({
-            timeframeend: new Date(newValue)
-        })
-        console.log(this.state.end)
-    }
-
     
     handleClose = () => {
         this.props.onClose(null);
@@ -93,7 +74,7 @@ Speichert den Input des end feldes im state
                                 onChange={this.handleChange}
                             >
                                 {this.props.vacationIllnessEvents.map(vacationBOs =>
-                                <MenuItem key={vacationBOs.getDateOfLastChange()} value={vacationBOs.getTime()}>
+                                <MenuItem key={vacationBOs} value={vacationBOs}>
                                     <div>
                                     <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
                                     <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}

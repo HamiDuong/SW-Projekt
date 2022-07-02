@@ -34,19 +34,6 @@ class SelectEventDialog extends Component {
         }
     }
 
-    handleStartDateChange(newValue){
-        this.setState({
-            timeframestart: new Date(newValue)
-        })
-        console.log(this.state.start)
-    }
-    handleEndDateChange(newValue){
-        this.setState({
-            timeframeend: new Date(newValue)
-        })
-        console.log(this.state.end)
-    }
-
     
     handleClose = () => {
         this.props.onClose(null);
@@ -82,12 +69,11 @@ class SelectEventDialog extends Component {
                             <InputLabel>Select Event</InputLabel>
                             <Select
                                 name="event"
-                                value={this.state.start}
                                 label="Select Event"
                                 onChange={this.handleChange}
                             >
                                 {this.props.vacationIllnessEvents.map(vacationBOs =>
-                                <MenuItem key={vacationBOs.getDateOfLastChange()} value={vacationBOs.getTime()}>
+                                <MenuItem key={vacationBOs} value={vacationBOs}>
                                     <div>
                                     <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
                                     <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}

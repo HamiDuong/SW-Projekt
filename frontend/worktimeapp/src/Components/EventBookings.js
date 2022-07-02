@@ -16,6 +16,8 @@ import VacationStartBO from '../API/EventBOs/VacationStartBO';
 import VacationEndBO from '../API/EventBOs/VacationEndBO';
 import IllnessStartBO from '../API/EventBOs/IllnessStartBO';
 import IllnessEndBO from '../API/EventBOs/IllnessEndBO';
+import ComingBO from '../API/EventBOs/ComingBO';
+import GoingBO from '../API/EventBOs/GoingBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import BookingBO from '../API/BookingBO';
 import { format } from "date-fns";
@@ -80,6 +82,22 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
             console.log(newIllnessEndBO)
             console.log(newBookingBO)
         }
+        else if ((this.state.type) === "coming"){
+            let newComingBO = new ComingBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addComingBooking(newComingBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newComingBO)
+            console.log(newBookingBO)
+        }
+        else if ((this.state.type) === "going"){
+            let newGoingBO = new GoingBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addGoingBooking(newGoingBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
+            console.log(newGoingBO)
+            console.log(newBookingBO)
+        }
         
        }
 
@@ -128,6 +146,8 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
                             <MenuItem value={"illnessEnd"}>Illness End</MenuItem>
                             <MenuItem value={"vacationBegin"}>Vacation Begin</MenuItem>
                             <MenuItem value={"vacationEnd"}>Vacation End</MenuItem>
+                            <MenuItem value={"coming"}>Coming</MenuItem>
+                            <MenuItem value={"going"}>Going</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>

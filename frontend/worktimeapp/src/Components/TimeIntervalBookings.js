@@ -215,7 +215,8 @@ class TimeIntervalBookings extends Component {
     handleClose = (newEvent) => {
         if (newEvent) {
             this.setState({
-                start: newEvent,
+                start: newEvent.getTime(),
+                startEvent: newEvent.getID(),
                 showSelectEventDialog: false
 
             });
@@ -243,7 +244,8 @@ class TimeIntervalBookings extends Component {
     handleEndClose = (newEvent) => {
         if (newEvent) {
             this.setState({
-                end: newEvent,
+                end: newEvent.getTime(),
+                endEvent: newEvent.getID(),
                 showSelectEndEventDialog: false
 
             });
@@ -296,7 +298,7 @@ class TimeIntervalBookings extends Component {
                             </FormControl>
                         </Grid>
                         {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}
-                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork" || this.state.type === "break" || this.state.type === "flexday") ?
+                        {(this.state.type === "" ||  this.state.type === "projectwork" || this.state.type === "break" || this.state.type === "flexday") ?
                             <Grid item xs={12} sm={9} >
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DateTimePicker
@@ -327,14 +329,14 @@ class TimeIntervalBookings extends Component {
                                 </LocalizationProvider>
 
                             </Grid>}
-                        {(this.state.type === "vacation" || this.state.type === "illness") ?
+                        {(this.state.type === "vacation" || this.state.type === "illness" ||this.state.type === "work") ?
                             <Grid xs={12} sm={9} item>
                                 <Button onClick={this.handleClickOpen} variant="contained">Select Event</Button>
                             </Grid> :
                             null}
                         {/* Wenn Work, Projekt oder Break als Typ ausgewählt werden, dann soll das Grid 9 Blöcke des Screens einnehmen, sonst 3*/}
 
-                        {(this.state.type === "" || this.state.type === "work" || this.state.type === "projectwork" || this.state.type === "break" || this.state.type === "flexday") ?
+                        {(this.state.type === "" || this.state.type === "projectwork" || this.state.type === "break" || this.state.type === "flexday") ?
                             <Grid xs={12} sm={9} item >
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DateTimePicker
@@ -362,7 +364,7 @@ class TimeIntervalBookings extends Component {
                                     />
                                 </LocalizationProvider>
                             </Grid>}
-                        {(this.state.type === "vacation" || this.state.type === "illness") ?
+                        {(this.state.type === "vacation" || this.state.type === "illness" || this.state.type === "work") ?
                             <Grid xs={12} sm={9} item>
                                 <Button variant="contained" onClick={this.handleEndClickOpen}>Select Event</Button>
                             </Grid> :

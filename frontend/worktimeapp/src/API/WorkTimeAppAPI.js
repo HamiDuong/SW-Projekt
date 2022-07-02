@@ -112,8 +112,10 @@ export default class WorkTimeAppAPI {
     //Booking URLS
     #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
     #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
-    #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness`;
+    #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness&work`;
     #getAllBookingsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/${id}`;
+    #getAllBookingsWithoutEventsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/without/events/${id}`;
+
 
 
     //Project URLs
@@ -965,6 +967,13 @@ export default class WorkTimeAppAPI {
 
     getAllBookingsForUser(id) {
         return this.#fetchAdvanced(this.#getAllBookingsForUserURL(id)).then((responseJSON) => {
+                return responseJSON
+                console.log(responseJSON)
+            })
+        }
+
+   getAllBookingsWithoutEventsForUser(id) {
+        return this.#fetchAdvanced(this.#getAllBookingsWithoutEventsForUserURL(id)).then((responseJSON) => {
                 return responseJSON
                 console.log(responseJSON)
             })
@@ -2049,7 +2058,7 @@ export default class WorkTimeAppAPI {
 
 
     deleteComing(coming) {
-        return this.#fetchAdvanced(this.#deleteComingURL(coming), {
+        return this.#fetchAdvanced(this.#deleteComingURL(coming.id), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseComing = ComingBO.fromJSON(responseJSON)[0];
@@ -2060,7 +2069,7 @@ export default class WorkTimeAppAPI {
     }
 
     updateComing(coming) {
-        return this.#fetchAdvanced(this.#updateComingURL(coming), {
+        return this.#fetchAdvanced(this.#updateComingURL(coming.id), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -2076,7 +2085,7 @@ export default class WorkTimeAppAPI {
     }
 
     deleteGoing(going) {
-        return this.#fetchAdvanced(this.#deleteGoingURL(going), {
+        return this.#fetchAdvanced(this.#deleteGoingURL(going.id), {
             method: 'DELETE'
         }).then((responseJSON) => {
             let responseGoing = GoingBO.fromJSON(responseJSON)[0];
@@ -2087,7 +2096,7 @@ export default class WorkTimeAppAPI {
     }
 
     updateGoing(going) {
-        return this.#fetchAdvanced(this.#updateGoingURL(going), {
+        return this.#fetchAdvanced(this.#updateGoingURL(going.id), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
