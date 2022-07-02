@@ -3655,7 +3655,7 @@ class ActivityProjectId(Resource):
         projects = adm.get_activities_by_project_id(id)
         return projects
 
-@worktimeapp.route('/projectuser/projectid/<int:id>/<int:id>')
+@worktimeapp.route('/projectuser/projectid/<int:id>/<int:id2>')
 @worktimeapp.param('id', 'Die Projekt ID')
 class ProjectUserWithProjectIdUserId(Resource):
     @worktimeapp.marshal_with(projectuser)
