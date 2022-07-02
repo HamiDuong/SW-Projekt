@@ -44,6 +44,8 @@ class MyActivitiesEntry extends Component {
             showWorkDialog: false,
             userId: props.userId,
 
+            admin: props.admin,
+
             showAddActivity: false,
             showEditProject: false,
             showAddDialog: false,
@@ -192,7 +194,7 @@ class MyActivitiesEntry extends Component {
     }
 
     render() {
-        const { activity } = this.state
+        const { activity, userId, admin } = this.state
         if (activity == null) {
             return null
         }
@@ -241,10 +243,10 @@ class MyActivitiesEntry extends Component {
                     ))
 
                 }
-                <Button onClick={this.openEditProjectWindow}>Edit Project</Button>
-                <Button id='addActivity' onClick={this.openAddActivityWindow} >Add Activity</Button>
-                <Button id="addProjectUser" onClick={this.openAddDialog}>Add Project Member</Button>
-                <Button onClick={this.deleteProjectButtonClicked}>Delete Project</Button>
+                <Button onClick={this.openEditProjectWindow} disabled={admin != userId}>Edit Project</Button>
+                <Button id='addActivity' onClick={this.openAddActivityWindow} disabled={admin != userId}>Add Activity</Button>
+                <Button id="addProjectUser" onClick={this.openAddDialog} disabled={admin != userId}>Add Project Member</Button>
+                <Button onClick={this.deleteProjectButtonClicked} disabled={admin != userId}>Delete Project</Button>
 
                 <AddProjectUser show={this.state.showAddDialog} project={this.state.projectId} onClose={this.closeAddDialog}></AddProjectUser>
                 <EditProject userId={this.props.userId} name={this.props.name} commissioner={this.props.commissioner} show={this.state.showEditProject} project={this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
