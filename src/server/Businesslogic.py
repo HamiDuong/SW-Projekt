@@ -2979,16 +2979,13 @@ class Businesslogic:
         else:
             return 0
 
-    def get_user_by_coming_id(self, coming = ComingBO):
+    def get_user_by_coming_id(self, coming):
         """
         @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
 
-        Diese Methode lädt die TimeintervalBOs, Timeinterval-BookingBOs, BookingBOs und Aktivitäten aus der
-        Datenbank und verknüpft sie so miteinander, dass man als Wert die tatsächlich gebuchte Arbeitszeit (in h)
-        eines Projektmitarbeiters für eine bestimmte Aktivität zurückerhält.
-        :param user_id: Projektuser-Id
-        :param activity_id: Aktivitäts-Id
-        :return: Zeit in Stunden (Float)
+        Diese Methode gibt den WorkTimeAccount zurück, durch die Angabe einer Coming-Id.
+        :param coming: ComingBOId
+        :return: Worktimeaccount
         """
 
         'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
@@ -2997,29 +2994,27 @@ class Businesslogic:
 
         'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
         event_bookings = []
+        event_id = []
 
         '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
         for elem in all_bookings_type_event:
-            all_id_event_in_bookings.append(elem.get_event_booking_id(elem.get_event_booking_id()))
+            all_id_event_in_bookings.append(elem.get_event_booking_id())
         '''Check ob es Einträge gibt, ansonsten return 0 '''
         if len(all_id_event_in_bookings) >= 1:
             '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
             for elem in all_id_event_in_bookings:
-                #print('in bookins_of_user: ', elem)
+                print(elem, 'step 2')
                 event_booking = self.get_event_booking_by_id(elem)
                 event_bookings.append(event_booking)
 
-        events = self.get_all_events_by_type('coming')
+        events = self.get_all_events()
         for elem in events:
             if elem.get_coming_id() == coming:
-                event_id = elem.get_id()
-                for elem in event_bookings:
-                    if elem.get_event_booking_id() == event_id:
-                        event_booking_id = elem.get_id()
-                for elem in all_bookings_type_event:
-                    if elem.get_event_booking_id() == event_booking_id:
-                        print(elem.get_work_time_account_id())
-
+                event_id.append(elem.get_id())
+        for elem in all_bookings_type_event:
+            for x in event_bookings:
+                if elem.get_event_booking_id() == x.get_id():
+                    return elem.get_work_time_account_id()
 
 
     # @author Ha Mi Duong (https://github.com/HamiDuong)
@@ -3034,6 +3029,3 @@ class Businesslogic:
             hold = self.get_project_by_id(elem)
             res.append(hold)
         return res
-
-'''adm = Businesslogic()
-adm.get_user_by_coming_id()'''
