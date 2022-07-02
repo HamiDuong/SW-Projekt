@@ -11,6 +11,7 @@ import React, { Component } from 'react';
 import ProjectBO from '../../API/ProjectBO';
 import WorkTimeAPI from '../../API/WorkTimeAppAPI';
 import EditProjectMemberEntry from '../EditProjectMemberEntry';
+import AddProjectUser from './AddProjectUser';
 
 class EditProject extends Component {
     constructor(props){
@@ -22,7 +23,9 @@ class EditProject extends Component {
             projectmember : [],
 
             projectname : '',
-            commissioner : ''
+            commissioner : '',
+
+            showAddDialog : false
         }
         this.baseState = this.state;
     }
@@ -105,6 +108,22 @@ class EditProject extends Component {
         )
     }
 
+    openAddDialog = () => {
+        this.setState({
+            showAddDialog : true
+        }, function(){
+            console.log(this.state.showAddDialog);
+        })
+    }
+
+    closeAddDialog = () => {
+        this.setState({
+            showAddDialog : false
+        }, function(){
+            console.log(this.state.showAddDialog);
+        })
+    }
+
     componentDidMount(){
         this.getProject();
         this.getProjectMembers();
@@ -142,7 +161,7 @@ class EditProject extends Component {
                         <Table>
                             {
                                 this.state.projectmember.map((user) => (
-                                    <EditProjectMemberEntry user = {user}></EditProjectMemberEntry>
+                                    <EditProjectMemberEntry user = {user} projectId = {this.props.project}></EditProjectMemberEntry>
                                 ))
                             }
 

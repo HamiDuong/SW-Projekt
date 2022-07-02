@@ -977,7 +977,7 @@ class ProjectWithIDOperations(Resource):
         return ''
 
     @worktimeapp.marshal_with(projectuser)
-    @worktimeapp.expect(projectuser, validate=True)
+    @worktimeapp.expect(projectuser)
     # @secured
     def put(self, id):
         adm = Businesslogic()
@@ -985,7 +985,7 @@ class ProjectWithIDOperations(Resource):
 
         if p is not None:
             p.set_id(id)
-            adm.update_projectuser(p)
+            adm.save_projectuser(p)
             return p, 200
         else:
             return '', 500
@@ -3655,14 +3655,14 @@ class ActivityProjectId(Resource):
         projects = adm.get_activities_by_project_id(id)
         return projects
 
-@worktimeapp.route('/projectuser/projectid/<int:id>/<int:id2>')
+@worktimeapp.route('/projectuser/projectid/<int:userid>/<int:projectid>')
 @worktimeapp.param('id', 'Die Projekt ID')
 class ProjectUserWithProjectIdUserId(Resource):
     @worktimeapp.marshal_with(projectuser)
     @secured
-    def get(self, projectid, userid):
+    def get(self, userid, projectid):
         adm = Businesslogic()
-        projectuser = adm.get_projectuser_by_project_and_user(projectid, userid)
+        projectuser = adm.get_projectuser_by_project_and_user(userid, projectid)
         return projectuser
 
 """

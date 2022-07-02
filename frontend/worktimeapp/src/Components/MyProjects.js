@@ -302,7 +302,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                <MyActivitiesEntry projectId = {item.id} userId={this.state.userId}></MyActivitiesEntry> 
+                <MyActivitiesEntry key={item.id} projectId = {item.id} userId={this.state.userId} ></MyActivitiesEntry> 
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}

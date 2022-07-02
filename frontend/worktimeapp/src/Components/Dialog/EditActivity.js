@@ -15,17 +15,13 @@ class EditActivity extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activity: props.elem,
+
         };
         this.baseState = this.state;
     }
 
     handleClose = () => {
         this.props.onClose(null)
-    }
-    
-    deleteBooking = (obj) => {
-        console.log("Löschen")
     }
 
     render() { 
