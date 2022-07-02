@@ -2835,6 +2835,15 @@ class Businesslogic:
         with BookingMapper() as mapper:
             return mapper.find_by_type('T')
 
+    def get_all_bookings_for_events(self):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+        Methode holt alle Buchungen aus der Datenbank, die ein Timeinterval enthalten
+        :return: Array mit BookingBOs
+        """
+        with BookingMapper() as mapper:
+            return mapper.find_by_type('E')
+
     def get_project_by_name(self, name):
         """
         @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
@@ -2970,6 +2979,49 @@ class Businesslogic:
         else:
             return 0
 
+    def get_user_by_coming_id(self, coming = ComingBO):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Diese Methode lädt die TimeintervalBOs, Timeinterval-BookingBOs, BookingBOs und Aktivitäten aus der
+        Datenbank und verknüpft sie so miteinander, dass man als Wert die tatsächlich gebuchte Arbeitszeit (in h)
+        eines Projektmitarbeiters für eine bestimmte Aktivität zurückerhält.
+        :param user_id: Projektuser-Id
+        :param activity_id: Aktivitäts-Id
+        :return: Zeit in Stunden (Float)
+        """
+
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings_type_event = self.get_all_bookings_for_events()
+        all_id_event_in_bookings = []
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        event_bookings = []
+
+        '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
+        for elem in all_bookings_type_event:
+            all_id_event_in_bookings.append(elem.get_event_booking_id(elem.get_event_booking_id()))
+        '''Check ob es Einträge gibt, ansonsten return 0 '''
+        if len(all_id_event_in_bookings) >= 1:
+            '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
+            for elem in all_id_event_in_bookings:
+                #print('in bookins_of_user: ', elem)
+                event_booking = self.get_event_booking_by_id(elem)
+                event_bookings.append(event_booking)
+
+        events = self.get_all_events_by_type('coming')
+        for elem in events:
+            if elem.get_coming_id() == coming:
+                event_id = elem.get_id()
+                for elem in event_bookings:
+                    if elem.get_event_booking_id() == event_id:
+                        event_booking_id = elem.get_id()
+                for elem in all_bookings_type_event:
+                    if elem.get_event_booking_id() == event_booking_id:
+                        print(elem.get_work_time_account_id())
+
+
+
     # @author Ha Mi Duong (https://github.com/HamiDuong)
     # holt mit der UserId alle zugehörigen ProjectUserBO und nutzt diese um die entsprechenden Projekte zu holen
     def get_projects_of_user(self, userid):
@@ -2982,3 +3034,6 @@ class Businesslogic:
             hold = self.get_project_by_id(elem)
             res.append(hold)
         return res
+
+'''adm = Businesslogic()
+adm.get_user_by_coming_id()'''
