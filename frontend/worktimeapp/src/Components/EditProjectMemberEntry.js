@@ -2,25 +2,56 @@ import React, { Component } from 'react';
 import {
     Button,
     TableRow,
-    TableCell} from '@mui/material';
+    TableCell,
+    TextField,
+    Table} from '@mui/material';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
+import ProjectUserBO from '../API/ProjectUserBO';
 
 class EditProjectMemberEntry extends Component {
     constructor(props){
         super(props);
         this.state = {
-            user : "",
-            projectId : "",
-            showDialog : false
+            user : props.user,
+            projectId : props.projectId,
+            showDialog : false,
+            capacity : 0,
+            currentProjectUser : null
         }
         this.baseState = this.state;
     }
 
     deleteMember = () => {
-        WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.projectId, this.state.user[0].getId()).then( projectuser =>
-            console.log("ProjektUser gelöscht", projectuser)
+        console.log(this.state.projectId);
+        console.log(this.props.projectId);
+        console.log(this.state.user[0].id);
+        WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.user[0].id, this.props.projectId).then( projectuser =>
+            WorkTimeAppAPI.getAPI().deleteProjectUser(projectuser.id).then( user =>
+                console.log(user)    
+            )
         )
     }
+    
+    getCurrentProjectUser = () => {
+        WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.user[0].id, this.props.projectId).then( projectuser =>
+            this.setState({
+                currentProjectUser : projectuser
+            }, function(){
+                console.log(this.state.currentProjectUser)
+            })
+        )
+    }
+
+    getCapacity = () => {
+        WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.user[0].id, this.props.projectId).then( projectuser =>
+            this.setState({
+                capacity : projectuser.capacity
+            }, function(){
+                console.log(this.state.capacity)
+            })
+        )
+    }
+
 
     setPropState = () => {
         this.setState({
@@ -30,9 +61,10 @@ class EditProjectMemberEntry extends Component {
     }
 
     componentDidMount(){
-        this.setPropState()
+        this.getCapacity();
+        this.getCurrentProjectUser();
         console.log("EditProject Member")
-        console.log(this.state.user[0].getLastName() + ", " + this.state.user[0].getFirstName())
+        console.log(this.state.user[0].lastName + ", " + this.state.user[0].firstName)
     }
 
     showDialog = () => {
@@ -59,8 +91,19 @@ class EditProjectMemberEntry extends Component {
 
         }
     }
+    handleChange = (e) =>{
+        this.setState({ [e.target.name] : e.target.value })}
+
+    updateCapacity = () => {
+        let updatedProjectUserBO = Object.assign(new ProjectUserBO(), this.state.currentProjectUser);
+        console.log(updatedProjectUserBO)
+        updatedProjectUserBO.setCapacity(this.state.capacity);
+        WorkTimeAppAPI.getAPI().updateProjectUser(updatedProjectUserBO);
+        console.log(updatedProjectUserBO)
+    }
 
     render() { 
+        const {capacity} = this.state
         return (
             <>
                 <TableRow
@@ -68,17 +111,44 @@ class EditProjectMemberEntry extends Component {
                     onClick = {this.showDialog}
                 >
                     <TableCell>
-                        {this.state.user[0].getLastName() + ", " + this.state.user[0].getFirstName()}
+                        {this.state.user[0].lastName + ", " + this.state.user[0].firstName}
                     </TableCell>
                     <TableCell>
                         <Button
-                            onClick = {this.showDialog}
+                            onClick = {this.deleteMember}
                         >
                             Delete
                         </Button>
                     </TableCell>
                 </TableRow>
-                <EditProjectUser show = {this.state.showDialog} onClose = {this.closeDialog} projectuser = {this.state.user}></EditProjectUser>
+                <TableRow>
+                    <TableCell>
+                        <TextField
+                            name="capacity"
+                            label="Capacity"
+                            onChange={this.handleChange}
+                            value = {capacity}
+                        >
+
+                        </TextField>
+                    </TableCell>
+                    <TableCell >
+                        <Button
+                            onClick = {this.updateCapacity}
+                        >
+                            Save Change
+                        </Button>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+
+                    </TableCell>
+                    <TableCell>
+                        
+                    </TableCell>
+                </TableRow>
+                
             </>
         );
     }

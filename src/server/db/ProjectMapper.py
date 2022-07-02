@@ -101,7 +101,7 @@ class ProjectMapper(Mapper):
         project_obj.set_date_of_last_change(timestamp)
 
         command = "UPDATE projects " + \
-            "SET name=%s, commissioner=%s, dateOfLastChange=%s WHERE userId=%s"
+            "SET name=%s, commissioner=%s, dateOfLastChange=%s WHERE id=%s"
         data = (project_obj.get_name(), project_obj.get_commissioner(),
                 project_obj.get_date_of_last_change(), project_obj.get_user_id())
         cursor.execute(command, data)

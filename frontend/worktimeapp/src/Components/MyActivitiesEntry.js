@@ -3,8 +3,10 @@ import { Button, Dialog, TableCell, TableRow, DialogContent } from "@mui/materia
 import EditProject from './Dialog/EditProject';
 import EditActivity from './Dialog/EditActivity';
 import AddActivity from './Dialog/AddActivity';
+import AddProjectUser from './Dialog/AddProjectUser';
 import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
+import MyActivitiesEntryRow from './MyActivitiesEntryRow';
 import DeleteProject from './Dialog/DeleteProject';
 
 const activities = [
@@ -36,12 +38,15 @@ class MyActivitiesEntry extends Component {
             // activity : props.activity,
             showDialog: false,
             showPopupMyProjectEntry: false,
+            
             projectId : props.projectId,
             activity : null,
             showWorkDialog: false,
             userId: props.userId,
+
             showAddActivity: false,
             showEditProject: false,
+            showAddDialog: false,
             showDeleteProjectDialog: false
         }
     }
@@ -134,6 +139,22 @@ class MyActivitiesEntry extends Component {
             console.log('Add Activity Window schließen')
         })
     }
+
+    openAddDialog = () => {
+        this.setState({
+            showAddDialog : true
+        }, function(){
+            console.log(this.state.showAddDialog);
+        })
+    }
+
+    closeAddDialog = () => {
+        this.setState({
+            showAddDialog : false
+        }, function(){
+            console.log(this.state.showAddDialog);
+        })
+    }
     deleteProjectButtonClicked = () => {
         this.setState({
           showDeleteProjectDialog: true
@@ -195,35 +216,18 @@ class MyActivitiesEntry extends Component {
                     // ))
 
                     activity.map((elem) => (
-                        <>
-                            <TableRow
-                            hover
-                            onClick = {this.showEdit}
-                            >
-                                <TableCell>{elem.name}</TableCell>
-                                <TableCell>{elem.capacity}</TableCell>
-                                <TableCell>
-                                    <Button variant="contained" onClick={this.togglePopupMyProjectsEntry.bind(this)}>start</Button>
-                                    {this.state.showPopupMyProjectEntry ? 
-                                    <MyProjectsEntry
-                                    text='Close'
-                                    closePopup={this.togglePopupMyProjectsEntry.bind(this)}
-                                    // user={this.state.currentUser} workTimeAccount = {this.state.workTimeAccountId} 
-                                    activity = {elem}
-                                    userId={this.state.userId}
-                                    />
-                                    : null
-                                    }
-                                </TableCell>
-                            </TableRow>
-                            {/* <EditActivity show={this.state.showDialog} onClose={this.closeDialog}></EditActivity> */}
-                        </>
+                        <MyActivitiesEntryRow activity = {elem} userId = {this.state.userId}>
+
+                        </MyActivitiesEntryRow>
                     ))
                     
                 }
                 <Button onClick = {this.openEditProjectWindow}>Edit Project</Button>
                 <Button id = 'addActivity' onClick = {this.openAddActivityWindow} >Add Activity</Button>
+                <Button id = "addProjectUser" onClick = {this.openAddDialog}>Add Project Member</Button>
                 <Button onClick={this.deleteProjectButtonClicked}>Delete Project</Button>
+                
+                <AddProjectUser show = {this.state.showAddDialog} project = {this.state.projectId} onClose = {this.closeAddDialog}></AddProjectUser>
                 <EditProject show={this.state.showEditProject} project = {this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
                 <AddActivity show = {this.state.showAddActivity} project = {this.state.projectId} onClose = {this.closeAddActivityWindow}></AddActivity>
                 <DeleteProject show={this.state.showDeleteProjectDialog} project={this.state.projectId} onClose={this.deleteProjectDialogClosed} />

@@ -271,7 +271,7 @@ export default class WorkTimeAppAPI {
     #getAllProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
     #getProjectUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
     #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
-    updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
+    #updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
 
     #getProjectUserByUserId = (projectid, userid) => `${this.#worktimeappServerBaseURL}/projectuser/projectid/${projectid}/${userid}`;
 
@@ -1517,7 +1517,7 @@ export default class WorkTimeAppAPI {
             },
             body: JSON.stringify(project)
         }).then((responseJSON) => {
-            let responseProject = WorkBO.fromJSON(responseJSON)[0];
+            let responseProject = ProjectBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseProject)
             })
@@ -1585,33 +1585,6 @@ export default class WorkTimeAppAPI {
     //         })
     //     })
     // }
-
-    deleteActivity(activity) {
-        return this.#fetchAdvanced(this.#deleteActivityURL(activity), {
-            method: 'DELETE'
-        }).then((responseJSON) => {
-            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseActivity)
-            })
-        })
-    }
-
-    updateActivity(activity) {
-        return this.#fetchAdvanced(this.#updateWorkURL(activity), {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify(activity)
-        }).then((responseJSON) => {
-            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
-            return new Promise(function (resolve) {
-                resolve(responseActivity)
-            })
-        })
-    }
 
     getActivitiesByProjectId(id) {
         return this.#fetchAdvanced(this.#getActivitiesByProjectIdURL(id)).then((responseJSON) => {
@@ -2217,6 +2190,48 @@ export default class WorkTimeAppAPI {
                 resolve(responseprojectuser)
             })
         })        
+    }
+    deleteProjectUser(projectuser) {
+        return this.#fetchAdvanced(this.#deleteProjectUserURL(projectuser), {
+            method: 'DELETE'
+        }).then((responseJSON) => {
+            let responseProjectUserBO = ProjectUserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectUserBO)
+            })
+        })
+    }
+
+    updateProjectUser(projectuser) {
+        return this.#fetchAdvanced(this.#updateProjectUserURL(projectuser.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(projectuser)
+        }).then((responseJSON) => {
+            let responseProjectUser = ProjectUserBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseProjectUser)
+            })
+        })
+    }
+
+    updateActivity(activity) {
+        return this.#fetchAdvanced(this.#updateActivityURL(activity.getID()), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(activity)
+        }).then((responseJSON) => {
+            let responseActivity = ActivityBO.fromJSON(responseJSON)[0];
+            return new Promise(function (resolve) {
+                resolve(responseActivity)
+            })
+        })
     }
 
 }

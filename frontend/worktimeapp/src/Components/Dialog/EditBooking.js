@@ -54,7 +54,7 @@ class EditBooking extends Component {
         console.log(this.state.enddate)
         console.log(this.state.type)
     }
-
+    
     // Löschen der Buchung
     deleteBooking = (obj) => {
         console.log("Booking löschen")
