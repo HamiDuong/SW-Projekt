@@ -104,12 +104,24 @@ class MyActivitiesEntry extends Component {
     }
 
     // Schließen von Dialog zur Bearbeitung von Projekt
-    closeEditProjectWindow = () => {
+    closeEditProjectWindow = (updatedProject) => {
+        if (updatedProject){
         this.setState({
+            projectId:updatedProject.getID(), 
             showEditProject: false
         }, function () {
             console.log('Edit Window Projekt schließen')
-        })
+        })}
+        else{
+            this.setState({
+                showEditProject: false
+            }, function () {
+                console.log('Edit Window Projekt schließen')
+            })
+
+        }
+        
+        this.props.onProjectEdited(updatedProject)
     }
 
     // Dialog zum Hinzufügen von von Aktivitäten öffnen
