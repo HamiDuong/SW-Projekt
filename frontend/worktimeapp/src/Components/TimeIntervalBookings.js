@@ -114,6 +114,8 @@ class TimeIntervalBookings extends Component {
             console.log(newBookingBO)
         }
 
+        alert("Booking created")
+
     }
 
     /* 

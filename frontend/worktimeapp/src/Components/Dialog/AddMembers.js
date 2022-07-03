@@ -130,6 +130,7 @@ class AddMembers extends Component {
         function(){
         console.log('Here', projectuser, this.state.projectId, this.state.capacity)
          }))
+      alert("Member added")
   }
 
   /** Verwaltet das Schliessen / Abbrechen-Klickereignis */
