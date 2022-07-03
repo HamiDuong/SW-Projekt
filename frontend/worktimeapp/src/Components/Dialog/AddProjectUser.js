@@ -126,16 +126,22 @@ class AddProjectUser extends Component {
     let newProjectUser = new ProjectUserBO(this.props.project, this.state.selectedUser.getID(), this.state.capacity, this.state.currentCapacity);
     console.log(newProjectUser)
     WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser =>
-      this.setState({
-        projectId: projectuser.project_id,
-        capacity: projectuser.capacity,
-        userId: projectuser.userId,
-        currentCapacity: projectuser.currentCapacity
-      },
-        function () {
-          console.log('Here', projectuser, this.state.projectId, this.state.capacity)
-        }))
-    this.handleClose()
+      this.setState(this.baseState)
+      // this.setState({
+      //   projectId: projectuser.project_id,
+      //   capacity: projectuser.capacity,
+      //   userId: projectuser.userId,
+      //   currentCapacity: projectuser.currentCapacity
+      // },
+      //   function () {
+      //     console.log('Here', projectuser, this.state.projectId, this.state.capacity)
+      //   })
+        )
+
+      WorkTimeAppAPI.getAPI().getUserById(newProjectUser.userId).then(user=>
+        this.props.onClose(user)
+        )
+        
   }
 
   // Dialogfenster schließen
