@@ -316,7 +316,7 @@ class MyProjects extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <MyActivitiesEntry onProjectEdited={this.projectEdited} name={item.name} commissioner={item.commissioner} key={item.getID()} onProjectDeleted={this.projectDeleted} projectId={item.id} userId={this.state.userId}></MyActivitiesEntry>
+                  <MyActivitiesEntry onProjectEdited={this.projectEdited} name={item.name} commissioner={item.commissioner} admin = {item.userId} key={item.getID()} onProjectDeleted={this.projectDeleted} projectId={item.id} userId={this.state.userId}></MyActivitiesEntry>
                 </TableBody>
               </Table>
               {/* <MyProjectpopup show={this.state.showEditWindow} onClose={this.closeDialog} project={item}></MyProjectpopup> */}
