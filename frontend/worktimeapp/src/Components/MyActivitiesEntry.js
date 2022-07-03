@@ -8,6 +8,7 @@ import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 import MyActivitiesEntryRow from './MyActivitiesEntryRow';
 import DeleteProject from './Dialog/DeleteProject';
+import ProjectUserBO from '../API/ProjectUserBO';
 
 const activities = [
     {
@@ -49,8 +50,58 @@ class MyActivitiesEntry extends Component {
             showAddActivity: false,
             showEditProject: false,
             showAddDialog: false,
-            showDeleteProjectDialog: false
+            showDeleteProjectDialog: false,
+            members:"",
+            projectmember: [],
         }
+    }
+
+    addProjectUsers = (user) => {
+        if (user) {
+            const newProjectUserList = [...this.state.projectmember, user];
+            this.setState({
+              projectmember: newProjectUserList,
+              showAddDialog: false
+            });
+          } else {
+            this.setState({
+              showAddDialog: false
+            });
+          }
+
+      }
+
+      getProjectMembers = () => {
+        let res = []
+        console.log("Projekt ID", this.state.projectId);
+        WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then(members =>
+            this.setState({
+                members: members
+            }, function () {
+                console.log('Hier die Members', members)
+                members.forEach(elem => {
+                    WorkTimeAPI.getAPI().getUserById(elem.userId).then(user =>
+                        res.push(user)
+                        //    this.setState({
+                        //         projectmember : [...this.state.projectmember, user].filter(distinct)
+                        //    }, function(){
+                        //         console.log('Hier der User', user)
+                        //         console.log("PROJEKTMEMBER")
+                        //         res.push(user)
+                        //         console.log('Hier state von ProjektMember',this.state.projectmember);
+                        //    })
+                    )
+                });
+            })
+        )
+
+        this.setState({
+            projectmember: res
+        }, function () {
+            console.log("RES", res)
+        })
+
+        console.log('Final', this.state.projectmember)
     }
 
     // Aktivitäten eines Projekts holen
@@ -91,6 +142,8 @@ class MyActivitiesEntry extends Component {
     // Activities des Projects holen sobald die Komponente geladen ist
     componentDidMount() {
         this.getActivities();
+        this.getProjectMembers();
+
     }
 
     // Dialog zur Bearbeitung von Projekt öffnen
@@ -205,6 +258,16 @@ class MyActivitiesEntry extends Component {
         });
     }
 
+    projectMemberDeleted = (update) => {
+        
+        const newProjectMemberList = this.state.projectmember.filter(userFromState => userFromState[0].getID() !== update.getID());
+        console.log("NewProjectMemberList", newProjectMemberList)
+        console.log(update)
+        this.setState({
+          projectmember: newProjectMemberList,
+        });
+    }
+
     render() {
         const { activity, userId, admin } = this.state
         if (activity == null) {
@@ -255,13 +318,13 @@ class MyActivitiesEntry extends Component {
                     ))
 
                 }
-                <Button onClick={this.openEditProjectWindow} disabled={admin != userId}>Edit Project</Button>
-                <Button id='addActivity' onClick={this.openAddActivityWindow} disabled={admin != userId}>Add Activity</Button>
-                <Button id="addProjectUser" onClick={this.openAddDialog} disabled={admin != userId}>Add Project Member</Button>
-                <Button onClick={this.deleteProjectButtonClicked} disabled={admin != userId}>Delete Project</Button>
+                <Button onClick={this.openEditProjectWindow} >Edit Project</Button>
+                <Button id='addActivity' onClick={this.openAddActivityWindow} >Add Activity</Button>
+                <Button id="addProjectUser" onClick={this.openAddDialog} >Add Project Member</Button>
+                <Button onClick={this.deleteProjectButtonClicked} >Delete Project</Button>
 
-                <AddProjectUser show={this.state.showAddDialog} project={this.state.projectId} onClose={this.closeAddDialog}></AddProjectUser>
-                <EditProject userId={this.props.userId} name={this.props.name} commissioner={this.props.commissioner} show={this.state.showEditProject} project={this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
+                <AddProjectUser show={this.state.showAddDialog} project={this.state.projectId} onClose={this.addProjectUsers}></AddProjectUser>
+                <EditProject onProjectMemberDeleted={this.projectMemberDeleted} projectmembers={this.state.projectmember} userId={this.props.userId} name={this.props.name} commissioner={this.props.commissioner} show={this.state.showEditProject} project={this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
                 <AddActivity show={this.state.showAddActivity} project={this.state.projectId} onClose={this.closeAddActivityWindow}></AddActivity>
                 <DeleteProject show={this.state.showDeleteProjectDialog} project={this.state.projectId} onClose={this.deleteProjectDialogClosed} />
 

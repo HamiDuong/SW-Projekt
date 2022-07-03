@@ -46,7 +46,9 @@ class EditProject extends Component {
             userName: '',
             users: [],
 
-            newAdmin: ''
+            newAdmin: '',
+            render: false, 
+
         }
         this.baseState = this.state;
     }
@@ -101,7 +103,14 @@ class EditProject extends Component {
                 this.baseState.projectId = this.props.project
             }
         )
-        this.handleClose();
+
+        this.setState({
+            projectname: updatedProject.getName(),
+            commissioner: updatedProject.getCommissioner()
+        })
+        this.props.onClose(updatedProject)
+
+        // this.handleClose();
     }
 
     getActivities = () => {
@@ -194,38 +203,38 @@ class EditProject extends Component {
         }, console.log(this.state.userId));
     }
 
-    getProjectMembers = () => {
-        let res = []
-        console.log("Projekt ID", this.state.projectId);
-        WorkTimeAppAPI.getAPI().getMembersByProjectId(this.state.projectId).then(members =>
-            this.setState({
-                members: members
-            }, function () {
-                console.log('Hier die Members', members)
-                members.forEach(elem => {
-                    WorkTimeAppAPI.getAPI().getUserById(elem.userId).then(user =>
-                        res.push(user)
-                        //    this.setState({
-                        //         projectmember : [...this.state.projectmember, user].filter(distinct)
-                        //    }, function(){
-                        //         console.log('Hier der User', user)
-                        //         console.log("PROJEKTMEMBER")
-                        //         res.push(user)
-                        //         console.log('Hier state von ProjektMember',this.state.projectmember);
-                        //    })
-                    )
-                });
-            })
-        )
+    // getProjectMembers = () => {
+    //     let res = []
+    //     console.log("Projekt ID", this.state.projectId);
+    //     WorkTimeAppAPI.getAPI().getMembersByProjectId(this.state.projectId).then(members =>
+    //         this.setState({
+    //             members: members
+    //         }, function () {
+    //             console.log('Hier die Members', members)
+    //             members.forEach(elem => {
+    //                 WorkTimeAppAPI.getAPI().getUserById(elem.userId).then(user =>
+    //                     res.push(user)
+    //                     //    this.setState({
+    //                     //         projectmember : [...this.state.projectmember, user].filter(distinct)
+    //                     //    }, function(){
+    //                     //         console.log('Hier der User', user)
+    //                     //         console.log("PROJEKTMEMBER")
+    //                     //         res.push(user)
+    //                     //         console.log('Hier state von ProjektMember',this.state.projectmember);
+    //                     //    })
+    //                 )
+    //             });
+    //         })
+    //     )
 
-        this.setState({
-            projectmember: res
-        }, function () {
-            console.log("RES", res)
-        })
+    //     this.setState({
+    //         projectmember: res
+    //     }, function () {
+    //         console.log("RES", res)
+    //     })
 
-        console.log('Final', this.state.projectmember)
-    }
+    //     console.log('Final', this.state.projectmember)
+    // }
 
     openAddDialog = () => {
         this.setState({
@@ -243,10 +252,15 @@ class EditProject extends Component {
         })
     }
 
+   
     componentDidMount() {
         this.getProject();
-        this.getProjectMembers();
         this.searchUserNamesForProject(1)
+    }
+    
+
+    projectMemberEdited = (update) => {
+        this.props.onProjectMemberDeleted(update)
     }
 
     render() {
@@ -313,8 +327,8 @@ class EditProject extends Component {
                     <TableContainer>
                         <Table>
                             {
-                                this.state.projectmember.map((user) => (
-                                    <EditProjectMemberEntry user={user} projectId={this.props.project}></EditProjectMemberEntry>
+                                this.props.projectmembers.map((user) => (
+                                    <EditProjectMemberEntry key={user[0].getID()} onClose={this.projectMemberEdited}user={user} projectId={this.props.project}></EditProjectMemberEntry>
                                 ))
                             }
 

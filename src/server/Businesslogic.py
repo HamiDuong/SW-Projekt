@@ -3267,6 +3267,8 @@ class Businesslogic:
                 self.delete_project_work(projectworkentry)
             with ProjectUserMapper() as mapper:
                 mapper.delete(elem)
+        for elem in activities:
+            self.delete_activity(elem)
 
         with ProjectMapper() as mapper:
             mapper.delete(project)
