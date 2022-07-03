@@ -107,11 +107,17 @@ class Entry extends Component {
          * und speichert die Informationen in neuer Liste im State ab.*/
         let members = this.state.members
         let capacitiesOfUsers = []
-        members.map(element =>
-            capacitiesOfUsers.push(element.getCapacity()),
-        )
+        let liste = []
+        let list_of_capacities = []
+        for (let i = 0; i < members.length; i++) {
+            liste.push(this.state.members[i])
+        }
+        for (let i = 0; i < liste.length; i++) {
+            list_of_capacities.push(liste[i].getCapacity())
+        }
+
         this.setState({
-            userCapacity: [...this.state.userCapacity, ...capacitiesOfUsers]
+            userCapacity: list_of_capacities
         }, function () {
             console.log('Callbackfunction', this.state.userCapacity)
         })
