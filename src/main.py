@@ -865,6 +865,16 @@ class TimeOperations(Resource):
             activity_id, user_id)
         return time
 
+@worktimeapp.route('/times/<int:activity_id>/<int:user_id>/<start>/<end>')
+class TimeOperationsII(Resource):
+    #@secured
+    def get(self, activity_id, user_id, start, end):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        time = adm.get_project_work_for_user_within_timeframe(user_id, activity_id, start, end)
+        return time
+
 
 @worktimeapp.route('/times/projectdurataion/<int:project_id>')
 class TimeOperations(Resource):

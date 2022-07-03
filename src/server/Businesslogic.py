@@ -2979,6 +2979,68 @@ class Businesslogic:
         else:
             return 0
 
+    def get_project_work_for_user_within_timeframe(self,  user_id, activity_id, start, end):
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings = self.get_all_bookings_for_timeinterval()
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        bookings_of_user = []
+        timeinterval_booking_of_user = []
+        timeintervals_of_user = []
+        projectwork_of_user = []
+        project_work_for_this_activity_of_user = []
+
+        'Hier sind alle Zeiten des Users für eine Aktivität'
+        sum_time = []
+
+        '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
+        for elem in all_bookings:
+            # print('bookings:', elem.get_user_id())
+            if elem.get_user_id() == user_id:
+                bookings_of_user.append(elem)
+        '''Check ob es Einträge gibt, ansonsten return 0 '''
+        if len(bookings_of_user) >= 1:
+            '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
+            for elem in bookings_of_user:
+                # print('in bookins_of_user: ', elem)
+                ti_b_id = elem.get_time_interval_booking_id()
+                ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
+                timeinterval_booking_of_user.append(ti_b)
+            '''Von den Bookings des Users werden die Ids für die Timeintervalle abgelesen und diese aus der Datenbank
+               geleaden.'''
+            for elem in timeinterval_booking_of_user:
+                # print('in ti_b for user: ', elem)
+                ti_id = elem.get_timeinterval_id()
+                ti = self.get_timeinterval_by_id(ti_id)
+                timeintervals_of_user.append(ti)
+            '''Von den Zeitintervallen werden diejenigen selektiert, die als Typ projectwork besitzen'''
+            for elem in timeintervals_of_user:
+                # print('in ti for user: ', elem)
+                if elem.get_type() == 'ProjectWork':
+                    '''PrpjectWorkBOs, anhand der Timeinterval-Bookings des Users, werden aus der Datenbank geladen'''
+                    project_work = self.get_project_work_by_id(
+                        elem.get_project_work_id())
+                    projectwork_of_user.append(project_work)
+            '''Von den PrjWrkBOs werden diejenigen selektiert, die zu der gesuchten Aktivität gebucht wurden.'''
+            for elem in projectwork_of_user:
+                if self.in_between_times(elem.get_start(), start, end):
+                    print(elem)
+                # print('in projectwork for user: ', elem)
+                    if elem.get_activity_id() == activity_id:
+                        '''Aktivitäten werden, anhand den ProjectWorkBOs des Users, aus der Datenbank geladen'''
+                        project_work_for_this_activity_of_user.append(elem)
+                        '''Berechnung des Zeitdeltas der tatsächlich geleisteten Projektarbeit'''
+                        sum = elem.get_end() - elem.get_start()
+                        sum = sum.total_seconds()
+                        sum_time.append(sum)
+                '''Umwandeln Sekunden in Stunden und aufrunden auf 2 Nachkommastellen.'''
+                sum = math.fsum(sum_time) / 3600
+                sum = round(sum, 2)
+                return sum
+            else:
+                return 0
+
+
     def get_user_by_coming_id(self, coming):
         """
         @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
@@ -3016,7 +3078,6 @@ class Businesslogic:
                 if elem.get_event_booking_id() == x.get_id():
                     return elem.get_work_time_account_id()
 
-
     # @author Ha Mi Duong (https://github.com/HamiDuong)
     # holt mit der UserId alle zugehörigen ProjectUserBO und nutzt diese um die entsprechenden Projekte zu holen
     def get_projects_of_user(self, userid):
@@ -3029,3 +3090,29 @@ class Businesslogic:
             hold = self.get_project_by_id(elem)
             res.append(hold)
         return res
+
+    def in_between_times(self, searched_time, start, end):
+        """
+        Hilfsfunktion.
+        Checkt ob sich eine gesuchte Zeit innerhalb einer Zeitspanne befinden.
+        :param searched_time: Zeit, die gesucht wird
+        :param start: Beginn Zeitspanne
+        :param end: Ende der Zeitspanne
+        :return: Boolean Wert, True wenn es sich in der Zeitspanne befindet, False wenn nicht.
+        """
+        searched_time = searched_time.strftime('%Y-%m-%d')
+        start = datetime.strptime(start, '%Y-%m-%d')
+        start = start.strftime('%Y-%m-%d')
+        end = datetime.strptime(end, '%Y-%m-%d')
+        end = end.strftime('%Y-%m-%d')
+        if start <= searched_time <= end:
+            return True
+        else:
+            return False
+
+adm = Businesslogic()
+x = adm.get_all_project_works()
+bspw = x[0]
+# print(bspw)
+print(adm.get_project_work_for_user_within_timeframe(1,1, '2022-06-01', '2022-08-01'))
+print(adm.get_actual_working_time_for_user_by_activity_id(1,1))
