@@ -30,6 +30,8 @@ class EditProjectMemberEntry extends Component {
                 console.log(user)    
             )
         )
+        this.props.onClose(this.state.user[0])
+        console.log(this.state.user[0])
     }
     
     getCurrentProjectUser = () => {
@@ -37,7 +39,8 @@ class EditProjectMemberEntry extends Component {
             this.setState({
                 currentProjectUser : projectuser
             }, function(){
-                console.log(this.state.currentProjectUser)
+                console.log(this.state.currentProjectUser);
+                console.log(projectuser)
             })
         )
     }

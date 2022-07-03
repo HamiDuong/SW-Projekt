@@ -49,6 +49,8 @@ class AddActivities extends Component {
          function(){
           console.log('Here', activity, this.state.projectId, this.state.activityName)
          }))
+
+        alert("Aktivity created")
     }
     
     /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */

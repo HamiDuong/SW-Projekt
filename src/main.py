@@ -911,7 +911,8 @@ class ProjectWithIDOperations(Resource):
     def put(self, id):
         adm = Businesslogic()
         p = ProjectBO.from_dict(api.payload)
-        print(p.get_user_id(), p.get_name(), p.get_commissioner(), p.get_id(), 'OLLLLAAAA')
+        print(p.get_user_id(), p.get_name(),
+              p.get_commissioner(), p.get_id(), 'OLLLLAAAA')
 
         if p is not None:
             p.set_id(id)
@@ -1212,7 +1213,7 @@ class GoingListOperations(Resource):
             eb = adm.create_event_booking(
                 e.get_id()
             )
-            return c, e, eb
+            return c
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1239,8 +1240,11 @@ class GoingOperations(Resource):
         """
         adm = Businesslogic()
         going = adm.get_going_by_id(id)
-        adm.delete_going(going)
-        return '', 200
+        x = adm.delete_going(going)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(going)
     @worktimeapp.expect(going, validate=True)
@@ -1259,7 +1263,7 @@ class GoingOperations(Resource):
             Siehe Hinweise oben.
             """
             go.set_id(id)
-            adm.save_event(go)
+            adm.save_going(go)
             return '', 200
         else:
             return '', 500
@@ -1294,11 +1298,11 @@ class ComingListOperations(Resource):
 
         if proposal is not None:
             c = adm.create_coming(
-                proposal.get_time())
+                proposal.get_time()),
 
             e = adm.create_event(
                 "coming",
-                c.get_id(),
+                c[0].get_id(),
                 None,
                 None,
                 None,
@@ -1310,12 +1314,12 @@ class ComingListOperations(Resource):
                 None,
                 None,
                 None
-            )
+            ),
 
             eb = adm.create_event_booking(
-                e.get_id()
+                e[0].get_id()
             )
-            return c, e, eb
+            return c
         else:
             # Wenn irgendetwas schiefgeht, dann geben wir nichts zurück und werfen einen Server-Fehler.
             return '', 500
@@ -1342,8 +1346,11 @@ class ComingOperations(Resource):
         """
         adm = Businesslogic()
         coming = adm.get_coming_by_id(id)
-        adm.delete_coming(coming)
-        return '', 200
+        x = adm.delete_coming(coming)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(coming)
     @worktimeapp.expect(coming, validate=True)
@@ -1362,7 +1369,7 @@ class ComingOperations(Resource):
             Siehe Hinweise oben.
             """
             go.set_id(id)
-            adm.save_event(go)
+            adm.save_coming(go)
             return '', 200
         else:
             return '', 500
@@ -1445,8 +1452,11 @@ class VacationBeginOperations(Resource):
         """
         adm = Businesslogic()
         vacation_begin = adm.get_vacation_begin_by_id(id)
-        adm.delete_vacation_begin(vacation_begin)
-        return '', 200
+        x = adm.delete_vacation_begin(vacation_begin)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(vacation_begin)
     @worktimeapp.expect(vacation_begin, validate=True)
@@ -1548,8 +1558,11 @@ class VacationEndOperations(Resource):
         """
         adm = Businesslogic()
         vacation_end = adm.get_vacation_end_by_id(id)
-        adm.delete_vacation_end(vacation_end)
-        return '', 200
+        x = adm.delete_vacation_end(vacation_end)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(vacation_end)
     @worktimeapp.expect(vacation_end, validate=True)
@@ -1865,8 +1878,11 @@ class IllnessEndOperations(Resource):
         """
         adm = Businesslogic()
         illness_end = adm.get_illness_end_by_id(id)
-        adm.delete_illness_end(illness_end)
-        return '', 200
+        x = adm.delete_illness_end(illness_end)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(illness_end)
     @worktimeapp.expect(illness_end, validate=True)
@@ -1968,8 +1984,11 @@ class IllnessBeginOperations(Resource):
         """
         adm = Businesslogic()
         illness_begin = adm.get_illness_begin_by_id(id)
-        adm.delete_illness_begin(illness_begin)
-        return '', 200
+        x = adm.delete_illness_begin(illness_begin)
+        if x == 400:
+            return 400
+        else:
+            return '', 200
 
     @worktimeapp.marshal_with(illness_begin)
     @worktimeapp.expect(illness_begin, validate=True)
@@ -3361,62 +3380,16 @@ class WorkOperations(Resource):
     def post(self):
         adm = Businesslogic()
         proposal = WorkBO.from_dict(api.payload)
-        proposal_coming = ComingBO.from_dict_timeinterval(api.payload)
-        proposal_going = GoingBO.from_dict_timeinterval(api.payload)
 
         if proposal is not None:
-            coming = adm.create_coming(
-                proposal_coming.get_time()
-            )
-
-            ebe = adm.create_event(
-                "coming",
-                coming.get_id(),
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            )
-
-            eb = adm.create_event_booking(
-                ebe.get_id()
-            )
-            going = adm.create_going(
-                proposal_going.get_time()
-            )
-
-            eee = adm.create_event(
-                "going",
-                None,
-                going.get_id(),
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            )
-
-            eb = adm.create_event_booking(
-                eee.get_id()
-            )
 
             p = adm.create_work(
                 proposal.get_start(),
                 proposal.get_end(),
-                coming.get_id(),
-                going.get_id())
+                proposal.get_start_event(),
+                proposal.get_end_event(),
+                proposal.get_type(),
+            ),
 
             t = adm.create_timeinterval(
                 proposal.get_type(),
@@ -3426,13 +3399,13 @@ class WorkOperations(Resource):
                 None,
                 None,
                 None,
-                p.get_id()
-            )
+                p[0].get_id()
+            ),
 
-            tw = adm.create_timeinterval_booking(
-                t.get_id()
+            tb = adm.create_timeinterval_booking(
+                t[0].get_id()
             )
-        print(p.get_start_event())
+            return p
 
     @worktimeapp.marshal_list_with(work)
     @secured
@@ -3540,6 +3513,24 @@ class TimeIntervalBookingOperationsWithParam(Resource):
                 user)
             return timeintervalbookings
 
+
+@worktimeapp.route('/booking/timeintervalbooking/without/events/<int:id>')
+@worktimeapp.param('id', 'Die User ID')
+class TimeIntervalBookingOperationsWithParam(Resource):
+    @worktimeapp.marshal_with(timeinterval_with_events)
+    @secured
+    def get(self, id):
+        adm = Businesslogic()
+        user = adm.get_user_by_id(id)
+
+        # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
+        if user is not None:
+            # Jetzt erst lesen wir die Konten des Customer aus.
+            timeintervalbookings = adm.get_all_timeintervals_without_events_for_user(
+                user)
+            return timeintervalbookings
+
+
 # TimeIntervalBookings in Booking Tabelle anlegen
 
 
@@ -3618,7 +3609,7 @@ class EventBookingOperationsWithParam(Resource):
 # Event und Vacation Bookings auslesen
 
 
-@worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness')
+@worktimeapp.route('/booking/eventbooking/<int:id>/vacation&illness&work')
 @worktimeapp.param('id', 'Die User ID')
 class EventBookingOperationsWithParam(Resource):
     @worktimeapp.marshal_with(event_subclass)
@@ -3630,7 +3621,7 @@ class EventBookingOperationsWithParam(Resource):
         # Haben wir eine brauchbare Referenz auf ein Customer-Objekt bekommen?
         if user is not None:
             # Jetzt erst lesen wir die Konten des Customer aus.
-            eventbookings = adm.get_all_vacation_illness_event_bookings_for_user(
+            eventbookings = adm.get_all_vacation_illness_work_event_bookings_for_user(
                 user)
             return eventbookings
 
@@ -3666,6 +3657,7 @@ class ActivityProjectId(Resource):
         projects = adm.get_activities_by_project_id(id)
         return projects
 
+
 @worktimeapp.route('/projectuser/projectid/<int:userid>/<int:projectid>')
 @worktimeapp.param('id', 'Die Projekt ID')
 class ProjectUserWithProjectIdUserId(Resource):
@@ -3673,7 +3665,8 @@ class ProjectUserWithProjectIdUserId(Resource):
     @secured
     def get(self, userid, projectid):
         adm = Businesslogic()
-        projectuser = adm.get_projectuser_by_project_and_user(userid, projectid)
+        projectuser = adm.get_projectuser_by_project_and_user(
+            userid, projectid)
         return projectuser
 
 

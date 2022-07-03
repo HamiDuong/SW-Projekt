@@ -98,6 +98,8 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
             console.log(newGoingBO)
             console.log(newBookingBO)
         }
+
+        alert("Booking created")
         
        }
 

@@ -51,25 +51,33 @@ class EditBookingEvent extends Component {
 
         // Endpunkt entsprechend des Typs wählen
 
-        if (this.state.type == "breakstart") {
-            WorkTimeAppAPI.getAPI().deleteBreakStart(this.state.booking).then(booking => {
-                console.log("Delete BreakStart");
-                console.log(booking);
+        if (this.state.type == "breakbegin") {
+            alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+            return null
+            // WorkTimeAppAPI.getAPI().deleteBreakStart(this.state.booking).then(booking => {
+            //     console.log("Delete BreakStart");
+            //     console.log(booking);
 
-            });
+            // });
         }
 
         if (this.state.type == "breakend") {
-            WorkTimeAppAPI.getAPI().deleteBreakEnd(this.state.booking).then(booking => {
-                console.log("Delete BreakEnd");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+            return null
+            // WorkTimeAppAPI.getAPI().deleteBreakEnd(this.state.booking).then(booking => {
+            //     console.log("Delete BreakEnd");
+            //     console.log(booking);
+            // });
         }
 
         if (this.state.type == "coming") {
             WorkTimeAppAPI.getAPI().deleteComing(this.state.booking).then(booking => {
                 console.log("Delete Coming");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
             });
         }
 
@@ -77,27 +85,39 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().deleteGoing(this.state.booking).then(booking => {
                 console.log("Delete Going");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
             });
         }
 
         if (this.state.type == "flexdayend") {
-            WorkTimeAppAPI.getAPI().deleteFlexDayEnd(this.state.booking).then(booking => {
-                console.log("Delete FlexDayEnd");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+            return null
+            // WorkTimeAppAPI.getAPI().deleteFlexDayEnd(this.state.booking).then(booking => {
+            //     console.log("Delete FlexDayEnd");
+            //     console.log(booking);
+            // });
         }
 
         if (this.state.type == "flexdaystart") {
-            WorkTimeAppAPI.getAPI().deleteFlexDayStart(this.state.booking).then(booking => {
-                console.log("Delete FlexDayStart");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+            return null
+            // WorkTimeAppAPI.getAPI().deleteFlexDayStart(this.state.booking).then(booking => {
+            //     console.log("Delete FlexDayStart");
+            //     console.log(booking);
+            // });
         }
 
         if (this.state.type == "illnessbegin") {
             WorkTimeAppAPI.getAPI().deleteIllnessStart(this.state.booking).then(booking => {
                 console.log("Delete IllnessStart");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
             });
         }
 
@@ -105,27 +125,40 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().deleteIllnessEnd(this.state.booking).then(booking => {
                 console.log("Delete IllnessEnd");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
             });
         }
 
-        if (this.state.type == "projectworkstart") {
-            WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking => {
-                console.log("Delete ProjectWorkStart");
-                console.log(booking);
-            });
+        if (this.state.type == "projectworkbegin") {
+            alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+            return null
+            // WorkTimeAppAPI.getAPI().deleteProjectWorkStart(this.state.booking).then(booking => {
+            //     console.log("Delete ProjectWorkStart");
+            //     console.log(booking);
+            // });
         }
 
         if (this.state.type == "projectworkend") {
-            WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking => {
-                console.log("Delete ProjectWorkEnd");
-                console.log(booking);
-            });
+                alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                return null
+
+            // WorkTimeAppAPI.getAPI().deleteProjectWorkEnd(this.state.booking).then(booking => {
+            //     console.log("Delete ProjectWorkEnd");
+            //     console.log(booking);
+            // });
         }
 
         if (this.state.type == "vacationbegin") {
             WorkTimeAppAPI.getAPI().deleteVacationStart(this.state.booking).then(booking => {
                 console.log("Delete VacationStart");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
 
             });
         }
@@ -134,6 +167,10 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().deleteVacationEnd(this.state.booking).then(booking => {
                 console.log("Delete VacationEnd");
                 console.log(booking);
+                if (booking === 400){
+                    alert("Event is connected to timeinterval, can't be deleted without deleting the timeinterval first!")
+                    return null
+                }
             });
         }
         this.handleClose();
@@ -160,30 +197,40 @@ class EditBookingEvent extends Component {
         console.log(this.state.time);
 
         // Endpunkt entsprechen des Typs wählen
-        if (this.state.type == "breakstart") {
-            updatedbooking = Object.assign(new BreakStartBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateBreakStart(updatedbooking).then(booking => {
-                console.log("Update BreakStart");
-                console.log(booking);
-            });
+        if (this.state.type == "breakbegin") {
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new BreakStartBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateBreakStart(updatedbooking).then(booking => {
+            //     console.log("Update BreakStart");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "breakend") {
-            updatedbooking = Object.assign(new BreakEndBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateBreakEnd(updatedbooking).then(booking => {
-                console.log("Update BreakEnd");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new BreakEndBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateBreakEnd(updatedbooking).then(booking => {
+            //     console.log("Update BreakEnd");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "coming") {
             updatedbooking = Object.assign(new ComingBO(), this.props.booking);
+            console.log(updatedbooking)
             updatedbooking.setTime(val);
+            console.log(updatedbooking)
             WorkTimeAppAPI.getAPI().updateComing(updatedbooking).then(booking => {
                 console.log("Update Coming");
                 console.log(booking);
+                this.props.onClose(booking)
+
             });
         }
 
@@ -193,26 +240,34 @@ class EditBookingEvent extends Component {
             WorkTimeAppAPI.getAPI().updateGoing(updatedbooking).then(booking => {
                 console.log("Update Going");
                 console.log(booking);
+                this.props.onClose(booking)
+
             });
         }
 
 
         if (this.state.type == "flexdayend") {
-            updatedbooking = Object.assign(new FlexDayEndBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateFlexDayEnd(updatedbooking).then(booking => {
-                console.log("Update FlexDayEnd");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new FlexDayEndBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateFlexDayEnd(updatedbooking).then(booking => {
+            //     console.log("Update FlexDayEnd");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "flexdaystart") {
-            updatedbooking = Object.assign(new FlexDayStartBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateFlexDayStart(updatedbooking).then(booking => {
-                console.log("Update FlexDayStart");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new FlexDayStartBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateFlexDayStart(updatedbooking).then(booking => {
+            //     console.log("Update FlexDayStart");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "illnessbegin") {
@@ -235,22 +290,28 @@ class EditBookingEvent extends Component {
             });
         }
 
-        if (this.state.type == "projectworkstart") {
-            updatedbooking = Object.assign(new ProjectWorkStartBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateProjectWorkStart(updatedbooking).then(booking => {
-                console.log("Update ProjectWorkStart");
-                console.log(booking);
-            });
+        if (this.state.type == "projectworkbegin") {
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new ProjectWorkStartBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateProjectWorkStart(updatedbooking).then(booking => {
+            //     console.log("Update ProjectWorkStart");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "projectworkend") {
-            updatedbooking = Object.assign(new ProjectWorkEndBO(), this.props.booking);
-            updatedbooking.setTime(val);
-            WorkTimeAppAPI.getAPI().updateProjectWorkEnd(updatedbooking).then(booking => {
-                console.log("Update ProjectWorkEnd");
-                console.log(booking);
-            });
+            alert("Event is connected to timeinterval, please update the connected timeinterval!")
+            return null
+            // updatedbooking = Object.assign(new ProjectWorkEndBO(), this.props.booking);
+            // updatedbooking.setTime(val);
+            // WorkTimeAppAPI.getAPI().updateProjectWorkEnd(updatedbooking).then(booking => {
+            //     console.log("Update ProjectWorkEnd");
+            //     console.log(booking);
+            //     this.props.onClose(booking)
+            // });
         }
 
         if (this.state.type == "vacationbegin") {

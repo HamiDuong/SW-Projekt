@@ -51,6 +51,7 @@ class MyBookingsIntervalEntry extends Component {
 
     // Debugging sobald die Komponente geladen ist
     componentDidMount() {
+        console.log("Eintrag von Interval", this.props.key)
         console.log(this.state.booking)
     }
 
