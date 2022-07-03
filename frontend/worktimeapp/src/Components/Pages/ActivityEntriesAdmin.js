@@ -130,9 +130,15 @@ class Entry extends Component {
     }
 
     onFilterClicked = () => {
+        let holder = document.getElementById('startFilter')
+        let holder2 = document.getElementById('endFilter')
         this.setState({
-            filterUsed: true
+            filterUsed: true,
+            start: holder.value,
+            end: holder2.value,
+            userIds: [],
         })
+
     }
 
     removeFilterClicked = () => {
@@ -149,13 +155,6 @@ class Entry extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.filterUsed !== this.state.filterUsed) {
-            let holder = document.getElementById('startFilter')
-            let holder2 = document.getElementById('endFilter')
-            this.setState({
-                start: holder.value,
-                end: holder2.value,
-                userIds: [],
-            })
             this.getActivity(this.props.value)
             this.getProjectUser(this.props.projectId)
             this.getProjectDuration(this.props.projectId)

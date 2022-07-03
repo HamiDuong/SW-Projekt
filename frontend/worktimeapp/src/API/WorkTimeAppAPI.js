@@ -1647,7 +1647,7 @@ export default class WorkTimeAppAPI {
     }
 
     getBookedTimesOfUserForAnActivityWithTimeframe(activityID, userID, start, end) {
-        return this.#fetchAdvanced(this.#getBookedTimesOfUserForActivityWithTimeframe(userID, activityID, start, end)).then((responseJSON) => {
+        return this.#fetchAdvanced(this.#getBookedTimesOfUserForActivityWithTimeframe(activityID, userID, start, end)).then((responseJSON) => {
             return responseJSON
         })
     }
