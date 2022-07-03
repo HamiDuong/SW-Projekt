@@ -202,7 +202,7 @@ render(){
   const func = this.showing()
     return(
         <div>
-          <h1>{this.state.start}</h1>
+          <h1>{this.state.start} Seconds</h1>
             <Grid xs={12} item>
                     <Button
                     // startActivity im state wird weitergegeben.
