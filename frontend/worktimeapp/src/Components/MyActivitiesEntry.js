@@ -318,10 +318,10 @@ class MyActivitiesEntry extends Component {
                     ))
 
                 }
-                <Button onClick={this.openEditProjectWindow} >Edit Project</Button>
-                <Button id='addActivity' onClick={this.openAddActivityWindow} >Add Activity</Button>
-                <Button id="addProjectUser" onClick={this.openAddDialog} >Add Project Member</Button>
-                <Button onClick={this.deleteProjectButtonClicked} >Delete Project</Button>
+                <Button onClick={this.openEditProjectWindow} disabled={admin != userId} >Edit Project</Button>
+                <Button id='addActivity' onClick={this.openAddActivityWindow} disabled={admin != userId}>Add Activity</Button>
+                <Button id="addProjectUser" onClick={this.openAddDialog} disabled={admin != userId}>Add Project Member</Button>
+                <Button onClick={this.deleteProjectButtonClicked}disabled={admin != userId} >Delete Project</Button>
 
                 <AddProjectUser show={this.state.showAddDialog} project={this.state.projectId} onClose={this.addProjectUsers}></AddProjectUser>
                 <EditProject onProjectMemberDeleted={this.projectMemberDeleted} projectmembers={this.state.projectmember} userId={this.props.userId} name={this.props.name} commissioner={this.props.commissioner} show={this.state.showEditProject} project={this.state.projectId} onClose={this.closeEditProjectWindow}></EditProject>
