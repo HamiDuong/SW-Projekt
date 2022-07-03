@@ -295,7 +295,7 @@ class EditProject extends Component {
                             shrink: true,
                         }}
                     />
-                    <form noValidate autoComplete='off'>
+                    {/* <form noValidate autoComplete='off'>
                         {
                             // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                             (targetusers.length === 0) ?
@@ -326,7 +326,7 @@ class EditProject extends Component {
                                 </TextField>
 
                         }
-                    </form>
+                    </form> */}
                     <TableContainer>
                         <Table>
                             {

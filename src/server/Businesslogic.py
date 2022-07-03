@@ -3837,10 +3837,11 @@ class Businesslogic:
                     projectwork_of_user.append(project_work)
                     all_timeintervals.append(project_work)
                 if elem.get_type() == 'ProjectDuration':
-                    project_duration = self.get_project_duration_by_id(
-                        elem.get_project_duration_id())
-                    projectdurations.append(project_duration)
-                    all_timeintervals.append(project_duration)
+                    pass
+                    # project_duration = self.get_project_duration_by_id(
+                    #     elem.get_project_duration_id())
+                    # projectdurations.append(project_duration)
+                    # all_timeintervals.append(project_duration)
                 if elem.get_type() == 'flexday':
                     flexday = self.get_flex_day_by_id(
                         elem.get_flex_day_id())
