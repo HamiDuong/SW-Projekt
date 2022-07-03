@@ -886,6 +886,17 @@ class TimeintervalFiltering(Resource):
         timeintervals_within_timeframes = adm.get_timeintervals_for_user_within_timeframe(user_id, start, end)
         return timeintervals_within_timeframes
 
+@worktimeapp.route('/events/<int:user_id>/<start>/<end>')
+class EventFiltering(Resource):
+    #@secured
+    @worktimeapp.marshal_list_with(event_subclass)
+    def get(self,  user_id, start, end):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        timeintervals_within_timeframes = adm.get_events_for_user_within_timeframe(user_id, start, end)
+        return timeintervals_within_timeframes
+
 
 @worktimeapp.route('/times/projectdurataion/<int:project_id>')
 class TimeOperations(Resource):
