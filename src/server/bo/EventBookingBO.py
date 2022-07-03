@@ -30,7 +30,7 @@ class EventBookingBO (book.BookingBO):
         self._event_id = value
 
     def __str__(self):
-        return "EventBooking {}: Hat die EventId {}".format(self.get_event_id())
+        return "EventBooking {}: Hat die EventId {}".format(self.get_id(), self.get_event_id())
 
     'wandelt ein Python dict() in ein EventBookingBO'
     def from_dict(dictionary=dict()):
