@@ -238,7 +238,7 @@ export default class WorkTimeAppAPI {
     #getProjectByNameURL = (date) => `${this.#worktimeappServerBaseURL}/projectname/${date}`;
     #getProjectForAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/admin/${id}`;
     #getProjectForUserURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/${id}`;
-    #getProjectForUserAndAdminURL = (id)=>`${this.#worktimeappServerBaseURL}/projects/for/user/and/admin/${id}`;
+    #getProjectForUserAndAdminURL = (id) => `${this.#worktimeappServerBaseURL}/projects/for/user/and/admin/${id}`;
     #getProjectMembersByProjectId = (id) => `${this.#worktimeappServerBaseURL}/projectmembersbyprojectid/${id}`;
 
     #getProjectsByProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/project/${id}`;
@@ -253,6 +253,7 @@ export default class WorkTimeAppAPI {
     #deleteActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #updateActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
+    #getBookedTimesOfUserForActivityWithTimeframe = (activity_id, user_id, start, end) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}/${start}/${end}`;
 
 
     #getActByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/activitiesproject/${id}`
@@ -967,17 +968,17 @@ export default class WorkTimeAppAPI {
 
     getAllBookingsForUser(id) {
         return this.#fetchAdvanced(this.#getAllBookingsForUserURL(id)).then((responseJSON) => {
-                return responseJSON
-                console.log(responseJSON)
-            })
-        }
+            return responseJSON
+            console.log(responseJSON)
+        })
+    }
 
-   getAllBookingsWithoutEventsForUser(id) {
+    getAllBookingsWithoutEventsForUser(id) {
         return this.#fetchAdvanced(this.#getAllBookingsWithoutEventsForUserURL(id)).then((responseJSON) => {
-                return responseJSON
-                console.log(responseJSON)
-            })
-        }
+            return responseJSON
+            console.log(responseJSON)
+        })
+    }
 
     //TimeintervalBookingMethoden
 
@@ -1628,6 +1629,12 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    getBookedTimesOfUserForAnActivityWithTimeframe(activityID, userID, start, end) {
+        return this.#fetchAdvanced(this.#getBookedTimesOfUserForActivityWithTimeframe(userID, activityID, start, end)).then((responseJSON) => {
+            return responseJSON
+        })
+    }
+
     getProjectDurationInDays(projectId) {
         return this.#fetchAdvanced(this.#getPRojectDurationByProjectAsTime(projectId)).then((responseJSON) => {
             return responseJSON
@@ -2155,7 +2162,7 @@ export default class WorkTimeAppAPI {
             })
     }
 
-    getActByProject(id){
+    getActByProject(id) {
         return this.#fetchAdvanced(this.#getActByProjectURL(id))
             .then((responseJSON) => {
                 let responseActivity = ActivityBO.fromJSON(responseJSON);
@@ -2192,13 +2199,13 @@ export default class WorkTimeAppAPI {
 
     }
 
-    getProjectUserByUserId(projectid, userid){
+    getProjectUserByUserId(projectid, userid) {
         return this.#fetchAdvanced(this.#getProjectUserByUserId(projectid, userid)).then((responseJSON) => {
             let responseprojectuser = ProjectUserBO.fromJSON(responseJSON)[0];
             return new Promise(function (resolve) {
                 resolve(responseprojectuser)
             })
-        })        
+        })
     }
     deleteProjectUser(projectuser) {
         return this.#fetchAdvanced(this.#deleteProjectUserURL(projectuser), {

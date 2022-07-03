@@ -17,11 +17,15 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
             user_id: '',
             act_id: '',
             time: '',
+            filteredTime: '',
             user: '',
             userName: '',
             userLastName: '',
             projectDuration: '',
             show_info: false,
+            start: '',
+            end: '',
+
         })
     }
 
@@ -36,10 +40,28 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
             }))
     }
 
-    componentDidMount = () => {
-        this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
-        this.getUserById(this.props.us_id)
+    getBookedTimeByActivityIdAndProjectIdAndTimeFrame = (act_id, us_id, start, end) => {
+        /** Lädt die tatsächlich geleistete Projektarbeit eines jeden Project-Users mithilfe dessen Id und der Aktivity Id 
+         *  und speichert die gebuchten Zeiten im State ab.*/
+        WorkTimeAppAPI.getAPI().getBookedTimesOfUserForAnActivityWithTimeframe(act_id, us_id, start, end).then(time =>
+            this.setState({
+                filteredTime: time
+            }, function () {
+                console.log('FilteredTime:', this.state.filteredTime)
+            }))
     }
+
+    componentDidMount = () => {
+        if (this.props.filterTrigger == false) {
+            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+            this.getUserById(this.props.us_id)
+        } else {
+            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end)
+            this.getUserById(this.props.us_id)
+
+        }
+    }
+
 
 
     getUserById(id) {
@@ -56,14 +78,27 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
 
     render() {
         return (
-            <Box>
-                <Paper sx={{ width: '100%', margin: 'auto' }}>
-                    <TableCell width={250}></TableCell>
-                    <TableCell width={400}>{this.state.time}</TableCell>
-                    <TableCell width={500}>{this.state.userName}, {this.state.userLastName}</TableCell>
-                    <TableCell width={350}>{this.props.user_capa}</TableCell>
-                </Paper>
-            </Box>
+            <div>
+                {this.props.filterTrigger ?
+                    <Box>
+                        <Paper sx={{ width: '100%', margin: 'auto' }}>
+                            <TableCell width={250}></TableCell>
+                            <TableCell width={400}>{this.state.filteredTime}</TableCell>
+                            <TableCell width={500}>{this.state.userName}, {this.state.userLastName}</TableCell>
+                            <TableCell width={350}>{this.props.user_capa}</TableCell>
+                        </Paper>
+                    </Box> :
+                    <Box>
+                        <Paper sx={{ width: '100%', margin: 'auto' }}>
+                            <TableCell width={250}></TableCell>
+                            <TableCell width={400}>{this.state.time}</TableCell>
+                            <TableCell width={500}>{this.state.userName}, {this.state.userLastName}</TableCell>
+                            <TableCell width={350}>{this.props.user_capa}</TableCell>
+                        </Paper>
+                    </Box>
+                }
+
+            </div>
         );
     }
 }
