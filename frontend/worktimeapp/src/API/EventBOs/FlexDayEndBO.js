@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class FlexDayEndBO extends BusinessObject {
+
+    /**
+       * FlexDayEndBO:
+       * Ereignis-Subklasse, die das Ende des Überstundenabbaus eines Mitarbeiters markiert. 
+       * 
+       * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+       */
+
     constructor(time) {
         super();
         this.time = time

@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class ProjectWorkEndBO extends BusinessObject {
+
+    /**
+       * ProjectWorkEndBO:
+       * Ereignis-Subklasse, die das Ende der geleisteten Projektarbeit eines Mitarbeiters markiert. 
+       * 
+       * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+       */
+
     constructor(time) {
         super();
         this.time = time

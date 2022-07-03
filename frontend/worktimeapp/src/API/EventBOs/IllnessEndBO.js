@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class IllnessEndBO extends BusinessObject {
+
+    /**
+   * IllnessEndBO:
+   * Ereignis-Subklasse, die das Ende einer Krankheitsspanne eines Mitarbeiters markiert. 
+   * 
+   * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+   */
+
     constructor(time, type) {
         super();
         this.time = time;
@@ -17,7 +25,7 @@ export default class IllnessEndBO extends BusinessObject {
     }
 
     setType(type) {
-       this.type = type;
+        this.type = type;
     }
 
     getType() {

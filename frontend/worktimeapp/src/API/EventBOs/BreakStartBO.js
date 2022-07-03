@@ -1,6 +1,13 @@
 import BusinessObject from '../BusinessObject'
 
 export default class BreakStartBO extends BusinessObject {
+    /**
+   * BreakStartBO:
+   * Ereignis-Subklasse, die den Beginn einer Pause markiert. 
+   * 
+   * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+   */
+
     constructor(time) {
         super();
         this.time = time

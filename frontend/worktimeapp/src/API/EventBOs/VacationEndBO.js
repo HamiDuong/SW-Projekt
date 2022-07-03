@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class VacationEndBO extends BusinessObject {
+
+    /**
+   * VacationEndBO:
+   * Ereignis-Subklasse, die das Ende des Urlaubs eines Mitarbeiters markiert. 
+   * 
+   * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+   */
+
     constructor(time, type) {
         super();
         this.time = time;

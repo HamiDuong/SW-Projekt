@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class ComingBO extends BusinessObject {
+
+    /**
+       * ComingBO:
+       * Ereignis-Subklasse, die das sich einstempeln oder kommen eines Mitarbeiters markiert. 
+       * 
+       * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+       */
+
     constructor(time) {
         super();
         this.time = time

@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class BreakEndBO extends BusinessObject {
+
+    /**
+    * BreakEndBO:
+    * Ereignis-Subklasse, die das Ende einer Pause markiert. 
+    * 
+    * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+    */
+
     constructor(time) {
         super();
         this.time = time
