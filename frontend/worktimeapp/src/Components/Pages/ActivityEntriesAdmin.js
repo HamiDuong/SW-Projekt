@@ -53,8 +53,8 @@ class Entry extends Component {
             this.setState({
                 activity: activityBO[0],
                 name: activityBO[0].getName(),
-                capacity: activityBO[0].getCapacity(),
-                currentCapacity: activityBO[0].getCurrentCapacity()
+                capacity: activityBO[0].capacity,
+                currentCapacity: activityBO[0].currentCapacity
             }, function () {
                 console.log(this.state.name, activityBO[0].capacity, 'HALLLLOOOO', this.state.currentCapacity)
             }))
@@ -75,7 +75,8 @@ class Entry extends Component {
                     members: member,
                 }, function () {
                     console.log(this.state.members, 'Callback Function', this.state.userIds)
-                }); this.getUserIds();
+                }); console.log(this.state.members, 'IIIIIIII')
+                this.getUserIds();
                 this.getPlanedCapacitiesForUser()
 
             }
@@ -83,11 +84,12 @@ class Entry extends Component {
         )
     }
 
-    getUserIds() {
+    async getUserIds() {
         /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
         * und speichert diese als neue Liste im State ab.*/
         let members = this.state.members
         let liste = []
+        await setTimeout(5000)
         members.map(element =>
             liste.push(element.getUserId()),
         )
