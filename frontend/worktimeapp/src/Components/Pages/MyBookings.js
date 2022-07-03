@@ -281,9 +281,9 @@ class MyBookings extends Component {
                 {
                     this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "1" } onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
-                {
+                {/* {
                     this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "2"} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
-                }
+                } */}
             </TableBody>
         )
     }
@@ -320,21 +320,13 @@ class MyBookings extends Component {
             })    
         )
 
-        // WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
-        //     this.setState({
-        //         filteredeventbookings : responseEvents
-        //     }, function(){
-        //         console.log("Gor Eventbookings1")
-        //     })    
-        // )
-
-        // WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
-        //     this.setState({
-        //         filteredeventbookings2 : responseEvents
-        //     }, function(){
-        //         console.log("Gor Eventbookings2")
-        //     })    
-        // )
+        WorkTimeAppAPI.getAPI().getAllEventsWithinTimeFrame(starthold.value, endhold.value).then(responseEvents =>
+            this.setState({
+                filteredeventbookings : responseEvents
+            }, function(){
+                console.log("Gor Eventbookings")
+            })    
+        )
 
         // let icounter = this.state.intervalbookings.length;
         // let ecounter = this.state.eventbookings.length;
