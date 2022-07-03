@@ -180,6 +180,11 @@ class CreateTimeWorkSheet extends Component {
                                     <TableCell
                                         key = 'contractTime'
                                     >Contract Time</TableCell>
+                                    <TableCell
+                                        key = 'overTime'
+                                    >
+                                        Overtime
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -205,7 +210,10 @@ class CreateTimeWorkSheet extends Component {
                                             </TableCell>
                                             <TableCell>
                                                 8h
-                                            </TableCell>                                           
+                                            </TableCell> 
+                                            <TableCell>
+                                                {(((new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60))).toFixed(2) - 8) +""+"h"}
+                                            </TableCell>                                          
                                         </TableRow>                                            
                                     )
                                 }
