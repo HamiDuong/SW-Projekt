@@ -42,6 +42,7 @@ export default class WorkTimeAppAPI {
     #deleteTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #updateTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #getTimeIntervalByTypeURL = (type) => `${this.#worktimeappServerBaseURL}/timeintervaltype/${type}`;
+    #getTimeIntervalsWithinTimeframeURL = (id, start, end) => `${this.#worktimeappServerBaseURL}/timeintervals/${id}/${start}/${end}`;
 
     //Break
     #getBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;
@@ -313,6 +314,15 @@ export default class WorkTimeAppAPI {
 
     getAllTimeInterval() {
         return this.#fetchAdvanced(this.#getAllTimeIntervalsURL()).then((responseJSON) => {
+            let responseTimeInterval = TimeIntervalBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseTimeInterval)
+            })
+        })
+    }
+
+    getAllTimeIntervalsWithinTimeFrame(user_id, start, end) {
+        return this.#fetchAdvanced(this.#getTimeIntervalsWithinTimeframeURL(user_id, start, end)).then((responseJSON) => {
             let responseTimeInterval = TimeIntervalBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(responseTimeInterval)
