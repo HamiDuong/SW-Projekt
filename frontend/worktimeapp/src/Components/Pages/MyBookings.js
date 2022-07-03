@@ -77,7 +77,7 @@ class MyBookings extends Component {
 
             workbookings: [],
 
-            bookingtype: 'all',
+            bookingtype: 'timeinterval',
             typefilter: null,
             startfilter: null,
             endfilter: null,
@@ -100,17 +100,17 @@ class MyBookings extends Component {
     }
 
 
-    componentDidUpdate(prevProps, prevState) {
-        let length = this.state.intervalbookings.length
-        // only update if searchValue has changed
-        if (prevState.eventbookings2 !== this.state.eventbookings2 || prevState.intervalbookings !== this.state.intervalbookings ||
-            prevState.intervalbookings.length !== this.state.intervalbookings.length || prevState.eventbookings !== this.state.eventbookings ||
-            prevState.filteredeventbookings !== this.state.filteredeventbookings) {
-            console.log('ComponentDidMount');
-            this.getBookings();
-            this.getWorkBookings();
-        }
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     let length = this.state.intervalbookings.length
+    //     // only update if searchValue has changed
+    //     if (prevState.eventbookings2 !== this.state.eventbookings2 || prevState.intervalbookings !== this.state.intervalbookings ||
+    //         prevState.intervalbookings.length !== this.state.intervalbookings.length || prevState.eventbookings !== this.state.eventbookings ||
+    //         prevState.filteredeventbookings !== this.state.filteredeventbookings) {
+    //         console.log('ComponentDidMount');
+    //         this.getBookings();
+    //         this.getWorkBookings();
+    //     }
+    // }
 
     // Save changes buttons and textfields into state
     handleChange = ev => {
@@ -140,7 +140,7 @@ class MyBookings extends Component {
 
         // !--Hier umstellen vor Deployment--!
 
-        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
+        WorkTimeAppAPI.getAPI().getAllBookingsWithoutEventsForUser(this.props.userId).then(responseJSON =>
             this.setState({
                 intervalbookings: responseJSON.timeintervals,
                 eventbookings: responseJSON.events,
@@ -197,7 +197,7 @@ class MyBookings extends Component {
     // Reset the filter to default
     resetFilter = () => {
         this.setState({
-            bookingtype: 'all',
+            bookingtype: 'timeinterval',
             typefilter: '',
             startfilter: null,
             endfilter: null,
@@ -447,13 +447,14 @@ class MyBookings extends Component {
         console.log('Vergleich von Buchungsart');
         if (bookingtype == timeinterval) {
             this.setState({
-                filteredeventbookings: []
+                eventbookings2 : []
             }, function () {
-                console.log("Nur Timeintervalbuchungen");
+                console.log("Nur Timeintervalbuchungen mit verknüpften Events");
             })
         } else if (bookingtype == event) {
             this.setState({
-                filteredintervalbookings: []
+                filteredintervalbookings: [],
+                filteredeventbookings: []
             }, function () {
                 console.log("Nur Eventbuchungen");
             })
@@ -491,8 +492,7 @@ class MyBookings extends Component {
         })
     }
 
-    // render the component
-    render() {
+      render() {
         const { workbookings } = this.state;
         return (
             <>
@@ -508,8 +508,7 @@ class MyBookings extends Component {
                             onChange={this.handleChange}
                             value={this.state.bookingtype}
                         >
-                            <FormControlLabel value="all" control={<Radio />} label="Show all" />
-                            <FormControlLabel value="timeinterval" control={<Radio />} label="Only Time Interval Bookings" />
+                            <FormControlLabel value="timeinterval" control={<Radio />} label="Time Interval with connected Events" />
                             <FormControlLabel value="event" control={<Radio />} label="Only Event Bookings" />
                         </RadioGroup>
                     </FormControl>

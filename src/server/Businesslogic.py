@@ -253,19 +253,66 @@ class Businesslogic:
         Löscht ein ComingBO inkl. der Eventbuchung (EventBookingBO) und der Buchung (BookingBO)
         :param coming: ComingBO
         """
-        with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
-                "coming_id", coming.get_id(), coming.get_type()
-            )
-        with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
 
-        with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
         with EventMapper() as mapper:
-            mapper.delete(startevent)
-        with ComingMapper() as mapper:
-            mapper.delete(coming)
+            event = mapper.find_by_foreign_key_and_type(
+                "coming_id", coming.get_id(), "coming")
+        with EventBookingMapper() as mapper:
+            eventbooking = mapper.find_by_event_id(event.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
+
+            workbookings = self.get_work_bookings_for_user(user)
+
+        if len(workbookings) == 0:
+            with EventMapper() as mapper:
+                startevent = mapper.find_by_foreign_key_and_type(
+                    "coming_id", coming.get_id(), coming.get_type()
+                )
+            with EventBookingMapper() as mapper:
+                starteventbooking = mapper.find_by_event_id(
+                    startevent.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", starteventbooking.get_id(), "E"
+                )
+
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with EventBookingMapper() as mapper:
+                mapper.delete(starteventbooking)
+            with EventMapper() as mapper:
+                mapper.delete(startevent)
+            with ComingMapper() as mapper:
+                mapper.delete(coming)
+        else:
+            for elem in workbookings:
+                if coming.get_id() == elem.get_end_event():
+                    return 400
+                else:
+
+                    with EventMapper() as mapper:
+                        startevent = mapper.find_by_foreign_key_and_type(
+                            "coming_id", coming.get_id(), coming.get_type()
+                        )
+                    with EventBookingMapper() as mapper:
+                        starteventbooking = mapper.find_by_event_id(
+                            startevent.get_id())
+                    with BookingMapper() as mapper:
+                        booking = mapper.find_booking_by_booking_subclass(
+                            "eventBookingId", starteventbooking.get_id(), "E"
+                        )
+
+                    with BookingMapper() as mapper:
+                        mapper.delete(booking)
+                    with EventBookingMapper() as mapper:
+                        mapper.delete(starteventbooking)
+                    with EventMapper() as mapper:
+                        mapper.delete(startevent)
+                    with ComingMapper() as mapper:
+                        mapper.delete(coming)
 
     def create_going(self, time):
         """
@@ -321,18 +368,67 @@ class Businesslogic:
         :param going: GoingBO
         """
         with EventMapper() as mapper:
-            endevent = mapper.find_by_foreign_key_and_type(
-                "going_id", going.get_id(), going.get_type()
-            )
+            event = mapper.find_by_foreign_key_and_type(
+                "going_id", going.get_id(), "going")
         with EventBookingMapper() as mapper:
-            endeventbooking = mapper.find_by_event_id(endevent.get_id())
+            eventbooking = mapper.find_by_event_id(event.get_id())
+        with BookingMapper() as mapper:
+            booking = mapper.find_booking_by_booking_subclass(
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
 
-        with EventBookingMapper() as mapper:
-            mapper.delete(endeventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(endevent)
-        with GoingMapper() as mapper:
-            mapper.delete(going)
+            workbookings = self.get_work_bookings_for_user(user)
+
+            if len(workbookings) == 0:
+                with EventMapper() as mapper:
+                    endevent = mapper.find_by_foreign_key_and_type(
+                        "going_id", going.get_id(), going.get_type()
+                    )
+                with EventBookingMapper() as mapper:
+                    endeventbooking = mapper.find_by_event_id(
+                        endevent.get_id())
+
+                with BookingMapper() as mapper:
+                    booking = mapper.find_booking_by_booking_subclass(
+                        "eventBookingId", endeventbooking.get_id(), "E"
+                    )
+
+                with BookingMapper() as mapper:
+                    mapper.delete(booking)
+
+                with EventBookingMapper() as mapper:
+                    mapper.delete(endeventbooking)
+                with EventMapper() as mapper:
+                    mapper.delete(endevent)
+                with GoingMapper() as mapper:
+                    mapper.delete(going)
+            else:
+                for elem in workbookings:
+                    if going.get_id() == elem.get_start_event():
+                        return 400
+                    else:
+                        with EventMapper() as mapper:
+                            endevent = mapper.find_by_foreign_key_and_type(
+                                "going_id", going.get_id(), going.get_type()
+                            )
+                        with EventBookingMapper() as mapper:
+                            endeventbooking = mapper.find_by_event_id(
+                                endevent.get_id())
+
+                        with BookingMapper() as mapper:
+                            booking = mapper.find_booking_by_booking_subclass(
+                                "eventBookingId", endeventbooking.get_id(), "E"
+                            )
+
+                        with BookingMapper() as mapper:
+                            mapper.delete(booking)
+
+                        with EventBookingMapper() as mapper:
+                            mapper.delete(endeventbooking)
+                        with EventMapper() as mapper:
+                            mapper.delete(endevent)
+                        with GoingMapper() as mapper:
+                            mapper.delete(going)
 
     def create_project_work_begin(self, time):
         """
@@ -528,24 +624,63 @@ class Businesslogic:
         :return:
         """
         with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
-                "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type()
-            )
+            event = mapper.find_by_foreign_key_and_type(
+                "vacation_begin_id", vacation_begin.get_id(), "vacationBegin")
         with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+            eventbooking = mapper.find_by_event_id(event.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E"
-            )
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
-        with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(startevent)
-        with VacationBeginMapper() as mapper:
-            mapper.delete(vacation_begin)
+            workbookings = self.get_vacation_bookings_for_user(user)
+
+            if len(workbookings) == 0:
+                with EventMapper() as mapper:
+                    startevent = mapper.find_by_foreign_key_and_type(
+                        "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type()
+                    )
+                with EventBookingMapper() as mapper:
+                    starteventbooking = mapper.find_by_event_id(
+                        startevent.get_id())
+                with BookingMapper() as mapper:
+                    booking = mapper.find_booking_by_booking_subclass(
+                        "eventBookingId", starteventbooking.get_id(), "E"
+                    )
+
+                with BookingMapper() as mapper:
+                    mapper.delete(booking)
+                with EventBookingMapper() as mapper:
+                    mapper.delete(starteventbooking)
+                with EventMapper() as mapper:
+                    mapper.delete(startevent)
+                with VacationBeginMapper() as mapper:
+                    mapper.delete(vacation_begin)
+            else:
+                for elem in workbookings:
+                    if vacation_begin.get_id() == elem.get_start_event():
+                        return 400
+                    else:
+                        with EventMapper() as mapper:
+                            startevent = mapper.find_by_foreign_key_and_type(
+                                "vacation_begin_id", vacation_begin.get_id(), vacation_begin.get_type()
+                            )
+                        with EventBookingMapper() as mapper:
+                            starteventbooking = mapper.find_by_event_id(
+                                startevent.get_id())
+                        with BookingMapper() as mapper:
+                            booking = mapper.find_booking_by_booking_subclass(
+                                "eventBookingId", starteventbooking.get_id(), "E"
+                            )
+
+                        with BookingMapper() as mapper:
+                            mapper.delete(booking)
+                        with EventBookingMapper() as mapper:
+                            mapper.delete(starteventbooking)
+                        with EventMapper() as mapper:
+                            mapper.delete(startevent)
+                        with VacationBeginMapper() as mapper:
+                            mapper.delete(vacation_begin)
 
     def create_vacation_end(self, time):
         """
@@ -594,24 +729,63 @@ class Businesslogic:
         :param vacation_end: VacationEndBO
         """
         with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
-                "vacation_end_id", vacation_end.get_id(), vacation_end.get_type()
-            )
+            event = mapper.find_by_foreign_key_and_type(
+                "vacation_end_id", vacation_end.get_id(), "vacationEnd")
         with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+            eventbooking = mapper.find_by_event_id(event.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E"
-            )
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
-        with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(startevent)
-        with VacationEndMapper() as mapper:
-            mapper.delete(vacation_end)
+            workbookings = self.get_vacation_bookings_for_user(user)
+
+            if len(workbookings) == 0:
+                with EventMapper() as mapper:
+                    startevent = mapper.find_by_foreign_key_and_type(
+                        "vacation_end_id", vacation_end.get_id(), vacation_end.get_type()
+                    )
+                with EventBookingMapper() as mapper:
+                    starteventbooking = mapper.find_by_event_id(
+                        startevent.get_id())
+                with BookingMapper() as mapper:
+                    booking = mapper.find_booking_by_booking_subclass(
+                        "eventBookingId", starteventbooking.get_id(), "E"
+                    )
+
+                with BookingMapper() as mapper:
+                    mapper.delete(booking)
+                with EventBookingMapper() as mapper:
+                    mapper.delete(starteventbooking)
+                with EventMapper() as mapper:
+                    mapper.delete(startevent)
+                with VacationEndMapper() as mapper:
+                    mapper.delete(vacation_end)
+            else:
+                for elem in workbookings:
+                    if vacation_end.get_id() == elem.get_end_event():
+                        return 400
+                    else:
+                        with EventMapper() as mapper:
+                            startevent = mapper.find_by_foreign_key_and_type(
+                                "vacation_end_id", vacation_end.get_id(), vacation_end.get_type()
+                            )
+                        with EventBookingMapper() as mapper:
+                            starteventbooking = mapper.find_by_event_id(
+                                startevent.get_id())
+                        with BookingMapper() as mapper:
+                            booking = mapper.find_booking_by_booking_subclass(
+                                "eventBookingId", starteventbooking.get_id(), "E"
+                            )
+
+                        with BookingMapper() as mapper:
+                            mapper.delete(booking)
+                        with EventBookingMapper() as mapper:
+                            mapper.delete(starteventbooking)
+                        with EventMapper() as mapper:
+                            mapper.delete(startevent)
+                        with VacationEndMapper() as mapper:
+                            mapper.delete(vacation_end)
 
     def create_illness_begin(self, time):
         """
@@ -666,24 +840,63 @@ class Businesslogic:
         :param illness_begin: IllnessBeginBO
         """
         with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
-                "illness_begin_id", illness_begin.get_id(), illness_begin.get_type()
-            )
+            event = mapper.find_by_foreign_key_and_type(
+                "illness_begin_id", illness_begin.get_id(), "illnessBegin")
         with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
+            eventbooking = mapper.find_by_event_id(event.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", starteventbooking.get_id(), "E"
-            )
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
-        with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(startevent)
-        with IllnessBeginMapper() as mapper:
-            mapper.delete(illness_begin)
+            workbookings = self.get_illness_bookings_for_user(user)
+
+            if len(workbookings) == 0:
+                with EventMapper() as mapper:
+                    startevent = mapper.find_by_foreign_key_and_type(
+                        "illness_begin_id", illness_begin.get_id(), illness_begin.get_type()
+                    )
+                with EventBookingMapper() as mapper:
+                    starteventbooking = mapper.find_by_event_id(
+                        startevent.get_id())
+                with BookingMapper() as mapper:
+                    booking = mapper.find_booking_by_booking_subclass(
+                        "eventBookingId", starteventbooking.get_id(), "E"
+                    )
+
+                with BookingMapper() as mapper:
+                    mapper.delete(booking)
+                with EventBookingMapper() as mapper:
+                    mapper.delete(starteventbooking)
+                with EventMapper() as mapper:
+                    mapper.delete(startevent)
+                with IllnessBeginMapper() as mapper:
+                    mapper.delete(illness_begin)
+            else:
+                for elem in workbookings:
+                    if illness_begin.get_id() == elem.get_start_event():
+                        return 400
+                    else:
+                        with EventMapper() as mapper:
+                            startevent = mapper.find_by_foreign_key_and_type(
+                                "illness_begin_id", illness_begin.get_id(), illness_begin.get_type()
+                            )
+                        with EventBookingMapper() as mapper:
+                            starteventbooking = mapper.find_by_event_id(
+                                startevent.get_id())
+                        with BookingMapper() as mapper:
+                            booking = mapper.find_booking_by_booking_subclass(
+                                "eventBookingId", starteventbooking.get_id(), "E"
+                            )
+
+                        with BookingMapper() as mapper:
+                            mapper.delete(booking)
+                        with EventBookingMapper() as mapper:
+                            mapper.delete(starteventbooking)
+                        with EventMapper() as mapper:
+                            mapper.delete(startevent)
+                        with IllnessBeginMapper() as mapper:
+                            mapper.delete(illness_begin)
 
     def create_illness_end(self, time):
         """
@@ -737,23 +950,61 @@ class Businesslogic:
         :param illness_end: IllnessEndBO
         """
         with EventMapper() as mapper:
-            endevent = mapper.find_by_foreign_key_and_type(
-                "illness_end_id", illness_end.get_id(), illness_end.get_type()
-            )
+            event = mapper.find_by_foreign_key_and_type(
+                "illness_end_id", illness_end.get_id(), "illnessEnd")
         with EventBookingMapper() as mapper:
-            endeventbooking = mapper.find_by_event_id(endevent.get_id())
+            eventbooking = mapper.find_by_event_id(event.get_id())
         with BookingMapper() as mapper:
             booking = mapper.find_booking_by_booking_subclass(
-                "eventBookingId", endeventbooking.get_id(), "E"
-            )
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
-        with EventBookingMapper() as mapper:
-            mapper.delete(endeventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(endevent)
-        with IllnessEndMapper() as mapper:
-            mapper.delete(illness_end)
+                "eventBookingId", eventbooking.get_id(), "E")
+            user = self.get_user_by_id(booking.get_user_id())
+
+            workbookings = self.get_illness_bookings_for_user(user)
+
+        if len(workbookings) == 0:
+            with EventMapper() as mapper:
+                endevent = mapper.find_by_foreign_key_and_type(
+                    "illness_end_id", illness_end.get_id(), illness_end.get_type()
+                )
+            with EventBookingMapper() as mapper:
+                endeventbooking = mapper.find_by_event_id(
+                    endevent.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", endeventbooking.get_id(), "E"
+                )
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with EventBookingMapper() as mapper:
+                mapper.delete(endeventbooking)
+            with EventMapper() as mapper:
+                mapper.delete(endevent)
+            with IllnessEndMapper() as mapper:
+                mapper.delete(illness_end)
+        else:
+            for elem in workbookings:
+                if illness_end.get_id() == elem.get_end_event():
+                    return 400
+                else:
+                    with EventMapper() as mapper:
+                        endevent = mapper.find_by_foreign_key_and_type(
+                            "illness_end_id", illness_end.get_id(), illness_end.get_type()
+                        )
+                    with EventBookingMapper() as mapper:
+                        endeventbooking = mapper.find_by_event_id(
+                            endevent.get_id())
+                    with BookingMapper() as mapper:
+                        booking = mapper.find_booking_by_booking_subclass(
+                            "eventBookingId", endeventbooking.get_id(), "E"
+                        )
+                    with BookingMapper() as mapper:
+                        mapper.delete(booking)
+                    with EventBookingMapper() as mapper:
+                        mapper.delete(endeventbooking)
+                    with EventMapper() as mapper:
+                        mapper.delete(endevent)
+                    with IllnessEndMapper() as mapper:
+                        mapper.delete(illness_end)
 
     def create_flex_day_start(self, time):
         """
@@ -1269,7 +1520,19 @@ class Businesslogic:
             with BookingMapper() as mapper:
                 booking = mapper.find_booking_by_booking_subclass(
                     "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                starteventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", starteventbooking.get_id(), "E")
+            with BookingMapper() as mapper:
+                endeventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", endeventbooking.get_id(), "E")
 
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with BookingMapper() as mapper:
+                mapper.delete(starteventeventbooking)
+            with BookingMapper() as mapper:
+                mapper.delete(endeventeventbooking)
             with BookingMapper() as mapper:
                 mapper.delete(booking)
             with TimeIntervalBookingMapper() as mapper:
@@ -1452,6 +1715,19 @@ class Businesslogic:
             with BookingMapper() as mapper:
                 booking = mapper.find_booking_by_booking_subclass(
                     "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                starteventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", starteventbooking.get_id(), "E")
+            with BookingMapper() as mapper:
+                endeventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", endeventbooking.get_id(), "E")
+
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with BookingMapper() as mapper:
+                mapper.delete(starteventeventbooking)
+            with BookingMapper() as mapper:
+                mapper.delete(endeventeventbooking)
 
             with BookingMapper() as mapper:
                 mapper.delete(booking)
@@ -1583,13 +1859,13 @@ class Businesslogic:
             return mapper.find_by_key(id)
 
     # WorkBO erstellen
-    def create_work(self, start, end, startevent, endevent):
+    def create_work(self, start, end, startevent, endevent, type):
         work_obj = WorkBO()
         work_obj.set_start(start)
         work_obj.set_end(end)
         work_obj.set_start_event(startevent)
         work_obj.set_end_event(endevent)
-        work_obj.set_type("Work")
+        work_obj.set_type(type)
 
         with WorkMapper() as mapper:
             return mapper.insert(work_obj)
@@ -1607,52 +1883,149 @@ class Businesslogic:
     # @author Mihriban Dogan (https://github.com/mihriban-dogan)
     # WorkBO löschen
     def delete_work(self, work_obj):
-        with ComingMapper() as mapper:
-            coming = mapper.find_by_key(work_obj.get_start_event())
-        with GoingMapper() as mapper:
-            going = mapper.find_by_key(work_obj.get_end_event())
-        with EventMapper() as mapper:
-            startevent = mapper.find_by_foreign_key_and_type(
-                "coming_id", coming.get_id(), coming.get_type())
-        with EventMapper() as mapper:
-            endevent = mapper.find_by_foreign_key_and_type(
-                "going_id", going.get_id(), going.get_type())
-        with EventBookingMapper() as mapper:
-            starteventbooking = mapper.find_by_event_id(startevent.get_id())
-        with EventBookingMapper() as mapper:
-            endeventbooking = mapper.find_by_event_id(endevent.get_id())
-        with TimeIntervalMapper() as mapper:
-            timeinterval = mapper.find_by_foreign_key_and_type(
-                "workId", work_obj.get_id(), work_obj.get_type())
-        with TimeIntervalBookingMapper() as mapper:
-            timeintervalbooking = mapper.find_by_timeinterval_id(
-                timeinterval.get_id())
-        with BookingMapper() as mapper:
-            booking = mapper.find_booking_by_booking_subclass(
-                "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+        if not ((work_obj.get_start_event() and work_obj.get_end_event()) == None):
+            with ComingMapper() as mapper:
+                coming = mapper.find_by_key(
+                    work_obj.get_start_event())
+            with GoingMapper() as mapper:
+                going = mapper.find_by_key(
+                    work_obj.get_end_event())
+            with EventMapper() as mapper:
+                startevent = mapper.find_by_foreign_key_and_type(
+                    "coming_id", coming.get_id(), "coming")
+            with EventMapper() as mapper:
+                endevent = mapper.find_by_foreign_key_and_type(
+                    "going_id", going.get_id(), "going")
+            with EventBookingMapper() as mapper:
+                starteventbooking = mapper.find_by_event_id(
+                    startevent.get_id())
+            with EventBookingMapper() as mapper:
+                endeventbooking = mapper.find_by_event_id(endevent.get_id())
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "workId", work_obj.get_id(), work_obj.get_type())
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_timeinterval_id(
+                    timeinterval.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "timeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                starteventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", starteventbooking.get_id(), "E")
+            with BookingMapper() as mapper:
+                endeventeventbooking = mapper.find_booking_by_booking_subclass(
+                    "eventBookingId", endeventbooking.get_id(), "E")
 
-        with BookingMapper() as mapper:
-            mapper.delete(booking)
-        with TimeIntervalBookingMapper() as mapper:
-            mapper.delete(timeintervalbooking)
-        with TimeIntervalMapper() as mapper:
-            mapper.delete(timeinterval)
-        with WorkMapper() as mapper:
-            mapper.delete(work_obj)
-        with EventBookingMapper() as mapper:
-            mapper.delete(starteventbooking)
-        with EventBookingMapper() as mapper:
-            mapper.delete(endeventbooking)
-        with EventMapper() as mapper:
-            mapper.delete(startevent)
-        with EventMapper() as mapper:
-            mapper.delete(endevent)
-        with ComingMapper() as mapper:
-            mapper.delete(coming)
-        with GoingMapper() as mapper:
-            mapper.delete(going)
-
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with BookingMapper() as mapper:
+                mapper.delete(starteventeventbooking)
+            with BookingMapper() as mapper:
+                mapper.delete(endeventeventbooking)
+            with TimeIntervalBookingMapper() as mapper:
+                mapper.delete(timeintervalbooking)
+            with TimeIntervalMapper() as mapper:
+                mapper.delete(timeinterval)
+            with WorkMapper() as mapper:
+                mapper.delete(work_obj)
+            with EventBookingMapper() as mapper:
+                mapper.delete(starteventbooking)
+            with EventBookingMapper() as mapper:
+                mapper.delete(endeventbooking)
+            with EventMapper() as mapper:
+                mapper.delete(startevent)
+            with EventMapper() as mapper:
+                mapper.delete(endevent)
+            with ComingMapper() as mapper:
+                mapper.delete(coming)
+            with GoingMapper() as mapper:
+                mapper.delete(going)
+        elif (work_obj.get_start_event() and work_obj.get_end_event()) == None:
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "workId", work_obj.get_id(), work_obj.get_type())
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_timeinterval_id(
+                    timeinterval.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with TimeIntervalBookingMapper() as mapper:
+                mapper.delete(timeintervalbooking)
+            with TimeIntervalMapper() as mapper:
+                mapper.delete(timeinterval)
+            with WorkMapper() as mapper:
+                mapper.delete(work_obj)
+        elif not (work_obj.get_start_event() == None):
+            with ComingMapper() as mapper:
+                coming = mapper.find_by_key(
+                    work_obj.get_start_event())
+            with EventMapper() as mapper:
+                startevent = mapper.find_by_foreign_key_and_type(
+                    "coming_id", coming.get_id(), coming.get_type())
+            with EventBookingMapper() as mapper:
+                starteventbooking = mapper.find_by_event_id(
+                    startevent.get_id())
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "workId", work_obj.get_id(), work_obj.get_type())
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_timeinterval_id(
+                    timeinterval.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with TimeIntervalBookingMapper() as mapper:
+                mapper.delete(timeintervalbooking)
+            with TimeIntervalMapper() as mapper:
+                mapper.delete(timeinterval)
+            with WorkMapper() as mapper:
+                mapper.delete(work_obj)
+            with EventBookingMapper() as mapper:
+                mapper.delete(starteventbooking)
+            with EventMapper() as mapper:
+                mapper.delete(startevent)
+            with ComingMapper() as mapper:
+                mapper.delete(coming)
+        elif not (work_obj.get_end_event() == None):
+            with WorkMapper() as mapper:
+                going = mapper.find_by_key(
+                    work_obj.get_end_event())
+            with EventMapper() as mapper:
+                endevent = mapper.find_by_foreign_key_and_type(
+                    "going_id", going.get_id(), going.get_type())
+            with EventBookingMapper() as mapper:
+                endeventbooking = mapper.find_by_event_id(endevent.get_id())
+            with TimeIntervalMapper() as mapper:
+                timeinterval = mapper.find_by_foreign_key_and_type(
+                    "workId", work_obj.get_id(), work_obj.get_type())
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_timeinterval_id(
+                    timeinterval.get_id())
+            with BookingMapper() as mapper:
+                booking = mapper.find_booking_by_booking_subclass(
+                    "TimeIntervalBookingId", timeintervalbooking.get_id(), "T")
+            with BookingMapper() as mapper:
+                mapper.delete(booking)
+            with TimeIntervalBookingMapper() as mapper:
+                mapper.delete(timeintervalbooking)
+            with TimeIntervalMapper() as mapper:
+                mapper.delete(timeinterval)
+            with WorkMapper() as mapper:
+                mapper.delete(work_obj)
+            with EventBookingMapper() as mapper:
+                mapper.delete(endeventbooking)
+            with EventMapper() as mapper:
+                mapper.delete(endevent)
+            with WorkMapper() as mapper:
+                mapper.delete(going)
     # WorkBO mit gegebenen Date holen
+
     def get_works_by_date(self, date):
         with WorkMapper() as mapper:
             return mapper.find_by_date(date)
@@ -1927,10 +2300,11 @@ class Businesslogic:
             mapper.delete(project_work_end)
         delta = project_work_obj.get_end() - project_work_obj.get_start()
         delta_float = round(((delta.total_seconds() / 60) / 60), 2)
-        self.calculate_delta_for_project_work(booking, -delta_float, project_work_obj.get_activity_id())
-
+        self.calculate_delta_for_project_work(
+            booking, -delta_float, project_work_obj.get_activity_id())
 
     # ProjectWorkBO mit gegebenen Date holen
+
     def get_project_works_by_date(self, date):
         with ProjectWorkMapper() as mapper:
             return mapper.find_by_date(date)
@@ -2193,6 +2567,118 @@ class Businesslogic:
         print(res_final_dict)
         return res_final_dict
 
+    def get_all_timeintervals_without_events_for_user(self, user):
+        booking_types = ["timeintervals", "events"]
+        res_ti = []
+        res_ti_e = []
+        res_final = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'break':
+                    res = self.get_break_by_id(timeintervals.get_break_id())
+                    if (res.get_start_event() and res.get_end_event) == None:
+                        res_ti.append(res)
+                    elif not ((res.get_start_event() and res.get_end_event()) == None):
+                        with BreakBeginMapper() as mapper:
+                            start_event = mapper.find_by_key(
+                                res.get_start_event())
+                        with BreakEndMapper() as mapper:
+                            end_event = mapper.find_by_key(
+                                res.get_start_event())
+                        res_ti_e.append(start_event)
+                        res_ti_e.append(end_event)
+                        res_ti.append(res)
+                    elif not (res.get_start_event() is None):
+                        with BreakBeginMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                    elif not (res.get_end_event() is None):
+                        with BreakEndMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                if type == 'illness':
+                    res = self.get_illness_by_id(
+                        timeintervals.get_illness_id())
+                    res_ti.append(res)
+                if type == 'ProjectDuration':
+                    res = self.get_project_duration_by_id(
+                        timeintervals.get_project_duration_id())
+                    res_ti.append(res)
+                if type == 'ProjectWork':
+                    res = self.get_project_work_by_id(
+                        timeintervals.get_project_work_id())
+                    if (res.get_start_event() and res.get_end_event) == None:
+                        res_ti.append(res)
+                    elif not ((res.get_start_event() and res.get_end_event()) == None):
+                        with ProjectWorkBeginMapper() as mapper:
+                            start_event = mapper.find_by_key(
+                                res.get_start_event())
+                        with ProjectWorkEndMapper() as mapper:
+                            end_event = mapper.find_by_key(
+                                res.get_start_event())
+                        res_ti_e.append(start_event)
+                        res_ti_e.append(end_event)
+                        res_ti.append(res)
+                    elif not (res.get_start_event() is None):
+                        with ProjectWorkBeginMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                    elif not (res.get_end_event() is None):
+                        with ProjectWorkEndMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                if type == 'vacation':
+                    res = self.get_vacation_by_id(
+                        timeintervals.get_vacation_id())
+                    res_ti.append(res)
+                if type == 'work':
+                    res = self.get_work_by_id(timeintervals.get_work_id())
+                    res_ti.append(res)
+                if type == 'flexday':
+                    res = self.get_flex_day_by_id(
+                        timeintervals.get_flex_day_id())
+                    if (res.get_start_event() and res.get_end_event) == None:
+                        res_ti.append(res)
+                    elif not ((res.get_start_event() and res.get_end_event()) == None):
+                        with FlexDayStartMapper() as mapper:
+                            start_event = mapper.find_by_key(
+                                res.get_start_event())
+                        with FlexDayEndMapper() as mapper:
+                            end_event = mapper.find_by_key(
+                                res.get_start_event())
+                        res_ti_e.append(start_event)
+                        res_ti_e.append(end_event)
+                        res_ti.append(res)
+                    elif not (res.get_start_event() is None):
+                        with FlexDayStartMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+                    elif not (res.get_end_event() is None):
+                        with FlexDayEndMapper() as mapper:
+                            event = mapper.find_by_key(res.get_start_event())
+                            res_ti_e.append(event)
+                            res_ti.append(res)
+        res_final = [res_ti, res_ti_e]
+        res_final_dict = dict(zip(booking_types, res_final))
+        print(res_final_dict)
+        return res_final_dict
+
     def get_project_duration_bookings_for_user(self, user):
         res_ti = []
 
@@ -2211,6 +2697,72 @@ class Businesslogic:
                 if type == 'ProjectDuration':
                     res = self.get_project_duration_by_id(
                         timeintervals.get_project_duration_id())
+                    res_ti.append(res)
+
+        return res_ti
+
+    def get_work_bookings_for_user(self, user):
+        res_ti = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'work':
+                    res = self.get_work_by_id(
+                        timeintervals.get_work_id())
+                    res_ti.append(res)
+
+        return res_ti
+
+    def get_vacation_bookings_for_user(self, user):
+        res_ti = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'vacation':
+                    res = self.get_vacation_by_id(
+                        timeintervals.get_vacation_id())
+                    res_ti.append(res)
+
+        return res_ti
+
+    def get_illness_bookings_for_user(self, user):
+        res_ti = []
+
+        with BookingMapper() as mapper:
+            timeintervalbookings = mapper.find_timeinterval_bookings_by_user_id(
+                user.get_id())
+
+        for elem in timeintervalbookings:
+            timeintervalbookingid = elem.get_time_interval_booking_id()
+            with TimeIntervalBookingMapper() as mapper:
+                timeintervalbooking = mapper.find_by_key(timeintervalbookingid)
+                id = timeintervalbooking.get_timeinterval_id()
+            with TimeIntervalMapper() as mapper:
+                timeintervals = mapper.find_by_key(id)
+                type = timeintervals.get_type()
+                if type == 'illness':
+                    res = self.get_illness_by_id(
+                        timeintervals.get_illness_id())
                     res_ti.append(res)
 
         return res_ti
@@ -2295,7 +2847,7 @@ class Businesslogic:
         return res_e
 
     # Alle Vacation/Illness Bookings für einen User holen
-    def get_all_vacation_illness_event_bookings_for_user(self, user):
+    def get_all_vacation_illness_work_event_bookings_for_user(self, user):
         '''Als erstes werden die alle ids geholt, danach der Fremdschlüssel EventbookingId 
         und dieser wird dann in der Tabelle Eventbooking eingefügt 
         und dort wird dann nach dem FK Eventid gesucht'''
@@ -2327,6 +2879,12 @@ class Businesslogic:
                 res_e.append(res)
             if type == 'vacationEnd':
                 res = self.get_vacation_end_by_id(events.get_vacation_end_id())
+                res_e.append(res)
+            if type == 'coming':
+                res = self.get_coming_by_id(events.get_coming_id())
+                res_e.append(res)
+            if type == 'going':
+                res = self.get_going_by_id(events.get_going_id())
                 res_e.append(res)
         print(res_e)
         return res_e
@@ -2405,7 +2963,13 @@ class Businesslogic:
             with WorkMapper() as mapper:
                 work = mapper.find_by_key(
                     timeinterval.get_work_id())
-            delta = work.get_end() - work.get_start()
+            if work.get_end() == None:
+                with ComingMapper() as mapper:
+                    start = mapper.get_coming_by_id(work.get_start_event())
+                    end = mapper.get_going_by_if(work.get_end_event())
+                delta = end - start
+            else:
+                delta = work.get_end() - work.get_start()
             delta_float = round(((delta.total_seconds() / 60) / 60), 2)
             print("Gearbeitete Zeit", delta_float)
             self.calculate_delta_work(tbooking, delta_float)
@@ -2547,7 +3111,7 @@ class Businesslogic:
     def delete_user(self, user_obj):
         projectuserlist = self.get_project_user_by_user_id(user_obj.get_id())
         bookings = self.get_all_timeinterval_bookings_for_user(user_obj)
-        eventbookinglist = self.get_all_vacation_illness_event_bookings_for_user(
+        eventbookinglist = self.get_all_vacation_illness_work_event_bookings_for_user(
             user_obj)
         print("Eventbookinglist", eventbookinglist)
         if bookings is not None:
@@ -2606,6 +3170,10 @@ class Businesslogic:
                         self.delete_vacation_begin(eventbooking)
                     if eventbooking.get_type() == "vacationend":
                         self.delete_vacation_end(eventbooking)
+                    if eventbooking.get_type() == "coming":
+                        self.delete_coming(eventbooking)
+                    if eventbooking.get_type() == "going":
+                        self.delete_going(eventbooking)
                     with UserMapper() as mapper:
                         mapper.delete(user_obj)
                 with UserMapper() as mapper:
@@ -2982,3 +3550,8 @@ class Businesslogic:
             hold = self.get_project_by_id(elem)
             res.append(hold)
         return res
+
+
+# adm = Businesslogic()
+# event = adm.get_illness_begin_by_id(1)
+# adm.delete_illness_begin(event)
