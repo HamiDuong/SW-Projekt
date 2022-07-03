@@ -35,7 +35,7 @@ class Entry extends Component {
             capacity: '',
             currentCapacity: '',
             activities: '',
-            members: [],
+            members: '',
             userIds: [],
             open: false,
             projectId: this.props.projectId,
@@ -53,8 +53,8 @@ class Entry extends Component {
             this.setState({
                 activity: activityBO[0],
                 name: activityBO[0].getName(),
-                capacity: activityBO[0].capacity,
-                currentCapacity: activityBO[0].currentCapacity
+                capacity: activityBO[0].getCapacity(),
+                currentCapacity: activityBO[0].getCurrentCapacity()
             }, function () {
                 console.log(this.state.name, activityBO[0].capacity, 'HALLLLOOOO', this.state.currentCapacity)
             }))
@@ -74,10 +74,9 @@ class Entry extends Component {
                 this.setState({
                     members: member,
                 }, function () {
-                    console.log(this.state.members, 'Callback Function', typeof (this.state.members), this.state.userIds);
-                    this.getUserIds();
-                    this.getPlanedCapacitiesForUser();
-                });
+                    console.log(this.state.members, 'Callback Function', this.state.userIds)
+                }); this.getUserIds();
+                this.getPlanedCapacitiesForUser()
 
             }
         }
@@ -87,17 +86,13 @@ class Entry extends Component {
     getUserIds() {
         /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
         * und speichert diese als neue Liste im State ab.*/
-        let members = this.state.members;
-        let liste = [];
-        let list_of_ids = [];
-        for (let i = 0; i < members.length; i++) {
-            liste.push(this.state.members[i]);
-        }
-        for (let i = 0; i < liste.length; i++) {
-            list_of_ids.push(liste[i].getUserId());
-        }
+        let members = this.state.members
+        let liste = []
+        members.map(element =>
+            liste.push(element.getUserId()),
+        )
         this.setState({
-            userIds: list_of_ids
+            userIds: [...this.state.userIds, ...liste]
         }, function () {
             console.log('2. Callbackfunction', this.state.userIds)
         })
@@ -125,7 +120,6 @@ class Entry extends Component {
                 projectDuration: projectDurationBO
             }, function () {
                 console.log('Hier ist der die Duration: ', this.state.projectDuration)
-
             }))
     }
 
@@ -136,9 +130,15 @@ class Entry extends Component {
     }
 
     onFilterClicked = () => {
+        let holder = document.getElementById('startFilter')
+        let holder2 = document.getElementById('endFilter')
         this.setState({
-            filterUsed: true
+            filterUsed: true,
+            start: holder.value,
+            end: holder2.value,
+            userIds: [],
         })
+
     }
 
     removeFilterClicked = () => {
@@ -155,13 +155,6 @@ class Entry extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.filterUsed !== this.state.filterUsed) {
-            let holder = document.getElementById('startFilter');
-            let holder2 = document.getElementById('endFilter');
-            this.setState({
-                start: holder.value,
-                end: holder2.value,
-                userIds: [],
-            })
             this.getActivity(this.props.value);
             this.getProjectUser(this.props.projectId);
             this.getProjectDuration(this.props.projectId);

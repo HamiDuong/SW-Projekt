@@ -4128,3 +4128,8 @@ class Businesslogic:
             return True
         else:
             return False
+
+
+
+adm = Businesslogic()
+print(adm.get_actual_working_time_for_user_by_activity_id(1,2))
