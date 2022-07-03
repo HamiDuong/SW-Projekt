@@ -25,6 +25,7 @@ import ActivityBO from "./ActivityBO"
 import UserBO from "./UserBO";
 import ProjectUserBO from "./ProjectUserBO";
 import WorkTimeAccountBO from './WorkTimeAccountBO'
+import EventBO from './EventBOs/EventBO'
 
 
 export default class WorkTimeAppAPI {
@@ -131,6 +132,7 @@ export default class WorkTimeAppAPI {
     #deleteEventURL = (id) => `${this.#worktimeappServerBaseURL}/event/${id}`;
     #updateEventURL = (id) => `${this.#worktimeappServerBaseURL}/event/${id}`;
     #getAllTypeEvents = (type) => `${this.#worktimeappServerBaseURL}/eventtype/${type}`;
+    #getEventsWithinTimeframeURL = (id, start, end) => `${this.#worktimeappServerBaseURL}/events/${id}/${start}/${end}`;
 
     //BreakStart
     #getBreakStartURL = (id) => `${this.#worktimeappServerBaseURL}/breakstart/${id}`;
@@ -1121,6 +1123,14 @@ export default class WorkTimeAppAPI {
     }
 
     //EventBookingMethoden
+    getAllEventsWithinTimeFrame(user_id, start, end) {
+        return this.#fetchAdvanced(this.#getEventsWithinTimeframeURL(user_id, start, end)).then((responseJSON) => {
+            let responseEvent = EventBO.fromJSON(responseJSON);
+            return new Promise(function (resolve) {
+                resolve(responseEvent)
+            })
+        })
+    }
 
     addEventBooking(bookingBO) {
         return this.#fetchAdvanced(this.#addEventBookingURL(), {

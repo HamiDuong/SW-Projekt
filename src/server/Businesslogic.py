@@ -3689,6 +3689,99 @@ class Businesslogic:
                     within_timeframe.append(elem)
         return within_timeframe
 
+    def get_events_for_user_within_timeframe(self, user_id, start, end):
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings = self.get_all_bookings_for_events()
+        # for elem in all_bookings:
+        #     print(elem, 'Step 1')
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        bookings_of_user = []
+        timeinterval_booking_of_user = []
+        timeintervals_of_user = []
+
+        all_timeintervals = []
+        within_timeframe = []
+        '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
+        for elem in all_bookings:
+            # print('bookings:', elem.get_user_id())
+            if elem.get_user_id() == user_id:
+                bookings_of_user.append(elem)
+                # print(elem, 'Step 2')
+        '''Check ob es Einträge gibt, ansonsten return 0 '''
+        if len(bookings_of_user) >= 1:
+            '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
+            for elem in bookings_of_user:
+                # print('in bookins_of_user: ', elem)
+                ti_b_id = elem.get_event_booking_id()
+                ti_b = self.get_event_booking_by_id(ti_b_id)
+                timeinterval_booking_of_user.append(ti_b)
+                # for elem in timeinterval_booking_of_user:
+                    # print(elem, 'Step 3')
+            '''Von den Bookings des Users werden die Ids für die Timeintervalle abgelesen und diese aus der Datenbank
+               geleaden.'''
+            for elem in timeinterval_booking_of_user:
+                # print('in ti_b for user: ', elem)
+                ti_id = elem.get_event_id()
+                ti = self.get_event_by_id(ti_id)
+                timeintervals_of_user.append(ti)
+            '''Von den Zeitintervallen werden diejenigen selektiert, die als Typ projectwork besitzen'''
+            for elem in timeintervals_of_user:
+                print(elem.get_type(), 'Step 4')
+                if elem.get_type() == 'vacationEnd':
+                    vacation = self.get_vacation_end_by_id(
+                        elem.get_vacation_end_id())
+                    all_timeintervals.append(vacation)
+                if elem.get_type() == 'vacationBegin':
+                    vacation = self.get_vacation_begin_by_id(
+                        elem.get_vacation_begin_id())
+                    all_timeintervals.append(vacation)
+                if elem.get_type() == 'breakBegin':
+                    break_bo = self.get_break_begin_by_id(
+                        elem.get_break_begin_id())
+                    all_timeintervals.append(break_bo)
+                if elem.get_type() == 'breakEnd':
+                    break_bo = self.get_break_end_by_id(
+                        elem.get_break_end_id())
+                    all_timeintervals.append(break_bo)
+                if elem.get_type() == 'illnessBegin':
+                    illnessbegin = self.get_illness_begin_by_id(
+                        elem.get_illness_begin_id())
+                    all_timeintervals.append(illnessbegin)
+                if elem.get_type() == 'illnessEnd':
+                    illnessend = self.get_illness_end_by_id(
+                        elem.get_illness_end_id())
+                    all_timeintervals.append(illnessend)
+                if elem.get_type() == 'flexdaystart':
+                    flexdaystart = self.get_flex_day_start_by_id(
+                        elem.get_flex_day_start_id())
+                    all_timeintervals.append(flexdaystart)
+                if elem.get_type() == 'flexdayend':
+                    flexdayend = self.get_flex_day_end_by_id(
+                        elem.get_flex_day_end_id())
+                    all_timeintervals.append(flexdayend)
+                if elem.get_type() == 'projectworkbegin':
+                    project_work_begin = self.get_project_work_begin_by_id(
+                        elem.get_project_work_begin_id())
+                    all_timeintervals.append(project_work_begin)
+                if elem.get_type() == 'projectworkend':
+                    project_work_end = self.get_project_work_end_by_id(
+                        elem.get_project_work_end_id())
+                    all_timeintervals.append(project_work_end)
+                if elem.get_type() == 'coming':
+                    coming = self.get_coming_by_id(
+                        elem.get_coming_id())
+                    all_timeintervals.append(coming)
+                if elem.get_type() == 'going':
+                    going = self.get_going_by_id(
+                        elem.get_going_by_id())
+                    all_timeintervals.append(going)
+            '''Von den PrjWrkBOs werden diejenigen selektiert, die zu der gesuchten Aktivität gebucht wurden.'''
+            for elem in all_timeintervals:
+                if self.in_between_times(elem.get_time(), start, end):
+                    within_timeframe.append(elem)
+        return within_timeframe
+
 
 
     def get_user_by_coming_id(self, coming):
@@ -3759,3 +3852,9 @@ class Businesslogic:
             return True
         else:
             return False
+
+
+adm = Businesslogic()
+x = adm.get_events_for_user_within_timeframe(1, '2022-06-01', '2022-07-30')
+for elem in x:
+    print(elem)
