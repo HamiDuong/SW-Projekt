@@ -868,7 +868,7 @@ class TimeOperations(Resource):
 
 @worktimeapp.route('/times/<int:activity_id>/<int:user_id>/<start>/<end>')
 class TimeOperationsII(Resource):
-    # @secured
+    @secured
     def get(self, activity_id, user_id, start, end):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
@@ -880,7 +880,7 @@ class TimeOperationsII(Resource):
 
 @worktimeapp.route('/timeintervals/<int:user_id>/<start>/<end>')
 class TimeintervalFiltering(Resource):
-    # @secured
+    @secured
     @worktimeapp.marshal_list_with(timeinterval_subclass)
     def get(self,  user_id, start, end):
         """Auslesen aller User-Objekte.
@@ -893,7 +893,7 @@ class TimeintervalFiltering(Resource):
 
 @worktimeapp.route('/alltimeintervals/<int:user_id>/')
 class TimeintervalFiltering(Resource):
-    # @secured
+    @secured
     @worktimeapp.marshal_list_with(timeinterval_subclass)
     def get(self,  user_id):
         """Auslesen aller User-Objekte.
@@ -917,7 +917,7 @@ class EventFiltering(Resource):
 
 @worktimeapp.route('/allevents/<int:user_id>/')
 class EventFiltering(Resource):
-    # @secured
+    @secured
     @worktimeapp.marshal_list_with(event_subclass)
     def get(self,  user_id):
         """Auslesen aller User-Objekte.
@@ -1015,7 +1015,7 @@ class ProjectUserOperations(Resource):
 @worktimeapp.param('id', 'Die ID des Projekts')
 class ProjectWithIDOperations(Resource):
     @worktimeapp.marshal_with(projectuser)
-    # #@secured
+    @secured
     def get(self, id):
         adm = Businesslogic()
         projectuser = adm.get_all_project_members(id)
