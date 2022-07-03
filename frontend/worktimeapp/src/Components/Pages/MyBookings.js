@@ -312,7 +312,7 @@ class MyBookings extends Component {
         console.log("event",this.state.eventbookings);
         console.log("event2",this.state.eventbookings2);
 
-        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseInterval => 
+        WorkTimeAppAPI.getAPI().getAllTimeIntervalsWithinTimeFrame(this.state.userId, starthold.value, endhold.value).then(responseInterval => 
             this.setState({
                 filteredintervalbookings : responseInterval
             }, function(){
@@ -320,21 +320,21 @@ class MyBookings extends Component {
             })    
         )
 
-        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
-            this.setState({
-                filteredeventbookings : responseEvents
-            }, function(){
-                console.log("Gor Eventbookings1")
-            })    
-        )
+        // WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
+        //     this.setState({
+        //         filteredeventbookings : responseEvents
+        //     }, function(){
+        //         console.log("Gor Eventbookings1")
+        //     })    
+        // )
 
-        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
-            this.setState({
-                filteredeventbookings2 : responseEvents
-            }, function(){
-                console.log("Gor Eventbookings2")
-            })    
-        )
+        // WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
+        //     this.setState({
+        //         filteredeventbookings2 : responseEvents
+        //     }, function(){
+        //         console.log("Gor Eventbookings2")
+        //     })    
+        // )
 
         // let icounter = this.state.intervalbookings.length;
         // let ecounter = this.state.eventbookings.length;
