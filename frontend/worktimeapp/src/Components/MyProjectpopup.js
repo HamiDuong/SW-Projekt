@@ -14,13 +14,13 @@ import { useState } from 'react'
 export const MyProjectpopup = () => {
 
     function deleteProject(){
-        console.log("Projekt gelöscht")
-        setOpen(false)
+        console.log("Projekt gelöscht");
+        setOpen(false);
     }
 
     function saveProject(){
-        console.log("Projekt abspeichern")
-        setOpen(false)
+        console.log("Projekt abspeichern");
+        setOpen(false);
     }
 
     const [open, setOpen] = useState(false)

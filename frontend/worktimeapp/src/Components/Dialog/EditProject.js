@@ -17,10 +17,13 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import EditProjectMemberEntry from '../EditProjectMemberEntry';
 import SearchIcon from '@mui/icons-material/Search';
 
-const distinct = (value, index, self) => {
-    return self.indexOf(value) === index;
-}
-
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @coauthor [Esra Özkul](https://github.com/EsraOEzkul) (Textfeld für Admin ändern)
+ * 
+ * Dialog zum bearbeiten von Projekten
+ */
 class EditProject extends Component {
     constructor(props) {
         super(props);
@@ -57,6 +60,7 @@ class EditProject extends Component {
         this.props.onClose(null);
     }
 
+    // ProjektBO mit der überbergegebenen ProjektId holen -> daraus Name und Commisioner im state abspeichern
     getProject = () => {
         WorkTimeAppAPI.getAPI().getProject(this.state.projectId).then(project =>
             this.setState({
@@ -64,19 +68,21 @@ class EditProject extends Component {
                 projectname: project[0].name,
                 commissioner: project[0].commissioner
             }, function () {
-                console.log("33333333333333333333333333333", this.state.projectname)
+                console.log("Name", this.state.projectname);
             })
         )
     }
 
+    // Projekt löschen
     deleteProject = (project) => {
         WorkTimeAppAPI.getAPI().deleteProject(project).then(
             this.handleClose()
         )
     }
 
+    // Änderungen im Projekt speichern
     updateProject = () => {
-        console.log("Update Projekt")
+        console.log("Update Projekt");
         let hold = document.getElementById("projectname");
         let pname = hold.value;
         let hold2 = document.getElementById("commissioner");
@@ -84,16 +90,16 @@ class EditProject extends Component {
         let hold3 = document.getElementById("userName");
         let admn = hold3.value;
         if (admn == 'You are the admin.') {
-            admn = this.props.userId
+            admn = this.props.userId;
         } else {
-            admn = this.state.newAdmin
+            admn = this.state.newAdmin;
         }
 
         let updatedProject = Object.assign(new ProjectBO(), this.state.p);
         updatedProject.name = pname;
         updatedProject.commissioner = commi;
         updatedProject.userId = admn;
-        updatedProject.id = this.props.project
+        updatedProject.id = this.props.project;
 
         WorkTimeAppAPI.getAPI().updateProject(updatedProject).then(
             console.log(updatedProject)
@@ -101,8 +107,8 @@ class EditProject extends Component {
             project => {
                 this.baseState.projectname = pname;
                 this.baseState.commissioner = commi;
-                this.baseState.newAdmin = admn
-                this.baseState.projectId = this.props.project
+                this.baseState.newAdmin = admn;
+                this.baseState.projectId = this.props.project;
             }
         )
 
@@ -110,11 +116,12 @@ class EditProject extends Component {
             projectname: updatedProject.getName(),
             commissioner: updatedProject.getCommissioner()
         })
-        this.props.onClose(updatedProject)
+        this.props.onClose(updatedProject);
 
         // this.handleClose();
     }
 
+    // Aktivitäten des Projekts holen
     getActivities = () => {
         WorkTimeAppAPI.getAPI().getActivitiesByProject(this.state.project.id).then(activities =>
             this.setState({
@@ -128,10 +135,6 @@ class EditProject extends Component {
     handleChange = ev => {
         this.setState({ [ev.target.name]: ev.target.value });
     };
-
-    distinct = (value, index, self) => {
-        return self.indexOf(value) == index;
-    }
 
     /** In dieser Funktion kann man die einzelnen User mit der Nachname suchen. */
     searchUserNamesForProject = async () => {
@@ -147,8 +150,8 @@ class EditProject extends Component {
 
                 //Jetzt werden die User geladen.
                 const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
-                console.log(users)
-                console.log("Test")
+                console.log(users);
+                console.log("Test");
                 let selectedUser = null;
                 if (users.length > 0) {
                     selectedUser = users[0];
@@ -258,12 +261,12 @@ class EditProject extends Component {
 
     componentDidMount() {
         this.getProject();
-        this.searchUserNamesForProject(1)
+        this.searchUserNamesForProject(1);
     }
 
 
     projectMemberEdited = (update) => {
-        this.props.onProjectMemberDeleted(update)
+        this.props.onProjectMemberDeleted(update);
     }
 
     render() {
@@ -295,7 +298,7 @@ class EditProject extends Component {
                             shrink: true,
                         }}
                     />
-                    {/* <form noValidate autoComplete='off'>
+                    <form noValidate autoComplete='off'>
                         {
                             // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                             (targetusers.length === 0) ?
@@ -326,7 +329,7 @@ class EditProject extends Component {
                                 </TextField>
 
                         }
-                    </form> */}
+                    </form>
                     <TableContainer>
                         <Table>
                             {

@@ -66,55 +66,55 @@ class TimeIntervalBookings extends Component {
     addTimeIntervalBooking = () => {
         if ((this.state.type) === "vacation") {
             let newVacationBO = new VacationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(this.state.type)
-            console.log(newVacationBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addVacationBooking(newVacationBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(this.state.type);
+            console.log(newVacationBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "work") {
             let newWorkBO = new WorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(newWorkBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addWorkBooking(newWorkBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(newWorkBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "illness") {
             let newIllnessBO = new IllnessBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(newIllnessBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addIllnessBooking(newIllnessBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(newIllnessBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "projectwork") {
             let newProjectWorkBO = new ProjectWorkBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.activityId);
-            WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(newProjectWorkBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addProjectWorkBooking(newProjectWorkBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(newProjectWorkBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "break") {
             let newBreakBO = new BreakBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(newBreakBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addBreakBooking(newBreakBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(newBreakBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "flexday") {
             let newFlexDayBO = new FlexDayBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type);
-            WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO)
-            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(newFlexDayBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addFlexDayBooking(newFlexDayBO);
+            let newBookingBO = new BookingBO(this.props.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(newFlexDayBO);
+            console.log(newBookingBO);
         }
 
-        alert("Booking created")
+        alert("Booking created");
 
     }
 
@@ -126,7 +126,7 @@ class TimeIntervalBookings extends Component {
             this.setState({
                 vacationIllnessEvents: vacationBOs,
             }, function () {
-                console.log(this.state.vacationIllnessEvents)
+                console.log(this.state.vacationIllnessEvents);
             }))
     }
 
@@ -141,7 +141,7 @@ class TimeIntervalBookings extends Component {
                 projects: projectBOs,
             }
                 , function () {
-                    console.log("STATE VON PROJECTS", this.state.projects)
+                    console.log("STATE VON PROJECTS", this.state.projects);
                 }
             ))
     }
@@ -155,7 +155,7 @@ class TimeIntervalBookings extends Component {
                 this.setState({
                     activities: activityBOs,
                 }, function () {
-                    console.log(this.state.activities)
+                    console.log(this.state.activities);
                 }))
         }
     }
@@ -166,7 +166,7 @@ class TimeIntervalBookings extends Component {
     componentDidMount() {
         this.getEventBookings();
         this.getProjects();
-        this.getActivities()
+        this.getActivities();
     }
 
     /* 
@@ -177,10 +177,10 @@ class TimeIntervalBookings extends Component {
         this.setState({ [e.target.name]: e.target.value }
             , function () {
                 if (this.state.project != null) {
-                    this.getActivities()
+                    this.getActivities();
                 }
-                console.log("ACTIVITYID", this.state.activityId)
-                console.log("Menuitem", this.state.activityId)
+                console.log("ACTIVITYID", this.state.activityId);
+                console.log("Menuitem", this.state.activityId);
             });
     }
 
@@ -191,7 +191,7 @@ class TimeIntervalBookings extends Component {
         this.setState({
             start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
-        console.log(this.state.start)
+        console.log(this.state.start);
     }
 
     /* 
@@ -201,7 +201,7 @@ class TimeIntervalBookings extends Component {
         this.setState({
             end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
-        console.log(this.state.end)
+        console.log(this.state.end);
     }
     /* 
     Öffnen des Selects für das StartEvent
@@ -258,8 +258,6 @@ class TimeIntervalBookings extends Component {
             })
         }
     }
-
-
 
     render() {
         return (

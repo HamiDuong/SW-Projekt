@@ -39,7 +39,7 @@ class ActivityOverview extends Component {
 
 
     getCapacities = (arr) => {
-        const acti = this.state.activities
+        const acti = this.state.activities;
         for (let i = 0; i <= acti.length; i++) {
             this.setState({
                 capacity: [...this.state.capacity, arr[i].getCapacity()]
@@ -51,7 +51,7 @@ class ActivityOverview extends Component {
 
 
     getActivityNames = (arr) => {
-        const acti = this.state.activities
+        const acti = this.state.activities;
         for (let i = 0; i <= acti.length; i++) {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].getName()]
@@ -65,7 +65,7 @@ class ActivityOverview extends Component {
         try {
             this.getCapacities(element);
             this.getActivityNames(element);
-            this.setState({ activities_vorhanden: true })
+            this.setState({ activities_vorhanden: true });
             this.getCapacityofUserForProject(element[0].getId(), this.state.userId);
 
         } catch (e) {
@@ -75,13 +75,13 @@ class ActivityOverview extends Component {
     }
 
     componentDidMount() {
-        this.getActivitiesForProject(this.props.value)
+        this.getActivitiesForProject(this.props.value);
     }
 
 
     showing() {
-        let len = this.state.activities.length
-        let liste = this.state.activities[0]
+        let len = this.state.activities.length;
+        let liste = this.state.activities[0];
         if (this.state.activities_vorhanden == true) {
             return (
                 <div>

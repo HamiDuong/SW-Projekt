@@ -11,7 +11,7 @@ export default class ProjectWorkEndBO extends BusinessObject {
 
     constructor(time) {
         super();
-        this.time = time
+        this.time = time;
     }
 
     //Getter und Setter
@@ -29,12 +29,12 @@ export default class ProjectWorkEndBO extends BusinessObject {
         if (Array.isArray(projectworkendevent)) {
             projectworkendevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, ProjectWorkEndBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = projectworkendevent;
             Object.setPrototypeOf(elem, ProjectWorkEndBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

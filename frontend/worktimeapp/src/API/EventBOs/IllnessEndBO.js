@@ -38,12 +38,12 @@ export default class IllnessEndBO extends BusinessObject {
         if (Array.isArray(illnessendevent)) {
             illnessendevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, IllnessEndBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = illnessendevent;
             Object.setPrototypeOf(elem, IllnessEndBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

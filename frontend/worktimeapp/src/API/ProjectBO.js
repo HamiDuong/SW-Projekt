@@ -50,12 +50,12 @@ export default class Project extends BusinessObject {
         if (Array.isArray(project)) {
             project.forEach((elem) => {
                 Object.setPrototypeOf(elem, Project.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = project;
             Object.setPrototypeOf(elem, Project.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

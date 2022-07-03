@@ -3,7 +3,10 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import Entry from './ActivityEntriesAdmin';
 import Alert from '@mui/material/Alert';
 
-
+/**
+ * @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+ * Komponente für die Aktivitätsüberschau der Projektmitglieder für den Admin
+ */
 class ActivityOverviewAdmin extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +22,7 @@ class ActivityOverviewAdmin extends Component {
         })
     }
 
+    // Aktivitäten für das Projekt holen
     getActivitiesForProject = (project) => {
         WorkTimeAppAPI.getAPI().getActivitiesByProjectId(project).then(activity =>
             this.setState({
@@ -27,7 +31,7 @@ class ActivityOverviewAdmin extends Component {
             ))
     }
 
-
+    // Kapazitäten der Projektuser holen
     getCapacityofUserForProject = (act_id, us_id) => {
         WorkTimeAppAPI.getAPI().getBookedTimeOfUserForAnActivity(act_id, us_id).then(activity =>
             this.setState({
@@ -38,10 +42,10 @@ class ActivityOverviewAdmin extends Component {
             ))
     }
 
-
+    // Kapazitäten holen
     getCapacities = (arr) => {
-        const acti = this.state.activities
-        let i = 0
+        const acti = this.state.activities;
+        let i = 0;
         while (i <= acti.length) {
             this.setState({
                 capacity: [...this.state.capacity, arr[i].capacity]
@@ -52,10 +56,10 @@ class ActivityOverviewAdmin extends Component {
         }
     }
 
-
+    // Aktivitätsnamen holen    
     getActivityNames = (arr) => {
-        const acti = this.state.activities
-        let i = 0
+        const acti = this.state.activities;
+        let i = 0;
         while (i <= acti.length) {
             this.setState({
                 activity_names: [...this.state.activity_names, arr[i].name]
@@ -66,6 +70,7 @@ class ActivityOverviewAdmin extends Component {
         }
     }
 
+    // Prüfen ob es eine valide Aktivität ist
     checkActivities = (element) => {
         try {
             this.getCapacities(element);
@@ -79,13 +84,13 @@ class ActivityOverviewAdmin extends Component {
     }
 
     componentDidMount() {
-        this.getActivitiesForProject(this.props.value)
+        this.getActivitiesForProject(this.props.value);
     }
 
 
     showEntries() {
-        let len = this.state.activities.length
-        let liste = this.state.activities[0]
+        let len = this.state.activities.length;
+        let liste = this.state.activities[0];
         if (this.state.activities_vorhanden) {
             return (
                 <div>

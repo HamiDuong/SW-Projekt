@@ -8,6 +8,10 @@ import {
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 import ProjectUserBO from '../API/ProjectUserBO';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * Eintrag in EditProjekt - entspricht einen Projektarbeiter
+ */
 class EditProjectMemberEntry extends Component {
     constructor(props){
         super(props);
@@ -21,6 +25,7 @@ class EditProjectMemberEntry extends Component {
         this.baseState = this.state;
     }
 
+    // Person aus dem Projekt löschen
     deleteMember = () => {
         console.log(this.state.projectId);
         console.log(this.props.projectId);
@@ -30,31 +35,32 @@ class EditProjectMemberEntry extends Component {
                 console.log(user)    
             )
         )
-        this.props.onClose(this.state.user[0])
-        console.log(this.state.user[0])
+        this.props.onClose(this.state.user[0]);
+        console.log(this.state.user[0]);
     }
     
+    // ProjektUserBO zu dem gegebenen Projekt und User holen
     getCurrentProjectUser = () => {
         WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.user[0].id, this.props.projectId).then( projectuser =>
             this.setState({
                 currentProjectUser : projectuser
             }, function(){
                 console.log(this.state.currentProjectUser);
-                console.log(projectuser)
+                console.log(projectuser);
             })
         )
     }
 
+    // Kapazität des Users für dieses Projekt
     getCapacity = () => {
         WorkTimeAppAPI.getAPI().getProjectUserByUserId(this.state.user[0].id, this.props.projectId).then( projectuser =>
             this.setState({
                 capacity : projectuser.capacity
             }, function(){
-                console.log(this.state.capacity)
+                console.log(this.state.capacity);
             })
         )
     }
-
 
     setPropState = () => {
         this.setState({
@@ -66,8 +72,8 @@ class EditProjectMemberEntry extends Component {
     componentDidMount(){
         this.getCapacity();
         this.getCurrentProjectUser();
-        console.log("EditProject Member")
-        console.log(this.state.user[0].lastName + ", " + this.state.user[0].firstName)
+        console.log("EditProject Member");
+        console.log(this.state.user[0].lastName + ", " + this.state.user[0].firstName);
     }
 
     showDialog = () => {
@@ -83,30 +89,32 @@ class EditProjectMemberEntry extends Component {
             this.setState({
                 showDialog: false
             }, function(){
-                console.log("Editwindow wird geschlossen")
+                console.log("Editwindow wird geschlossen");
             })
         }else{
             this.setState({
                 showDialog: false
             },function(){
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
 
         }
     }
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value })}
+        this.setState({ [e.target.name] : e.target.value });
+    }
 
+    //Kapazitätänderung speichern
     updateCapacity = () => {
         let updatedProjectUserBO = Object.assign(new ProjectUserBO(), this.state.currentProjectUser);
-        console.log(updatedProjectUserBO)
+        console.log(updatedProjectUserBO);
         updatedProjectUserBO.setCapacity(this.state.capacity);
         WorkTimeAppAPI.getAPI().updateProjectUser(updatedProjectUserBO);
-        console.log(updatedProjectUserBO)
+        console.log(updatedProjectUserBO);
     }
 
     render() { 
-        const {capacity} = this.state
+        const {capacity} = this.state;
         return (
             <>
                 <TableRow

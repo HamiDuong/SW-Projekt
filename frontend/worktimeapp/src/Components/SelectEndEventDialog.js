@@ -26,27 +26,23 @@ class SelectEndEventDialog extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            
+        this.state = {          
             endevent: Date
-
-
         }
     }
     
     handleClose = () => {
         this.props.onClose(null);
-          }
+    }
           
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value }, function(){
-            console.log(this.state.event)
+            console.log(this.state.event);
         } )}
 
     updateStart = () => {
-        this.props.onClose(this.state.endevent)
+        this.props.onClose(this.state.endevent);
     }
-
 
     render() { 
         return (

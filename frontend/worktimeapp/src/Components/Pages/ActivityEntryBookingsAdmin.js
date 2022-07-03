@@ -53,11 +53,11 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
 
     componentDidMount = () => {
         if (this.props.filterTrigger == false) {
-            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
-            this.getUserById(this.props.us_id)
+            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id);
+            this.getUserById(this.props.us_id);
         } else {
-            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end)
-            this.getUserById(this.props.us_id)
+            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end);
+            this.getUserById(this.props.us_id);
 
         }
     }

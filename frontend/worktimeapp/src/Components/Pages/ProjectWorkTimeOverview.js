@@ -6,6 +6,9 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import ActivityOverview from './ActivityOverview';
 import Alert from '@mui/material/Alert';
 
+/**
+ * @author Khadidja Kebaili (https://github.com/KhadidjaKebaili)
+ */
 class IndividualSelection extends Component {
     constructor(props) {
         super(props);
@@ -35,19 +38,19 @@ class IndividualSelection extends Component {
             this.setState({
                 projects: [projectBO],
             }, function () {
-                console.log(this.state.projects)
+                console.log(this.state.projects);
             }))
     }
 
 
     componentDidMount() {
-        this.getProjectsForUser(this.state.userId)
+        this.getProjectsForUser(this.state.userId);
     }
 
     componentDidUpdate(prevProps, prevState) {
         // only update if searchValue has changed
         if (prevState.selected !== this.state.selected) {
-            this.getProjectsForUser(this.state.userId)
+            this.getProjectsForUser(this.state.userId);
             this.setState({
                 selected: true
             })
@@ -55,8 +58,8 @@ class IndividualSelection extends Component {
     }
 
     render() {
-        const projects = this.state.projects
-        const projectId = this.state.projectId
+        const projects = this.state.projects;
+        const projectId = this.state.projectId;
         return (
             <Box>
                 <h2>Your booked projectworks</h2>

@@ -54,7 +54,7 @@ export default class ProjectUser extends BusinessObject{
     }
 
     GetCurrentCapacity(){
-        return this.currentCapacity
+        return this.currentCapacity;
     }
 
 
@@ -63,12 +63,12 @@ export default class ProjectUser extends BusinessObject{
         if(Array.isArray(projectuser)){
             projectuser.forEach((elem) => {
                 Object.setPrototypeOf(elem, ProjectUser.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = projectuser;
             Object.setPrototypeOf(elem, ProjectUser.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

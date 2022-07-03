@@ -10,7 +10,7 @@ export default class BreakStartBO extends BusinessObject {
 
     constructor(time) {
         super();
-        this.time = time
+        this.time = time;
     }
 
     //Getter und Setter
@@ -28,12 +28,12 @@ export default class BreakStartBO extends BusinessObject {
         if (Array.isArray(breakstartevent)) {
             breakstartevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, BreakStartBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = breakstartevent;
             Object.setPrototypeOf(elem, BreakStartBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

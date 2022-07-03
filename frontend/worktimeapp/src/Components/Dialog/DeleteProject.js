@@ -7,7 +7,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-
+/**
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan)
+ * Dialog zum löschen von Projekten
+ */
 
 class DeleteProject extends Component {
     constructor(props) {
@@ -17,8 +20,8 @@ class DeleteProject extends Component {
     
 
     deleteProject = () => {
-      WorkTimeAppAPI.getAPI().deleteProject(this.props.project)
-      this.props.onClose(this.props.project)
+      WorkTimeAppAPI.getAPI().deleteProject(this.props.project);
+      this.props.onClose(this.props.project);
 
     }
 

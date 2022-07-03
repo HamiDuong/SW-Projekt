@@ -35,15 +35,15 @@ class MyBookingsIntervalEntry extends Component {
                 booking: booking,
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen")
-                console.log(this.state.booking)
-                this.props.onClose1(booking)
+                console.log("Editwindow wird geschlossen");
+                console.log(this.state.booking);
+                this.props.onClose1(booking);
             })
         } else {
             this.setState({
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
 
         }
@@ -51,8 +51,8 @@ class MyBookingsIntervalEntry extends Component {
 
     // Debugging sobald die Komponente geladen ist
     componentDidMount() {
-        console.log("Eintrag von Interval", this.props.key)
-        console.log(this.state.booking)
+        console.log("Eintrag von Interval", this.props.key);
+        console.log(this.state.booking);
     }
 
 
@@ -63,7 +63,7 @@ class MyBookingsIntervalEntry extends Component {
     };
 
     render() {
-        const { booking } = this.state
+        const { booking } = this.state;
         return (
             <>
                 <TableRow

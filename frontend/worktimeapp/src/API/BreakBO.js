@@ -62,12 +62,12 @@ export default class BreakBO extends BusinessObject{
         if(Array.isArray(breaks)){
             breaks.forEach((elem) => {
                 Object.setPrototypeOf(elem, BreakBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = breaks;
             Object.setPrototypeOf(elem, BreakBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

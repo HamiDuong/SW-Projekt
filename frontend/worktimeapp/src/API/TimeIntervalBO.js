@@ -89,12 +89,12 @@ export default class TimeIntervalBO extends BusinessObject {
         if(Array.isArray(timeintervals)){
             timeintervals.forEach((ti) => {
                 Object.setPrototypeOf(ti, TimeIntervalBO.prototype);
-                res.push(ti)
+                res.push(ti);
             })
         }else{
             let ti = timeintervals;
             Object.setPrototypeOf(ti, TimeIntervalBO.prototype);
-            res.push(ti)
+            res.push(ti);
         }
         return res;
     }

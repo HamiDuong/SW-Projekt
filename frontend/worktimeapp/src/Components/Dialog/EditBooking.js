@@ -49,19 +49,19 @@ class EditBooking extends Component {
     }
 
     printState = () => {
-        console.log("Booking", this.state.booking)
-        console.log(this.state.startdate)
-        console.log(this.state.enddate)
-        console.log(this.state.type)
+        console.log("Booking", this.state.booking);
+        console.log(this.state.startdate);
+        console.log(this.state.enddate);
+        console.log(this.state.type);
     }
     
     // Löschen der Buchung
     deleteBooking = (obj) => {
-        console.log("Booking löschen")
+        console.log("Booking löschen");
 
         const { booking } = this.props;
-        console.log(this.state.type)
-        console.log(booking)
+        console.log(this.state.type);
+        console.log(booking);
         if ((this.state.type) === "ProjectWork") {
             let ProjectWorkBOs = ProjectWorkBO.fromJSON(booking)
             WorkTimeAppAPI.getAPI().deleteProjectWork(ProjectWorkBOs[0].getID()).then(booking => {
@@ -111,7 +111,7 @@ class EditBooking extends Component {
                 console.log(booking);
             });
         }
-        this.handleClose()
+        this.handleClose();
 
     }
 
@@ -123,14 +123,14 @@ class EditBooking extends Component {
             startdate: starthold.value,
             enddate: endhold.value,
         }, function () {
-            console.log("State für neue Werte")
+            console.log("State für neue Werte");
             console.log(this.state.startdate);
         });
     }
 
     componentDidMount() {
         console.log("EditBooking ist gemountet");
-        console.log(this.state.booking)
+        console.log(this.state.booking);
 
     }
 
@@ -138,8 +138,6 @@ class EditBooking extends Component {
     updateBooking = () => {
         let starthold = document.getElementById("startdate");
         let endhold = document.getElementById("enddate");
-        // console.log("Starthold", starthold.value);
-        // console.log("Endhold", endhold.value);
         this.setState({
             startdate: starthold.value,
             enddate: endhold.value,
@@ -148,10 +146,7 @@ class EditBooking extends Component {
         });
 
         let updatedbooking = null;
-        // console.log("State");
-        // console.log(this.state.startdate);
-        // console.log(this.state.enddate);
-        // richtigen Endpunkt entsprechend des Typs wählen
+
         if (this.state.type == "Break") {
             updatedbooking = Object.assign(new BreakBO(), this.props.booking);
             updatedbooking.setStart(this.state.startdate);
@@ -159,7 +154,7 @@ class EditBooking extends Component {
             WorkTimeAppAPI.getAPI().updateBreak(updatedbooking).then(booking => {
                 console.log("Update Break");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
 
             });
         }
@@ -182,7 +177,7 @@ class EditBooking extends Component {
             WorkTimeAppAPI.getAPI().updateIllness(updatedbooking).then(booking => {
                 console.log("Update Illness");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
             });
         }
 
@@ -190,11 +185,11 @@ class EditBooking extends Component {
             updatedbooking = Object.assign(new ProjectDurationBO(), this.props.booking);
             updatedbooking.setStart(this.state.startdate);
             updatedbooking.setEnd(this.state.enddate);
-            console.log("API CALL", updatedbooking)
+            console.log("API CALL", updatedbooking);
             WorkTimeAppAPI.getAPI().updateProjectDuration(updatedbooking).then(booking => {
                 console.log("Update Project Duration");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
             });
         }
 
@@ -205,7 +200,7 @@ class EditBooking extends Component {
             WorkTimeAppAPI.getAPI().updateProjectWork(updatedbooking).then(booking => {
                 console.log("Update Project Work");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
             });
         }
 
@@ -216,7 +211,7 @@ class EditBooking extends Component {
             WorkTimeAppAPI.getAPI().updateVacation(updatedbooking).then(booking => {
                 console.log("Update Vacation");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
             });
         }
 
@@ -227,7 +222,7 @@ class EditBooking extends Component {
             WorkTimeAppAPI.getAPI().updateWork(updatedbooking).then(booking => {
                 console.log("Update Work");
                 console.log(booking);
-                this.props.onClose(booking)
+                this.props.onClose(booking);
             });
         }
 

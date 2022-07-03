@@ -5,8 +5,6 @@ import {signOut } from "firebase/auth";
 import {auth} from '../firebaseConfig.js';
 import Avatar from '@mui/material/Avatar';
 
-
-
 class Logout extends Component {
 
   #avatarButtonRef = createRef();
@@ -34,7 +32,7 @@ class Logout extends Component {
 
   
   handleSignOutButtonClicked = () => {
-    signOut(auth)
+    signOut(auth);
   }
 
   /** Renders the profile drop down if a loggin user is given as a prop */

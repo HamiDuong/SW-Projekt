@@ -50,7 +50,7 @@ class CreateTimeWorkSheet extends Component {
 
     // Dialog schließen
     handleClose = () => {
-        this.props.onClose(null)
+        this.props.onClose(null);
     }
 
     // Debugging sobald die Komponente geladen ist

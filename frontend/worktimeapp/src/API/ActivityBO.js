@@ -40,7 +40,7 @@ export default class Activity extends BusinessObject {
     }
 
     setCurrentCapacity(currentCapacity) {
-        this.currentCapacity = currentCapacity
+        this.currentCapacity = currentCapacity;
     }
 
     getCurrentCapacity() {
@@ -52,12 +52,12 @@ export default class Activity extends BusinessObject {
         if (Array.isArray(activity)) {
             activity.forEach((elem) => {
                 Object.setPrototypeOf(elem, Activity.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = activity;
             Object.setPrototypeOf(elem, Activity.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

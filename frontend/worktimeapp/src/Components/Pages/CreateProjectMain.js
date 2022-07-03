@@ -76,8 +76,8 @@ class CreateProjectMain extends Component {
      */
     addProjects = () => {
         let newProject = new ProjectBO(this.state.projectName, this.state.commissioner, this.props.userId);
-        console.log(newProject)
-        console.log(this.props.userId)
+        console.log(newProject);
+        console.log(this.props.userId);
         WorkTimeAppAPI.getAPI().addProject(newProject).then(project =>
             this.setState({
                 projectName: project.name,
@@ -118,14 +118,14 @@ class CreateProjectMain extends Component {
      */
     addProjectDurationBooking = () => {
             let newProjectDurationBO = new ProjectDurationBO(this.state.start, this.state.end, this.state.startEvent, this.state.endEvent, this.state.type, this.state.projectId);
-           console.log(newProjectDurationBO)
-            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO)
+           console.log(newProjectDurationBO);
+            WorkTimeAppAPI.getAPI().addProjectDuration(newProjectDurationBO);
                
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addBooking(newBookingBO)
-            console.log(this.state.type)
-            console.log(newProjectDurationBO)
-            console.log(newBookingBO)
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.props.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addBooking(newBookingBO);
+            console.log(this.state.type);
+            console.log(newProjectDurationBO);
+            console.log(newBookingBO);
     }
         
     /* 
@@ -156,7 +156,7 @@ class CreateProjectMain extends Component {
     */
     showing() {
         if (this.state.selected) {
-            console.log('showing läuft', this.state.projectId)
+            console.log('showing läuft', this.state.projectId);
             return <CreateProject onChange={this.handleChange} value={this.state.projectId} selected={true} 
             // key={users.getID()} 
             user={this.users}  /> 
@@ -194,7 +194,7 @@ class CreateProjectMain extends Component {
         this.setState({
             start: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
-        console.log(this.state.start)
+        console.log(this.state.start);
     }
 
     /**
@@ -204,7 +204,7 @@ class CreateProjectMain extends Component {
         this.setState({
             end: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
         })
-        console.log(this.state.end)
+        console.log(this.state.end);
     }
 
     render() {

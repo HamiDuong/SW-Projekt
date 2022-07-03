@@ -10,16 +10,10 @@ import DeleteProfile from './DeleteProfile';
 import EditProfile from './EditProfile.js'
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
-
-
-
-
-
 {/* 
 @author Mihriban Dogan 
 TimeIntervalBooking stellt die Form für Zeitintervall Buchungen dar
 """*/}
-
 
 class TimeIntervalBookings extends Component {
     constructor(props) {
@@ -35,10 +29,8 @@ class TimeIntervalBookings extends Component {
             mailAdress:"",
             showDeleteProfile: false,
             showEditProfile: false,
-            currentUser: null,
-           
-            
-         }
+            currentUser: null,        
+        }
     }
 
     
@@ -56,30 +48,28 @@ class TimeIntervalBookings extends Component {
 //    }
 
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value });}
-    
-   
+        this.setState({ [e.target.name] : e.target.value });
+    }
 
     handleDeleteClickOpen = () => {
         this.setState({
             showDeleteProfile: true
         })
-      }
+    }
    
     
     handleDeleteClose = () =>{
-            this.setState({
-              showDeleteProfile: false
-
-            });
-        }
-
+        this.setState({
+            showDeleteProfile: false
+        });
+    }
 
     handleEditClickOpen = () => {
         this.setState({
             showEditProfile: true
         })
       }
+
     handleEditClose = (firstName, lastName, updatedUserBO) =>{
         if (firstName, lastName)
             this.setState({
@@ -103,13 +93,9 @@ class TimeIntervalBookings extends Component {
                 mailAdress: this.props.user.email,
                 currentUser: userBO[0]
             }, function(){
-                console.log(this.state.currentUser)
+                console.log(this.state.currentUser);
             }))
     }
-      
-
-    
-
     
     render() { 
         return ( 

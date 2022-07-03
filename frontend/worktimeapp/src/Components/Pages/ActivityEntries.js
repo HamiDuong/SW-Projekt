@@ -17,7 +17,6 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-
 class IndividualEntry extends Component {
     /* 
     @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
@@ -121,25 +120,24 @@ class IndividualEntry extends Component {
         })
     }
 
-
     componentDidMount() {
-        this.getActivity(this.props.value)
-        this.getProjectUser(this.props.projectId)
-        this.getProjectDuration(this.props.projectId)
+        this.getActivity(this.props.value);
+        this.getProjectUser(this.props.projectId);
+        this.getProjectDuration(this.props.projectId);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.filterUsed !== this.state.filterUsed) {
-            let holder = document.getElementById('startFilter')
-            let holder2 = document.getElementById('endFilter')
+            let holder = document.getElementById('startFilter');
+            let holder2 = document.getElementById('endFilter');
             this.setState({
                 start: holder.value,
                 end: holder2.value,
                 userId: [],
             })
-            this.getActivity(this.props.value)
-            this.getProjectUser(this.props.projectId)
-            this.getProjectDuration(this.props.projectId)
+            this.getActivity(this.props.value);
+            this.getProjectUser(this.props.projectId);
+            this.getProjectDuration(this.props.projectId);
         }
     }
 

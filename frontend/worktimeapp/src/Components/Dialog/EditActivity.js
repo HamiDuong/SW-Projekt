@@ -10,8 +10,11 @@ import React, { Component } from 'react';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import ActivityBO from '../../API/ActivityBO';
 
-//Hier kommt Esras Fenster mit Start Stop für Activities rein
-
+/**
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @coauthor Ha Mi Duong (https://github.com/HamiDuong)
+ * Dialog zum Bearbeiten von einer Akitivität - Name und Capacity
+ */
 class EditActivity extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +54,7 @@ class EditActivity extends Component {
             console.log(updatedActivity)
         )
         // this.handleClose()
-        this.props.onClose(updatedActivity)
+        this.props.onClose(updatedActivity);
     }
 
     handleClose = () => {

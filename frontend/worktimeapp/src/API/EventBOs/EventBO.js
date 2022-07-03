@@ -29,83 +29,83 @@
 //     }
 
 //     setComingId(comingId) {
-//         this.ComingId = comingId
+//         this.ComingId = comingId;
 //     }
 
 //     getComingId() {
-//         return this.ComingId
+//         return this.ComingId;
 //     }
 
 //     setGoingId(goingId) {
-//         this.GoingId = goingId
+//         this.GoingId = goingId;
 //     }
 
 //     getGoingId() {
-//         return this.GoingId
+//         return this.GoingId;
 //     }
 
 //     setProjectWorkEndId(projectWorkEndId) {
-//         this.ProjectWorkEndId = projectWorkEndId
+//         this.ProjectWorkEndId = projectWorkEndId;
 //     }
 
 //     getProjectWorkEndId() {
-//         return this.ProjectWorkEndId
+//         return this.ProjectWorkEndId;
 //     }
 
 //     setProjectWorkStartId(projectWorkStartId) {
-//         this.ProjectWorkStartId = projectWorkStartId
+//         this.ProjectWorkStartId = projectWorkStartId;
 //     }
 
 //     getProjectWorkStartId() {
-//         return this.ProjectWorkStartId
+//         return this.ProjectWorkStartId;
 //     }
 
 //     setVacationStartId(vacationStartId) {
-//         this.VacationStartId = vacationStartId
+//         this.VacationStartId = vacationStartId;
 //     }
 
 //     getVacationStartId() {
-//         return this.VacationStartId
+//         return this.VacationStartId;
 //     }
 
 //     setVacationEndId(vacationEndId) {
-//         this.VacationEndId = vacationEndId
+//         this.VacationEndId = vacationEndId;
 //     }
 
 //     getVacationEndId() {
-//         return this.VacationEndId
+//         return this.VacationEndId;
 //     }
 
 //     setBreakStartId(breakStartId) {
-//         this.BreakStartId = breakStartId
+//         this.BreakStartId = breakStartId;
 //     }
 
 //     getBreakStartId() {
-//         return this.BreakStartId
+//         return this.BreakStartId;
 //     }
 
 //     setBreakStartId(breakStartId) {
-//         this.BreakStartId = breakStartId
+//         this.BreakStartId = breakStartId;
 //     }
 
 //     getBreakStartId() {
-//         return this.BreakStartId
+//         return this.BreakStartId;
 //     }
 
 //     setFlexDayStartId(flexDayStartId) {
-//         this.FlexDayStartId = flexDayStartId
+//         this.FlexDayStartId = flexDayStartId;
 //     }
 
 //     getFlexDayStartId() {
-//         return this.FlexDayStartId
+//         return this.FlexDayStartId;
 //     }
 
 //     setFlexDayEndId(flexDayEndId) {
-//         this.FlexDayEndId = flexDayEndId
+//         this.FlexDayEndId = flexDayEndId;
 //     }
 
 //     getFlexDayEndId() {
-//         return this.FlexDayEndId
+//         return this.FlexDayEndId;
 //     }
 
 
@@ -114,12 +114,12 @@
 //         if (Array.isArray(event)) {
 //             event.forEach((elem) => {
 //                 Object.setPrototypeOf(elem, EventBO.prototype);
-//                 res.push(elem)
+//                 res.push(elem);  
 //             })
 //         } else {
 //             let elem = event;
 //             Object.setPrototypeOf(elem, EventBO.prototype);
-//             res.push(elem)
+//             res.push(elem);
 //         }
 //         return res;
 //     }

@@ -17,7 +17,7 @@ export default class VacationEndBO extends BusinessObject {
 
     //Getter und Setter
     getTime() {
-        return this.time
+        return this.time;
     }
 
     setTime(time) {
@@ -38,12 +38,12 @@ export default class VacationEndBO extends BusinessObject {
         if (Array.isArray(vacationendevent)) {
             vacationendevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, VacationEndBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = vacationendevent;
             Object.setPrototypeOf(elem, VacationEndBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

@@ -11,7 +11,10 @@ import {signOut } from "firebase/auth";
 import {auth} from '../firebaseConfig.js';
 
 
-
+/**
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan)
+ * Dialog zum löschen von Profilen
+ */
 class DeleteProfile extends Component {
     constructor(props) {
         super(props);

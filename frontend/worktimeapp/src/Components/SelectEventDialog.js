@@ -29,65 +29,63 @@ class SelectEventDialog extends Component {
             timeframestart: Date,
             timeframeend: Date,
             event: Date
-
-
         }
     }
 
     
     handleClose = () => {
         this.props.onClose(null);
-          }
+    }
           
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value }, function(){
-            console.log(this.state.event)
-        } )}
-
-    updateStart = () => {
-        this.props.onClose(this.state.event)
+            console.log(this.state.event);
+        })
     }
 
+    updateStart = () => {
+        this.props.onClose(this.state.event);
+    }
 
     render() { 
         return (
             <Dialog open={this.props.show} onClose={this.handleClose}>
                 <DialogTitle>Select Event</DialogTitle>
                 <DialogContent>
-                <DialogContentText sx={{mb:2}}>
-                    Please select a desired event.
-                </DialogContentText>
+                    <DialogContentText sx={{mb:2}}>
+                        Please select a desired event.
+                    </DialogContentText>
                     <Grid container spacing={2}>
-                        <Grid xs={12} sm={6} item>
-                    </Grid>
-                    <Grid xs={12} sm={6} sx={{mb:2}} item>
-                    </Grid>
+                            <Grid xs={12} sm={6} item>
+                            </Grid>
+                            <Grid xs={12} sm={6} sx={{mb:2}} item>
+                            </Grid>
 
-                    <Grid  xs={12} item>
+                            <Grid  xs={12} item>
 
-                    <FormControl sx={{ width: "100%"}}>
-                            <InputLabel>Select Event</InputLabel>
-                            <Select
-                                name="event"
-                                label="Select Event"
-                                onChange={this.handleChange}
-                            >
-                                {this.props.vacationIllnessEvents.map(vacationBOs =>
-                                <MenuItem key={vacationBOs} value={vacationBOs}>
-                                    <div>
-                                    <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
-                                    <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}
-                                    </div>
-                                </MenuItem>
-                                )}
-                            </Select>
-                    </FormControl>
-                    </Grid>
+                                <FormControl sx={{ width: "100%"}}>
+                                    <InputLabel>Select Event</InputLabel>
+                                    <Select
+                                        name="event"
+                                        label="Select Event"
+                                        onChange={this.handleChange}
+                                    >
+                                        {this.props.vacationIllnessEvents.map(vacationBOs =>
+                                        <MenuItem key={vacationBOs} value={vacationBOs}>
+                                            <div>
+                                            <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
+                                            <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}
+                                            </div>
+                                        </MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={this.handleClose}>Cancel</Button>
-                <Button onClick={this.updateStart}>Select</Button>
+                    <Button onClick={this.handleClose}>Cancel</Button>
+                    <Button onClick={this.updateStart}>Select</Button>
                 </DialogActions>
         </Dialog>
           );

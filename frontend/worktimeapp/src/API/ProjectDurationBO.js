@@ -71,12 +71,12 @@ export default class ProjectDurationBO extends BusinessObject{
         if(Array.isArray(duration)){
             duration.forEach((elem) => {
                 Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = duration;
             Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

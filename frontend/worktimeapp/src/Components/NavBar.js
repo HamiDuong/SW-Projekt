@@ -16,11 +16,11 @@ import Logout from './Logout'
 //die den Namen unserer Applikation. 
 function NavBar (props) {
     //setSidebar aktualisert den currentValue, useState wird false gesetzt, damit es noch nicht anzeigen tut 
-    const [sidebar, setSidebar] = useState(false)
+    const [sidebar, setSidebar] = useState(false);
 
     //showSidebar wird die Menüleiste anzeigen. Es wird ein ArrowFunction gesetzt.
     //Es updated das Gegenteil von dem Wert, kann man sich wie ein toggle vorstellen, welches immer umschalten tut.
-    const showSidebar = () => setSidebar(!sidebar)
+    const showSidebar = () => setSidebar(!sidebar);
 
     return(
         <>

@@ -62,12 +62,12 @@ export default class FlexDayBO extends BusinessObject{
         if(Array.isArray(illness)){
             illness.forEach((elem) => {
                 Object.setPrototypeOf(elem, FlexDayBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = illness;
             Object.setPrototypeOf(elem, FlexDayBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

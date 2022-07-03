@@ -39,12 +39,12 @@ export default class WorkTimeAccountBO extends BusinessObject {
         if (Array.isArray(workTimeAccountBO)) {
             workTimeAccountBO.forEach((elem) => {
                 Object.setPrototypeOf(elem, WorkTimeAccountBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = workTimeAccountBO;
             Object.setPrototypeOf(elem, WorkTimeAccountBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

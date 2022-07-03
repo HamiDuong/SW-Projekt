@@ -29,6 +29,7 @@ const activities = [
  * Activity-Eintrag für Projekte von MyProject
  * 
  * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan) Lifting State Up für alle Komponenten
  */
 
 class MyActivitiesEntry extends Component {
@@ -72,13 +73,13 @@ class MyActivitiesEntry extends Component {
       }
 
       getProjectMembers = () => {
-        let res = []
+        let res = [];
         console.log("Projekt ID", this.state.projectId);
         WorkTimeAPI.getAPI().getMembersByProjectId(this.state.projectId).then(members =>
             this.setState({
                 members: members
             }, function () {
-                console.log('Hier die Members', members)
+                console.log('Hier die Members', members);
                 members.forEach(elem => {
                     WorkTimeAPI.getAPI().getUserById(elem.userId).then(user =>
                         res.push(user)
@@ -101,7 +102,7 @@ class MyActivitiesEntry extends Component {
             console.log("RES", res)
         })
 
-        console.log('Final', this.state.projectmember)
+        console.log('Final', this.state.projectmember);
     }
 
     // Aktivitäten eines Projekts holen
@@ -120,7 +121,7 @@ class MyActivitiesEntry extends Component {
         this.setState({
             showWorkDialog: true
         }, function () {
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
@@ -129,7 +130,7 @@ class MyActivitiesEntry extends Component {
         this.setState({
             showWorkDialog: false
         }, function () {
-            console.log("Editwindow wird geschlossen")
+            console.log("Editwindow wird geschlossen");
         })
     }
 
@@ -153,7 +154,7 @@ class MyActivitiesEntry extends Component {
         }, function () {
             console.log('Edit Window Projekt öffnen')
         })
-        console.log(this.state.showEditProject)
+        console.log(this.state.showEditProject);
     }
 
     // Schließen von Dialog zur Bearbeitung von Projekt
@@ -163,18 +164,16 @@ class MyActivitiesEntry extends Component {
             projectId:updatedProject.getID(), 
             showEditProject: false
         }, function () {
-            console.log('Edit Window Projekt schließen')
+            console.log('Edit Window Projekt schließen');
         })}
         else{
             this.setState({
                 showEditProject: false
             }, function () {
-                console.log('Edit Window Projekt schließen')
+                console.log('Edit Window Projekt schließen');
             })
-
         }
-        
-        this.props.onProjectEdited(updatedProject)
+        this.props.onProjectEdited(updatedProject);
     }
 
     // Dialog zum Hinzufügen von von Aktivitäten öffnen
@@ -193,9 +192,9 @@ class MyActivitiesEntry extends Component {
         this.setState({
             showAddActivity: true
         }, function () {
-            console.log('Add Activity Window öffnen')
+            console.log('Add Activity Window öffnen');
         })
-        console.log(this.state.showAddActivity)
+        console.log(this.state.showAddActivity);
     }
 
     // Dialog zum Hinzufügen von von Aktivitäten schließen

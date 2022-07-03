@@ -49,57 +49,56 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
     addEventBooking = () => {
         if ((this.state.type) === "vacationBegin"){
             let newVacationBeginBO = new VacationStartBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addVacationBeginBooking(newVacationBeginBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(this.state.type)
-            console.log(newVacationBeginBO)
-            console.log(newBookingBO)}
-
+            WorkTimeAppAPI.getAPI().addVacationBeginBooking(newVacationBeginBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(this.state.type);
+            console.log(newVacationBeginBO);
+            console.log(newBookingBO);
+        }
         else if ((this.state.type) === "vacationEnd"){
             let newVacationEndBO = new VacationEndBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addVacationEndBooking(newVacationEndBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(this.state.type)
-            console.log(newVacationEndBO)
-            console.log(newBookingBO)}
-
-        else if ((this.state.type) === "illnessBegin"){
-            let newIllnessBeginBO = new IllnessStartBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addIllnessBeginBooking(newIllnessBeginBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newIllnessBeginBO)
+            WorkTimeAppAPI.getAPI().addVacationEndBooking(newVacationEndBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(this.state.type);
+            console.log(newVacationEndBO);
             console.log(newBookingBO)
         }
-
+        else if ((this.state.type) === "illnessBegin"){
+            let newIllnessBeginBO = new IllnessStartBO(this.state.time);
+            WorkTimeAppAPI.getAPI().addIllnessBeginBooking(newIllnessBeginBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(newIllnessBeginBO);
+            console.log(newBookingBO);
+        }
         else if ((this.state.type) === "illnessEnd"){
             let newIllnessEndBO = new IllnessEndBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addIllnessEndBooking(newIllnessEndBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newIllnessEndBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addIllnessEndBooking(newIllnessEndBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(newIllnessEndBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "coming"){
             let newComingBO = new ComingBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addComingBooking(newComingBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newComingBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addComingBooking(newComingBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(newComingBO);
+            console.log(newBookingBO);
         }
         else if ((this.state.type) === "going"){
             let newGoingBO = new GoingBO(this.state.time);
-            WorkTimeAppAPI.getAPI().addGoingBooking(newGoingBO)
-            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId)
-            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO)
-            console.log(newGoingBO)
-            console.log(newBookingBO)
+            WorkTimeAppAPI.getAPI().addGoingBooking(newGoingBO);
+            let newBookingBO = new BookingBO(this.state.workTimeAccountId, this.state.userId, this.state.type, this.state.eventBookingId, this.state.timeintervalBookingId);
+            WorkTimeAppAPI.getAPI().addEventBooking(newBookingBO);
+            console.log(newGoingBO);
+            console.log(newBookingBO);
         }
 
-        alert("Booking created")
+        alert("Booking created");
         
        }
 
@@ -107,13 +106,13 @@ Dabei wird je nach Typ des Events eine andere Funktion aufgerufen, die ebenfalls
     Speichert den Input der Felder im state
     */
     handleChange = (e) =>{
-        this.setState({ [e.target.name] : e.target.value });}
+        this.setState({ [e.target.name] : e.target.value });
+    }
 
     handleDateChange(newValue){
         this.setState({
             time: format(new Date(newValue), "yyyy-MM-dd HH:mm:ss")
-        })
-        
+        })        
     }
 
     render() { 

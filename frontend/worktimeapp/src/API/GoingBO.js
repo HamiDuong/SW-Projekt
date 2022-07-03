@@ -5,17 +5,17 @@ export default class GoingBO extends BusinessObject {
 
   constructor(time) {
     super();
-    this.time = time
+    this.time = time;
   }
 
 
   setTime(time) {
-    this.time = time
+    this.time = time;
   }
 
   
   getTime() {
-    return this.time
+    return this.time;
   }
 
 

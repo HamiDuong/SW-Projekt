@@ -12,11 +12,9 @@ import Box from '@mui/material/Box';
 import UserBO from '../API/UserBO';
 import WorkTimeAppAPI from '../API/WorkTimeAppAPI';
 
-
-
-
-
-
+/**
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan)
+ */
 class SelectEventDialog extends Component {
     constructor(props) {
         super(props);
@@ -38,12 +36,12 @@ class SelectEventDialog extends Component {
         this.setState({ [e.target.name] : e.target.value })}
 
     updateUser = () => {
-        let updatedUserBO = Object.assign(new UserBO(), this.props.currentUser)
-        updatedUserBO.setFirstName(this.state.firstName)
-        updatedUserBO.setLastName(this.state.lastName)
-        WorkTimeAppAPI.getAPI().updateUser(updatedUserBO)
-        console.log(updatedUserBO)
-        this.props.onClose(this.state.firstName, this.state.lastName, updatedUserBO)
+        let updatedUserBO = Object.assign(new UserBO(), this.props.currentUser);
+        updatedUserBO.setFirstName(this.state.firstName);
+        updatedUserBO.setLastName(this.state.lastName);
+        WorkTimeAppAPI.getAPI().updateUser(updatedUserBO);
+        console.log(updatedUserBO);
+        this.props.onClose(this.state.firstName, this.state.lastName, updatedUserBO);
         this.setState(this.baseState);
 
     }

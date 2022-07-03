@@ -22,10 +22,10 @@ import Button from '@mui/material/Button';
 
 
 class Entry extends Component {
-    /* 
-    @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
-    
-    In dieser Komponente werden alle Aktivitäten und die zugehörigen Informationen aller ProjectUser abgespeichert. */
+    /** 
+    *@author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+    *
+    *In dieser Komponente werden alle Aktivitäten und die zugehörigen Informationen aller ProjectUser abgespeichert. */
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this)
@@ -65,7 +65,7 @@ class Entry extends Component {
         WorkTimeAppAPI.getAPI().getMembersByProjectId(projectId).then((member) => {
             /**Prüfung ob es Members zu diesem Projekt gibt*/
             if (member.length <= 0) {
-                console.log('Weniger als 0')
+                console.log('Weniger als 0');
                 this.setState({
                     members: [0],
                     userIds: [0]
@@ -87,14 +87,14 @@ class Entry extends Component {
     getUserIds() {
         /** Holt die Ids der PRojectUser mithilfe der im State gespeichert ProjectMemberBOs 
         * und speichert diese als neue Liste im State ab.*/
-        let members = this.state.members
-        let liste = []
-        let list_of_ids = []
+        let members = this.state.members;
+        let liste = [];
+        let list_of_ids = [];
         for (let i = 0; i < members.length; i++) {
-            liste.push(this.state.members[i])
+            liste.push(this.state.members[i]);
         }
         for (let i = 0; i < liste.length; i++) {
-            list_of_ids.push(liste[i].getUserId())
+            list_of_ids.push(liste[i].getUserId());
         }
         this.setState({
             userIds: list_of_ids
@@ -106,8 +106,8 @@ class Entry extends Component {
     getPlanedCapacitiesForUser() {
         /** Holt die geplante Kapazität der einzelnen ProjectMembers 
          * und speichert die Informationen in neuer Liste im State ab.*/
-        let members = this.state.members
-        let capacitiesOfUsers = []
+        let members = this.state.members;
+        let capacitiesOfUsers = [];
         members.map(element =>
             capacitiesOfUsers.push(element.getCapacity()),
         )
@@ -148,23 +148,23 @@ class Entry extends Component {
     }
 
     componentDidMount() {
-        this.getActivity(this.props.value)
-        this.getProjectUser(this.props.projectId)
-        this.getProjectDuration(this.props.projectId)
+        this.getActivity(this.props.value);
+        this.getProjectUser(this.props.projectId);
+        this.getProjectDuration(this.props.projectId);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.filterUsed !== this.state.filterUsed) {
-            let holder = document.getElementById('startFilter')
-            let holder2 = document.getElementById('endFilter')
+            let holder = document.getElementById('startFilter');
+            let holder2 = document.getElementById('endFilter');
             this.setState({
                 start: holder.value,
                 end: holder2.value,
                 userIds: [],
             })
-            this.getActivity(this.props.value)
-            this.getProjectUser(this.props.projectId)
-            this.getProjectDuration(this.props.projectId)
+            this.getActivity(this.props.value);
+            this.getProjectUser(this.props.projectId);
+            this.getProjectDuration(this.props.projectId);
         }
     }
 

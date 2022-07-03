@@ -62,12 +62,12 @@ export default class VacationBO extends BusinessObject{
         if(Array.isArray(vacation)){
             vacation.forEach((elem) => {
                 Object.setPrototypeOf(elem, VacationBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = vacation;
             Object.setPrototypeOf(elem, VacationBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

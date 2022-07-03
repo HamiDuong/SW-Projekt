@@ -1,5 +1,5 @@
 //Alle BOs importieren
-import TimeIntervalBO from './TimeIntervalBO'
+import TimeIntervalBO from './TimeIntervalBO';
 import BreakBO from './BreakBO';
 import FlexDayBO from './FlexDayBO';
 import IllnessBO from './IllnessBO';
@@ -21,10 +21,10 @@ import GoingBO from './EventBOs/GoingBO';
 import FlexDayStartBO from './EventBOs/FlexDayStartBO';
 import FlexDayEndBO from './EventBOs/FlexDayEndBO';
 import ProjectBO from "./ProjectBO";
-import ActivityBO from "./ActivityBO"
+import ActivityBO from "./ActivityBO";
 import UserBO from "./UserBO";
 import ProjectUserBO from "./ProjectUserBO";
-import WorkTimeAccountBO from './WorkTimeAccountBO'
+import WorkTimeAccountBO from './WorkTimeAccountBO';
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -35,6 +35,7 @@ export default class WorkTimeAppAPI {
     // # = () => `${this.#worktimeappServerBaseURL}/`;
 
     //TimeInterval
+    // Author Ha Mi Duong
     #getTimeIntervalURL = (id) => `${this.#worktimeappServerBaseURL}/timeinterval/${id}`;
     #getAllTimeIntervalsURL = () => `${this.#worktimeappServerBaseURL}/timeinterval`;
     #addTimeIntervalURL = () => `${this.#worktimeappServerBaseURL}/timeinterval`;
@@ -44,6 +45,7 @@ export default class WorkTimeAppAPI {
     #getTimeIntervalsWithinTimeframeURL = (id, start, end) => `${this.#worktimeappServerBaseURL}/timeintervals/${id}/${start}/${end}`;
 
     //Break
+    // Author Ha Mi Duong
     #getBreakURL = (id) => `${this.#worktimeappServerBaseURL}/break/${id}`;
     #getAllBreaksURL = () => `${this.#worktimeappServerBaseURL}/break`;
     #addBreakURL = () => `${this.#worktimeappServerBaseURL}/break`;
@@ -53,6 +55,7 @@ export default class WorkTimeAppAPI {
     #getBreakByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/breakperiod/${start}/${end}`;
 
     //FlexDay
+    // Author Ha Mi Duong
     #getFlexDayURL = (id) => `${this.#worktimeappServerBaseURL}/flexday/${id}`;
     #getAllFlexDaysURL = () => `${this.#worktimeappServerBaseURL}/flexday`;
     #addFlexDayURL = () => `${this.#worktimeappServerBaseURL}/flexday`;
@@ -62,6 +65,7 @@ export default class WorkTimeAppAPI {
     #getFlexDayByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/flexdayperiod/${start}/${end}`;
 
     //Illness
+    // Author Ha Mi Duong
     #getIllnessURL = (id) => `${this.#worktimeappServerBaseURL}/illness/${id}`;
     #getAllIllnessesURL = () => `${this.#worktimeappServerBaseURL}/illness`;
     #addIllnessURL = () => `${this.#worktimeappServerBaseURL}/illness`;
@@ -71,6 +75,7 @@ export default class WorkTimeAppAPI {
     #getIllnessByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/illnessperiod/${start}/${end}`;
 
     //ProjectDuration
+    // Author Ha Mi Duong
     #getProjectDurationURL = (id) => `${this.#worktimeappServerBaseURL}/projectduration/${id}`;
     #getAllProjectDurationsURL = () => `${this.#worktimeappServerBaseURL}/projectduration`;
     #addProjectDurationURL = () => `${this.#worktimeappServerBaseURL}/projectduration`;
@@ -82,6 +87,7 @@ export default class WorkTimeAppAPI {
     #getPRojectDurationByProjectAsTime = (projectId) => `${this.#worktimeappServerBaseURL}/times/projectdurataion/${projectId}`;
 
     //ProjectWork
+    // Author Ha Mi Duong
     #getProjectWorkURL = (id) => `${this.#worktimeappServerBaseURL}/projectwork/${id}`;
     #getAllProjectWorksURL = () => `${this.#worktimeappServerBaseURL}/projectwork`;
     #addProjectWorkURL = () => `${this.#worktimeappServerBaseURL}/projectwork`;
@@ -92,6 +98,7 @@ export default class WorkTimeAppAPI {
     #getProjectWorkByActivityURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkactivity/${id}`;
 
     //Vacation
+    // Author Ha Mi Duong
     #getVacationURL = (id) => `${this.#worktimeappServerBaseURL}/vacation/${id}`;
     #getAllVacationsURL = () => `${this.#worktimeappServerBaseURL}/vacation`;
     #addVacationURL = () => `${this.#worktimeappServerBaseURL}/vacation`;
@@ -101,6 +108,7 @@ export default class WorkTimeAppAPI {
     #getVacationByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/vacationperiod/${start}/${end}`;
 
     //Work
+    // Author Ha Mi Duong
     #getWorkURL = (id) => `${this.#worktimeappServerBaseURL}/work/${id}`;
     #getAllWorksURL = () => `${this.#worktimeappServerBaseURL}/work`;
     #addWorkURL = () => `${this.#worktimeappServerBaseURL}/work`;
@@ -110,8 +118,9 @@ export default class WorkTimeAppAPI {
     #getWorkByPeriodURL = (start, end) => `${this.#worktimeappServerBaseURL}/workperiod/${start}/${end}`;
 
     //Booking URLS
-    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`
-    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`
+    // Author Ha Mi Duong
+    #addTimeIntervalBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking`;
+    #addEventBookingURL = () => `${this.#worktimeappServerBaseURL}/booking/eventbooking`;
     #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness&work`;
     #getAllBookingsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/${id}`;
     #getAllBookingsWithoutEventsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/without/events/${id}`;
@@ -120,11 +129,12 @@ export default class WorkTimeAppAPI {
 
 
     //Project URLs
-    #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/user/${id}`
+    #getProjectsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/project/user/${id}`;
 
     //Beginn aller Event-BOs
 
     //Event
+    //Author Khadidja Kebaili
     #getEventURL = (id) => `${this.#worktimeappServerBaseURL}/event/${id}`;
     #getAllEventesURL = () => `${this.#worktimeappServerBaseURL}/events`;
     #addEventURL = () => `${this.#worktimeappServerBaseURL}/events`;
@@ -134,6 +144,7 @@ export default class WorkTimeAppAPI {
     #getEventsWithinTimeframeURL = (id, start, end) => `${this.#worktimeappServerBaseURL}/events/${id}/${start}/${end}`;
 
     //BreakStart
+    //Author Khadidja Kebaili
     #getBreakStartURL = (id) => `${this.#worktimeappServerBaseURL}/breakstart/${id}`;
     #getAllBreakStartsURL = () => `${this.#worktimeappServerBaseURL}/breakstarts`;
     #addBreakStartURL = () => `${this.#worktimeappServerBaseURL}/break_begins`;
@@ -142,6 +153,7 @@ export default class WorkTimeAppAPI {
     #getBreakStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/breakstartdate/${date}`;
 
     //BreakEnd
+    //Author Khadidja Kebaili
     #getBreakEndURL = (id) => `${this.#worktimeappServerBaseURL}/breakend/${id}`;
     #getAllBreakEndsURL = () => `${this.#worktimeappServerBaseURL}/breakends`;
     #addBreakEndURL = () => `${this.#worktimeappServerBaseURL}/break_ends`;
@@ -150,6 +162,7 @@ export default class WorkTimeAppAPI {
     #getBreakEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/breakenddate/${date}`;
 
     //IllnessStart
+    //Author Khadidja Kebaili
     #getIllnessStartURL = (id) => `${this.#worktimeappServerBaseURL}/illnessstart/${id}`;
     #getAllIllnessStartesURL = () => `${this.#worktimeappServerBaseURL}/illnessstarts`;
     #addIllnessStartURL = () => `${this.#worktimeappServerBaseURL}/illness_begins`;
@@ -158,6 +171,7 @@ export default class WorkTimeAppAPI {
     #getIllnessStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/illnessstartdate/${date}`;
 
     //IllnessEnd
+    //Author Khadidja Kebaili
     #getIllnessEndURL = (id) => `${this.#worktimeappServerBaseURL}/illnessend/${id}`;
     #getAllIllnessEndesURL = () => `${this.#worktimeappServerBaseURL}/illnessends`;
     #addIllnessEndURL = () => `${this.#worktimeappServerBaseURL}/illness_ends`;
@@ -166,6 +180,7 @@ export default class WorkTimeAppAPI {
     #getIllnessEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/illnessenddate/${date}`;
 
     //ProjectWorkStart
+    //Author Khadidja Kebaili
     #getProjectWorkStartURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkstart/${id}`;
     #getAllProjectWorkStartsURL = () => `${this.#worktimeappServerBaseURL}/projectworkstarts`;
     #addProjectWorkStartURL = () => `${this.#worktimeappServerBaseURL}/projectwork_starts`;
@@ -174,6 +189,7 @@ export default class WorkTimeAppAPI {
     #getProjectWorkStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectworkstartdate/${date}`;
 
     //ProjectWorkEnd
+    //Author Khadidja Kebaili
     #getProjectWorkEndURL = (id) => `${this.#worktimeappServerBaseURL}/projectworkend/${id}`;
     #getAllProjectWorkEndsURL = () => `${this.#worktimeappServerBaseURL}/projectworkends`;
     #addProjectWorkEndURL = () => `${this.#worktimeappServerBaseURL}/project_work_ends`;
@@ -182,6 +198,7 @@ export default class WorkTimeAppAPI {
     #getProjectWorkEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/projectworkenddate/${date}`;
 
     //VacationStart
+    //Author Khadidja Kebaili
     #getVacationStartURL = (id) => `${this.#worktimeappServerBaseURL}/vacationstart/${id}`;
     #getAllVacationStartsURL = () => `${this.#worktimeappServerBaseURL}/vacationstarts`;
     #addVacationStartURL = () => `${this.#worktimeappServerBaseURL}/vacation_begins`;
@@ -190,6 +207,7 @@ export default class WorkTimeAppAPI {
     #getVacationStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/vacationstartdate/${date}`;
 
     //VacationEnd
+    //Author Khadidja Kebaili
     #getVacationEndURL = (id) => `${this.#worktimeappServerBaseURL}/vacationend/${id}`;
     #getAllVacationEndsURL = () => `${this.#worktimeappServerBaseURL}/vacationends`;
     #addVacationEndURL = () => `${this.#worktimeappServerBaseURL}/vacation_ends`;
@@ -199,6 +217,7 @@ export default class WorkTimeAppAPI {
 
 
     //FlexDayStart
+    //Author Khadidja Kebaili
     #getFlexDayStartURL = (id) => `${this.#worktimeappServerBaseURL}/flexdaystart/${id}`;
     #getAllFlexDayStartesURL = () => `${this.#worktimeappServerBaseURL}/flexdaystarts`;
     #addFlexDayStartURL = () => `${this.#worktimeappServerBaseURL}/flex_day_starts`;
@@ -207,6 +226,7 @@ export default class WorkTimeAppAPI {
     #getFlexDayStartByDateURL = (date) => `${this.#worktimeappServerBaseURL}/flexdaystartdate/${date}`;
 
     //FlexDayEnd
+    //Author Khadidja Kebaili
     #getFlexDayEndURL = (id) => `${this.#worktimeappServerBaseURL}/flexdayend/${id}`;
     #getAllFlexDayEndsURL = () => `${this.#worktimeappServerBaseURL}/flexdayends`;
     #addFlexDayEndURL = () => `${this.#worktimeappServerBaseURL}/flex_day_ends`;
@@ -215,6 +235,7 @@ export default class WorkTimeAppAPI {
     #getFlexDayEndByDateURL = (date) => `${this.#worktimeappServerBaseURL}/flexdayenddate/${date}`;
 
     //Coming
+    //Author Khadidja Kebaili
     #getComingURL = (id) => `${this.#worktimeappServerBaseURL}/coming/${id}`;
     #getAllComingesURL = () => `${this.#worktimeappServerBaseURL}/coming`;
     #addComingURL = () => `${this.#worktimeappServerBaseURL}/comings`;
@@ -223,6 +244,7 @@ export default class WorkTimeAppAPI {
     #getComingByDateURL = (date) => `${this.#worktimeappServerBaseURL}/comingdate/${date}`;
 
     //Going
+    //Author Khadidja Kebaili
     #getGoingURL = (id) => `${this.#worktimeappServerBaseURL}/going/${id}`;
     #getAllGoingesURL = () => `${this.#worktimeappServerBaseURL}/going`;
     #addGoingURL = () => `${this.#worktimeappServerBaseURL}/goings`;
@@ -247,8 +269,8 @@ export default class WorkTimeAppAPI {
 
     //Activity
     // Author Khadidja Kebaili
-    #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activitybyproject/${id}`
-    #getActivitiesByProjectIdAndUserIdURL = (projectid, userid) => `${this.#worktimeappServerBaseURL}/activitybyproject/${projectid, userid}`
+    #getActivitiesByProjectIdURL = (id) => `${this.#worktimeappServerBaseURL}/activitybyproject/${id}`;
+    #getActivitiesByProjectIdAndUserIdURL = (projectid, userid) => `${this.#worktimeappServerBaseURL}/activitybyproject/${projectid, userid}`;
     #getActivityURL = (id) => `${this.#worktimeappServerBaseURL}/activity/${id}`;
     #getAllActivitiesURL = () => `${this.#worktimeappServerBaseURL}/activities`;
     #addActivityURL = () => `${this.#worktimeappServerBaseURL}/activities`;
@@ -257,11 +279,11 @@ export default class WorkTimeAppAPI {
     #getBookedTimesOfUserForActivity = (activity_id, user_id) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}`;
     #getBookedTimesOfUserForActivityWithTimeframe = (activity_id, user_id, start, end) => `${this.#worktimeappServerBaseURL}/times/${activity_id}/${user_id}/${start}/${end}`;
 
+    // Author Ha Mi Duong
+    #getActByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/activitiesproject/${id}`;
 
-    #getActByProjectURL = (id) => `${this.#worktimeappServerBaseURL}/activitiesproject/${id}`
-
-    //User
-    //Author Esra Özkul
+    // User
+    // Author Esra Özkul
     #getAllUsersURL = () => `${this.#worktimeappServerBaseURL}/user`;
     #getUserByIdURL = (id) => `${this.#worktimeappServerBaseURL}/users/${id}`;
     #addUserURL = () => `${this.#worktimeappServerBaseURL}/users`;
@@ -270,7 +292,7 @@ export default class WorkTimeAppAPI {
     #searchUserURL = (userName) => `${this.#worktimeappServerBaseURL}/users-by-name/${userName}`;
     #getUserByGoogleUserId = (id) => `${this.#worktimeappServerBaseURL}/usergoogle/${id}`;
 
-    //ProjectUser
+    // ProjectUser
     // Author Esra Özkul
     #addProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
     #getAllProjectUserURL = () => `${this.#worktimeappServerBaseURL}/projectusers`;
@@ -278,9 +300,10 @@ export default class WorkTimeAppAPI {
     #deleteProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
     #updateProjectUserURL = (id) => `${this.#worktimeappServerBaseURL}/projectuser/${id}`;
 
+    // Author Ha Mi Duong
     #getProjectUserByUserId = (projectid, userid) => `${this.#worktimeappServerBaseURL}/projectuser/projectid/${projectid}/${userid}`;
 
-    //Account
+    // Account
     #getWorkTimeAccountByUserIdURL = (id) => `${this.#worktimeappServerBaseURL}/worktimeaccountuser/${id}`;
 
 
@@ -322,6 +345,7 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    // Timeintervalsubklassen innerhalb einer angegebenen Zeitspanne zurückgeben
     getAllTimeIntervalsWithinTimeFrame(user_id, start, end) {
         return this.#fetchAdvanced(this.#getTimeIntervalsWithinTimeframeURL(user_id, start, end)).then((responseJSON) => {
             let responseTimeInterval = TimeIntervalBO.fromJSON(responseJSON);
@@ -1826,6 +1850,8 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    // Methoden für Subklassen
+    // Author Vi Nam Lee
     deleteBreakEnd(breakend) {
         return this.#fetchAdvanced(this.#deleteBreakEndURL(breakend), {
             method: 'DELETE'
@@ -1837,6 +1863,7 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    // sucht einen User in der App mit dem Nachnamen
     searchUser(userName) {
         return this.#fetchAdvanced(this.#searchUserURL(userName)).then((responseJSON) => {
             let userBOs = UserBO.fromJSON(responseJSON);
@@ -2179,6 +2206,7 @@ export default class WorkTimeAppAPI {
             })
     }
 
+    // Activities eines Projekts holen
     getActByProject(id) {
         return this.#fetchAdvanced(this.#getActByProjectURL(id))
             .then((responseJSON) => {
@@ -2216,6 +2244,7 @@ export default class WorkTimeAppAPI {
 
     }
 
+    // ProjectUserBO mit bestimmter UserId und ProjektId finden -> entspricht einen Projektmitglied
     getProjectUserByUserId(projectid, userid) {
         return this.#fetchAdvanced(this.#getProjectUserByUserId(projectid, userid)).then((responseJSON) => {
             let responseprojectuser = ProjectUserBO.fromJSON(responseJSON)[0];
@@ -2267,6 +2296,7 @@ export default class WorkTimeAppAPI {
         })
     }
 
+    // alle gebuchten TimeintervalSubklassen eines Users
     getAllTimeintervalsForUser(userID) {
         return this.#fetchAdvanced(this.#getAllTimeIntervalsForUserURL(userID))
             .then((responseJSON) => {
@@ -2278,6 +2308,7 @@ export default class WorkTimeAppAPI {
             })
     }
 
+    // alle gebuchten EventSubklassen eines Users
     getAllEventsForUser(userID) {
         return this.#fetchAdvanced(this.#getAllEventsForUserURL(userID))
             .then((responseJSON) => {

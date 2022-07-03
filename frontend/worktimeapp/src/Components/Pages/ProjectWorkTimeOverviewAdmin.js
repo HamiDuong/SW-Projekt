@@ -46,13 +46,13 @@ class ProjectWorkTimeOverviewAdmin extends Component {
 
 
     componentDidMount() {
-        this.getProjectsForAdmin(this.state.userId)
+        this.getProjectsForAdmin(this.state.userId);
     }
 
     componentDidUpdate(prevProps, prevState) {
         // only update if searchValue has changed
         if (prevState.selected !== this.state.selected) {
-            this.getProjectsForAdmin(this.state.userId)
+            this.getProjectsForAdmin(this.state.userId);
             this.setState({
                 selected: true
             })
@@ -61,8 +61,8 @@ class ProjectWorkTimeOverviewAdmin extends Component {
 
 
     render() {
-        const projects = this.state.projects
-        const projectId = this.state.projectId
+        const projects = this.state.projects;
+        const projectId = this.state.projectId;
         return (
             <div>
                 <Box>

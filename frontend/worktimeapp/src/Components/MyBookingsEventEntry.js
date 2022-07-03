@@ -24,7 +24,7 @@ class MyBookingsEventEntry extends Component {
         this.setState({
             showDialog: true
         }, function () {
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
@@ -35,14 +35,14 @@ class MyBookingsEventEntry extends Component {
                 booking: booking,
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen")
-                this.props.onClose1(booking)
+                console.log("Editwindow wird geschlossen");
+                this.props.onClose1(booking);
             })
         } else {
             this.setState({
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
 
         }
@@ -50,7 +50,7 @@ class MyBookingsEventEntry extends Component {
 
     // Debugging sobald die Komponente geladen ist
     componentDidMount() {
-        console.log(this.state.booking)
+        console.log(this.state.booking);
     }
 
     // Änderungen in den gerenderten Komponenten werden im State abgespeichert
@@ -59,7 +59,7 @@ class MyBookingsEventEntry extends Component {
     };
 
     render() {
-        const { booking } = this.state
+        const { booking } = this.state;
         return (
             <>
                 <TableRow

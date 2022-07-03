@@ -105,6 +105,7 @@ const activities = [
  * Projekte und Activities vom aktuellen User
  * 
  * @author [Vi Nam Le] (https://github.com/vinamle)
+ * 
  */
 
 class MyProjects extends Component {
@@ -199,9 +200,9 @@ class MyProjects extends Component {
       this.setState({
         projects: project
       }, function () {
-        console.log("Projekte wurden geholt", project[0])
+        console.log("Projekte wurden geholt", project[0]);
         this.state.projects.forEach(function (elem) {
-          console.log(elem)
+          console.log(elem);
         })
       })
     )
@@ -261,7 +262,7 @@ class MyProjects extends Component {
 
   componentDidMount() {
     this.getProjects();
-    console.log("Component Did Mount", this.state.projects)
+    console.log("Component Did Mount", this.state.projects);
 
   }
 
@@ -274,12 +275,11 @@ class MyProjects extends Component {
   }
 
   projectEdited = () => {
-    this.getProjects()
-    
+    this.getProjects();
   }
 
   render() {
-    const { projects } = this.state
+    const { projects } = this.state;
     if (projects == null) {
       return null
     }

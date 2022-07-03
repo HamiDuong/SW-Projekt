@@ -39,7 +39,7 @@ class AddActivity extends Component {
 
     // Dialogfenster schließen
     handleClose = () => {
-        this.props.onClose(null)
+        this.props.onClose(null);
     }
 
     // erstellt ein neues ActivityBO mit den Daten aus State
@@ -54,7 +54,7 @@ class AddActivity extends Component {
             console.log(activity)
         );
         // this.handleClose();
-        this.props.onClose(activity)
+        this.props.onClose(activity);
     }
 
     render() { 

@@ -24,7 +24,7 @@ class WorkTimeUser extends Component {
             workedtime : '',
             contracttime : ''
         }
-        console.log("WorkTimeUser - State has been set")
+        console.log("WorkTimeUser - State has been set");
 
     }
 
@@ -53,15 +53,15 @@ class WorkTimeUser extends Component {
 
     // Zeitdifferenz zwischen Start und Ende berechnen
     getCalculatedTime = () => {
-        let res = 0
+        let res = 0;
 
         let start = new Date(this.state.start);
         let end = new Date(this.state.end);
 
-        let starttime = start.getHours() + (start.getMinutes()/60)
-        let endtime = end.getHours() + (end.getMinutes()/60)
+        let starttime = start.getHours() + (start.getMinutes()/60);
+        let endtime = end.getHours() + (end.getMinutes()/60);
 
-        res = endtime - starttime
+        res = endtime - starttime;
 
         this.setState({
             worktedtime : res
@@ -71,7 +71,7 @@ class WorkTimeUser extends Component {
     // wenn Komponente geladen ist werden die Daten aus Props umgewandelt und im State abgespeichert
     // Zeitdifferenz berechnen
     componentDidMount(){
-        console.log("Rows for Work Time Sheet did mount")
+        console.log("Rows for Work Time Sheet did mount");
         this.getValues();
         this.getCalculatedTime();
     }

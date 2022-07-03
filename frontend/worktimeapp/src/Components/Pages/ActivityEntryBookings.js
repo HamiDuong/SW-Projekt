@@ -4,7 +4,6 @@ import TableCell from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
-
 class ActivityEntryBookings extends Component {
     /* 
     @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
@@ -49,9 +48,9 @@ class ActivityEntryBookings extends Component {
 
     componentDidMount = () => {
         if (this.props.filterTrigger == false) {
-            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id);
         } else {
-            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end)
+            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end);
         }
     }
 

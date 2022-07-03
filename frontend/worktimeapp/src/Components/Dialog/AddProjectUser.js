@@ -16,6 +16,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import ProjectUserBO from '../../API/ProjectUserBO';
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * @author [Esra Özkul](https://github.com/EsraOEzkul)
+ * 
+ * Dialog für die Bearbeitung von Intervalbuchungen
+ */
 class AddProjectUser extends Component {
 
   constructor(props) {
@@ -45,7 +51,7 @@ class AddProjectUser extends Component {
   searchUserNamesForProject = async () => {
     console.log('BONJOOOOUR')
     const { userName } = this.state;
-    console.log(this.state.userName)
+    console.log(this.state.userName);
     if (userName.length > 0) {
       try {
         this.setState({
@@ -57,7 +63,7 @@ class AddProjectUser extends Component {
 
         //Jetzt werden die User geladen.
         const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
-        console.log("Test")
+        console.log("Test");
         let selectedUser = null;
 
         if (users.length > 0) {
@@ -136,17 +142,17 @@ class AddProjectUser extends Component {
       //   function () {
       //     console.log('Here', projectuser, this.state.projectId, this.state.capacity)
       //   })
-        )
+    )
 
-      WorkTimeAppAPI.getAPI().getUserById(newProjectUser.userId).then(user=>
-        this.props.onClose(user)
-        )
+    WorkTimeAppAPI.getAPI().getUserById(newProjectUser.userId).then(user=>
+      this.props.onClose(user)
+    )
         
   }
 
   // Dialogfenster schließen
   handleClose = () => {
-    this.props.onClose(null)
+    this.props.onClose(null);
   }
 
   render() {
@@ -161,7 +167,13 @@ class AddProjectUser extends Component {
               {
                 // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                 (targetusers.length === 0) ?
-                  <TextField autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
+                  <TextField
+                    autoFocus
+                    fullWidth
+                    margin='normal'
+                    type='text'
+                    required id='userName'
+                    label='user name:'
                     onChange={this.textFieldValueChange}
                     onBlur={this.searchUserNamesForProject}
                     InputProps={{
@@ -173,25 +185,37 @@ class AddProjectUser extends Component {
                     }} />
                   :
                   // Zeigt eine Auswahl von selectedUser an, falls vorhanden. Geben Sie keine Suchschaltfläche.
-                  <TextField select autoFocus fullWidth margin='normal' type='text' required id='userName' label='user name:'
+                  <TextField
+                    select
+                    autoFocus
+                    fullWidth
+                    margin='normal'
+                    type='text'
+                    required id='userName'
+                    label='user name:'
                     value={selectedUser}
                     onChange={this.userSelectionChange}>
-                    {
-                      targetusers.map((users) => (
+                      {
+                        targetusers.map((users) => (
 
-                        <MenuItem key={users.getID()} value={users}>
-                          {users.getLastName()}, {users.getFirstName()}
-                        </MenuItem>
-                      ))
-                    }
+                          <MenuItem key={users.getID()} value={users}>
+                            {users.getLastName()}, {users.getFirstName()}
+                          </MenuItem>
+                        ))
+                      }
                   </TextField>
-
               }
             </form>
-            <TextField type='text' required fullWidth margin='normal' id='capacity' label='capacity:' value={capacity}
-              onChange={this.textFieldValueChange} error={capacityValidationFailed}
+            <TextField
+              type='text'
+              required fullWidth
+              margin='normal'
+              id='capacity'
+              label='capacity:'
+              value={capacity}
+              onChange={this.textFieldValueChange}
+              error={capacityValidationFailed}
               helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
-
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose}>

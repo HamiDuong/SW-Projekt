@@ -6,7 +6,7 @@ export default class UserBO extends BusinessObject {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mailAdress = mailAdress;
-        this.googleUserId = googleUserId
+        this.googleUserId = googleUserId;
 
     }
 
@@ -50,12 +50,12 @@ export default class UserBO extends BusinessObject {
         if (Array.isArray(userBO)) {
             userBO.forEach((elem) => {
                 Object.setPrototypeOf(elem, UserBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = userBO;
             Object.setPrototypeOf(elem, UserBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

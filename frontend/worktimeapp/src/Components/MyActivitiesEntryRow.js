@@ -5,6 +5,10 @@ import MyProjectsEntry from './MyProjectsEntry'
 import WorkTimeAPI from '../API/WorkTimeAppAPI';
 import DeleteActivity from './Dialog/DeleteActivity';
 
+/**
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan)
+ */
 class MyActivitiesEntryRow extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +33,7 @@ class MyActivitiesEntryRow extends Component {
         this.setState({
             showWorkDialog: true
         }, function(){
-            console.log("EditWindow öffnen per OnClick")
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
@@ -45,7 +49,7 @@ class MyActivitiesEntryRow extends Component {
         this.setState({
             showWorkDialog: false
         }, function(){
-            console.log("Editwindow wird geschlossen")
+            console.log("Editwindow wird geschlossen");
         });
        }
     }

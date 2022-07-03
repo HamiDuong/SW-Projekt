@@ -41,7 +41,7 @@ class CreateProject extends Component {
     this.baseState = this.state;
   }
   handleChange() {
-    this.props.onChange()
+    this.props.onChange();
   }
 
 
@@ -63,7 +63,7 @@ class CreateProject extends Component {
 
 
   componentDidMount() {
-    console.log(this.props.selected)
+    console.log(this.props.selected);
   }
 
   /** Sobald der Button 'Create Project' geklickt wird, öffnen sie weitere zwei Buttons 'Add Activity' und 'Add Members'

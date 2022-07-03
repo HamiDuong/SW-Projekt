@@ -38,19 +38,19 @@ class AddActivities extends Component {
     */
     addActivity = () => { 
         let newActivity = new ActivityBO(this.state.activityName, this.state.capacity, this.props.projectId, this.state.currentCapacity);
-        console.log(newActivity)
+        console.log(newActivity);
         WorkTimeAppAPI.getAPI().addActivity(newActivity).then(activity => 
          this.setState({
           activityName:activity.name,
           capacity: activity.capacity,
           currentCapacity: activity.currentCapacity,
-          projectId: activity.project_id
+          projectId: activity.project_id,
          }, 
          function(){
           console.log('Here', activity, this.state.projectId, this.state.activityName)
          }))
 
-        alert("Aktivity created")
+        alert("Aktivity created");
     }
     
     /** Behandelt Wertänderungen der Formular-Textfelder und validiert diese */
@@ -73,40 +73,38 @@ class AddActivities extends Component {
         const {activityName, activityNameValidationFailed, capacity, capacityValidationFailed} = this.state 
         return ( 
             <Card sx={{ m:1, p:3, minwidth: 700}}>
-           <Box
-            component="form"
-            noValidate
-            autoComplete="off">
-            <div className='popup'>
-                <div className='popup_inner'>
-                    
-                {/**Hier befinden sich die TextFields für das befüllen der Values, die später in der Funktion addProject aufgerufen werden. */}
-                <TextField type='text' required fullWidth margin='normal' id='activityName' label='activity name:' value={activityName} 
-                onChange={this.textFieldValueChange} error={activityNameValidationFailed} 
-                helperText={activityNameValidationFailed ? 'The activity name must contain at least one character' : ' '} />
-                <TextField type='text' required fullWidth margin='normal' id='capacity' label='capacity:' value={capacity}
-                onChange={this.textFieldValueChange} error={capacityValidationFailed}
-                helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
-                
-                <Grid xs={12} item>
-                    
-                    <Button 
-                    variant="contained" 
-                    onClick={this.addActivity}
-                    color='secondary'>
-                      Create Activity
-                      </Button>
-                    
-                </Grid> 
-                <br/>
-
-                    <Grid xs={12} item>
-                    <Button onClick={this.props.closePopupActivities} color='secondary'>Cancel</Button>
-                </Grid>
-                </div>
-               
-            </div>
-            </Box>
+                <Box
+                    component="form"
+                    noValidate
+                    autoComplete="off">
+                    <div className='popup'>
+                        <div className='popup_inner'>
+                        
+                            {/**Hier befinden sich die TextFields für das befüllen der Values, die später in der Funktion addProject aufgerufen werden. */}
+                            <TextField type='text' required fullWidth margin='normal' id='activityName' label='activity name:' value={activityName} 
+                            onChange={this.textFieldValueChange} error={activityNameValidationFailed} 
+                            helperText={activityNameValidationFailed ? 'The activity name must contain at least one character' : ' '} />
+                            <TextField type='text' required fullWidth margin='normal' id='capacity' label='capacity:' value={capacity}
+                            onChange={this.textFieldValueChange} error={capacityValidationFailed}
+                            helperText={capacityValidationFailed ? 'The commissioner must contain at least one character' : ' '} />
+                            
+                            <Grid xs={12} item>
+                                
+                                <Button 
+                                    variant="contained" 
+                                    onClick={this.addActivity}
+                                    color='secondary'>
+                                    Create Activity
+                                </Button>
+                                
+                            </Grid> 
+                            <br/>
+                            <Grid xs={12} item>
+                                <Button onClick={this.props.closePopupActivities} color='secondary'>Cancel</Button>
+                            </Grid>
+                        </div>
+                    </div>
+                </Box>
             </Card>
         );
     }

@@ -7,8 +7,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 
-
-
+/**
+ * @author Mihriban Dogan (https://github.com/mihriban-dogan)
+ * Dialog zum löschen von Aktivitäten
+ */
 class DeleteActivity extends Component {
     constructor(props) {
         super(props);
@@ -17,8 +19,8 @@ class DeleteActivity extends Component {
     
 
     deleteActivity = () => {
-      WorkTimeAppAPI.getAPI().deleteActivity(this.props.activity)
-      this.props.onClose(this.props.activity)
+      WorkTimeAppAPI.getAPI().deleteActivity(this.props.activity);
+      this.props.onClose(this.props.activity);
 
     }
 

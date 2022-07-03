@@ -40,7 +40,7 @@ class AddMembers extends Component {
   /** In dieser Funktion kann man die einzelnen User mit der Nachname suchen. */
   searchUserNamesForProject = async () => {
     const {userName} = this.state;
-    console.log(this.state.userName)
+    console.log(this.state.userName);
     if (userName.length > 0) {
       try {
         this.setState({
@@ -52,7 +52,7 @@ class AddMembers extends Component {
 
         //Jetzt werden die User geladen.
         const users = await WorkTimeAppAPI.getAPI().searchUser(userName);
-        console.log("Test")
+        console.log("Test");
       let selectedUser = null;
 
       if(users.length > 0) {
@@ -114,12 +114,12 @@ class AddMembers extends Component {
   Sobald die Komponenten geladen hat soll die Funktion searchUserNamesForProject geholt werden.
   */
   componentDidMount() {
-    this.searchUserNamesForProject(1)
+    this.searchUserNamesForProject(1);
   } 
 
   addProjectUser = () => { 
     let newProjectUser = new ProjectUserBO(this.props.projectId, this.state.selectedUser.getID(), this.state.capacity, this.state.currentCapacity);
-    console.log(newProjectUser)
+    console.log(newProjectUser);
     WorkTimeAppAPI.getAPI().addProjectUser(newProjectUser).then(projectuser => 
       this.setState({
         projectId: projectuser.project_id,
@@ -130,7 +130,7 @@ class AddMembers extends Component {
         function(){
         console.log('Here', projectuser, this.state.projectId, this.state.capacity)
          }))
-      alert("Member added")
+      alert("Member added");
   }
 
   /** Verwaltet das Schliessen / Abbrechen-Klickereignis */
@@ -144,8 +144,8 @@ class AddMembers extends Component {
     const {userName, targetuserName, selecteduserName, userNameSearchError, loadingInProgress, targetusers, searchUser, selectedUser, capacity,capacityValidationFailed} = this.state;
     return ( 
       <Card sx={{ m:1, p:3, minwidth: 700}}>
-      <Box>
-            <form noValidate autoComplete='off'>
+        <Box>
+          <form noValidate autoComplete='off'>
               {
                 // Zeigt eine Auswahl von targetUsers an, falls vorhanden. Geben Sie keine Suchschaltfläche.
                 (targetusers.length === 0) ? 
@@ -182,13 +182,13 @@ class AddMembers extends Component {
                 
               
               <Button disabled={!selectedUser} variant='contained' onClick={this.addProjectUser} color='secondary'>
-              add new member
+                add new member
               </Button>
               <Button onClick={this.handleClose} color='secondary'>
-              Cancel
-            </Button>
-            </Box>
-            </Card>
+                Cancel
+              </Button>
+        </Box>
+      </Card>
      );
   }
 }

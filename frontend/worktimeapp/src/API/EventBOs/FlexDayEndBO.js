@@ -11,7 +11,7 @@ export default class FlexDayEndBO extends BusinessObject {
 
     constructor(time) {
         super();
-        this.time = time
+        this.time = time;
     }
 
     //Getter und Setter
@@ -29,12 +29,12 @@ export default class FlexDayEndBO extends BusinessObject {
         if (Array.isArray(flexdayendevent)) {
             flexdayendevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, FlexDayEndBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = flexdayendevent;
             Object.setPrototypeOf(elem, FlexDayEndBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

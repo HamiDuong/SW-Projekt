@@ -99,16 +99,14 @@ class MyBookings extends Component {
         this.getBookings();
     }
 
-
     // Save changes buttons and textfields into state
     handleChange = ev => {
         this.setState({ [ev.target.name]: ev.target.value });
     };
 
-
-
     // Gets all booked bookings of the current user
     getBookings = () => {
+        // Get Timeinterval Bookings
         WorkTimeAppAPI.getAPI().getAllTimeintervalsForUser(this.props.userId).then(responseJSON =>
             this.setState({
                 intervalbookings: responseJSON,
@@ -131,6 +129,7 @@ class MyBookings extends Component {
 
             }))
 
+        // Get Intervalbookings
         WorkTimeAppAPI.getAPI().getAllEventsForUser(this.props.userId).then(responseJSON =>
             this.setState({
                 eventbookings: responseJSON,
@@ -184,20 +183,20 @@ class MyBookings extends Component {
                 filteredeventbookings: [...newBookingList],
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen")
+                console.log("Editwindow wird geschlossen");
             })
         } else {
             this.setState({
                 showDialog: false
             }, function () {
-                console.log("Editwindow wird geschlossen ohne Update")
+                console.log("Editwindow wird geschlossen ohne Update");
             })
 
         }
     }
 
     closeEditDialog = booking => {
-        console.log(booking)
+        console.log(booking);
         if (booking) {
             const newBookingList = [booking];
             this.setState({
@@ -270,7 +269,7 @@ class MyBookings extends Component {
             this.setState({
                 filteredintervalbookings: responseInterval
             }, function () {
-                console.log("Got Intervalbookings")
+                console.log("Got Intervalbookings");
             })
         )
 
@@ -278,7 +277,7 @@ class MyBookings extends Component {
             this.setState({
                 filteredeventbookings: responseEvents
             }, function () {
-                console.log("Gor Eventbookings", responseEvents)
+                console.log("Gor Eventbookings", responseEvents);
             })
         )
 

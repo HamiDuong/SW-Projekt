@@ -62,12 +62,12 @@ export default class WorkBO extends BusinessObject{
         if(Array.isArray(work)){
             work.forEach((elem) => {
                 Object.setPrototypeOf(elem, WorkBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = work;
             Object.setPrototypeOf(elem, WorkBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }
