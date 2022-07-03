@@ -312,284 +312,308 @@ class MyBookings extends Component {
         console.log("event",this.state.eventbookings);
         console.log("event2",this.state.eventbookings2);
 
-        let icounter = this.state.intervalbookings.length;
-        let ecounter = this.state.eventbookings.length;
-        let ecounter2 = this.state.eventbookings2.length;
-
-        // Sort interval bookings by date
-        let starttime = starthold.value;
-        let endtime = endhold.value;
-
-        // No filter
-        console.log("verleich kein", starttime == "" && endtime == "")
-        if (starttime == "" && endtime == "") {
-            console.log("No time filter");
-
-        // Only Start filter  
-        } else if (starttime != "" && endtime == "") {
-            let ires = [];
-            let counter = 0;
-            let startdate = new Date(starttime);
-            console.log("Interval sorted by start date: " + startdate);
-
-            this.state.filteredintervalbookings.forEach((elem) => {
-                console.log("Element", elem)
-                let elemstarttime = new Date(elem.start);
-                console.log("wird es gepusht", elemstarttime >= startdate);
-                if (elemstarttime >= startdate) {
-                    ires.push(elem);
-                    counter++;
-                }else{
-                    console.log("Element rausgefiltert");
-                    counter++;
-                }
-
-                if(counter == icounter){
-                    this.callBack();
-                }
-            })
+        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseInterval => 
             this.setState({
-                filteredintervalbookings: ires
-            }, function () {
-                console.log("Finished sorting by start date", this.state.filteredintervalbookings);
-            })
-
-        // Only End filter
-        } else if (starttime != "" && endtime == "") {
-            let ires = [];
-            let counter = 0;
-            console.log("Nur Endfilter", starttime != "" && endtime == "" );
-            let enddate = new Date(endtime);
-            console.log("Endfilter wurde gesetzt mit: " + enddate);
-
-            this.state.filteredintervalbookings.forEach((elem) => {
-                console.log("Element, ", elem);
-                let elemendtime = new Date(elem.end);
-                if (elemendtime <= enddate) {
-                    console.log("wird es gepusht", elemendtime <= enddate);
-                    ires.push(elem);
-                    counter++;
-                }else{
-                    console.log("Element raus")
-                    counter++;
-                }
-
-                if(counter === icounter){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredintervalbookings: ires
-            }, function () {
-                console.log("Interval sorted by end date", this.state.filteredintervalbookings);
-            })
-
-        // Start and End Filter
-        } else {
-            let ires = [];
-            let counter = 0;
-            let startdate = new Date(starttime);
-            let enddate = new Date(endtime);
-
-            this.state.filteredintervalbookings.forEach((elem) => {
-                let elemstarttime = new Date(elem.start);
-                let elemendtime = new Date(elem.end);
-
-                if (elemendtime <= enddate && elemstarttime >= startdate) {
-                    ires.push(elem);
-                    console.log("ires", ires)
-                    counter++;
-
-                }else{
-                    console.log("Element passt nicht");
-                    console.log("ires", ires);
-                    counter++;
-                }
-
-                if(counter === icounter){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredintervalbookings: ires,
-            }, function () {
-                console.log("Interval sorted by start and end date", ires);
-            })
-        }
-
-        // Sort event bookings with timeintervals by time
-
-        // No filter
-        if (starttime == "" && endtime == "") {
-            console.log("No start time filter");
-
-        // Start filter
-        } else if(starttime != "" && endtime == ""){
-            let eres = [];
-            let eres2 = []
-            let counter = 0;
-            let etime = new Date(starttime);
-            console.log("Start filter is: " + etime);
-
-            this.state.filteredeventbookings.forEach((elem) => {
-                let eventtime = new Date(elem.time);
-                if (eventtime >= etime) {
-                    eres.push(elem);
-                    counter++;
-                }else{
-                    counter++;
-                    console.log("Element raus")
-                }
-
-                if(ecounter === counter){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredeventbookings: eres
-            }, function () {
-                console.log("Event sorted by start date");
-            })
-
-            this.state.filteredeventbookings2.forEach((elem) => {
-                let counter2 = 0;
-                let eventtime2 = new Date(elem.time);
-                if(eventtime2 >= etime){
-                    eres2.push(elem)
-                    counter2++;
-                }else{
-                    console.log("Element raus");
-                    counter2++;
-                }
-
-                if(counter2 == ecounter2){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredeventbookings2 : eres2
+                filteredintervalbookings : responseInterval
             }, function(){
-                console.log("Event2 sorted by start date");
-            })
+                console.log("Got Intervalbookings")
+            })    
+        )
 
-        // Endfilter
-        } else if (starttime == "" && endtime != ""){
-            let eres = [];
-            let eres2 = [];
-            let counter2 = 0;
-            let etime = new Date(endtime);
-            console.log("End filter is: " + etime);
-
-            this.state.filteredeventbookings.forEach((elem) => {
-                let eventtime = new Date(elem.time);
-                if (eventtime <= etime) {
-                    eres.push(elem);
-                    counter2++;
-                }else{
-                    counter2++;
-                    console.log("Element raus");
-                }
-
-                if(ecounter2 === counter2){
-                    this.callBack();
-                }
-            })
+        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
             this.setState({
-                filteredeventbookings: eres
-            }, function () {
-                console.log("Event sorted by start date");
-            })
-
-            this.state.filteredeventbookings2.forEach((elem) => {
-                let counter2 = 0;
-                let eventtime2 = new Date(elem.time);
-                if(eventtime2 <= etime){
-                    eres2.push(elem);
-                    counter2++;
-                }else{
-                    console.log("Element raus");
-                    counter2++;
-                }
-
-                if(counter2 == ecounter2){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredeventbookings2 : eres2
+                filteredeventbookings : responseEvents
             }, function(){
-                console.log("Event2 sorted by start date");
-            })
+                console.log("Gor Eventbookings1")
+            })    
+        )
 
-        // Start und End Filter
-        } else if (starttime != "" && endtime != ""){
-            let eres = [];
-            let erestwo = [];
-            let counter = 0;
-            let etime = new Date(endtime);
-            let stime = new Date(starttime);
-
-            this.state.filteredeventbookings.forEach((elem) => {
-                let eventtime = new Date(elem.time);
-                if (eventtime <= etime && eventtime >= stime) {
-                    eres.push(elem);
-                    counter++;
-                }else{
-                    counter++;
-                    console.log("Element raus");
-                }
-
-                if(ecounter === counter){
-                    this.callBack();
-                }
-            })
+        WorkTimeAppAPI.getAPI().KaddiFunktion(starthold.value, endhold.value).then(responseEvents =>
             this.setState({
-                filteredeventbookings: eres
-            }, function () {
-                console.log("Event sorted by start date");
-            })
+                filteredeventbookings2 : responseEvents
+            }, function(){
+                console.log("Gor Eventbookings2")
+            })    
+        )
 
-            this.state.filteredeventbookings2.forEach((elem) => {
+        // let icounter = this.state.intervalbookings.length;
+        // let ecounter = this.state.eventbookings.length;
+        // let ecounter2 = this.state.eventbookings2.length;
+
+        // // Sort interval bookings by date
+        // let starttime = starthold.value;
+        // let endtime = endhold.value;
+
+        // // No filter
+        // console.log("verleich kein", starttime == "" && endtime == "")
+        // if (starttime == "" && endtime == "") {
+        //     console.log("No time filter");
+
+        // // Only Start filter  
+        // } else if (starttime != "" && endtime == "") {
+        //     let ires = [];
+        //     let counter = 0;
+        //     let startdate = new Date(starttime);
+        //     console.log("Interval sorted by start date: " + startdate);
+
+        //     this.state.filteredintervalbookings.forEach((elem) => {
+        //         console.log("Element", elem)
+        //         let elemstarttime = new Date(elem.start);
+        //         console.log("wird es gepusht", elemstarttime >= startdate);
+        //         if (elemstarttime >= startdate) {
+        //             ires.push(elem);
+        //             counter++;
+        //         }else{
+        //             console.log("Element rausgefiltert");
+        //             counter++;
+        //         }
+
+        //         if(counter == icounter){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredintervalbookings: ires
+        //     }, function () {
+        //         console.log("Finished sorting by start date", this.state.filteredintervalbookings);
+        //     })
+
+        // // Only End filter
+        // } else if (starttime != "" && endtime == "") {
+        //     let ires = [];
+        //     let counter = 0;
+        //     console.log("Nur Endfilter", starttime != "" && endtime == "" );
+        //     let enddate = new Date(endtime);
+        //     console.log("Endfilter wurde gesetzt mit: " + enddate);
+
+        //     this.state.filteredintervalbookings.forEach((elem) => {
+        //         console.log("Element, ", elem);
+        //         let elemendtime = new Date(elem.end);
+        //         if (elemendtime <= enddate) {
+        //             console.log("wird es gepusht", elemendtime <= enddate);
+        //             ires.push(elem);
+        //             counter++;
+        //         }else{
+        //             console.log("Element raus")
+        //             counter++;
+        //         }
+
+        //         if(counter === icounter){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredintervalbookings: ires
+        //     }, function () {
+        //         console.log("Interval sorted by end date", this.state.filteredintervalbookings);
+        //     })
+
+        // // Start and End Filter
+        // } else {
+        //     let ires = [];
+        //     let counter = 0;
+        //     let startdate = new Date(starttime);
+        //     let enddate = new Date(endtime);
+
+        //     this.state.filteredintervalbookings.forEach((elem) => {
+        //         let elemstarttime = new Date(elem.start);
+        //         let elemendtime = new Date(elem.end);
+
+        //         if (elemendtime <= enddate && elemstarttime >= startdate) {
+        //             ires.push(elem);
+        //             console.log("ires", ires)
+        //             counter++;
+
+        //         }else{
+        //             console.log("Element passt nicht");
+        //             console.log("ires", ires);
+        //             counter++;
+        //         }
+
+        //         if(counter === icounter){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredintervalbookings: ires,
+        //     }, function () {
+        //         console.log("Interval sorted by start and end date", ires);
+        //     })
+        // }
+
+        // // Sort event bookings with timeintervals by time
+
+        // // No filter
+        // if (starttime == "" && endtime == "") {
+        //     console.log("No start time filter");
+
+        // // Start filter
+        // } else if(starttime != "" && endtime == ""){
+        //     let eres = [];
+        //     let eres2 = []
+        //     let counter = 0;
+        //     let etime = new Date(starttime);
+        //     console.log("Start filter is: " + etime);
+
+        //     this.state.filteredeventbookings.forEach((elem) => {
+        //         let eventtime = new Date(elem.time);
+        //         if (eventtime >= etime) {
+        //             eres.push(elem);
+        //             counter++;
+        //         }else{
+        //             counter++;
+        //             console.log("Element raus")
+        //         }
+
+        //         if(ecounter === counter){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings: eres
+        //     }, function () {
+        //         console.log("Event sorted by start date");
+        //     })
+
+        //     this.state.filteredeventbookings2.forEach((elem) => {
+        //         let counter2 = 0;
+        //         let eventtime2 = new Date(elem.time);
+        //         if(eventtime2 >= etime){
+        //             eres2.push(elem)
+        //             counter2++;
+        //         }else{
+        //             console.log("Element raus");
+        //             counter2++;
+        //         }
+
+        //         if(counter2 == ecounter2){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings2 : eres2
+        //     }, function(){
+        //         console.log("Event2 sorted by start date");
+        //     })
+
+        // // Endfilter
+        // } else if (starttime == "" && endtime != ""){
+        //     let eres = [];
+        //     let eres2 = [];
+        //     let counter2 = 0;
+        //     let etime = new Date(endtime);
+        //     console.log("End filter is: " + etime);
+
+        //     this.state.filteredeventbookings.forEach((elem) => {
+        //         let eventtime = new Date(elem.time);
+        //         if (eventtime <= etime) {
+        //             eres.push(elem);
+        //             counter2++;
+        //         }else{
+        //             counter2++;
+        //             console.log("Element raus");
+        //         }
+
+        //         if(ecounter2 === counter2){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings: eres
+        //     }, function () {
+        //         console.log("Event sorted by start date");
+        //     })
+
+        //     this.state.filteredeventbookings2.forEach((elem) => {
+        //         let counter2 = 0;
+        //         let eventtime2 = new Date(elem.time);
+        //         if(eventtime2 <= etime){
+        //             eres2.push(elem);
+        //             counter2++;
+        //         }else{
+        //             console.log("Element raus");
+        //             counter2++;
+        //         }
+
+        //         if(counter2 == ecounter2){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings2 : eres2
+        //     }, function(){
+        //         console.log("Event2 sorted by start date");
+        //     })
+
+        // // Start und End Filter
+        // } else if (starttime != "" && endtime != ""){
+        //     let eres = [];
+        //     let erestwo = [];
+        //     let counter = 0;
+        //     let etime = new Date(endtime);
+        //     let stime = new Date(starttime);
+
+        //     this.state.filteredeventbookings.forEach((elem) => {
+        //         let eventtime = new Date(elem.time);
+        //         if (eventtime <= etime && eventtime >= stime) {
+        //             eres.push(elem);
+        //             counter++;
+        //         }else{
+        //             counter++;
+        //             console.log("Element raus");
+        //         }
+
+        //         if(ecounter === counter){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings: eres
+        //     }, function () {
+        //         console.log("Event sorted by start date");
+        //     })
+
+        //     this.state.filteredeventbookings2.forEach((elem) => {
                 
-                let counter2 = 0;
-                let eventtime2 = new Date(elem.time);
-                if(eventtime2 <= etime && eventtime2 >= stime){
-                    erestwo.push(elem);
-                    counter2++;
-                }else{
-                    console.log("Element raus");
-                    counter2++;
-                }
+        //         let counter2 = 0;
+        //         let eventtime2 = new Date(elem.time);
+        //         if(eventtime2 <= etime && eventtime2 >= stime){
+        //             erestwo.push(elem);
+        //             counter2++;
+        //         }else{
+        //             console.log("Element raus");
+        //             counter2++;
+        //         }
 
-                if(counter2 == ecounter2){
-                    this.callBack();
-                }
-            })
-            this.setState({
-                filteredeventbookings2 : erestwo
-            }, function(){
-                console.log("Event2 sorted by start date");
-            })
-        }
+        //         if(counter2 == ecounter2){
+        //             this.callBack();
+        //         }
+        //     })
+        //     this.setState({
+        //         filteredeventbookings2 : erestwo
+        //     }, function(){
+        //         console.log("Event2 sorted by start date");
+        //     })
+        // }
 
-        // Filter by booking type
-        let bookingstype = this.state.bookingtype
+        // // Filter by booking type
+        // let bookingstype = this.state.bookingtype
 
-        console.log('Vergleich von Buchungsart');
-        if (bookingstype == 'timeinterval') {
-            this.setState({
-                eventbookings2 : []
-            }, function () {
-                console.log("Nur Timeintervalbuchungen mit verknüpften Events");
-            })
-        } else if (bookingstype == 'event') {
-            this.setState({
-                filteredintervalbookings: [],
-                filteredeventbookings: [],
-            }, function () {
-                console.log("Nur Eventbuchungen");
-            })
-        }
+        // console.log('Vergleich von Buchungsart');
+        // if (bookingstype == 'timeinterval') {
+        //     this.setState({
+        //         eventbookings2 : []
+        //     }, function () {
+        //         console.log("Nur Timeintervalbuchungen mit verknüpften Events");
+        //     })
+        // } else if (bookingstype == 'event') {
+        //     this.setState({
+        //         filteredintervalbookings: [],
+        //         filteredeventbookings: [],
+        //     }, function () {
+        //         console.log("Nur Eventbuchungen");
+        //     })
+        // }
     }
 
 
