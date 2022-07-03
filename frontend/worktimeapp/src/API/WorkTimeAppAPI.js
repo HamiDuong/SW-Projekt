@@ -115,7 +115,8 @@ export default class WorkTimeAppAPI {
     #getVacationAndIllnessEventBookingsURL = (id) => `${this.#worktimeappServerBaseURL}/booking/eventbooking/${id}/vacation&illness&work`;
     #getAllBookingsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/${id}`;
     #getAllBookingsWithoutEventsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/booking/timeintervalbooking/without/events/${id}`;
-
+    #getAllTimeIntervalsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/alltimeintervals/${id}`;
+    #getAllEventsForUserURL = (id) => `${this.#worktimeappServerBaseURL}/allevents/${id}`;
 
 
     //Project URLs
@@ -2264,6 +2265,28 @@ export default class WorkTimeAppAPI {
                 resolve(responseActivity)
             })
         })
+    }
+
+    getAllTimeintervalsForUser(userID) {
+        return this.#fetchAdvanced(this.#getAllTimeIntervalsForUserURL(userID))
+            .then((responseJSON) => {
+                let projectWorkBOs = ProjectWorkBO.fromJSON(responseJSON);
+                console.info(projectWorkBOs);
+                return new Promise(function (resolve) {
+                    resolve(projectWorkBOs);
+                })
+            })
+    }
+
+    getAllEventsForUser(userID) {
+        return this.#fetchAdvanced(this.#getAllEventsForUserURL(userID))
+            .then((responseJSON) => {
+                let workBOs = WorkBO.fromJSON(responseJSON);
+                console.info(workBOs);
+                return new Promise(function (resolve) {
+                    resolve(workBOs);
+                })
+            })
     }
 
 }

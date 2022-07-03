@@ -72,9 +72,6 @@ class MyBookings extends Component {
             filteredintervalbookings: [],
             filteredeventbookings: [],
 
-            eventbookings2: [],
-            filteredeventbookings2: [],
-
             workbookings: [],
 
             bookingtype: 'timeinterval',
@@ -112,14 +109,12 @@ class MyBookings extends Component {
 
     // Gets all booked bookings of the current user
     getBookings = () => {
-        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
+        WorkTimeAppAPI.getAPI().getAllTimeintervalsForUser(this.props.userId).then(responseJSON =>
             this.setState({
-                intervalbookings: responseJSON.timeintervals,
-                eventbookings: responseJSON.events,
-                filteredintervalbookings: responseJSON.timeintervals,
-                filteredeventbookings: responseJSON.events
+                intervalbookings: responseJSON,
+                filteredintervalbookings: responseJSON,
             }, function () {
-                let work = responseJSON.timeintervals;
+                let work = responseJSON;
                 let res = [];
 
                 work.forEach(element => {
@@ -136,12 +131,12 @@ class MyBookings extends Component {
 
             }))
 
-        WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(this.props.userId).then(vacationBOs =>
+        WorkTimeAppAPI.getAPI().getAllEventsForUser(this.props.userId).then(responseJSON =>
             this.setState({
-                eventbookings2: vacationBOs,
-                filteredeventbookings2: vacationBOs
+                eventbookings: responseJSON,
+                filteredeventbookings: responseJSON
             }, function () {
-                console.log(this.state.eventbookings2);
+                console.log(this.state.eventbookings);
             }))
 
     }
@@ -175,7 +170,6 @@ class MyBookings extends Component {
             showFilterButton: false,
             filteredintervalbookings: this.state.intervalbookings,
             filteredeventbookings: this.state.eventbookings,
-            filteredeventbookings2: this.state.eventbookings2
         }, function () {
             console.log("State wurde zurÃ¼ckgesetzt");
         })
@@ -353,7 +347,7 @@ class MyBookings extends Component {
                             onChange={this.handleChange}
                             value={this.state.bookingtype}
                         >
-                            <FormControlLabel value="timeinterval" control={<Radio />} label="Time Interval with connected Events" />
+                            <FormControlLabel value="timeinterval" control={<Radio />} label="Time Intervals" />
                             <FormControlLabel value="event" control={<Radio />} label="Only Event Bookings" />
                         </RadioGroup>
                     </FormControl>
