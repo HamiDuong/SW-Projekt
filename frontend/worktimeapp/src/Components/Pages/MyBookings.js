@@ -70,10 +70,12 @@ class MyBookings extends Component {
 
             intervalbookings: [],
             eventbookings: [],
-            eventbookings2: [],
 
             filteredintervalbookings: [],
             filteredeventbookings: [],
+
+            eventbookings2: [],
+            filteredeventbookings2: [],
 
             workbookings: [],
 
@@ -87,6 +89,10 @@ class MyBookings extends Component {
             showFilterButton: false,
             error: null,
 
+            holdintervalbooking : null,
+            holdeventbooking : null,
+            holdeventbooking2 : null,
+
             dialogWorkTimeSheet: false,
             showEditWindow: true
         }
@@ -96,9 +102,7 @@ class MyBookings extends Component {
     componentDidMount() {
         console.log('ComponentDidMount');
         this.getBookings();
-        this.getWorkBookings();
     }
-
 
     // componentDidUpdate(prevProps, prevState) {
     //     let length = this.state.intervalbookings.length
@@ -117,30 +121,30 @@ class MyBookings extends Component {
         this.setState({ [ev.target.name]: ev.target.value });
     };
 
-    filterBookings = () => {
-        let bookings = this.props.intervalbookings;
-        let res = [];
+    // filterBookings = () => {
+    //     let bookings = this.props.intervalbookings;
+    //     let res = [];
 
-        bookings.forEach(element => {
-            if (element.type == "Work") {
-                res.push(element);
-            }
-        });
+    //     bookings.forEach(element => {
+    //         if (element.type == "Work") {
+    //             res.push(element);
+    //         }
+    //     });
 
-        this.setState({
-            intervalbookings: res
-        }, function () {
-            console.log("Gefiltert")
-        })
+    //     this.setState({
+    //         intervalbookings: res
+    //     }, function () {
+    //         console.log("Gefiltert")
+    //     })
 
-    }
+    // }
 
     // Gets all booked bookings of the current user
     getBookings = () => {
 
         // !--Hier umstellen vor Deployment--!
 
-        WorkTimeAppAPI.getAPI().getAllBookingsWithoutEventsForUser(this.props.userId).then(responseJSON =>
+        WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
             this.setState({
                 intervalbookings: responseJSON.timeintervals,
                 eventbookings: responseJSON.events,
@@ -167,6 +171,7 @@ class MyBookings extends Component {
         WorkTimeAppAPI.getAPI().getVacationIllnessEventBookings(this.props.userId).then(vacationBOs =>
             this.setState({
                 eventbookings2: vacationBOs,
+                filteredeventbookings2 : vacationBOs
             }, function () {
                 console.log(this.state.eventbookings2);
             }))
@@ -199,12 +204,13 @@ class MyBookings extends Component {
         this.setState({
             bookingtype: 'timeinterval',
             typefilter: '',
-            startfilter: null,
-            endfilter: null,
+            // startfilter: null,
+            // endfilter: null,
             showResetButton: true,
             showFilterButton: false,
             filteredintervalbookings: this.state.intervalbookings,
-            filteredeventbookings: this.state.eventbookings
+            filteredeventbookings: this.state.eventbookings,
+            filteredeventbookings2 : this.state.eventbookings2
         }, function () {
             console.log("State wurde zurÃ¼ckgesetzt");
         })
@@ -252,15 +258,12 @@ class MyBookings extends Component {
         }
     }
 
-
-
-
     // Map table rows for interval bookigns
     mapIntervalBookings = () => {
         return (
             <TableBody>
                 {
-                    this.state.filteredintervalbookings.map(row => <MyBookingsIntervalEntry onClose1={this.closeEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredintervalbookings.map(row => <MyBookingsIntervalEntry key = {row.id + " " + row.type} onClose1={this.closeEditDialog} booking={row} userId={this.props.userId} />)
                 }
             </TableBody>
         )
@@ -271,20 +274,24 @@ class MyBookings extends Component {
         return (
             <TableBody>
                 {
-                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
                 {
-                    this.state.eventbookings2.map(row => <MyBookingsEventEntry onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
             </TableBody>
         )
+    }
+
+    callBack(){
+        console.log("Fertig")
     }
 
     // Sortes through all bookings according to the set filters
     filterBookings = () => {
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
-        let type = this.state.typefilter;
+        // let type = this.state.typefilter;
 
         this.setState({
             startfilter: starthold.value,
@@ -295,141 +302,152 @@ class MyBookings extends Component {
             console.log("Zeitfilter wurden gesetzt");
         });
 
-        // Holder for result of filter
-        let ires = [];
-        let eres = [];
+        console.log("Buchungen ohne Änderungen")
+        console.log("INterval",this.state.intervalbookings);
+        console.log("event",this.state.eventbookings);
+        console.log("event2",this.state.eventbookings2);
 
-        // Filter event bookings by type
-        if (type == null || type == "") {
-            console.log("Keine Typefilterung")
-        } else {
-            this.state.filteredintervalbookings.forEach(function (elem) {
-                let elemtype = elem.type;
-
-                // Event types
-                if (elemtype == "breakbegin" || elemtype == "breakend") {
-                    elemtype = "Break";
-                } else if (elemtype == "coming" || elemtype == "going") {
-                    elemtype = "Work";
-                } else if (elemtype == "flexdayend" || elemtype == "flexdaystart") {
-                    elemtype = "Flex Day";
-                } else if (elemtype == "illnessbegin" || elemtype == "illnessend") {
-                    elemtype = "Illness";
-                } else if (elemtype == "projectworkbegin" || elemtype == "projectworkend") {
-                    elemtype = "ProjectWork";
-                } else if (elemtype == "vacationbegin" || elemtype == "vacationend") {
-                    elemtype = "Vacation";
-                } else if (elemtype == "projectduration" || elemtype == "projectduration") {
-                    elemtype = "ProjectDuration";
-                }
-
-                if (type == elemtype) {
-                    ires.push(elem);
-                    console.log('Element gehÃ¶rt in den Filter');
-                } else {
-                    console.log('Element gehÃ¶rt nicht in das Filter');
-                }
-
-            })
-
-            // Set filtered interval bookings in the state
-            this.setState({
-                filteredintervalbookings: ires
-            }, function () {
-                console.log("State wurde gesetzt fÃ¼r IntervalBuchungen nach TypeFilterung");
-            });
-        }
-
-        // Filter interval bookings by type
-        if (type == null || type == "") {
-            console.log("Keine Typfilterung");
-        } else {
-            this.state.filteredeventbookings.forEach(function (elem) {
-                let elemtype = elem.type;
-                console.log(elemtype);
-                if (type == elemtype) {
-                    eres.push(elem);
-                    console.log('Elemt gehÃ¶rt in den Filter');
-                } else {
-                    console.log('Element gehÃ¶rt nicht in das Filter');
-                }
-            });
-
-            // Set filtered event bookings in state
-            this.setState({
-                filteredeventbookings: eres
-            }, function () {
-                console.log("State wurde gesetzt fÃ¼r EventBuchungen nach TypeFilterung");
-            })
-        }
+        let icounter = this.state.intervalbookings.length;
+        let ecounter = this.state.eventbookings.length;
+        let ecounter2 = this.state.eventbookings2.length;
 
         // Sort interval bookings by date
-        ires = [];
-
         let starttime = starthold.value;
         let endtime = endhold.value;
+
+        // No filter
+        console.log("verleich kein", starttime == "" && endtime == "")
         if (starttime == "" && endtime == "") {
             console.log("No time filter");
+
+        // Only Start filter  
         } else if (starttime != "" && endtime == "") {
+            let ires = [];
+            let counter = 0;
+            console.log("Nur Startfilter", starttime != "" && endtime == "");
             let startdate = new Date(starttime);
             console.log("Interval sorted by start date: " + startdate);
 
-            this.state.filteredintervalbookings.forEach(function (elem) {
+            this.state.filteredintervalbookings.forEach((elem) => {
+                console.log("Element", elem)
                 let elemstarttime = new Date(elem.start);
+                console.log("wird es gepusht", elemstarttime >= startdate);
                 if (elemstarttime >= startdate) {
                     ires.push(elem);
+                    counter++;
+                }else{
+                    console.log("Element rausgefiltert");
+                    counter++
+                }
+
+                if(counter == icounter){
+                    this.callBack()
                 }
             })
             this.setState({
                 filteredintervalbookings: ires
             }, function () {
-                console.log("Finished sorting by start date");
+                console.log("Finished sorting by start date", this.state.filteredintervalbookings);
             })
+
+        // Only End filter
         } else if (starttime != "" && endtime == "") {
+            let ires = [];
+            let counter = 0
+            console.log("Nur Endfilter", starttime != "" && endtime == "" )
             let enddate = new Date(endtime);
             console.log("Endfilter wurde gesetzt mit: " + enddate);
 
-            this.state.filteredintervalbookings.forEach(function (elem) {
+            this.state.filteredintervalbookings.forEach((elem) => {
+                console.log("Element, ", elem);
                 let elemendtime = new Date(elem.end);
                 if (elemendtime <= enddate) {
+                    console.log("wird es gepusht", elemendtime <= enddate);
                     ires.push(elem);
+                    counter++
+                }else{
+                    console.log("Element raus")
+                    counter++
+                }
+
+                if(counter === icounter){
+                    this.callBack()
                 }
             })
             this.setState({
                 filteredintervalbookings: ires
             }, function () {
-                console.log("Interval sorted by end date");
+                console.log("Interval sorted by end date", this.state.filteredintervalbookings);
             })
+
+        // Start and End Filter
         } else {
+            let ires = [];
+            let counter = 0;
             let startdate = new Date(starttime);
             let enddate = new Date(endtime);
 
-            this.state.filteredintervalbookings.forEach(function (elem) {
+            this.state.filteredintervalbookings.forEach((elem) => {
                 let elemstarttime = new Date(elem.start);
                 let elemendtime = new Date(elem.end);
+
+                console.log("DOPPELFILTER")
+                console.log(elem)
+                console.log(elemendtime)
+                console.log(enddate)
+                console.log("end", elemendtime <= enddate)
+                console.log(elemstarttime)
+                console.log(startdate)
+                console.log("start", elemstarttime >= startdate)
+
                 if (elemendtime <= enddate && elemstarttime >= startdate) {
                     ires.push(elem);
+                    console.log("ires", ires)
+                    counter++
+
+                }else{
+                    console.log("Element passt nicht")
+                    console.log("ires", ires)
+                    counter++
+                }
+
+                if(counter === icounter){
+                    this.callBack();
                 }
             })
             this.setState({
-                filteredintervalbookings: ires
+                filteredintervalbookings: ires,
             }, function () {
-                console.log("Interval sorted by start and end date");
+                console.log("Interval sorted by start and end date", ires);
             })
         }
 
-        // Sort event bookings by time
-        eres = [];
-        if (starttime == "") {
+        // Sort event bookings with timeintervals by time
+
+        // No filter
+        if (starttime == "" && endtime == "") {
             console.log("No start time filter");
-        } else {
+
+        // Start filter
+        } else if(starttime != "" && endtime == ""){
+            let eres = [];
+            let eres2 = []
+            let counter = 0;
             let etime = new Date(starttime);
             console.log("Start filter is: " + etime);
 
-            this.state.filteredeventbookings.forEach(function (elem) {
+            this.state.filteredeventbookings.forEach((elem) => {
                 let eventtime = new Date(elem.time);
                 if (eventtime >= etime) {
                     eres.push(elem);
+                    counter++
+                }else{
+                    counter++
+                    console.log("Element raus")
+                }
+
+                if(ecounter === counter){
+                    this.callBack()
                 }
             })
             this.setState({
@@ -437,29 +455,148 @@ class MyBookings extends Component {
             }, function () {
                 console.log("Event sorted by start date");
             })
+
+            this.state.filteredeventbookings2.forEach((elem) => {
+                let counter2 = 0
+                let eventtime2 = new Date(elem.time);
+                if(eventtime2 >= etime){
+                    eres2.push(elem)
+                    counter2++
+                }else{
+                    console.log("Element raus")
+                    counter2++
+                }
+
+                if(counter2 == ecounter2){
+                    this.callBack()
+                }
+            })
+            this.setState({
+                filteredeventbookings2 : eres2
+            }, function(){
+                console.log("Event2 sorted by start date")
+            })
+
+        // Endfilter
+        } else if (starttime == "" && endtime != ""){
+            let eres = [];
+            let eres2 = []
+            let counter2 = 0;
+            let etime = new Date(endtime);
+            console.log("End filter is: " + etime);
+
+            this.state.filteredeventbookings.forEach((elem) => {
+                let eventtime = new Date(elem.time);
+                if (eventtime <= etime) {
+                    eres.push(elem);
+                    counter2++
+                }else{
+                    counter2++
+                    console.log("Element raus")
+                }
+
+                if(ecounter2 === counter2){
+                    this.callBack()
+                }
+            })
+            this.setState({
+                filteredeventbookings: eres
+            }, function () {
+                console.log("Event sorted by start date");
+            })
+
+            this.state.filteredeventbookings2.forEach((elem) => {
+                let counter2 = 0
+                let eventtime2 = new Date(elem.time);
+                if(eventtime2 <= etime){
+                    eres2.push(elem)
+                    counter2++
+                }else{
+                    console.log("Element raus")
+                    counter2++
+                }
+
+                if(counter2 == ecounter2){
+                    this.callBack()
+                }
+            })
+            this.setState({
+                filteredeventbookings2 : eres2
+            }, function(){
+                console.log("Event2 sorted by start date")
+            })
+
+        // Start und End Filter
+        } else if (starttime != "" && endtime != ""){
+            let eres = [];
+            let erestwo = []
+            let counter = 0;
+            let etime = new Date(endtime);
+            let stime = new Date(starttime)
+
+            this.state.filteredeventbookings.forEach((elem) => {
+                let eventtime = new Date(elem.time);
+                if (eventtime <= etime && eventtime >= stime) {
+                    eres.push(elem);
+                    counter++
+                }else{
+                    counter++
+                    console.log("Element raus")
+                }
+
+                if(ecounter === counter){
+                    this.callBack()
+                }
+            })
+            this.setState({
+                filteredeventbookings: eres
+            }, function () {
+                console.log("Event sorted by start date");
+            })
+
+            this.state.filteredeventbookings2.forEach((elem) => {
+                
+                let counter2 = 0
+                let eventtime2 = new Date(elem.time);
+                if(eventtime2 <= etime && eventtime2 >= stime){
+                    erestwo.push(elem)
+                    counter2++
+                }else{
+                    console.log("Element raus")
+                    counter2++
+                }
+
+                if(counter2 == ecounter2){
+                    this.callBack()
+                }
+            })
+            this.setState({
+                filteredeventbookings2 : erestwo
+            }, function(){
+                console.log("Event2 sorted by start date")
+            })
         }
 
-        let bookingtype = this.state.bookingtype;
-        let timeinterval = 'timeinterval';
-        let event = 'event';
+        // // Filter by booking type
+        // let bookingstype = this.state.bookingtype
 
-        // Filter by booking type
-        console.log('Vergleich von Buchungsart');
-        if (bookingtype == timeinterval) {
-            this.setState({
-                eventbookings2 : []
-            }, function () {
-                console.log("Nur Timeintervalbuchungen mit verknüpften Events");
-            })
-        } else if (bookingtype == event) {
-            this.setState({
-                filteredintervalbookings: [],
-                filteredeventbookings: []
-            }, function () {
-                console.log("Nur Eventbuchungen");
-            })
-        }
+        // console.log('Vergleich von Buchungsart');
+        // if (bookingtype == 'timeinterval') {
+        //     this.setState({
+        //         eventbookings2 : []
+        //     }, function () {
+        //         console.log("Nur Timeintervalbuchungen mit verknüpften Events");
+        //     })
+        // } else if (bookingtype == 'event') {
+        //     this.setState({
+        //         filteredintervalbookings: [],
+        //         filteredeventbookings: [],
+        //     }, function () {
+        //         console.log("Nur Eventbuchungen");
+        //     })
+        // }
     }
+
 
 
 
@@ -492,7 +629,8 @@ class MyBookings extends Component {
         })
     }
 
-      render() {
+    // render the component
+    render() {
         const { workbookings } = this.state;
         return (
             <>
