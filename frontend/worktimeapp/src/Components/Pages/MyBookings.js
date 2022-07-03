@@ -279,10 +279,10 @@ class MyBookings extends Component {
         return (
             <TableBody>
                 {
-                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "1" } onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
                 {
-                    this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "2"} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
             </TableBody>
         )
