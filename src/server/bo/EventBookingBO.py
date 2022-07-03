@@ -22,15 +22,15 @@ class EventBookingBO (book.BookingBO):
     'Gibt die Werte eines Objekts der Klasse in Textform zurück'
 
     def get_event_id(self):
-        """Auslesen des Buchungstyp."""
+        """Auslesen der EventId."""
         return self._event_id
 
     def set_event_id(self, value):
-        """Setzen des Buchungstyp."""
+        """Setzen der EventId."""
         self._event_id = value
 
     def __str__(self):
-        return "EventBooking {}: Hat die EventId {}".format(self.get_event_id())
+        return "EventBooking {}: Hat die EventId {}".format(self.get_id(), self.get_event_id())
 
     'wandelt ein Python dict() in ein EventBookingBO'
     def from_dict(dictionary=dict()):

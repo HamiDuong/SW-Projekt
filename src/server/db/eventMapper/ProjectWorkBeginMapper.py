@@ -17,12 +17,11 @@ class ProjectWorkBeginMapper(Mapper):
         """
         timestamp = datetime.today()
         cursor = self._cnx.cursor()
-        cursor.execute(
-            "SELECT MAX(id) AS maxid FROM worktimeapp.ProjectWorkBegin ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM worktimeapp.ProjectWorkBegin ")
         tuples = cursor.fetchall()
         project_work_begin.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 project_work_begin.set_id(maxid[0] + 1)
             else:
@@ -35,7 +34,7 @@ class ProjectWorkBeginMapper(Mapper):
             project_work_begin.get_id(),
             project_work_begin.get_date_of_last_change(),
             project_work_begin.get_time(),
-            project_work_begin.get_type()
+            project_work_begin.get_type(),
         )
 
         cursor.execute(command, data)
@@ -84,7 +83,8 @@ class ProjectWorkBeginMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.ProjectWorkBegin WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -120,7 +120,8 @@ class ProjectWorkBeginMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.ProjectWorkBegin WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -142,10 +143,15 @@ class ProjectWorkBeginMapper(Mapper):
         cursor = self._cnx.cursor()
         project_work_begin.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.ProjectWorkBegin " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (project_work_begin.get_date_of_last_change(), project_work_begin.get_time(),
-                project_work_begin.get_id())
+        command = (
+            "UPDATE worktimeapp.ProjectWorkBegin "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            project_work_begin.get_date_of_last_change(),
+            project_work_begin.get_time(),
+            project_work_begin.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -157,7 +163,8 @@ class ProjectWorkBeginMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.ProjectWorkBegin WHERE id={}".format(
-            project_work_begin.get_id())
+            project_work_begin.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

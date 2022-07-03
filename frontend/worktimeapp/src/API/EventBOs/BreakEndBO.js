@@ -1,9 +1,17 @@
 import BusinessObject from '../BusinessObject'
 
-export default class BreakStartBO extends BusinessObject {
+export default class BreakEndBO extends BusinessObject {
+
+    /**
+    * BreakEndBO:
+    * Ereignis-Subklasse, die das Ende einer Pause markiert. 
+    * 
+    * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+    */
+
     constructor(time) {
         super();
-        this.time = time
+        this.time = time;
     }
 
     //Getter und Setter
@@ -20,13 +28,13 @@ export default class BreakStartBO extends BusinessObject {
         let res = [];
         if (Array.isArray(breakendevent)) {
             breakendevent.forEach((elem) => {
-                Object.setPrototypeOf(elem, BreakStartBO.prototype);
-                res.push(elem)
+                Object.setPrototypeOf(elem, BreakEndBO.prototype);
+                res.push(elem);
             })
         } else {
             let elem = breakendevent;
-            Object.setPrototypeOf(elem, BreakStartBO.prototype);
-            res.push(elem)
+            Object.setPrototypeOf(elem, BreakEndBO.prototype);
+            res.push(elem);
         }
         return res;
     }

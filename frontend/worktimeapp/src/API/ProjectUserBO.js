@@ -1,38 +1,60 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * Businessobject von ProjectUser
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
 export default class ProjectUser extends BusinessObject{
-    constructor(projectId, userId, capacity ){
+    constructor(projectId, userId, capacity, currentCapacity){
         super();
         this.projectId = projectId;
         this.userId = userId;
         this.capacity = capacity;
+        this.currentCapacity = currentCapacity;
     }
 
     //Getter und Setter
 
-    SetProjectId(id){
+    setProjectId(id){
         this.projectId = id;
     }
 
-    GetProjectId(){
+    getProjectId(){
         return this.projectId;
     }
 
 
-    SetUserId(userId){
+    setUserId(userId){
         this.userId = userId;
     }
 
-    GetUserId(){
+    getUserId(){
         return this.userId;
     }
 
-    SetCapacity(capacity){
+    setCapacity(capacity){
         this.capacity = capacity;
     }
 
-    GetCapacity(){
-        return this.capacity
+    getCapacity(){
+        return this.capacity;
+    }
+
+    setCurrentCapacity(capacity){
+        this.currentCapacity = capacity;
+    }
+
+    getCurrentCapacity(){
+        return this.currentCapacity;
+    }
+
+    SetCurrentCapacity(currentCapacity){
+        this.currentCapacity = currentCapacity;
+    }
+
+    GetCurrentCapacity(){
+        return this.currentCapacity;
     }
 
 
@@ -41,12 +63,12 @@ export default class ProjectUser extends BusinessObject{
         if(Array.isArray(projectuser)){
             projectuser.forEach((elem) => {
                 Object.setPrototypeOf(elem, ProjectUser.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = projectuser;
             Object.setPrototypeOf(elem, ProjectUser.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

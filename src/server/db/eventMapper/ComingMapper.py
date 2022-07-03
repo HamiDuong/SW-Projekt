@@ -21,7 +21,7 @@ class ComingMapper(Mapper):
         tuples = cursor.fetchall()
         coming.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 coming.set_id(maxid[0] + 1)
             else:
@@ -34,7 +34,7 @@ class ComingMapper(Mapper):
             coming.get_id(),
             coming.get_date_of_last_change(),
             coming.get_time(),
-            coming.get_type()
+            coming.get_type(),
         )
 
         cursor.execute(command, data)
@@ -83,7 +83,8 @@ class ComingMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.coming WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -118,7 +119,8 @@ class ComingMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.coming WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -140,10 +142,11 @@ class ComingMapper(Mapper):
         cursor = self._cnx.cursor()
         coming.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.coming " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (coming.get_date_of_last_change(), coming.get_time(),
-                coming.get_id())
+        command = (
+            "UPDATE worktimeapp.coming "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (coming.get_date_of_last_change(), coming.get_time(), coming.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -154,8 +157,7 @@ class ComingMapper(Mapper):
     def delete(self, coming):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.coming WHERE id={}".format(
-            coming.get_id())
+        command = "DELETE FROM worktimeapp.coming WHERE id={}".format(coming.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

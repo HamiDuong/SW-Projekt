@@ -1,6 +1,14 @@
 import BusinessObject from '../BusinessObject'
 
 export default class VacationStartBO extends BusinessObject {
+
+    /**
+   * VacationStartBO:
+   * Ereignis-Subklasse, die den Beginn des Urlaubs eines Mitarbeiters markiert. 
+   * 
+   * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+   */
+
     constructor(time, type) {
         super();
         this.time = time;
@@ -29,12 +37,12 @@ export default class VacationStartBO extends BusinessObject {
         if (Array.isArray(vacationstartevent)) {
             vacationstartevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, VacationStartBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = vacationstartevent;
             Object.setPrototypeOf(elem, VacationStartBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

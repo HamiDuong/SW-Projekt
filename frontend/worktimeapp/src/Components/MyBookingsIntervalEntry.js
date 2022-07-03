@@ -1,78 +1,85 @@
-import { TableContainer } from '@mui/material';
-import React, {Component} from 'react';
-import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
+import React, { Component } from 'react';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditBooking from './Dialog/EditBooking'
 
-//Erstellung eines Eintrags in der Tabelle
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Erstellung eines Eintrags für Intervalbuchungen
+ */
 class MyBookingsIntervalEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            booking: props.booking,
+            booking: this.props.booking,
             showDialog: false,
-
             loadingInProgress: false,
             error: null,
         }
     }
 
+    // Dialog für die Bearbeitung öffnen
     showEdit = () => {
         this.setState({
             showDialog: true
-        }, function(){
-            console.log("EditWindow öffnen per OnClick")
+        }, function () {
+            console.log("EditWindow öffnen per OnClick");
         })
     }
 
-    closeDialog = (booking) => {
-        if(booking){
-            this.updateBooking(booking)
+    // Dialog für die Bearbeitung schließen
+    closeEditDialog = (booking) => {
+        if (booking) {
             this.setState({
+                booking: booking,
                 showDialog: false
-            }, function(){
-                console.log("Editwindow wird geschlossen")
+            }, function () {
+                console.log("Editwindow wird geschlossen");
+                console.log(this.state.booking);
+                this.props.onClose1(booking);
             })
-        }else{
+        } else {
             this.setState({
                 showDialog: false
-            },function(){
-                console.log("Editwindow wird geschlossen ohne Update")
+            }, function () {
+                console.log("Editwindow wird geschlossen ohne Update");
             })
 
         }
     }
 
-    componentDidMount(){
-        console.log(this.state.booking)
+    // Debugging sobald die Komponente geladen ist
+    componentDidMount() {
+        console.log("Eintrag von Interval", this.props.key);
+        console.log(this.state.booking);
     }
 
+
+
+    // Änderungen in den gerenderten Komponenten im State abspeichern
     handleChange = ev => {
-        this.setState({ [ev.target.name] : ev.target.value });
+        this.setState({ [ev.target.name]: ev.target.value });
     };
 
-
-    render() { 
+    render() {
+        const { booking } = this.state;
         return (
-            <div>
+            <>
                 <TableRow
                     hover
-                    onClick = {this.showEdit}
+                    onClick={this.showEdit}
                 >
                     <TableCell>Interval</TableCell>
                     <TableCell>{this.state.booking.type}</TableCell>
                     <TableCell>{this.state.booking.start}</TableCell>
                     <TableCell>{this.state.booking.end}</TableCell>
-                    <TableCell>Remark</TableCell>
 
                 </TableRow>
-                <EditBooking show={this.state.showDialog} onClose={this.closeDialog} booking={this.props.booking}/>
-            </div>
+                <EditBooking show={this.state.showDialog} onClose={this.closeEditDialog} booking={booking} />
+            </>
         );
     }
 }
- 
+
 export default MyBookingsIntervalEntry;

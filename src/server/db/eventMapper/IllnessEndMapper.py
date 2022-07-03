@@ -21,7 +21,7 @@ class IllnessEndMapper(Mapper):
         tuples = cursor.fetchall()
         illness_end.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 illness_end.set_id(maxid[0] + 1)
             else:
@@ -34,7 +34,7 @@ class IllnessEndMapper(Mapper):
             illness_end.get_id(),
             illness_end.get_date_of_last_change(),
             illness_end.get_time(),
-            illness_end.get_type()
+            illness_end.get_type(),
         )
 
         cursor.execute(command, data)
@@ -53,7 +53,9 @@ class IllnessEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend"
+        command = (
+            "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend"
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -82,7 +84,8 @@ class IllnessEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -118,7 +121,8 @@ class IllnessEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.illnessend WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -140,10 +144,15 @@ class IllnessEndMapper(Mapper):
         cursor = self._cnx.cursor()
         illness_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.illnessend " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (illness_end.get_date_of_last_change(), illness_end.get_time(),
-                illness_end.get_id())
+        command = (
+            "UPDATE worktimeapp.illnessend "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            illness_end.get_date_of_last_change(),
+            illness_end.get_time(),
+            illness_end.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -155,7 +164,8 @@ class IllnessEndMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.illnessend WHERE id={}".format(
-            illness_end.get_id())
+            illness_end.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

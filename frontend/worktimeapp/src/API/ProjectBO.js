@@ -1,60 +1,61 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * Businessobject von Project
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
 export default class Project extends BusinessObject {
-    constructor(name, commissioner, userId, projectId) {
+    constructor(name, commissioner, userId) {
         super();
         this.name = name;
         this.commissioner = commissioner;
         this.userId = userId;
-        this.projectId = projectId;
 
     }
 
     //Getter und Setter
-    SetName(name) {
+    setName(name) {
         this.name = name;
     }
 
-    GetName() {
+    getName() {
         return this.name;
     }
 
-    SetCommissioner(commissioner) {
+    setCommissioner(commissioner) {
         this.commissioner = commissioner;
     }
 
-    GetCommissioner() {
+    getCommissioner() {
         return this.commissioner;
     }
 
-    SetUserId(userId) {
+    setUserId(userId) {
         this.userId = userId;
     }
 
-    GetUserId() {
+    getUserId() {
         return this.userId;
     }
 
-    SetProjectId(id) {
-        this.projectId = id;
-    }
+    
 
-    GetProjectId() {
-        return this.projectId;
-    }
-
+    // GetProjectId(){
+    //     return this.projectId;
+    // }
 
     static fromJSON(project) {
         let res = [];
         if (Array.isArray(project)) {
             project.forEach((elem) => {
                 Object.setPrototypeOf(elem, Project.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = project;
             Object.setPrototypeOf(elem, Project.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

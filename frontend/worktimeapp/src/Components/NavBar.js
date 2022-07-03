@@ -7,19 +7,20 @@ import './NavBarCSS.css';
 import { Typography } from '@mui/material';
 import Search from '@mui/icons-material/Search';
 import SearchIcon from '@mui/icons-material/Search';
+import Logout from './Logout'
 
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
 //Die Funktion NavBar zeigt eine Navigationleiste da, diese zeigt die einzelnen Pages und
 //die den Namen unserer Applikation. 
-function NavBar () {
+function NavBar (props) {
     //setSidebar aktualisert den currentValue, useState wird false gesetzt, damit es noch nicht anzeigen tut 
-    const [sidebar, setSidebar] = useState(false)
+    const [sidebar, setSidebar] = useState(false);
 
     //showSidebar wird die Menüleiste anzeigen. Es wird ein ArrowFunction gesetzt.
     //Es updated das Gegenteil von dem Wert, kann man sich wie ein toggle vorstellen, welches immer umschalten tut.
-    const showSidebar = () => setSidebar(!sidebar)
+    const showSidebar = () => setSidebar(!sidebar);
 
     return(
         <>
@@ -34,6 +35,8 @@ function NavBar () {
                     className='navbar-headline'>
                     WorkTimeApp 
                 </Typography>
+                <Logout user={props.user} />
+
                 
             </div>
             {/* Hier wird nachgefragt, ob der Sidebar aktiv ist oder nicht. 

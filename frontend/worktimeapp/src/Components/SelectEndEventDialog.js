@@ -16,47 +16,33 @@ import Select from '@mui/material/Select';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 
+/* 
+@author Mihriban Dogan (https://github.com/mihriban-dogan)
+SelectEventDialog stellt stellt den Dialog für die Auswahl von End Events dar.
+*/
+
 
 class SelectEndEventDialog extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            timeframestart: Date,
-            timeframeend: Date,
+        this.state = {          
             endevent: Date
-
-
         }
     }
-
-    handleStartDateChange(newValue){
-        this.setState({
-            timeframestart: new Date(newValue)
-        })
-        console.log(this.state.start)
-    }
-    handleEndDateChange(newValue){
-        this.setState({
-            timeframeend: new Date(newValue)
-        })
-        console.log(this.state.end)
-    }
-
     
     handleClose = () => {
         this.props.onClose(null);
-          }
+    }
           
     handleChange = (e) =>{
         this.setState({ [e.target.name] : e.target.value }, function(){
-            console.log(this.state.event)
+            console.log(this.state.event);
         } )}
 
     updateStart = () => {
-        this.props.onClose(this.state.endevent)
+        this.props.onClose(this.state.endevent);
     }
-
 
     render() { 
         return (
@@ -64,36 +50,13 @@ class SelectEndEventDialog extends Component {
                 <DialogTitle>Select Event</DialogTitle>
                 <DialogContent>
                 <DialogContentText sx={{mb:2}}>
-                    To select an event, please give in your desired time frame and choose an event from the drop-down list.
+                Please select a desired event.
                 </DialogContentText>
                     <Grid container spacing={2}>
                         <Grid xs={12} sm={6} item>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe Start"
-                        value={this.state.timeframestart}
-                        onChange={(newValue) => {
-                        this.handleStartDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
 
                     <Grid xs={12} sm={6} sx={{mb:2}} item>
-
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Timeframe End"
-                        value={this.state.timeframeend}
-                        onChange={(newValue) => {
-                        this.handleEndDateChange(newValue);
-                        }}
-                        minDate={new Date('2022-01-01')}
-                        />
-                    </LocalizationProvider>
                     </Grid>
 
                     <Grid  xs={12} item>
@@ -107,7 +70,7 @@ class SelectEndEventDialog extends Component {
                                 onChange={this.handleChange}
                             >
                                 {this.props.vacationIllnessEvents.map(vacationBOs =>
-                                <MenuItem key={vacationBOs.getDateOfLastChange()} value={vacationBOs.getTime()}>
+                                <MenuItem key={vacationBOs} value={vacationBOs}>
                                     <div>
                                     <Typography style={{fontWeight: "bold"}}> Type:</Typography> {vacationBOs.getType()}
                                     <Typography style={{fontWeight: "bold"}}> Time:</Typography>{vacationBOs.getTime()}

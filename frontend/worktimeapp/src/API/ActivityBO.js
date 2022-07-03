@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * Businessobject von Actibity
+ * 
+ * @author [Vi Nam Le] (https://github.com/vinamle)
+ */
 export default class Activity extends BusinessObject {
     constructor(name, capacity, projectId, currentCapacity) {
         super();
@@ -10,35 +15,35 @@ export default class Activity extends BusinessObject {
     }
 
     //Getter und Setter
-    SetName(name) {
+    setName(name) {
         this.name = name;
     }
 
-    GetName() {
+    getName() {
         return this.name;
     }
 
-    SetCapacity(capacity) {
+    setCapacity(capacity) {
         this.capacity = capacity;
     }
 
-    GetCapacity() {
+    getCapacity() {
         return this.capacity;
     }
 
-    SetProjectId(id) {
+    setProjectId(id) {
         this.projectId = id;
     }
 
-    GetProjectId() {
+    getProjectId() {
         return this.projectId;
     }
 
-    SetCurrentCapacity(id) {
-        this.currentCapacity = id;
+    setCurrentCapacity(currentCapacity) {
+        this.currentCapacity = currentCapacity;
     }
 
-    GetProjectId() {
+    getCurrentCapacity() {
         return this.currentCapacity;
     }
 
@@ -47,12 +52,12 @@ export default class Activity extends BusinessObject {
         if (Array.isArray(activity)) {
             activity.forEach((elem) => {
                 Object.setPrototypeOf(elem, Activity.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = activity;
             Object.setPrototypeOf(elem, Activity.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

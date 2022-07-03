@@ -21,7 +21,7 @@ class BreakBeginMapper(Mapper):
         tuples = cursor.fetchall()
         break_begin.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 break_begin.set_id(maxid[0] + 1)
             else:
@@ -34,7 +34,7 @@ class BreakBeginMapper(Mapper):
             break_begin.get_id(),
             break_begin.get_date_of_last_change(),
             break_begin.get_time(),
-            break_begin.get_type()
+            break_begin.get_type(),
         )
 
         cursor.execute(command, data)
@@ -53,7 +53,9 @@ class BreakBeginMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin"
+        command = (
+            "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin"
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -83,7 +85,8 @@ class BreakBeginMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -118,7 +121,8 @@ class BreakBeginMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.breakbegin WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -146,10 +150,15 @@ class BreakBeginMapper(Mapper):
         cursor = self._cnx.cursor()
         break_begin.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.breakbegin " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (break_begin.get_date_of_last_change(), break_begin.get_time(),
-                break_begin.get_id())
+        command = (
+            "UPDATE worktimeapp.breakbegin "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            break_begin.get_date_of_last_change(),
+            break_begin.get_time(),
+            break_begin.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -161,7 +170,8 @@ class BreakBeginMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.breakbegin WHERE id={}".format(
-            break_begin.get_id())
+            break_begin.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

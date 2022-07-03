@@ -10,6 +10,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 /**
  * @author [Esra Özkul](https://github.com/EsraOEzkul)
  */
+
 //Hier werden die Inhalte der Menüleiste erstellt.
 //Title: Wie der Button heißen soll
 //path: Damit wird der Pfand initialisieren
@@ -18,59 +19,53 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export const SideBarData = [
     {
-        title: 'MyProfile',
+        title: 'My Profile',
         path: '/myprofile',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'IndividualEntry',
-        path: '/IndividualEntry',
+        title: 'My Work Time Overview',
+        path: '/individualEntry',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'SelectionProjects',
-        path: '/SelectionProjects',
+        title: 'Work Time Overview Admin',
+        path: '/adminoverview',
         icon: <AccountCircleIcon />,
         className: 'nav-text'
     },
     {
-        title: 'MyProjects',
+        title: 'My Projects',
         path: '/myprojects',
         icon: <AssignmentIcon />,
         className: 'nav-text'
     },
     {
-        title: 'CreateProjects',
-        path: '/createprojects',
+        title: 'Create Project',
+        path: '/createprojectmain',
         icon: <TaskIcon />,
         className: 'nav-text'
     },
 
     {
-        title: 'MyBookings',
+        title: 'My Bookings',
         path: '/mybookings',
         icon: <PostAddIcon />,
         className: 'nav-text'
     },
     {
-        title: 'TimeIntervalBookings',
+        title: 'Time Interval Bookings',
         path: '/timeintervalbookings',
         icon: <AccessTimeIcon />,
         className: 'nav-text'
     },
     {
-        title: 'EventBookings',
+        title: 'Event Bookings',
         path: '/eventbookings',
         icon: <AccessTimeFilledIcon />,
         className: 'nav-text'
     },
-    {
-        title: 'MyProjectsTEST',
-        path: '/myprojectstest',
-        icon: <AssignmentIcon />,
-        className: 'nav-text'
-    }
 
 ]

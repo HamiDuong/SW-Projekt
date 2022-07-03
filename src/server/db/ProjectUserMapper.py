@@ -2,7 +2,10 @@ from server.db.Mapper import Mapper
 from server.bo.ProjectUserBO import ProjectUserBO
 from datetime import datetime
 
-
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Mapper für ProjectUser
+"""
 class ProjectUserMapper(Mapper):
     def __init__(self):
         super().__init__()
@@ -11,7 +14,6 @@ class ProjectUserMapper(Mapper):
     Gibt alle ProjectUserBO aus der Datenbank zurück
     return: Liste mit ProjectUserBO (list) - alle ProjectUserBO in der Datenbank
     """
-
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -37,7 +39,6 @@ class ProjectUserMapper(Mapper):
     param: key (int) - Id vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit der Id = key
     """
-
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -45,7 +46,73 @@ class ProjectUserMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples[0] is not None:
+        try:
+            (id, dateOfLastChange, projectId, userId,
+             capacity, currentCapacity) = tuples[0]
+            projectuserobj = ProjectUserBO()
+            projectuserobj.set_id(id)
+            projectuserobj.set_date_of_last_change(dateOfLastChange)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
+            projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
+            result = projectuserobj
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_project_user_by_user_id(self, id):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projectusers WHERE userId={}".format(id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        # if tuples:
+        #     (id, dateOfLastChange, projectId, userId,
+        #      capacity, currentCapacity) = tuples[0]
+        #     projectuserobj = ProjectUserBO()
+        #     projectuserobj.set_id(id)
+        #     projectuserobj.set_date_of_last_change(dateOfLastChange)
+        #     projectuserobj.set_project_id(projectId)
+        #     projectuserobj.set_user_id(userId)
+        #     projectuserobj.set_capacity(capacity)
+        #     projectuserobj.set_current_capacity(currentCapacity)
+        #     result = projectuserobj
+
+        for (id, dateOfLastChange, projectId, userId, capacity, currentCapacity) in tuples:
+            projectuserobj = ProjectUserBO()
+            projectuserobj.set_id(id)
+            projectuserobj.set_date_of_last_change(dateOfLastChange)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
+            projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
+            result.append(projectuserobj)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    """
+    Gibt das ProjectUserBO mit gegebener user_id und project_id
+    param: user_id (Integer), project_id (Integer)
+    return: ProjectUserBO
+    """
+    def find_project_user_by_user_id_and_project_id(self, user_id, project_id):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projectusers WHERE userId={} AND projectId={}".format(
+            user_id, project_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples:
             (id, dateOfLastChange, projectId, userId,
              capacity, currentCapacity) = tuples[0]
             projectuserobj = ProjectUserBO()
@@ -67,7 +134,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches eingefügt werden soll
     return: projectuser_obj
     """
-
     def insert(self, projectuser_obj):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM projectusers")
@@ -97,7 +163,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO mit aktualisierten Daten
     return: None 
     """
-
     def update(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
@@ -106,7 +171,7 @@ class ProjectUserMapper(Mapper):
 
         command = "UPDATE projectusers " + \
             "SET projectId=%s, userId=%s, capacity=%s, currentCapacity=%s, dateOfLastChange=%s WHERE id=%s"
-        data = (projectuser_obj.get_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(
+        data = (projectuser_obj.get_project_id(), projectuser_obj.get_user_id(), projectuser_obj.get_capacity(
         ), projectuser_obj.get_current_capacity(), projectuser_obj.get_date_of_last_change(), projectuser_obj.get_id())
         cursor.execute(command, data)
 
@@ -118,7 +183,6 @@ class ProjectUserMapper(Mapper):
     param: projectuser_obj (ProjectUserBO) - ProjectUserBO welches aus der Datenbank gelöscht werden soll
     return: None
     """
-
     def delete(self, projectuser_obj):
         cursor = self._cnx.cursor()
 
@@ -130,11 +194,10 @@ class ProjectUserMapper(Mapper):
         cursor.close()
 
     """
-    Gibt das ProjectUserBO mit dem gegebenen Startdatum zurück
+    Gibt alle ProjectUserBO mit gegebener projectId zurück
     param: id (int) - UserId vom gesuchtem ProjectUserBO
     return: ProjectUserBO mit user_id = id
     """
-
     def find_all_project_members(self, projectId):
         result = []
         cursor = self._cnx.cursor()
@@ -154,3 +217,29 @@ class ProjectUserMapper(Mapper):
 
         self._cnx.commit()
         return result
+    
+    def find_by_projectid_userid(self, projectid, userid):
+        result = None
+        cursor = self._cnx.cursor()
+        command = "SELECT * FROM projectusers WHERE userId={} AND projectId={}".format(projectid, userid)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, dateOfLastChange, projectId, userId,
+             capacity, currentCapacity) = tuples[0]
+            projectuserobj = ProjectUserBO()
+            projectuserobj.set_id(id)
+            projectuserobj.set_date_of_last_change(dateOfLastChange)
+            projectuserobj.set_project_id(projectId)
+            projectuserobj.set_user_id(userId)
+            projectuserobj.set_capacity(capacity)
+            projectuserobj.set_current_capacity(currentCapacity)
+            result = projectuserobj
+        except IndexError:
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result        

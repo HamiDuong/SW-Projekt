@@ -1,9 +1,11 @@
 from server.bo import BusinessObject as bo
 
+"""
+@author [Vi Nam Le] (https://github.com/vinamle)
+Klasse Projektmitarbeiter.
+Ein Projektmitarbeiter ist Teil eines oder mehreren Projekten
+"""
 class ProjectUserBO(bo.BusinessObject):
-    """Klasse Projektmitarbeiter.
-    Ein Projektmitarbeiter ist Teil eines oder mehreren Projekten
-    """
     def __init__(self):
         super().__init__()
         self._project_id = None
@@ -43,15 +45,14 @@ class ProjectUserBO(bo.BusinessObject):
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-        
         Diese besteht aus der ID der Superklasse ergaenzt durch die Mitarbeiter an einem Projekt."""
-        return "Customer: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(),
+        return "ProjectUser: {}, {}, {}, {}, {}, {}".format(self.get_id(), self.get_date_of_last_change(),
                                                          self.get_project_id(), self.get_user_id(),
                                                          self.get_capacity(), self.get_current_capacity())
 
     @staticmethod
     def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in einen Customer()."""
+        """Umwandeln eines Python dict() in einen ProjectUserBO()."""
         obj = ProjectUserBO()
         obj.set_id(dictionary["id"])
         obj.set_date_of_last_change(dictionary["dateOfLastChange"])

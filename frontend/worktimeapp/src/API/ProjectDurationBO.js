@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Projektlaufzeit
+ */
 export default class ProjectDurationBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type, projectId){
         super();
@@ -11,7 +16,7 @@ export default class ProjectDurationBO extends BusinessObject{
         this.projectId = projectId;
     }
 
-    //Getter und Setter
+    // Getter und Setter
     setStart(start){
         this.start = start;
     }
@@ -60,17 +65,18 @@ export default class ProjectDurationBO extends BusinessObject{
         return this.projectId;
     }
 
+    // wandelt JSON in ProjectDurationBO
     static fromJSON(duration){
         let res = [];
         if(Array.isArray(duration)){
             duration.forEach((elem) => {
                 Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = duration;
             Object.setPrototypeOf(elem, ProjectDurationBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

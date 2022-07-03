@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Urlaub
+ */
 export default class VacationBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type){
         super();
@@ -10,7 +15,7 @@ export default class VacationBO extends BusinessObject{
         this.type = type;
     }
 
-    //Getter und Setter
+    // Getter und Setter
     setStart(start){
         this.start = start;
     }
@@ -51,17 +56,18 @@ export default class VacationBO extends BusinessObject{
         return this.type;
     }
 
+    // wandelt JSON in VacationBO
     static fromJSON(vacation){
         let res = [];
         if(Array.isArray(vacation)){
             vacation.forEach((elem) => {
                 Object.setPrototypeOf(elem, VacationBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = vacation;
             Object.setPrototypeOf(elem, VacationBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

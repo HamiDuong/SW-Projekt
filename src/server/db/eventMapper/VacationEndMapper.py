@@ -22,7 +22,7 @@ class VacationEndMapper(Mapper):
         tuples = cursor.fetchall()
         vacation_end.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 vacation_end.set_id(maxid[0] + 1)
             else:
@@ -35,7 +35,7 @@ class VacationEndMapper(Mapper):
             vacation_end.get_id(),
             vacation_end.get_date_of_last_change(),
             vacation_end.get_time(),
-            vacation_end.get_type()
+            vacation_end.get_type(),
         )
 
         cursor.execute(command, data)
@@ -54,7 +54,9 @@ class VacationEndMapper(Mapper):
 
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend"
+        command = (
+            "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend"
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -84,7 +86,8 @@ class VacationEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -120,7 +123,8 @@ class VacationEndMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.vacationend WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -142,10 +146,15 @@ class VacationEndMapper(Mapper):
         cursor = self._cnx.cursor()
         vacation_end.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.vacationend " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (vacation_end.get_date_of_last_change(), vacation_end.get_time(),
-                vacation_end.get_id())
+        command = (
+            "UPDATE worktimeapp.vacationend "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (
+            vacation_end.get_date_of_last_change(),
+            vacation_end.get_time(),
+            vacation_end.get_id(),
+        )
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -157,7 +166,8 @@ class VacationEndMapper(Mapper):
         cursor = self._cnx.cursor()
 
         command = "DELETE FROM worktimeapp.vacationend WHERE id={}".format(
-            vacation_end.get_id())
+            vacation_end.get_id()
+        )
         cursor.execute(command)
 
         self._cnx.commit()

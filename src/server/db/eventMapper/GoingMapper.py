@@ -22,7 +22,7 @@ class GoingMapper(Mapper):
         tuples = cursor.fetchall()
         going.set_date_of_last_change(timestamp)
 
-        for (maxid) in tuples:
+        for maxid in tuples:
             if maxid[0] is not None:
                 going.set_id(maxid[0] + 1)
             else:
@@ -83,7 +83,8 @@ class GoingMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going WHERE id={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -111,7 +112,8 @@ class GoingMapper(Mapper):
 
         cursor = self._cnx.cursor()
         command = "SELECT id, date_of_last_change, date, type FROM worktimeapp.going WHERE date={}".format(
-            key)
+            key
+        )
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -133,10 +135,11 @@ class GoingMapper(Mapper):
         cursor = self._cnx.cursor()
         going.set_date_of_last_change(datestamp)
 
-        command = "UPDATE worktimeapp.going " + \
-            "SET date_of_last_change=%s, date=%s WHERE id=%s"
-        data = (going.get_date_of_last_change(), going.get_time(),
-                going.get_id())
+        command = (
+            "UPDATE worktimeapp.going "
+            + "SET date_of_last_change=%s, date=%s WHERE id=%s"
+        )
+        data = (going.get_date_of_last_change(), going.get_time(), going.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -147,8 +150,7 @@ class GoingMapper(Mapper):
     def delete(self, going):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM worktimeapp.going WHERE id={}".format(
-            going.get_id())
+        command = "DELETE FROM worktimeapp.going WHERE id={}".format(going.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

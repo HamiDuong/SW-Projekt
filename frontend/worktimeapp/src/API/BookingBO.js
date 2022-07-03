@@ -5,21 +5,24 @@ export default class BookingBO extends BusinessObject {
 
   constructor(workTimeAccountId, userId, type, eventBookingId, timeIntervalBookingId ) {
     super();
-    this.workTimeAccountId = workTimeAccountId
-    this.userId = userId
-    this.type = type
-    this.eventBookingId = eventBookingId
-    this.timeIntervalBookingId = timeIntervalBookingId
+    this.workTimeAccountId = workTimeAccountId;
+    this.userId = userId;
+    this.type = type;
+    this.eventBookingId = eventBookingId;
+    this.timeIntervalBookingId = timeIntervalBookingId;
   }
 
 
+  /*
+  Hier sind die Getter und Setter definiert
+  */ 
   setWorkTimeAccountId(workTimeAccountId) {
-    this.workTimeAccountId = workTimeAccountId
+    this.workTimeAccountId = workTimeAccountId;
   }
 
   
   getWorkTimeAccountId() {
-    return this.workTimeAccountId
+    return this.workTimeAccountId;
   }
 
 

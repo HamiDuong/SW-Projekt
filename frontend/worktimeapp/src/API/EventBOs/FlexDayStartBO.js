@@ -1,9 +1,17 @@
 import BusinessObject from '../BusinessObject'
 
 export default class FlexDayStartBO extends BusinessObject {
+
+    /**
+       * FlexDayStartBO:
+       * Ereignis-Subklasse, die den Beginn des Überstundenabbaus eines Mitarbeiters markiert. 
+       * 
+       * @author [Khadidja Kebaili] (https://github.com/khadidja-kebaili)
+       */
+
     constructor(time) {
         super();
-        this.time = time
+        this.time = time;
     }
 
     //Getter und Setter
@@ -21,12 +29,12 @@ export default class FlexDayStartBO extends BusinessObject {
         if (Array.isArray(flexdaystartevent)) {
             flexdaystartevent.forEach((elem) => {
                 Object.setPrototypeOf(elem, FlexDayStartBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         } else {
             let elem = flexdaystartevent;
             Object.setPrototypeOf(elem, FlexDayStartBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

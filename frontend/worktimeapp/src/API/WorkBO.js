@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Arbeitszeit
+ */
 export default class WorkBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type){
         super();
@@ -10,7 +15,7 @@ export default class WorkBO extends BusinessObject{
         this.type = type;
     }
 
-    //Getter und Setter
+    // Getter und Setter
     setStart(start){
         this.start = start;
     }
@@ -51,17 +56,18 @@ export default class WorkBO extends BusinessObject{
         return this.type;
     }
 
+    // wandelt JSON in WorkBO
     static fromJSON(work){
         let res = [];
         if(Array.isArray(work)){
             work.forEach((elem) => {
                 Object.setPrototypeOf(elem, WorkBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = work;
             Object.setPrototypeOf(elem, WorkBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }

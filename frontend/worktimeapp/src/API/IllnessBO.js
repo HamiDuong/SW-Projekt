@@ -1,5 +1,10 @@
 import BusinessObject from "./BusinessObject";
 
+/**
+ * @author Ha Mi Duong (https://github.com/HamiDuong)
+ * 
+ * Objekt für Kranktage
+ */
 export default class IllnessBO extends BusinessObject{
     constructor(start, end, startEvent, endEvent, type){
         super();
@@ -10,7 +15,7 @@ export default class IllnessBO extends BusinessObject{
         this.type = type;
     }
 
-    //Getter und Setter
+    // Getter und Setter
     setStart(start){
         this.start = start;
     }
@@ -51,17 +56,18 @@ export default class IllnessBO extends BusinessObject{
         return this.type;
     }
 
+    // wandelt JSON in IllnessBO
     static fromJSON(illness){
         let res = [];
         if(Array.isArray(illness)){
             illness.forEach((elem) => {
                 Object.setPrototypeOf(elem, IllnessBO.prototype);
-                res.push(elem)
+                res.push(elem);
             })
         }else{
             let elem = illness;
             Object.setPrototypeOf(elem, IllnessBO.prototype);
-            res.push(elem)
+            res.push(elem);
         }
         return res;
     }
