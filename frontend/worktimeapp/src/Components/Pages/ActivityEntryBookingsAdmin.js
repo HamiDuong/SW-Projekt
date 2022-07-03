@@ -4,12 +4,6 @@ import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
 import TableCell from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import TextField from '@mui/material/TextField';
-import DialogTitle from '@mui/material/DialogTitle';
 
 
 class ActivityBookingEntry extends Component {
@@ -33,7 +27,6 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
             end: '',
 
         })
-        this.baseState = this.state
     }
 
     getBookedTimeByActivityIdAndProjectId = (act_id, us_id) => {
@@ -54,7 +47,7 @@ In dieser Komponente werden alle Aktivitäten und deren Buchungen, sowie Infos z
             this.setState({
                 filteredTime: time
             }, function () {
-                console.log('FilteredTime:', this.state.time)
+                console.log('FilteredTime:', this.state.filteredTime)
             }))
     }
 

@@ -44,7 +44,6 @@ class Entry extends Component {
             filterUsed: false,
             start: '',
             end: '',
-
         })
     }
 
@@ -391,7 +390,7 @@ class Entry extends Component {
                                     </TableHead>
                                     <TableBody>
                                         {this.state.userIds.map((element, index) => {
-                                            console.log(element, 'Ist das hier eine UserId?')
+                                            console.log(element, 'UserId')
                                             return (
                                                 <ActivityBookingEntry start={this.state.start} end={this.state.end} filterTrigger={this.state.filterUsed} act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
                                                     user_capa={this.state.userCapacity[index]} />)

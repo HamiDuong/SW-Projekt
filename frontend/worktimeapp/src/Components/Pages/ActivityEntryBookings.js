@@ -16,9 +16,12 @@ class ActivityEntryBookings extends Component {
             user_id: '',
             act_id: '',
             time: '',
+            filteredTime: '',
             user: '',
             projectDuration: '',
             show_info: false,
+            start: '',
+            end: '',
         })
     }
 
@@ -33,21 +36,50 @@ class ActivityEntryBookings extends Component {
             }))
     }
 
+    getBookedTimeByActivityIdAndProjectIdAndTimeFrame = (act_id, us_id, start, end) => {
+        /** Lädt die tatsächlich geleistete Projektarbeit eines jeden Project-Users mithilfe dessen Id und der Aktivity Id 
+         *  und speichert die gebuchten Zeiten im State ab.*/
+        WorkTimeAppAPI.getAPI().getBookedTimesOfUserForAnActivityWithTimeframe(act_id, us_id, start, end).then(time =>
+            this.setState({
+                filteredTime: time
+            }, function () {
+                console.log('FilteredTime:', this.state.filteredTime)
+            }))
+    }
+
     componentDidMount = () => {
-        this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+        if (this.props.filterTrigger == false) {
+            this.getBookedTimeByActivityIdAndProjectId(this.props.act_id, this.props.us_id)
+        } else {
+            this.getBookedTimeByActivityIdAndProjectIdAndTimeFrame(this.props.act_id, this.props.us_id, this.props.start, this.props.end)
+        }
     }
 
     render() {
         return (
-            <Box>
-                <Paper
-                    sx={{ width: '100%', margin: 'auto' }}
-                    style={{ display: 'inline-flex', justifyContent: 'space-around' }}
-                >
-                    <TableCell>{this.state.time}</TableCell>
-                    <TableCell>{this.props.user_capa}</TableCell>
-                </Paper>
-            </Box>
+            <div>
+                {this.props.filterTrigger ?
+                    <Box>
+                        <Paper
+                            sx={{ width: '100%', margin: 'auto' }}
+                            style={{ display: 'inline-flex', justifyContent: 'space-around' }}
+                        >
+                            <TableCell>{this.state.filteredTime}</TableCell>
+                            <TableCell>{this.props.user_capa}</TableCell>
+                        </Paper>
+                    </Box> :
+                    <Box>
+                        <Paper
+                            sx={{ width: '100%', margin: 'auto' }}
+                            style={{ display: 'inline-flex', justifyContent: 'space-around' }}
+                        >
+                            <TableCell>{this.state.time}</TableCell>
+                            <TableCell>{this.props.user_capa}</TableCell>
+                        </Paper>
+                    </Box>
+                }
+
+            </div>
         );
     }
 }
