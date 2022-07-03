@@ -47,7 +47,7 @@ class EditProject extends Component {
             users: [],
 
             newAdmin: '',
-            render: false, 
+            render: false,
 
         }
         this.baseState = this.state;
@@ -85,6 +85,8 @@ class EditProject extends Component {
         let admn = hold3.value;
         if (admn == 'You are the admin.') {
             admn = this.props.userId
+        } else {
+            admn = this.state.newAdmin
         }
 
         let updatedProject = Object.assign(new ProjectBO(), this.state.p);
@@ -155,13 +157,14 @@ class EditProject extends Component {
                         userNotFound: true
                     });
                 }
+
                 //Hier wird der endgültiger Zustand gesetzt.
                 this.setState({
                     targetusers: users,
                     selectedUser: selectedUser,
                     loadingInProgress: false,
                     userNameSearchError: null,
-                    newAdmin: users[0].id
+                    newAdmin: users[0].getID()
 
                 }, function () {
                     console.log("State", this.state.targetusers)
@@ -252,12 +255,12 @@ class EditProject extends Component {
         })
     }
 
-   
+
     componentDidMount() {
         this.getProject();
         this.searchUserNamesForProject(1)
     }
-    
+
 
     projectMemberEdited = (update) => {
         this.props.onProjectMemberDeleted(update)
@@ -328,7 +331,7 @@ class EditProject extends Component {
                         <Table>
                             {
                                 this.props.projectmembers.map((user) => (
-                                    <EditProjectMemberEntry key={user[0].getID()} onClose={this.projectMemberEdited}user={user} projectId={this.props.project}></EditProjectMemberEntry>
+                                    <EditProjectMemberEntry key={user[0].getID()} onClose={this.projectMemberEdited} user={user} projectId={this.props.project}></EditProjectMemberEntry>
                                 ))
                             }
 
