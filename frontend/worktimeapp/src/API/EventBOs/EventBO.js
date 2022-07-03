@@ -1,126 +1,126 @@
-import BusinessObject from '../BusinessObject'
+// import BusinessObject from '../BusinessObject'
 
-export default class EventBO extends BusinessObject {
-    constructor(type, comingId, goingId, vacationStartId, vacationEndId, projectWorkStartId, projectWorkEndId,
-        breakEndId, breakStartId, flexDayStartId, flexDayEndId, illnessEndId, illnessStartId) {
-        super();
-        this.type = type,
-            this.ComingId = comingId,
-            this.GoingId = goingId,
-            this.VacationStartId = vacationStartId,
-            this.VacationEndId = vacationEndId,
-            this.IllnessStartId = illnessStartId,
-            this.IllnessEndId = illnessEndId,
-            this.ProjectWorkEndId = projectWorkEndId,
-            this.ProjectWorkStartId = projectWorkStartId,
-            this.BreakStartId = breakStartId,
-            this.BreakEndId = breakEndId,
-            this.FlexDayEndId = flexDayEndId,
-            this.FlexDayStartId = flexDayStartId
-    }
+// export default class EventBO extends BusinessObject {
+//     constructor(eventType, comingId, goingId, vacationStartId, vacationEndId, projectWorkStartId, projectWorkEndId,
+//         breakEndId, breakStartId, flexDayStartId, flexDayEndId, illnessEndId, illnessStartId) {
+//         super();
+//         this.type = eventType;
+//         this.ComingId = comingId;
+//         this.GoingId = goingId;
+//         this.VacationStartId = vacationStartId;
+//         this.VacationEndId = vacationEndId;
+//         this.IllnessStartId = illnessStartId;
+//         this.IllnessEndId = illnessEndId;
+//         this.ProjectWorkEndId = projectWorkEndId;
+//         this.ProjectWorkStartId = projectWorkStartId;
+//         this.BreakStartId = breakStartId;
+//         this.BreakEndId = breakEndId;
+//         this.FlexDayEndId = flexDayEndId;
+//         this.FlexDayStartId = flexDayStartId
+//     }
 
-    //Getter und Setter
-    setType(type) {
-        this.type = type;
-    }
+//     //Getter und Setter
+//     setType(type) {
+//         this.type = type;
+//     }
 
-    getType() {
-        return this.type;
-    }
+//     getType() {
+//         return this.type;
+//     }
 
-    setComingId(comingId) {
-        this.ComingId = comingId
-    }
+//     setComingId(comingId) {
+//         this.ComingId = comingId
+//     }
 
-    getComingId() {
-        return this.ComingId
-    }
+//     getComingId() {
+//         return this.ComingId
+//     }
 
-    setGoingId(goingId) {
-        this.GoingId = goingId
-    }
+//     setGoingId(goingId) {
+//         this.GoingId = goingId
+//     }
 
-    getGoingId() {
-        return this.GoingId
-    }
+//     getGoingId() {
+//         return this.GoingId
+//     }
 
-    setProjectWorkEndId(projectWorkEndId) {
-        this.ProjectWorkEndId = projectWorkEndId
-    }
+//     setProjectWorkEndId(projectWorkEndId) {
+//         this.ProjectWorkEndId = projectWorkEndId
+//     }
 
-    getProjectWorkEndId() {
-        return this.ProjectWorkEndId
-    }
+//     getProjectWorkEndId() {
+//         return this.ProjectWorkEndId
+//     }
 
-    setProjectWorkStartId(projectWorkStartId) {
-        this.ProjectWorkStartId = projectWorkStartId
-    }
+//     setProjectWorkStartId(projectWorkStartId) {
+//         this.ProjectWorkStartId = projectWorkStartId
+//     }
 
-    getProjectWorkStartId() {
-        return this.ProjectWorkStartId
-    }
+//     getProjectWorkStartId() {
+//         return this.ProjectWorkStartId
+//     }
 
-    setVacationStartId(vacationStartId) {
-        this.VacationStartId = vacationStartId
-    }
+//     setVacationStartId(vacationStartId) {
+//         this.VacationStartId = vacationStartId
+//     }
 
-    getVacationStartId() {
-        return this.VacationStartId
-    }
+//     getVacationStartId() {
+//         return this.VacationStartId
+//     }
 
-    setVacationEndId(vacationEndId) {
-        this.VacationEndId = vacationEndId
-    }
+//     setVacationEndId(vacationEndId) {
+//         this.VacationEndId = vacationEndId
+//     }
 
-    getVacationEndId() {
-        return this.VacationEndId
-    }
+//     getVacationEndId() {
+//         return this.VacationEndId
+//     }
 
-    setBreakStartId(breakStartId) {
-        this.BreakStartId = breakStartId
-    }
+//     setBreakStartId(breakStartId) {
+//         this.BreakStartId = breakStartId
+//     }
 
-    getBreakStartId() {
-        return this.BreakStartId
-    }
+//     getBreakStartId() {
+//         return this.BreakStartId
+//     }
 
-    setBreakStartId(breakStartId) {
-        this.BreakStartId = breakStartId
-    }
+//     setBreakStartId(breakStartId) {
+//         this.BreakStartId = breakStartId
+//     }
 
-    getBreakStartId() {
-        return this.BreakStartId
-    }
+//     getBreakStartId() {
+//         return this.BreakStartId
+//     }
 
-    setFlexDayStartId(flexDayStartId) {
-        this.FlexDayStartId = flexDayStartId
-    }
+//     setFlexDayStartId(flexDayStartId) {
+//         this.FlexDayStartId = flexDayStartId
+//     }
 
-    getFlexDayStartId() {
-        return this.FlexDayStartId
-    }
+//     getFlexDayStartId() {
+//         return this.FlexDayStartId
+//     }
 
-    setFlexDayEndId(flexDayEndId) {
-        this.FlexDayEndId = flexDayEndId
-    }
+//     setFlexDayEndId(flexDayEndId) {
+//         this.FlexDayEndId = flexDayEndId
+//     }
 
-    getFlexDayEndId() {
-        return this.FlexDayEndId
-    }
+//     getFlexDayEndId() {
+//         return this.FlexDayEndId
+//     }
 
 
-    static fromJSON(event) {
-        let res = [];
-        if (Array.isArray(event)) {
-            event.forEach((elem) => {
-                Object.setPrototypeOf(elem, EventBO.prototype);
-                res.push(elem)
-            })
-        } else {
-            let elem = event;
-            Object.setPrototypeOf(elem, EventBO.prototype);
-            res.push(elem)
-        }
-        return res;
-    }
-}
+//     static fromJSON(event) {
+//         let res = [];
+//         if (Array.isArray(event)) {
+//             event.forEach((elem) => {
+//                 Object.setPrototypeOf(elem, EventBO.prototype);
+//                 res.push(elem)
+//             })
+//         } else {
+//             let elem = event;
+//             Object.setPrototypeOf(elem, EventBO.prototype);
+//             res.push(elem)
+//         }
+//         return res;
+//     }
+// }

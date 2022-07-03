@@ -3752,19 +3752,19 @@ class Businesslogic:
                     illnessend = self.get_illness_end_by_id(
                         elem.get_illness_end_id())
                     all_timeintervals.append(illnessend)
-                if elem.get_type() == 'flexdaystart':
+                if elem.get_type() == 'flexDayStart':
                     flexdaystart = self.get_flex_day_start_by_id(
                         elem.get_flex_day_start_id())
                     all_timeintervals.append(flexdaystart)
-                if elem.get_type() == 'flexdayend':
+                if elem.get_type() == 'flexDayEnd':
                     flexdayend = self.get_flex_day_end_by_id(
                         elem.get_flex_day_end_id())
                     all_timeintervals.append(flexdayend)
-                if elem.get_type() == 'projectworkbegin':
+                if elem.get_type() == 'projectWorkBegin':
                     project_work_begin = self.get_project_work_begin_by_id(
                         elem.get_project_work_begin_id())
                     all_timeintervals.append(project_work_begin)
-                if elem.get_type() == 'projectworkend':
+                if elem.get_type() == 'projectWorkEnd':
                     project_work_end = self.get_project_work_end_by_id(
                         elem.get_project_work_end_id())
                     all_timeintervals.append(project_work_end)
@@ -3852,9 +3852,3 @@ class Businesslogic:
             return True
         else:
             return False
-
-
-adm = Businesslogic()
-x = adm.get_events_for_user_within_timeframe(1, '2022-06-01', '2022-07-30')
-for elem in x:
-    print(elem)

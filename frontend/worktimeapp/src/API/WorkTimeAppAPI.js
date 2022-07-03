@@ -25,8 +25,6 @@ import ActivityBO from "./ActivityBO"
 import UserBO from "./UserBO";
 import ProjectUserBO from "./ProjectUserBO";
 import WorkTimeAccountBO from './WorkTimeAccountBO'
-import EventBO from './EventBOs/EventBO'
-
 
 export default class WorkTimeAppAPI {
     static #api = null
@@ -1125,12 +1123,10 @@ export default class WorkTimeAppAPI {
     //EventBookingMethoden
     getAllEventsWithinTimeFrame(user_id, start, end) {
         return this.#fetchAdvanced(this.#getEventsWithinTimeframeURL(user_id, start, end)).then((responseJSON) => {
-            let responseEvent = EventBO.fromJSON(responseJSON);
-            return new Promise(function (resolve) {
-                resolve(responseEvent)
-            })
+            return responseJSON
         })
     }
+
 
     addEventBooking(bookingBO) {
         return this.#fetchAdvanced(this.#addEventBookingURL(), {
