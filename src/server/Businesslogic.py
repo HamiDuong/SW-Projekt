@@ -3369,8 +3369,12 @@ class Businesslogic:
 
     # Activity löschen
     def delete_activity(self, activity):
+        x = self.get_project_works_by_activity_id(activity.get_id())
+        for elem in x:
+            self.delete_project_work(elem)
         with ActivityMapper() as mapper:
             mapper.delete(activity)
+
 
     # Acticity via Namen holen
     def get_by_name(self, name):
@@ -3548,6 +3552,68 @@ class Businesslogic:
             return sum
         else:
             return 0
+
+    def get_project_work_for_user_by_activity_id(self, user_id, activity_id):
+        """
+        @author Khadidja Kebaili (https://github.com/Khadidja-Kebaili)
+
+        Diese Methode lädt die TimeintervalBOs, Timeinterval-BookingBOs, BookingBOs und Aktivitäten aus der
+        Datenbank und verknüpft sie so miteinander, dass man als Wert die tatsächlich gebuchte Arbeitszeit (in h)
+        eines Projektmitarbeiters für eine bestimmte Aktivität zurückerhält.
+        :param user_id: Projektuser-Id
+        :param activity_id: Aktivitäts-Id
+        :return: Zeit in Stunden (Float)
+        """
+
+        'Alle Timeintervals, Timerinterval-Buchungen und Buchungen'
+        all_bookings = self.get_all_bookings_for_timeinterval()
+
+        'Dies sind die Userspezifischen Bookings, Timeintervalle und deren Subklassen'
+        bookings_of_user = []
+        timeinterval_booking_of_user = []
+        timeintervals_of_user = []
+        projectwork_of_user = []
+        project_work_for_this_activity_of_user = []
+
+        'Hier sind alle Zeiten des Users für eine Aktivität'
+        sum_time = []
+
+        '''In diesem Schritt werden von den BookingBOs diejenigen selektiert, die dem User zugeordnet werden.'''
+        for elem in all_bookings:
+            # print('bookings:', elem.get_user_id())
+            if elem.get_user_id() == user_id:
+                bookings_of_user.append(elem)
+        '''Check ob es Einträge gibt, ansonsten return 0 '''
+        if len(bookings_of_user) >= 1:
+            '''Von den Bookings werden diejenigen selektiert, die Timeintervalle beinhalten'''
+            for elem in bookings_of_user:
+                # print('in bookins_of_user: ', elem)
+                ti_b_id = elem.get_time_interval_booking_id()
+                ti_b = self.get_timeinterval_booking_by_id(ti_b_id)
+                timeinterval_booking_of_user.append(ti_b)
+            '''Von den Bookings des Users werden die Ids für die Timeintervalle abgelesen und diese aus der Datenbank
+               geleaden.'''
+            for elem in timeinterval_booking_of_user:
+                # print('in ti_b for user: ', elem)
+                ti_id = elem.get_timeinterval_id()
+                ti = self.get_timeinterval_by_id(ti_id)
+                timeintervals_of_user.append(ti)
+            '''Von den Zeitintervallen werden diejenigen selektiert, die als Typ projectwork besitzen'''
+            for elem in timeintervals_of_user:
+                # print('in ti for user: ', elem)
+                if elem.get_type() == 'ProjectWork':
+                    '''PrpjectWorkBOs, anhand der Timeinterval-Bookings des Users, werden aus der Datenbank geladen'''
+                    project_work = self.get_project_work_by_id(
+                        elem.get_project_work_id())
+                    projectwork_of_user.append(project_work)
+            '''Von den PrjWrkBOs werden diejenigen selektiert, die zu der gesuchten Aktivität gebucht wurden.'''
+            for elem in projectwork_of_user:
+                # print('in projectwork for user: ', elem)
+                if elem.get_activity_id() == activity_id:
+                    '''Aktivitäten werden, anhand den ProjectWorkBOs des Users, aus der Datenbank geladen'''
+                    project_work_for_this_activity_of_user.append(elem)
+
+            return project_work_for_this_activity_of_user
 
     def get_project_work_for_user_within_timeframe(self,  user_id, activity_id, start, end):
         """
