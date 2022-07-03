@@ -88,11 +88,15 @@ class Entry extends Component {
         * und speichert diese als neue Liste im State ab.*/
         let members = this.state.members
         let liste = []
-        members.map(element =>
-            liste.push(element.getUserId()),
-        )
+        let list_of_ids = []
+        for (let i = 0; i < members.length; i++) {
+            liste.push(this.state.members[i])
+        }
+        for (let i = 0; i < liste.length; i++) {
+            list_of_ids.push(liste[i].getUserId())
+        }
         this.setState({
-            userIds: [...this.state.userIds, ...liste]
+            userIds: list_of_ids
         }, function () {
             console.log('2. Callbackfunction', this.state.userIds)
         })
