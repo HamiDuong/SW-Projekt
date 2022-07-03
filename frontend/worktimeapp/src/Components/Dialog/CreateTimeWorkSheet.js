@@ -212,7 +212,7 @@ class CreateTimeWorkSheet extends Component {
                                                 8h
                                             </TableCell> 
                                             <TableCell>
-                                                {(((new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60))).toFixed(2) - 8) +""+"h"}
+                                                {(((new Date(row.end).getHours() + (new Date(row.end).getMinutes()/60)) - (new Date(row.start).getHours() + (new Date(row.start).getMinutes()/60))).toFixed(2) - 8).toFixed(2) +""+"h"}
                                             </TableCell>                                          
                                         </TableRow>                                            
                                     )

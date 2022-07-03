@@ -865,37 +865,67 @@ class TimeOperations(Resource):
             activity_id, user_id)
         return time
 
+
 @worktimeapp.route('/times/<int:activity_id>/<int:user_id>/<start>/<end>')
 class TimeOperationsII(Resource):
-    #@secured
+    # @secured
     def get(self, activity_id, user_id, start, end):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
         adm = Businesslogic()
-        time = adm.get_project_work_for_user_within_timeframe(user_id, activity_id, start, end)
+        time = adm.get_project_work_for_user_within_timeframe(
+            user_id, activity_id, start, end)
         return time
+
 
 @worktimeapp.route('/timeintervals/<int:user_id>/<start>/<end>')
 class TimeintervalFiltering(Resource):
-    #@secured
+    # @secured
     @worktimeapp.marshal_list_with(timeinterval_subclass)
     def get(self,  user_id, start, end):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
         adm = Businesslogic()
-        timeintervals_within_timeframes = adm.get_timeintervals_for_user_within_timeframe(user_id, start, end)
+        timeintervals_within_timeframes = adm.get_timeintervals_for_user_within_timeframe(
+            user_id, start, end)
         return timeintervals_within_timeframes
+
+
+@worktimeapp.route('/alltimeintervals/<int:user_id>/')
+class TimeintervalFiltering(Resource):
+    # @secured
+    @worktimeapp.marshal_list_with(timeinterval_subclass)
+    def get(self,  user_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        timeintervals = adm.get_timeintervals_subclasses_for_user(user_id)
+        return timeintervals
+
 
 @worktimeapp.route('/events/<int:user_id>/<start>/<end>')
 class EventFiltering(Resource):
-    #@secured
+    # @secured
     @worktimeapp.marshal_list_with(event_subclass)
     def get(self,  user_id, start, end):
         """Auslesen aller User-Objekte.
         Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
         adm = Businesslogic()
-        timeintervals_within_timeframes = adm.get_events_for_user_within_timeframe(user_id, start, end)
+        timeintervals_within_timeframes = adm.get_events_for_user_within_timeframe(
+            user_id, start, end)
         return timeintervals_within_timeframes
+
+@worktimeapp.route('/allevents/<int:user_id>/')
+class EventFiltering(Resource):
+    # @secured
+    @worktimeapp.marshal_list_with(event_subclass)
+    def get(self,  user_id):
+        """Auslesen aller User-Objekte.
+        Sollten keine User-Objekte verfügbar sein, so wird eine leere Sequenz zurückgegeben."""
+        adm = Businesslogic()
+        events = adm.get_events_subclasses_for_user(
+            user_id)
+        return events
 
 
 @worktimeapp.route('/times/projectdurataion/<int:project_id>')
