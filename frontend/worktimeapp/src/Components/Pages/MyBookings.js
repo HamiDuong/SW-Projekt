@@ -20,7 +20,6 @@ import MyBookingsIntervalEntry from '../MyBookingsIntervalEntry';
 import MyBookingsEventEntry from '../MyBookingsEventEntry';
 import CreateTimeWorkSheet from '../Dialog/CreateTimeWorkSheet';
 import WorkTimeAppAPI from '../../API/WorkTimeAppAPI';
-import EditBooking from '../Dialog/EditBooking';
 
 // header cells for booking table
 const header = [
@@ -60,7 +59,6 @@ const header = [
  * 
  * All bookings of the current user in a table
  */
-
 class MyBookings extends Component {
     constructor(props) {
         super(props);
@@ -105,15 +103,28 @@ class MyBookings extends Component {
     }
 
     // componentDidUpdate(prevProps, prevState) {
-    //     let length = this.state.intervalbookings.length
-    //     // only update if searchValue has changed
-    //     if (prevState.eventbookings2 !== this.state.eventbookings2 || prevState.intervalbookings !== this.state.intervalbookings ||
-    //         prevState.intervalbookings.length !== this.state.intervalbookings.length || prevState.eventbookings !== this.state.eventbookings ||
-    //         prevState.filteredeventbookings !== this.state.filteredeventbookings) {
-    //         console.log('ComponentDidMount');
-    //         this.getBookings();
-    //         this.getWorkBookings();
+    //     //let length = this.state.intervalbookings.length
+
+    //     if(this.state.showResetButton == false){
+    //         console.log("Filterung aktiv")
+    //     }else{
+    //         // only update if searchValue has changed
+    //         if (prevState.eventbookings2 !== this.state.eventbookings2 || prevState.intervalbookings !== this.state.intervalbookings ||
+    //             prevState.intervalbookings.length !== this.state.intervalbookings.length || prevState.eventbookings !== this.state.eventbookings ||
+    //             prevState.filteredeventbookings !== this.state.filteredeventbookings) {
+    //             console.log('ComponentDidMount');
+    //             this.getBookings();
+    //             this.getWorkBookings();
+    //         }            
     //     }
+    //     // // only update if searchValue has changed
+    //     // if (prevState.eventbookings2 !== this.state.eventbookings2 || prevState.intervalbookings !== this.state.intervalbookings ||
+    //     //     prevState.intervalbookings.length !== this.state.intervalbookings.length || prevState.eventbookings !== this.state.eventbookings ||
+    //     //     prevState.filteredeventbookings !== this.state.filteredeventbookings) {
+    //     //     console.log('ComponentDidMount');
+    //     //     this.getBookings();
+    //     //     this.getWorkBookings();
+    //     // }
     // }
 
     // Save changes buttons and textfields into state
@@ -141,9 +152,6 @@ class MyBookings extends Component {
 
     // Gets all booked bookings of the current user
     getBookings = () => {
-
-        // !--Hier umstellen vor Deployment--!
-
         WorkTimeAppAPI.getAPI().getAllBookingsForUser(this.props.userId).then(responseJSON =>
             this.setState({
                 intervalbookings: responseJSON.timeintervals,
@@ -183,9 +191,6 @@ class MyBookings extends Component {
         let res = [];
         let bookings = this.state.intervalbookings;
 
-        console.log("Intervalbookings");
-        console.log(this.state.intervalbookings);
-
         bookings.forEach(elem => {
             if (elem.type == "Work") {
                 res.push(elem);
@@ -217,9 +222,9 @@ class MyBookings extends Component {
     }
 
     closeEventEditDialog = booking => {
-        console.log("YESSSS", booking)
+        console.log(booking)
         if (booking) {
-            const newBookingList = [booking]
+            const newBookingList = [booking];
             this.setState({
                 eventbookings2: newBookingList,
                 filteredeventbookings: [...newBookingList],
@@ -238,9 +243,9 @@ class MyBookings extends Component {
     }
 
     closeEditDialog = booking => {
-        console.log("YESSSS", booking)
+        console.log(booking)
         if (booking) {
-            const newBookingList = [booking]
+            const newBookingList = [booking];
             this.setState({
                 intervalbookings: newBookingList,
                 filteredintervalbookings: [...newBookingList],
@@ -274,24 +279,24 @@ class MyBookings extends Component {
         return (
             <TableBody>
                 {
-                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "1" } onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
                 {
-                    this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
+                    this.state.filteredeventbookings2.map(row => <MyBookingsEventEntry key = {row.id + " " + row.type+ "2"} onClose1={this.closeEventEditDialog} booking={row} userId={this.props.userId} />)
                 }
             </TableBody>
         )
     }
 
+    //Callback Funktion to confirm when forEach is finished
     callBack(){
-        console.log("Fertig")
+        console.log("Fertig");
     }
 
     // Sortes through all bookings according to the set filters
     filterBookings = () => {
         let starthold = document.getElementById("startfilter");
         let endhold = document.getElementById("endfilter");
-        // let type = this.state.typefilter;
 
         this.setState({
             startfilter: starthold.value,
@@ -302,7 +307,7 @@ class MyBookings extends Component {
             console.log("Zeitfilter wurden gesetzt");
         });
 
-        console.log("Buchungen ohne Änderungen")
+        console.log("Buchungen ohne Änderungen");
         console.log("INterval",this.state.intervalbookings);
         console.log("event",this.state.eventbookings);
         console.log("event2",this.state.eventbookings2);
@@ -324,7 +329,6 @@ class MyBookings extends Component {
         } else if (starttime != "" && endtime == "") {
             let ires = [];
             let counter = 0;
-            console.log("Nur Startfilter", starttime != "" && endtime == "");
             let startdate = new Date(starttime);
             console.log("Interval sorted by start date: " + startdate);
 
@@ -337,11 +341,11 @@ class MyBookings extends Component {
                     counter++;
                 }else{
                     console.log("Element rausgefiltert");
-                    counter++
+                    counter++;
                 }
 
                 if(counter == icounter){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
@@ -353,8 +357,8 @@ class MyBookings extends Component {
         // Only End filter
         } else if (starttime != "" && endtime == "") {
             let ires = [];
-            let counter = 0
-            console.log("Nur Endfilter", starttime != "" && endtime == "" )
+            let counter = 0;
+            console.log("Nur Endfilter", starttime != "" && endtime == "" );
             let enddate = new Date(endtime);
             console.log("Endfilter wurde gesetzt mit: " + enddate);
 
@@ -364,14 +368,14 @@ class MyBookings extends Component {
                 if (elemendtime <= enddate) {
                     console.log("wird es gepusht", elemendtime <= enddate);
                     ires.push(elem);
-                    counter++
+                    counter++;
                 }else{
                     console.log("Element raus")
-                    counter++
+                    counter++;
                 }
 
                 if(counter === icounter){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
@@ -391,24 +395,15 @@ class MyBookings extends Component {
                 let elemstarttime = new Date(elem.start);
                 let elemendtime = new Date(elem.end);
 
-                console.log("DOPPELFILTER")
-                console.log(elem)
-                console.log(elemendtime)
-                console.log(enddate)
-                console.log("end", elemendtime <= enddate)
-                console.log(elemstarttime)
-                console.log(startdate)
-                console.log("start", elemstarttime >= startdate)
-
                 if (elemendtime <= enddate && elemstarttime >= startdate) {
                     ires.push(elem);
                     console.log("ires", ires)
-                    counter++
+                    counter++;
 
                 }else{
-                    console.log("Element passt nicht")
-                    console.log("ires", ires)
-                    counter++
+                    console.log("Element passt nicht");
+                    console.log("ires", ires);
+                    counter++;
                 }
 
                 if(counter === icounter){
@@ -440,14 +435,14 @@ class MyBookings extends Component {
                 let eventtime = new Date(elem.time);
                 if (eventtime >= etime) {
                     eres.push(elem);
-                    counter++
+                    counter++;
                 }else{
-                    counter++
+                    counter++;
                     console.log("Element raus")
                 }
 
                 if(ecounter === counter){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
@@ -457,30 +452,30 @@ class MyBookings extends Component {
             })
 
             this.state.filteredeventbookings2.forEach((elem) => {
-                let counter2 = 0
+                let counter2 = 0;
                 let eventtime2 = new Date(elem.time);
                 if(eventtime2 >= etime){
                     eres2.push(elem)
-                    counter2++
+                    counter2++;
                 }else{
-                    console.log("Element raus")
-                    counter2++
+                    console.log("Element raus");
+                    counter2++;
                 }
 
                 if(counter2 == ecounter2){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
                 filteredeventbookings2 : eres2
             }, function(){
-                console.log("Event2 sorted by start date")
+                console.log("Event2 sorted by start date");
             })
 
         // Endfilter
         } else if (starttime == "" && endtime != ""){
             let eres = [];
-            let eres2 = []
+            let eres2 = [];
             let counter2 = 0;
             let etime = new Date(endtime);
             console.log("End filter is: " + etime);
@@ -489,14 +484,14 @@ class MyBookings extends Component {
                 let eventtime = new Date(elem.time);
                 if (eventtime <= etime) {
                     eres.push(elem);
-                    counter2++
+                    counter2++;
                 }else{
-                    counter2++
-                    console.log("Element raus")
+                    counter2++;
+                    console.log("Element raus");
                 }
 
                 if(ecounter2 === counter2){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
@@ -506,46 +501,46 @@ class MyBookings extends Component {
             })
 
             this.state.filteredeventbookings2.forEach((elem) => {
-                let counter2 = 0
+                let counter2 = 0;
                 let eventtime2 = new Date(elem.time);
                 if(eventtime2 <= etime){
-                    eres2.push(elem)
-                    counter2++
+                    eres2.push(elem);
+                    counter2++;
                 }else{
-                    console.log("Element raus")
-                    counter2++
+                    console.log("Element raus");
+                    counter2++;
                 }
 
                 if(counter2 == ecounter2){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
                 filteredeventbookings2 : eres2
             }, function(){
-                console.log("Event2 sorted by start date")
+                console.log("Event2 sorted by start date");
             })
 
         // Start und End Filter
         } else if (starttime != "" && endtime != ""){
             let eres = [];
-            let erestwo = []
+            let erestwo = [];
             let counter = 0;
             let etime = new Date(endtime);
-            let stime = new Date(starttime)
+            let stime = new Date(starttime);
 
             this.state.filteredeventbookings.forEach((elem) => {
                 let eventtime = new Date(elem.time);
                 if (eventtime <= etime && eventtime >= stime) {
                     eres.push(elem);
-                    counter++
+                    counter++;
                 }else{
-                    counter++
-                    console.log("Element raus")
+                    counter++;
+                    console.log("Element raus");
                 }
 
                 if(ecounter === counter){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
@@ -556,45 +551,45 @@ class MyBookings extends Component {
 
             this.state.filteredeventbookings2.forEach((elem) => {
                 
-                let counter2 = 0
+                let counter2 = 0;
                 let eventtime2 = new Date(elem.time);
                 if(eventtime2 <= etime && eventtime2 >= stime){
-                    erestwo.push(elem)
-                    counter2++
+                    erestwo.push(elem);
+                    counter2++;
                 }else{
-                    console.log("Element raus")
-                    counter2++
+                    console.log("Element raus");
+                    counter2++;
                 }
 
                 if(counter2 == ecounter2){
-                    this.callBack()
+                    this.callBack();
                 }
             })
             this.setState({
                 filteredeventbookings2 : erestwo
             }, function(){
-                console.log("Event2 sorted by start date")
+                console.log("Event2 sorted by start date");
             })
         }
 
-        // // Filter by booking type
-        // let bookingstype = this.state.bookingtype
+        // Filter by booking type
+        let bookingstype = this.state.bookingtype
 
-        // console.log('Vergleich von Buchungsart');
-        // if (bookingtype == 'timeinterval') {
-        //     this.setState({
-        //         eventbookings2 : []
-        //     }, function () {
-        //         console.log("Nur Timeintervalbuchungen mit verknüpften Events");
-        //     })
-        // } else if (bookingtype == 'event') {
-        //     this.setState({
-        //         filteredintervalbookings: [],
-        //         filteredeventbookings: [],
-        //     }, function () {
-        //         console.log("Nur Eventbuchungen");
-        //     })
-        // }
+        console.log('Vergleich von Buchungsart');
+        if (bookingstype == 'timeinterval') {
+            this.setState({
+                eventbookings2 : []
+            }, function () {
+                console.log("Nur Timeintervalbuchungen mit verknüpften Events");
+            })
+        } else if (bookingstype == 'event') {
+            this.setState({
+                filteredintervalbookings: [],
+                filteredeventbookings: [],
+            }, function () {
+                console.log("Nur Eventbuchungen");
+            })
+        }
     }
 
 

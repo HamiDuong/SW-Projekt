@@ -17,6 +17,8 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { TableContainer, TableCell } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 class Entry extends Component {
@@ -39,7 +41,9 @@ class Entry extends Component {
             projectId: this.props.projectId,
             projectDuration: '',
             userCapacity: [],
-
+            filterUsed: false,
+            start: '',
+            end: '',
         })
     }
 
@@ -125,119 +129,279 @@ class Entry extends Component {
         }, console.log('click'))
     }
 
+    onFilterClicked = () => {
+        this.setState({
+            filterUsed: true
+        })
+    }
+
+    removeFilterClicked = () => {
+        this.setState({
+            filterUsed: false
+        })
+    }
+
     componentDidMount() {
         this.getActivity(this.props.value)
         this.getProjectUser(this.props.projectId)
         this.getProjectDuration(this.props.projectId)
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.filterUsed !== this.state.filterUsed) {
+            let holder = document.getElementById('startFilter')
+            let holder2 = document.getElementById('endFilter')
+            this.setState({
+                start: holder.value,
+                end: holder2.value,
+                userIds: [],
+            })
+            this.getActivity(this.props.value)
+            this.getProjectUser(this.props.projectId)
+            this.getProjectDuration(this.props.projectId)
+        }
+    }
+
     render() {
         const open = this.state.open
         return (
             <div>
-                <Box>
-                    <Box
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                        <TableContainer>
-                            <Table stickyHeader aria-label="sticky table">
-                                <TableBody>
-                                    <Box
-                                        style={{
-                                            display: 'flex',
+                {this.state.filterUsed ?
+                    <div>
+                        <Box>
+                            <Box
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                <TableContainer>
+                                    <Table stickyHeader aria-label="sticky table">
+                                        <TableBody>
+                                            <Box
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'left'
+                                                }}>
+                                                <IconButton aria-label="expand row"
+                                                    size="small"
+                                                    onClick={this.handleClick}>
+                                                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                </IconButton>
+                                                <TableRow>{this.state.name}</TableRow>
+                                            </Box>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Box>
+
+                            <Collapse in={open} timeout="auto" unmountOnExit>
+                                <TableContainer style={{
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}>
+                                    <Table sx={{ width: '75%' }}>
+                                        <TableHead>
+                                            <Box sx={{
+                                                width: '50%',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'left',
+                                                border: (theme) => `1px solid ${theme.palette.divider}`,
+                                                color: 'text.secondary',
+                                                bgcolor: 'background.paper',
+                                                '& svg': {
+                                                    m: 2,
+                                                },
+                                                '& hr': {
+                                                    mx: 1,
+                                                },
+                                            }}>
+                                                <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
+                                                <Divider orientation="vertical" flexItem />
+                                                <TableRow>Planed capacity : {this.state.capacity}</TableRow>
+                                                <Divider orientation="vertical" flexItem />
+                                                <TableRow>Total Booked Time: {this.state.currentCapacity} </TableRow>
+                                            </Box>
+                                        </TableHead>
+                                    </Table>
+                                </TableContainer>
+                                <Box sx={{
+                                    padding: 'auto',
+                                    margin: 'auto',
+                                    justifyContent: 'right',
+                                    width: '75%',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}>
+                                    <TextField defaultValue={this.state.start} format={'YYYY/MM/DD'} type="date" id="startFilter" inputProps={
+                                        { readOnly: true, }
+                                    } />
+                                    <TextField defaultValue={this.state.end} format={'YYYY/MM/DD'} type="date" id="endFilter" inputProps={
+                                        { readOnly: true, }
+                                    } />
+                                    <Button onClick={this.removeFilterClicked}>Remove Filter</Button>
+
+                                </Box>
+                                <TableContainer style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}>
+                                    <Table sx={{ width: '75%' }}>
+                                        <TableHead>
+                                            <Box sx={{
+                                                width: '100%',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-evenly',
+                                                border: (theme) => `1px solid ${theme.palette.divider}`,
+                                                bgcolor: 'background.paper',
+                                                color: 'text.secondary',
+                                                '& svg': {
+                                                    m: 2,
+                                                },
+                                                '& hr': {
+                                                    mx: 1,
+                                                },
+
+                                            }}>
+                                                <TableRow><ListAltIcon />Booked capacity</TableRow>
+                                                <Divider orientation="vertical" />
+                                                <TableRow><PersonIcon />Employees</TableRow>
+                                                <Divider orientation="vertical" />
+                                                <TableRow > <TaskAltIcon />Planed capacity of employee</TableRow>
+
+                                            </Box>
+                                        </TableHead>
+                                        <TableBody>
+                                            {this.state.userIds.map((element, index) => {
+                                                console.log(element, 'Ist das hier eine UserId?')
+                                                return (
+                                                    <ActivityBookingEntry start={this.state.start} end={this.state.end} filterTrigger={this.state.filterUsed} act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
+                                                        user_capa={this.state.userCapacity[index]} />)
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Collapse>
+                        </Box>
+                    </div > :
+                    <div>
+                        <Box
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                            <TableContainer>
+                                <Table stickyHeader aria-label="sticky table">
+                                    <TableBody>
+                                        <Box
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'left'
+                                            }}>
+                                            <IconButton aria-label="expand row"
+                                                size="small"
+                                                onClick={this.handleClick}>
+                                                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                            </IconButton>
+                                            <TableRow>{this.state.name}</TableRow>
+                                        </Box>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Box>
+
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <TableContainer style={{
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}>
+                                <Table sx={{ width: '75%' }}>
+                                    <TableHead>
+                                        <Box sx={{
+                                            width: '50%',
+                                            display: 'inline-flex',
                                             alignItems: 'center',
-                                            justifyContent: 'left'
+                                            justifyContent: 'left',
+                                            border: (theme) => `1px solid ${theme.palette.divider}`,
+                                            color: 'text.secondary',
+                                            bgcolor: 'background.paper',
+                                            '& svg': {
+                                                m: 2,
+                                            },
+                                            '& hr': {
+                                                mx: 1,
+                                            },
                                         }}>
-                                        <IconButton aria-label="expand row"
-                                            size="small"
-                                            onClick={this.handleClick}>
-                                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                        </IconButton>
-                                        <TableRow>{this.state.name}</TableRow>
-                                    </Box>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Box>
+                                            <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
+                                            <Divider orientation="vertical" flexItem />
+                                            <TableRow>Planed capacity : {this.state.capacity}</TableRow>
+                                            <Divider orientation="vertical" flexItem />
+                                            <TableRow>Total Booked Time: {this.state.currentCapacity} </TableRow>
+                                        </Box>
+                                    </TableHead>
+                                </Table>
+                            </TableContainer>
+                            <Box sx={{
+                                padding: 'auto',
+                                margin: 'auto',
+                                justifyContent: 'right',
+                                width: '75%',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }} >
+                                <TextField format={'YYYY/MM/DD'} type="date" id="startFilter" />
+                                <TextField format={'YYYY/MM/DD'} type="date" id="endFilter" />
+                                <Button onClick={this.onFilterClicked} >Filtering</Button>
+                            </Box>
+                            <TableContainer style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}>
+                                <Table sx={{ width: '75%' }}>
+                                    <TableHead>
+                                        <Box sx={{
+                                            width: '100%',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-evenly',
+                                            border: (theme) => `1px solid ${theme.palette.divider}`,
+                                            bgcolor: 'background.paper',
+                                            color: 'text.secondary',
+                                            '& svg': {
+                                                m: 2,
+                                            },
+                                            '& hr': {
+                                                mx: 1,
+                                            },
 
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <TableContainer style={{
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}>
-                            <Table sx={{ width: '75%' }}>
-                                <TableHead>
-                                    <Box sx={{
-                                        marginTop: '5',
-                                        width: '100%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-evenly',
-                                        border: (theme) => `1px solid ${theme.palette.divider}`,
+                                        }}>
+                                            <TableRow><ListAltIcon />Booked capacity</TableRow>
+                                            <Divider orientation="vertical" />
+                                            <TableRow><PersonIcon />Employees</TableRow>
+                                            <Divider orientation="vertical" />
+                                            <TableRow > <TaskAltIcon />Planed capacity of employee</TableRow>
 
-                                        color: 'text.secondary',
-                                        '& svg': {
-                                            m: 2,
-                                        },
-                                        '& hr': {
-                                            mx: 1,
-                                        },
+                                        </Box>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.userIds.map((element, index) => {
+                                            console.log(element, 'UserId')
+                                            return (
+                                                <ActivityBookingEntry start={this.state.start} end={this.state.end} filterTrigger={this.state.filterUsed} act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
+                                                    user_capa={this.state.userCapacity[index]} />)
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Collapse>
+                    </div >
+                }
 
-                                    }}>
-                                        <TableRow >Project duration (in days): {this.state.projectDuration} </TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <TableRow>Planed capacity : {this.state.capacity}</TableRow>
-                                        <Divider orientation="vertical" flexItem />
-                                        <TableRow>Total Booked Time: {this.state.currentCapacity} </TableRow>
-                                    </Box>
-                                </TableHead>
-                            </Table>
-                        </TableContainer>
-                        <TableContainer style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}>
-                            <Table sx={{ width: '75%' }}>
-                                <TableHead>
-                                    <Box sx={{
-                                        width: '100%',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-evenly',
-                                        border: (theme) => `1px solid ${theme.palette.divider}`,
-                                        bgcolor: 'background.paper',
-                                        color: 'text.secondary',
-                                        '& svg': {
-                                            m: 2,
-                                        },
-                                        '& hr': {
-                                            mx: 1,
-                                        },
-
-                                    }}>
-                                        <TableRow><ListAltIcon />Booked capacity</TableRow>
-                                        <Divider orientation="vertical" />
-                                        <TableRow><PersonIcon />Employees</TableRow>
-                                        <Divider orientation="vertical" />
-                                        <TableRow > <TaskAltIcon />Planed capacity of employee</TableRow>
-
-                                    </Box>
-                                </TableHead>
-                                <TableBody>
-                                    {this.state.userIds.map((element, index) => {
-                                        console.log(element, 'Ist das hier eine UserId?')
-                                        return (
-                                            <ActivityBookingEntry act_id={this.props.value} us_id={element} capacity={this.state.capacity} current_c={this.state.currentCapacity} projectId={this.state.projectId}
-                                                user_capa={this.state.userCapacity[index]} />)
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Collapse>
-                </Box>
             </div >
         );
     }
